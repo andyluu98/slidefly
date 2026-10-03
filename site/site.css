@@ -54,7 +54,7 @@ kbd { display: inline-block; min-width: 1.8em; padding: 1px 7px; border: 1px sol
 .hero { padding: 56px 0 72px; }
 .hero .wrap { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: center; }
 .eyebrow { font: 600 13px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--fly); }
-.hero h1 { margin: 18px 0 20px; font: 800 clamp(48px, 7.4vw, 92px)/.95 var(--display); letter-spacing: -.045em; font-variation-settings: "wdth" 90; }
+.hero h1 { margin: 18px 0 20px; font: 800 clamp(48px, 7vw, 88px)/1 var(--display); letter-spacing: -.02em; }
 .hero h1 .fly { position: relative; display: inline-block; color: var(--fly); }
 .hero h1 .fly::after { content: ""; position: absolute; left: 4%; right: -4%; bottom: .06em; height: .14em; background: var(--sun); border-radius: 99px; z-index: -1; transform-origin: left; animation: swoosh 1.1s .5s var(--ease) both; }
 @keyframes swoosh { from { transform: scaleX(0); } }
@@ -88,6 +88,6 @@ kbd { display: inline-block; min-width: 1.8em; padding: 1px 7px; border: 1px sol
 section.block { padding: 88px 0; }
 section.block.alt { background: var(--surface); border-block: 1px solid var(--line); }
 .head { max-width: 760px; margin-bottom: 44px; }
-.head h2 { text-wrap: balance; margin: 12px 0 14px; font: 800 clamp(32px, 4.4vw, 52px)/1.05 var(--display); letter-spacing: -.035em; }
+.head h2 { text-wrap: balance; margin: 12px 0 14px; font: 800 clamp(32px, 4.4vw, 52px)/1.12 var(--display); letter-spacing: -.015em; }
 .head p { margin: 0; font-size: 18px; color: var(--slate); }
 @media (max-width: 640px) { section.block { padding: 64px 0; } }

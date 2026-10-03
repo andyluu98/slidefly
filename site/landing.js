@@ -79,6 +79,15 @@
   tabs.forEach((t) => t.addEventListener('click', () => pickOs(t.dataset.os)));
   pickOs(/Windows/i.test(navigator.userAgent) ? 'win' : 'unix');
 
+  /* ---------- gallery: reveal all 47 styles in place ---------- */
+  const shelf = $('#shelf'), showAll = $('#show-all');
+  showAll.addEventListener('click', () => {
+    const open = shelf.classList.toggle('open');
+    showAll.setAttribute('aria-expanded', String(open));
+    showAll.textContent = open ? 'Thu gọn' : 'Hiện cả 47 style';
+    if (!open) shelf.scrollIntoView({ block: 'start' });
+  });
+
   /* ---------- copy buttons ---------- */
   $$('.code').forEach((box) => {
     const btn = document.createElement('button');
