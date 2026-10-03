@@ -3,26 +3,371 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SlideFly</title>
-<style>
-  :root { --bg: #f4f2ee; --fg: #1b1b1b; --muted: #666; --card: #fff; --line: #ddd; }
-  @media (prefers-color-scheme: dark) { :root { --bg: #141414; --fg: #eee; --muted: #999; --card: #1f1f1f; --line: #333; } }
-  body { margin: 0; background: var(--bg); color: var(--fg); font: 17px/1.6 system-ui, sans-serif; }
-  main { max-width: 760px; margin: auto; padding: 48px 16px; }
-  h1 { margin: 0 0 8px; font-size: 34px; }
-  p { color: var(--muted); }
-  a.card { display: block; margin: 14px 0; padding: 18px 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); color: inherit; text-decoration: none; }
-  a.card b { display: block; font-size: 19px; }
-</style>
+<title>SlideFly: slide biết bay</title>
+<meta name="description" content="Skill mã nguồn mở cho Claude Code: dựng bộ slide HTML có hiệu ứng chuyển cảnh kiểu PowerPoint Morph, 47 style, một file mở bằng trình duyệt là trình chiếu.">
+<meta property="og:title" content="SlideFly: slide biết bay">
+<meta property="og:description" content="Gõ /slidefly trong Claude Code, nhận bộ slide HTML có hiệu ứng Morph. 47 style, miễn phí, mã nguồn mở.">
+<meta property="og:image" content="https://andyluu98.github.io/slidefly/docs/gallery.jpg">
+<meta property="og:url" content="https://andyluu98.github.io/slidefly/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#2F54EB">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='9' width='22' height='16' rx='4' fill='%232F54EB'/%3E%3Ccircle cx='24' cy='9' r='6' fill='%23FFB020'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,600..800&family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="site/site.css">
+<link rel="stylesheet" href="site/sections.css">
 </head>
 <body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#" aria-label="SlideFly, về đầu trang">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="9" width="22" height="16" rx="4" fill="#2F54EB"/><circle cx="24" cy="9" r="6" fill="#FFB020"/></svg>
+      SlideFly
+    </a>
+    <nav aria-label="Mục chính">
+      <a href="#co-che">Cách hoạt động</a>
+      <a href="#tinh-nang">Tính năng</a>
+      <a href="#cai-dat">Cài đặt</a>
+      <a href="#su-dung">Sử dụng</a>
+      <a href="#style">Thư viện style</a>
+      <a href="#hoi-dap">Hỏi đáp</a>
+    </nav>
+    <a class="gh" href="https://github.com/andyluu98/slidefly">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.26 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>
+      GitHub
+    </a>
+  </div>
+</header>
+
 <main>
-  <h1>SlideFly: slide biết bay</h1>
-  <p>Slide HTML có hiệu ứng chuyển cảnh kiểu PowerPoint Morph, 47 style, chạy ngay trên trình duyệt.</p>
-  <a class="card" href="gallery/00-gallery.html"><b>Thư viện 47 style</b>Xem ảnh bìa, lọc theo nền và từ khóa, bấm để mở deck demo.</a>
-  <a class="card" href="examples/ai-agent-stencil-tablet-20-slide.html"><b>Deck mẫu: AI Agent, 20 slide</b>Style Stencil &amp; Tablet, có biến thể dáng cho slide lặp lại.</a>
-  <a class="card" href="examples/ai-agent-swiss-15-slide.html"><b>Deck mẫu: AI Agent, 15 slide</b>Style Swiss Modern.</a>
-  <a class="card" href="https://github.com/andyluu98/slidefly"><b>Mã nguồn trên GitHub</b>Cài skill cho Claude Code, hướng dẫn và giấy phép.</a>
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Skill mã nguồn mở cho Claude Code</span>
+        <h1>Slide biết <span class="fly">bay.</span></h1>
+        <p class="lead">Gõ <code>/slidefly</code>, đưa dàn ý. Claude dựng cho bạn một bộ slide HTML có hiệu ứng chuyển cảnh kiểu Morph của PowerPoint: hình khối trượt, phóng to, đổi màu liền mạch từ slide này sang slide kia. Một file duy nhất, mở bằng trình duyệt là trình chiếu.</p>
+        <div class="cta">
+          <a class="btn btn-main" href="#cai-dat">Cài đặt ngay</a>
+          <a class="btn btn-ghost" href="gallery/00-gallery.html">Xem đủ 47 style</a>
+        </div>
+        <ul class="facts">
+          <li>Miễn phí, giấy phép MIT</li>
+          <li>Không cần PowerPoint</li>
+          <li>Font đủ dấu tiếng Việt</li>
+        </ul>
+      </div>
+
+      <div class="projector">
+        <div class="screen">
+          <iframe id="live" src="gallery/39_demo-stencil-tablet.html#1" title="Deck mẫu đang chạy" tabindex="-1"></iframe>
+          <button class="hit" type="button" aria-label="Chuyển slide trong deck mẫu. Bấm hoặc dùng phím mũi tên trái phải."></button>
+          <span class="hint">Bấm vào để chuyển slide</span>
+        </div>
+        <div class="bar">
+          <span class="now">Đang chiếu: <b id="now-name">Stencil &amp; Tablet</b> · slide <span id="now-num">1/10</span></span>
+          <button class="ctl" id="prev" type="button" aria-label="Slide trước">‹</button>
+          <button class="ctl" id="next" type="button" aria-label="Slide sau">›</button>
+          <a class="full" id="full" href="gallery/39_demo-stencil-tablet.html" target="_blank" rel="noopener">Mở toàn màn hình ↗</a>
+        </div>
+        <div class="wardrobe">
+          <p>Cùng một nội dung, đổi style chỉ bằng một dòng:</p>
+          <div class="chips">
+            <button class="chip" type="button" aria-pressed="true" data-file="39_demo-stencil-tablet"><i style="--sw:#EE7A2E"></i>Stencil &amp; Tablet</button>
+            <button class="chip" type="button" aria-pressed="false" data-file="42_demo-swiss-modern"><i style="--sw:#FF3300"></i>Swiss Modern</button>
+            <button class="chip" type="button" aria-pressed="false" data-file="46_demo-neon-cyber"><i style="--sw:#00FFCC"></i>Neon Cyber</button>
+            <button class="chip" type="button" aria-pressed="false" data-file="47_demo-paper-ink"><i style="--sw:#C41E3A"></i>Paper &amp; Ink</button>
+            <button class="chip" type="button" aria-pressed="false" data-file="45_demo-dark-botanical"><i style="--sw:#D4A574"></i>Dark Botanical</button>
+            <button class="chip" type="button" aria-pressed="false" data-file="43_demo-xanh-dai-hoc"><i style="--sw:#0288D1"></i>Xanh Đại Học</button>
+            <button class="chip" type="button" aria-pressed="false" data-file="44_demo-bold-signal"><i style="--sw:#FF5722"></i>Bold Signal</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section class="block alt" id="co-che">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">Cách hoạt động</span>
+        <h2>Một sân khấu, không phải một xấp giấy.</h2>
+        <p>Slide thông thường là những tờ giấy rời: sang tờ mới thì mọi thứ vẽ lại từ đầu. SlideFly coi cả bộ slide là một sân khấu. Hình trang trí là diễn viên đứng sẵn trên đó, mỗi kiểu slide chỉ bảo họ đổi tư thế. Bấm thử bên dưới.</p>
+      </div>
+      <div class="how">
+        <div>
+          <div class="poses" role="group" aria-label="Chọn kiểu slide">
+            <button type="button" data-pose="cover" aria-pressed="true">Bìa</button>
+            <button type="button" data-pose="agenda" aria-pressed="false">Mục lục</button>
+            <button type="button" data-pose="content" aria-pressed="false">Nội dung</button>
+            <button type="button" data-pose="closing" aria-pressed="false">Kết</button>
+          </div>
+          <div class="mini" data-pose="cover" aria-hidden="true">
+            <div class="ring"></div>
+            <div class="disc"></div>
+            <div class="tile"></div>
+            <div class="bar"></div>
+            <div class="title"></div>
+            <div class="lines"><span></span><span></span><span></span><span></span></div>
+          </div>
+          <p class="pose-tag">data-layout="cover"</p>
+        </div>
+        <div class="concepts">
+          <div>
+            <h3><span class="k" style="--c:var(--fly)"></span>Diễn viên</h3>
+            <p>Mỗi style có vài hình cố định như vòng tròn, thanh màu, ô vuông. Chúng không bị vẽ lại ở từng slide mà sống suốt cả buổi trình chiếu.</p>
+          </div>
+          <div>
+            <h3><span class="k" style="--c:var(--sun)"></span>Tư thế</h3>
+            <p>Bìa, mục lục, nội dung, kết... mỗi kiểu slide quy định chỗ đứng, kích cỡ, góc xoay của từng diễn viên. Chuyển slide thì trình duyệt cho họ trượt sang tư thế mới trong 1,2 giây.</p>
+          </div>
+          <div>
+            <h3><span class="k" style="--c:var(--ink)"></span>Chữ bay theo</h3>
+            <p>Tên một mục ở trang mục lục có thể bay sang thành tiêu đề của phần ngay sau. Cách làm: đo chỗ cũ, đo chỗ mới, rồi cho chữ trượt giữa hai điểm (kỹ thuật FLIP).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURES ============ -->
+  <section class="block" id="tinh-nang">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">Tính năng</span>
+        <h2>Làm sẵn những phần tốn công nhất.</h2>
+        <p>Bạn lo nội dung. Phần dàn trang, hiệu ứng và soát lỗi đã có người làm.</p>
+      </div>
+      <div class="features">
+        <article class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="12.5" r="2.5"/><circle cx="8.5" cy="7.5" r="2.5"/><circle cx="6.5" cy="13.5" r="2.5"/><path d="M12 22a10 10 0 1 1 10-10c0 2.2-1.8 3-3.5 3H16a2 2 0 0 0-1.6 3.2A2 2 0 0 1 12 22Z"/></svg>
+          <h3>47 style có sẵn</h3>
+          <p>Từ tối giản kiểu Thụy Sĩ tới neon, giấy cũ, báo tường. Mỗi style là một bộ màu, font và vũ đạo riêng cho diễn viên.</p>
+        </article>
+        <article class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+          <h3>9 kiểu slide</h3>
+          <p>Bìa, mục lục, chương, nội dung, hai cột, số liệu, dòng thời gian, trích dẫn, kết. Đủ cho một bài trình bày trọn vẹn.</p>
+        </article>
+        <article class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>
+          <h3>Bố cục tự lấp đầy</h3>
+          <p>Engine đếm số ý trên slide rồi chọn cỡ chữ lớn, vừa hay nhỏ. Slide ít chữ không trống trơn, slide nhiều chữ không tràn. Kiểu slide lặp lại sẽ tự đổi dáng cho đỡ nhàm.</p>
+        </article>
+        <article class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+          <h3>Tự kiểm tra trước khi giao</h3>
+          <p>Script chụp từng slide, đo khoảng trống và chữ tràn, bắt lỗi trình duyệt, rồi gom thành một ảnh để Claude nhìn lại và sửa trước khi đưa bạn.</p>
+        </article>
+        <article class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="m10 13-2 2 2 2"/><path d="m14 17 2-2-2-2"/></svg>
+          <h3>Một file, mang đi đâu cũng chạy</h3>
+          <p>CSS và JavaScript được gộp vào một file HTML. Không thư viện ngoài, không cài phần mềm, gửi qua email hay USB đều mở được.</p>
+        </article>
+        <article class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>
+          <h3>Tiếng Việt đúng dấu</h3>
+          <p>Mọi font trong 47 style đều được chọn từ danh sách có đủ bộ chữ tiếng Việt, nên không có chữ bị vỡ dấu hay lệch font.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INSTALL ============ -->
+  <section class="block alt" id="cai-dat">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">Cài đặt</span>
+        <h2>Bốn bước, vài phút.</h2>
+        <p>Skill là một thư mục. Cài đặt nghĩa là chép thư mục đó vào chỗ Claude Code tìm skill.</p>
+      </div>
+      <ul class="need">
+        <li><b>Cần có:</b> <a href="https://claude.com/claude-code">Claude Code</a>, Git</li>
+        <li><b>Tùy chọn:</b> Python 3.10 trở lên, để chạy script tự kiểm tra</li>
+      </ul>
+      <div class="os" role="tablist" aria-label="Hệ điều hành">
+        <button type="button" role="tab" data-os="unix" aria-selected="true">macOS / Linux</button>
+        <button type="button" role="tab" data-os="win" aria-selected="false">Windows (PowerShell)</button>
+      </div>
+      <ol class="steps" id="steps" data-os="unix">
+        <li>
+          <div>
+            <h3>Tải mã nguồn về máy</h3>
+            <div class="code"><pre>git clone https://github.com/andyluu98/slidefly.git</pre></div>
+            <p>Hoặc bấm <a href="https://github.com/andyluu98/slidefly/archive/refs/heads/main.zip">tải file ZIP</a> rồi giải nén.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Chép skill vào Claude Code</h3>
+            <div class="code only-unix"><pre>mkdir -p ~/.claude/skills
+cp -r slidefly/skill/slidefly ~/.claude/skills/</pre></div>
+            <div class="code only-win"><pre>New-Item -ItemType Directory -Force "$HOME\.claude\skills" | Out-Null
+Copy-Item -Recurse slidefly\skill\slidefly "$HOME\.claude\skills\"</pre></div>
+            <p>Skill nằm ở <code>~/.claude/skills/slidefly</code> nên dùng được trong mọi dự án.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Cài công cụ tự kiểm tra <span class="opt">Tùy chọn</span></h3>
+            <div class="code"><pre>pip install -r slidefly/requirements.txt
+python -m playwright install chromium</pre></div>
+            <p>Bước này giúp Claude chụp và soát từng slide trước khi giao. Bỏ qua thì deck vẫn tạo được, chỉ thiếu bước soát tự động.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Mở phiên Claude Code mới và gọi skill</h3>
+            <div class="code"><pre>/slidefly Làm 12 slide giới thiệu sản phẩm mới cho khách hàng</pre></div>
+            <p>Phiên mới mới nhận skill vừa cài. Không cần nhớ lệnh: nói tự nhiên như "làm slide có hiệu ứng morph" Claude cũng tự gọi SlideFly.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ USAGE ============ -->
+  <section class="block" id="su-dung">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">Sử dụng</span>
+        <h2>Nói điều bạn cần, nhận một file để chiếu.</h2>
+        <p>Đưa chủ đề, dàn ý hoặc cả file Word, PDF. Càng nói rõ người xem là ai, slide càng trúng.</p>
+      </div>
+      <div class="use">
+        <div>
+          <h3>Thử với vài câu như thế này</h3>
+          <ul class="prompts">
+            <li><b>/slidefly</b> Làm 20 slide giải thích AI Agent cho nhân viên văn phòng, style stencil-tablet</li>
+            <li><b>/slidefly</b> Chuyển file bao-cao-quy-3.docx thành slide trình bày cho ban giám đốc</li>
+            <li><b>/slidefly</b> 10 slide giới thiệu khóa học Excel, ít chữ, để thuyết trình</li>
+          </ul>
+          <div class="keys">
+            <h3>Khi trình chiếu</h3>
+            <span><kbd>→</kbd> <kbd>Space</kbd> hoặc bấm chuột</span><span>Sang slide sau</span>
+            <span><kbd>←</kbd></span><span>Lùi lại</span>
+            <span><kbd>F</kbd></span><span>Toàn màn hình</span>
+            <span><kbd>Home</kbd> <kbd>End</kbd></span><span>Về đầu hoặc cuối</span>
+          </div>
+        </div>
+        <div>
+          <h3>Sau khi bạn gửi yêu cầu</h3>
+          <ol class="flow">
+            <li><b>Hỏi gộp một lượt</b><span>Mục đích, người xem, số slide, nhiều hay ít chữ. Câu nào bạn đã nói thì bỏ qua.</span></li>
+            <li><b>Lập dàn ý</b><span>Mỗi slide một ý, gán sẵn kiểu slide phù hợp.</span></li>
+            <li><b>Cho xem trước 3 style</b><span>Dựng bìa, mục lục và một slide nội dung của chính bài bạn ở 3 style để bạn chọn, hoặc trộn màu của style này với hình của style kia.</span></li>
+            <li><b>Dựng cả bộ</b><span>Viết slide theo dàn ý, gộp thành một file HTML đặt tên theo thứ tự trong thư mục của bạn.</span></li>
+            <li><b>Tự kiểm tra và sửa</b><span>Chụp mọi slide, đo khoảng trống, chữ tràn, lỗi trình duyệt. Có lỗi thì sửa rồi kiểm lại.</span></li>
+            <li><b>Bàn giao</b><span>Đường dẫn file, số slide, style đã dùng và cách trình chiếu.</span></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GALLERY ============ -->
+  <section class="block alt" id="style">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">Thư viện style</span>
+        <h2>47 bộ trang phục cho cùng một nội dung.</h2>
+        <p>Mỗi ảnh là slide bìa của cùng một deck mẫu. Bấm vào để chạy thử cả bộ 10 slide với hiệu ứng.</p>
+      </div>
+      <div class="shelf">
+        <a href="gallery/01_demo-electric-studio.html"><img src="gallery/anh/electric-studio-1.jpg" alt="" loading="lazy" width="1280" height="720"><span>Electric Studio</span></a>
+        <a href="gallery/09_demo-biennale-yellow.html"><img src="gallery/anh/biennale-yellow-1.jpg" alt="" loading="lazy" width="1280" height="720"><span>Biennale Vàng</span></a>
+        <a href="gallery/07_demo-terminal-green.html"><img src="gallery/anh/terminal-green-1.jpg" alt="" loading="lazy" width="1280" height="720"><span>Terminal Green</span></a>
+        <a href="gallery/24_demo-long-table.html"><img src="gallery/anh/long-table-1.jpg" alt="" loading="lazy" width="1280" height="720"><span>Long Table</span></a>
+        <a href="gallery/16_demo-cobalt-grid.html"><img src="gallery/anh/cobalt-grid-1.jpg" alt="" loading="lazy" width="1280" height="720"><span>Cobalt Grid</span></a>
+        <a href="gallery/30_demo-pink-script.html"><img src="gallery/anh/pink-script-1.jpg" alt="" loading="lazy" width="1280" height="720"><span>Pink Script</span></a>
+        <a href="gallery/33_demo-retro-windows.html"><img src="gallery/anh/retro-windows-1.jpg" alt="" loading="lazy" width="1280" height="720"><span>Retro Windows</span></a>
+        <a href="gallery/20_demo-editorial-forest.html"><img src="gallery/anh/editorial-forest-1.jpg" alt="" loading="lazy" width="1280" height="720"><span>Editorial Forest</span></a>
+        <a href="gallery/35_demo-sakura-chroma.html"><img src="gallery/anh/sakura-chroma-1.jpg" alt="" loading="lazy" width="1280" height="720"><span>Sakura Chroma</span></a>
+        <a href="gallery/10_demo-block-frame.html"><img src="gallery/anh/block-frame-1.jpg" alt="" loading="lazy" width="1280" height="720"><span>Block Frame</span></a>
+        <a href="gallery/41_demo-vellum.html"><img src="gallery/anh/vellum-1.jpg" alt="" loading="lazy" width="1280" height="720"><span>Vellum</span></a>
+        <a href="gallery/37_demo-signal.html"><img src="gallery/anh/signal-1.jpg" alt="" loading="lazy" width="1280" height="720"><span>Signal</span></a>
+      </div>
+      <div class="more">
+        <a class="btn btn-main" href="gallery/00-gallery.html">Xem và lọc cả 47 style</a>
+        <a class="btn btn-ghost" href="examples/ai-agent-stencil-tablet-20-slide.html">Deck mẫu 20 slide</a>
+        <a class="btn btn-ghost" href="examples/ai-agent-swiss-15-slide.html">Deck mẫu 15 slide</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="block" id="hoi-dap">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">Hỏi đáp</span>
+        <h2>Những câu hay được hỏi.</h2>
+      </div>
+      <div class="faq">
+        <details>
+          <summary>Có cần cài PowerPoint không?</summary>
+          <p>Không. Slide là một trang web, mở bằng Chrome, Edge, Firefox hay Safari đều chiếu được. Hiệu ứng Morph được dựng lại bằng CSS nên không phụ thuộc phần mềm văn phòng nào.</p>
+        </details>
+        <details>
+          <summary>Xuất ra file PowerPoint hoặc PDF được không?</summary>
+          <p>Hiện chưa. SlideFly chỉ tạo file HTML. Hiệu ứng chạy bằng trình duyệt nên không chép sang được file .pptx hay PDF.</p>
+        </details>
+        <details>
+          <summary>Không có mạng thì slide có chạy không?</summary>
+          <p>Có. Mọi thứ nằm trong một file, trừ font chữ tải từ Google Fonts. Mất mạng thì trình duyệt dùng font dự phòng, bố cục và hiệu ứng vẫn giữ nguyên.</p>
+        </details>
+        <details>
+          <summary>Vì sao trên máy tôi hiệu ứng ngắn và nhẹ hơn?</summary>
+          <p>Máy đang bật chế độ giảm chuyển động. SlideFly tôn trọng thiết lập này nên rút hiệu ứng còn 0,7 giây. Trên Windows, bật lại tại Settings, Accessibility, Visual effects, Animation effects.</p>
+        </details>
+        <details>
+          <summary>Muốn sửa chữ sau khi tạo thì làm thế nào?</summary>
+          <p>Cách nhanh nhất là nhờ Claude sửa: "đổi tiêu đề slide 3 thành...". Hoặc mở file HTML bằng trình soạn thảo bất kỳ và sửa chữ bên trong từng thẻ <code>&lt;section class="slide"&gt;</code>.</p>
+        </details>
+        <details>
+          <summary>Dùng không có Claude được không?</summary>
+          <p>Được. Chép <code>templates/deck-mau.html</code>, đổi dòng link sang style muốn dùng, thay nội dung từng slide, rồi chạy <code>scripts/inline-assets.py</code> để gộp thành một file. Hướng dẫn chi tiết trong <a href="https://github.com/andyluu98/slidefly#cách-dùng">README</a>.</p>
+        </details>
+        <details>
+          <summary>Có được dùng cho công việc thương mại không?</summary>
+          <p>Được. SlideFly theo giấy phép MIT: dùng, sửa, chia sẻ tự do, chỉ cần giữ thông báo bản quyền. Các thành phần bên thứ ba được liệt kê trong <a href="https://github.com/andyluu98/slidefly/blob/main/THIRD_PARTY.md">THIRD_PARTY.md</a>.</p>
+        </details>
+      </div>
+    </div>
+  </section>
 </main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <a class="brand" href="#">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="9" width="22" height="16" rx="4" fill="#7A93FF"/><circle cx="24" cy="9" r="6" fill="#FFB020"/></svg>
+        SlideFly
+      </a>
+      <p>Skill cho Claude Code tạo slide HTML có hiệu ứng Morph. Phát hành theo giấy phép MIT, © 2026 andyluu98.</p>
+    </div>
+    <div class="cols">
+      <div>
+        <h4>Dự án</h4>
+        <ul>
+          <li><a href="https://github.com/andyluu98/slidefly">Mã nguồn</a></li>
+          <li><a href="gallery/00-gallery.html">Thư viện style</a></li>
+          <li><a href="https://github.com/andyluu98/slidefly/issues">Báo lỗi, góp ý</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Ghi nguồn</h4>
+        <ul>
+          <li><a href="https://github.com/zarazhangrui/frontend-slides">frontend-slides</a> (MIT)</li>
+          <li><a href="https://lucide.dev">Lucide</a> icon (ISC)</li>
+          <li><a href="https://fonts.google.com">Google Fonts</a> (OFL)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="site/landing.js"></script>
 </body>
 </html>

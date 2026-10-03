@@ -3,3 +3,4 @@ __pycache__/
 _check-*/
 .DS_Store
 Thumbs.db
+_backup/
