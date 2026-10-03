@@ -1,0 +1,189 @@
+/* ===========================================================
+   STYLE: SIGNAL (adapted from frontend-slides bold template
+   "signal", MIT). Deep editorial navy and warm bone paper, one
+   antique-gold accent, hairline rules, near-invisible 80px grid
+   on dark surfaces. Institutional, sober, literary.
+   Surfaces alternate by layout: a bone "paper" sheet slides,
+   widens and folds over the navy stage; a gold seal (ring) hangs
+   on a plumb line; hairline rules frame the title row.
+   Actors: paper (bone sheet), grid (80px texture), rule-top,
+           rule-foot (hairlines), spine (divider / plumb line),
+           ring (gold seal), gold (gold rule), mark (quote glyph).
+           DOM order = z-order (paper first).
+   Fonts: DM Sans -> Be Vietnam Pro (no Vietnamese in DM Sans).
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300..700;1,8..60,300..700&family=Be+Vietnam+Pro:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+.deck-stage {
+  --actors: "paper grid rule-top rule-foot spine ring gold mark";
+  --font-display: 'Source Serif 4', Georgia, serif;
+  --font-body: 'Be Vietnam Pro', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --navy: #1C2644; --cream: #F0ECE3; --gold: #C8A870;
+  --bg: var(--navy); --fg: #E2DCD0; --muted: #8E9AAC; --accent: var(--gold);
+  --rule: #34446A;
+  --card-bg: transparent; --card-fg: var(--fg); --card-radius: 0px;
+  --title-weight: 600; --title-tracking: -0.01em; --bullet-radius: 0;
+}
+/* bone surfaces: ink text, deeper gold so small figures stay legible */
+.deck-stage:is([data-layout="agenda"], [data-layout="content"], [data-layout="two-col"], [data-layout="timeline"], [data-layout="closing"]) {
+  --fg: #1A2030; --muted: #5A6270; --accent: #93733A; --rule: #CAC4B4;
+}
+.deck-stage[data-layout="content"][data-parity="even"] { --fg: #E2DCD0; --muted: #8E9AAC; --accent: var(--gold); --rule: #34446A; }
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="paper"] { background: var(--cream); --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-actor="grid"] {
+  --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; --o: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+[data-actor="rule-top"]  { background: var(--rule); --x: 120px; --y: 210px; --w: 0px; --h: 2px; }
+[data-actor="rule-foot"] { background: var(--rule); --x: 120px; --y: 1010px; --w: 0px; --h: 2px; }
+[data-actor="spine"]     { background: var(--rule); --x: 960px; --y: 630px; --w: 2px; --h: 0px; }
+[data-actor="ring"]      { border: 2px solid var(--gold); border-radius: 50%; --x: 1920px; --y: 540px; --w: 0px; --o: 0; }
+[data-actor="gold"]      { background: var(--gold); --x: 120px; --y: 209px; --w: 0px; --h: 3px; }
+[data-actor="mark"]      { color: var(--gold); --x: -400px; --y: 120px; --w: 280px; --h: 280px; --o: 0; --s: 0.4; }
+[data-actor="mark"]::before {
+  content: "\201C"; position: absolute; left: 0; top: 0; width: 100%;
+  font: 300 420px/0.9 'Source Serif 4', serif; text-align: center;
+}
+
+/* ---------- 1. cover: navy + grid, bone column on the right, seal on a plumb line ---------- */
+[data-layout="cover"] [data-actor="paper"]     { --x: 1400px; --w: 520px; }
+[data-layout="cover"] [data-actor="grid"]      { --o: 1; --w: 1400px; }
+[data-layout="cover"] [data-actor="rule-top"]  { --x: 160px; --y: 120px; --w: 1080px; }
+[data-layout="cover"] [data-actor="rule-foot"] { --x: 160px; --y: 960px; --w: 1080px; }
+[data-layout="cover"] [data-actor="spine"]     { --x: 1659px; --y: 0px; --h: 340px; }
+[data-layout="cover"] [data-actor="ring"]      { --x: 1460px; --y: 340px; --w: 400px; --o: 1; }
+[data-layout="cover"] [data-actor="gold"]      { --x: 1397px; --y: 0px; --w: 3px; --h: 1080px; }
+
+/* ---------- 2. agenda: bone sheet covers the stage, divider between columns ---------- */
+[data-layout="agenda"] [data-actor="paper"]     { --x: 0px; --w: 1920px; }
+[data-layout="agenda"] [data-actor="rule-top"]  { --w: 1680px; }
+[data-layout="agenda"] [data-actor="rule-foot"] { --w: 1680px; }
+[data-layout="agenda"] [data-actor="spine"]     { --x: 959px; --y: 290px; --h: 680px; }
+[data-layout="agenda"] [data-actor="ring"]      { --x: 1730px; --y: 100px; --w: 70px; --o: 1; }
+[data-layout="agenda"] [data-actor="gold"]      { --w: 160px; }
+
+/* ---------- 3. section: navy chapter, bone slab right, seal with crosshair ---------- */
+[data-layout="section"] [data-actor="paper"]     { --x: 1180px; --w: 740px; }
+[data-layout="section"] [data-actor="grid"]      { --o: 1; --w: 1180px; }
+[data-layout="section"] [data-actor="rule-top"]  { --x: 160px; --y: 120px; --w: 860px; }
+[data-layout="section"] [data-actor="rule-foot"] { --x: 160px; --y: 960px; --w: 860px; }
+[data-layout="section"] [data-actor="spine"]     { --x: 1180px; --y: 539px; --w: 740px; --h: 2px; }
+[data-layout="section"] [data-actor="ring"]      { --x: 1330px; --y: 320px; --w: 440px; --o: 1; }
+[data-layout="section"] [data-actor="gold"]      { --x: 1177px; --y: 0px; --w: 3px; --h: 1080px; }
+
+/* ---------- 4. content (odd): bone page left, navy panel holds the highlight ---------- */
+[data-layout="content"] [data-actor="paper"]     { --x: 0px; --w: 1220px; }
+[data-layout="content"] [data-actor="grid"]      { --o: 1; --x: 1220px; --w: 700px; }
+[data-layout="content"] [data-actor="rule-top"]  { --w: 1040px; }
+[data-layout="content"] [data-actor="rule-foot"] { --w: 1040px; }
+[data-layout="content"] [data-actor="spine"]     { --x: 1300px; --y: 210px; --w: 540px; --h: 2px; background: #34446A; }
+[data-layout="content"] [data-actor="ring"]      { --x: 1770px; --y: 100px; --w: 70px; --o: 1; }
+[data-layout="content"] [data-actor="gold"]      { --w: 160px; }
+/* even: page folds into a bone card on the right, navy takes the bullets */
+[data-layout="content"][data-parity="even"] [data-actor="paper"]     { --x: 1260px; --y: 270px; --w: 540px; --h: 720px; }
+[data-layout="content"][data-parity="even"] [data-actor="grid"]      { --x: 0px; --w: 1920px; }
+[data-layout="content"][data-parity="even"] [data-actor="rule-top"]  { --w: 1680px; }
+[data-layout="content"][data-parity="even"] [data-actor="rule-foot"] { --w: 1680px; }
+[data-layout="content"][data-parity="even"] [data-actor="spine"]     { --x: 1199px; --y: 270px; --w: 2px; --h: 720px; }
+[data-layout="content"][data-parity="even"] [data-actor="ring"]      { --x: 1740px; --y: -150px; --w: 300px; }
+[data-layout="content"][data-parity="even"] [data-actor="gold"]      { --x: 1260px; --y: 270px; --w: 540px; --h: 4px; }
+
+/* ---------- 5. two-col: bone sheet, hairline compare divider, seal node on top ---------- */
+[data-layout="two-col"] [data-actor="paper"]     { --x: 0px; --w: 1920px; }
+[data-layout="two-col"] [data-actor="rule-top"]  { --w: 1680px; }
+[data-layout="two-col"] [data-actor="rule-foot"] { --w: 1680px; }
+[data-layout="two-col"] [data-actor="spine"]     { --x: 959px; --y: 290px; --h: 700px; }
+[data-layout="two-col"] [data-actor="ring"]      { --x: 950px; --y: 270px; --w: 20px; --o: 1; }
+[data-layout="two-col"] [data-actor="gold"]      { --w: 160px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="spine"]     { --h: 550px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="rule-foot"] { --y: 860px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="gold"]      { --y: 880px; --w: 4px; --h: 110px; }
+
+/* ---------- 6. stats: navy + grid, bone sheet shrinks to a left edge, small seal ---------- */
+[data-layout="stats"] [data-actor="paper"]     { --x: 0px; --w: 40px; }
+[data-layout="stats"] [data-actor="grid"]      { --o: 1; }
+[data-layout="stats"] [data-actor="rule-top"]  { --w: 1680px; }
+[data-layout="stats"] [data-actor="rule-foot"] { --w: 1680px; }
+[data-layout="stats"] [data-actor="spine"]     { --x: 1764px; --y: 0px; --h: 100px; }
+[data-layout="stats"] [data-actor="ring"]      { --x: 1730px; --y: 100px; --w: 70px; --o: 1; }
+[data-layout="stats"] [data-actor="gold"]      { --x: 40px; --y: 0px; --w: 3px; --h: 1080px; }
+
+/* ---------- 7. timeline: bone sheet, gold rule becomes the axis, seal at the end ---------- */
+[data-layout="timeline"] [data-actor="paper"]     { --x: 0px; --w: 1920px; }
+[data-layout="timeline"] [data-actor="rule-top"]  { --w: 1680px; }
+[data-layout="timeline"] [data-actor="rule-foot"] { --w: 1680px; }
+[data-layout="timeline"] [data-actor="spine"]     { --x: 1799px; --y: 596px; --h: 68px; }
+[data-layout="timeline"] [data-actor="ring"]      { --x: 1782px; --y: 612px; --w: 36px; --o: 1; }
+[data-layout="timeline"] [data-actor="gold"]      { --y: 629px; --w: 1680px; --h: 2px; }
+
+/* ---------- 8. quote: sheet slides away, navy + grid, gold quote mark ---------- */
+[data-layout="quote"] [data-actor="paper"]     { --x: 1920px; --w: 0px; }
+[data-layout="quote"] [data-actor="grid"]      { --o: 1; }
+[data-layout="quote"] [data-actor="rule-top"]  { --x: 280px; --y: 150px; --w: 1360px; }
+[data-layout="quote"] [data-actor="rule-foot"] { --x: 280px; --y: 930px; --w: 1360px; }
+[data-layout="quote"] [data-actor="spine"]     { --x: 1640px; --y: 150px; --h: 0px; }
+[data-layout="quote"] [data-actor="ring"]      { --x: 180px; --y: 180px; --w: 0px; }
+[data-layout="quote"] [data-actor="gold"]      { --x: 236px; --y: 400px; --w: 3px; --h: 280px; }
+[data-layout="quote"] [data-actor="mark"]      { --x: 130px; --y: 170px; --o: 1; --s: 1; }
+
+/* ---------- 9. closing: bone sheet, great seal around the thanks, horizon rules ---------- */
+[data-layout="closing"] [data-actor="paper"]     { --x: 0px; --w: 1920px; }
+[data-layout="closing"] [data-actor="rule-top"]  { --x: 120px; --y: 539px; --w: 300px; }
+[data-layout="closing"] [data-actor="rule-foot"] { --x: 1500px; --y: 539px; --w: 300px; }
+[data-layout="closing"] [data-actor="spine"]     { --x: 959px; --y: 0px; --h: 40px; }
+[data-layout="closing"] [data-actor="ring"]      { --x: 460px; --y: 40px; --w: 1000px; --o: 1; }
+[data-layout="closing"] [data-actor="gold"]      { --x: 959px; --y: 1040px; --w: 3px; --h: 40px; }
+
+/* ---------- content tweaks: serif voice, sans substance, mono metadata ---------- */
+.slide .kicker, .slide .cite, .slide .meta { font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; }
+.slide .kicker { font-size: 22px; }
+.slide .meta, .slide .cite { font-size: 22px; letter-spacing: 0.14em; }
+.slide .subtitle { font-size: 32px; line-height: 1.5; }
+.slide b, .slide strong { font-family: var(--font-display); font-style: italic; font-weight: 600; color: var(--accent); }
+/* short gold rule separates kicker from headline */
+.slide:is([data-layout="cover"], [data-layout="closing"]) .kicker::after { content: ""; display: block; width: 72px; height: 2px; margin-top: 22px; background: var(--gold); }
+.slide[data-layout="closing"] .kicker::after { margin: 22px auto 0; }
+.slide[data-layout="cover"] { align-items: flex-start; text-align: left; padding: 0 680px 0 160px; }
+.slide[data-layout="cover"] .title { font-size: 92px; font-weight: 700; line-height: 1.06; letter-spacing: -0.02em; }
+.slide[data-layout="closing"] .title { font-size: 128px; line-height: 1.05; }
+.slide[data-layout="section"] { padding: 0 900px 0 160px; }
+.slide[data-layout="section"] .num { font-size: 200px; font-weight: 400; font-style: italic; }
+.slide[data-layout="section"] .num::after { content: ""; display: block; width: 72px; height: 3px; margin-top: 36px; background: var(--gold); }
+.slide[data-layout="section"] .title { font-size: 80px; line-height: 1.1; }
+/* em-dash style bullets: short gold mono rule */
+.bullets li::before, .col li::before { top: 0.66em; width: 0.7em; height: 2px; }
+.bullets li { padding-left: 1.5em; }
+.agenda-list { --agenda-gap: 200px; --tile-line: 1px solid var(--rule); }
+.agenda-list li { align-items: flex-start; padding-top: 28px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list .num { font-style: italic; font-weight: 400; }
+.agenda-list h3 { font-weight: 600; }
+/* content: odd = highlight on navy panel, even = highlight on bone card */
+.slide[data-layout="content"] { --title-w: 1040px; --hl-left: 1300px; --hl-right: 80px; }
+.slide[data-layout="content"] .highlight { color: #E2DCD0; --accent: var(--gold); }
+.slide[data-layout="content"][data-parity="even"] { --hl-left: 1290px; --hl-right: 150px; }
+.slide[data-layout="content"][data-parity="even"] .highlight { color: #1A2030; --accent: #93733A; }
+.hl-big { font-weight: 600; letter-spacing: -0.02em; }
+.hl-text { font-weight: 600; }
+.col { padding: 36px 56px 36px 0; }
+.col + .col { padding: 36px 0 36px 56px; }
+.col h3 { font-weight: 600; }
+.takeaway { border-left: 0; padding-left: 44px; font-weight: 600; }
+.stat { text-align: left; border-top: 2px solid var(--rule); padding-top: 40px; }
+.stat-num { font-weight: 600; letter-spacing: -0.02em; }
+.slide[data-layout="stats"] .stat-label { color: #B4BCC8; }
+.timeline::before { opacity: 0; }
+.step::before { width: 18px; height: 18px; left: 0; }
+.step:nth-child(odd)::before { bottom: -9px; }
+.step:nth-child(even)::before { top: -9px; }
+.step .when { font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.02em; }
+.step h3 { font-weight: 600; }
+.slide[data-layout="quote"] { padding: 0 280px; }
+.slide[data-layout="quote"] .quote { font-size: 66px; font-weight: 400; line-height: 1.28; }

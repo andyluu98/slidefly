@@ -1,0 +1,159 @@
+/* ===========================================================
+   STYLE: GROVE (adapted from frontend-slides bold-template-pack, MIT)
+   Literary monograph: deep forest green, warm cream type, parchment
+   pages, one terracotta coral accent. Playfair Display 400 (never
+   bold), light sans body, JetBrains Mono chrome. Flat, 1px hairlines,
+   no radius, no shadow. Tree rings replace the faint watermark.
+   Actors: page (parchment surface), alt (forest-alt panel),
+           rings (tree-ring hairlines, faint), frame (top + foot
+           hairlines), vline (vertical hairline), rule (coral rule),
+           mark (coral quote glyph). DOM order = z-order (page first).
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Be+Vietnam+Pro:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap');
+
+.deck-stage {
+  --actors: "page alt rings frame vline rule mark";
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Be Vietnam Pro', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --bg: #192b1b; --fg: #d4cfbf; --muted: rgba(212, 207, 191, 0.68);
+  --accent: #c8524a; --accent-2: #e8e4d6;
+  --card-bg: transparent; --card-fg: #d4cfbf; --card-radius: 0px;
+  --title-weight: 400; --title-tracking: -0.01em; --bullet-radius: 0;
+  --forest: #192b1b; --forest-alt: #203624; --parchment: #e8e4d6; --cream: #d4cfbf; --coral: #c8524a;
+  --line: rgba(212, 207, 191, 0.24); --ring: #d4cfbf;
+}
+/* parchment floods the page: green ink on paper */
+.deck-stage:is([data-layout="stats"], [data-layout="quote"]) {
+  --fg: #192b1b; --muted: rgba(25, 43, 27, 0.68); --line: rgba(25, 43, 27, 0.26); --ring: #192b1b;
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="page"]  { background: var(--parchment); --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-actor="alt"]   { background: var(--forest-alt); --x: 0px; --y: 1080px; --w: 1920px; --h: 0px; }
+[data-actor="rings"] {
+  background-color: var(--ring); --x: 1920px; --y: 0px; --w: 400px; --o: 0;
+  -webkit-mask: var(--rings-svg) center / contain no-repeat; mask: var(--rings-svg) center / contain no-repeat;
+  --rings-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='%23000' stroke-width='0.28'%3E%3Ccircle cx='50' cy='50' r='49'/%3E%3Ccircle cx='50.6' cy='50.5' r='43'/%3E%3Ccircle cx='51.2' cy='50.8' r='37.5'/%3E%3Ccircle cx='51.6' cy='51.3' r='31.5'/%3E%3Ccircle cx='52.1' cy='51.5' r='25.5'/%3E%3Ccircle cx='52.4' cy='51.9' r='20'/%3E%3Ccircle cx='52.7' cy='52.1' r='14.5'/%3E%3Ccircle cx='52.9' cy='52.3' r='9.5'/%3E%3Ccircle cx='53' cy='52.4' r='4.5'/%3E%3C/svg%3E");
+}
+[data-actor="frame"] { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); --x: 120px; --y: 220px; --w: 0px; --h: 800px; }
+[data-actor="vline"] { background: var(--line); --x: 960px; --y: 630px; --w: 1px; --h: 0px; }
+[data-actor="rule"]  { background: var(--coral); --x: 120px; --y: 196px; --w: 0px; --h: 2px; }
+[data-actor="mark"]  { color: var(--coral); --x: 1920px; --y: -320px; --w: 300px; --h: 300px; --o: 0; --s: 0.4; }
+[data-actor="mark"]::before {
+  content: "\201C"; position: absolute; left: 0; top: 0; width: 100%;
+  font: 400 460px/1 'Playfair Display', Georgia, serif; text-align: center;
+}
+
+/* ---------- 1. cover: forest-alt column right, rings grow inside ---------- */
+[data-layout="cover"] [data-actor="alt"]   { --x: 1260px; --y: 0px; --w: 660px; --h: 1080px; }
+[data-layout="cover"] [data-actor="rings"] { --x: 1290px; --y: 240px; --w: 600px; --o: 0.45; }
+[data-layout="cover"] [data-actor="vline"] { --x: 1260px; --y: 0px; --h: 1080px; }
+[data-layout="cover"] [data-actor="frame"] { --x: 120px; --y: 90px; --w: 1040px; --h: 900px; }
+[data-layout="cover"] [data-actor="rule"]  { --x: 120px; --y: 344px; --w: 36px; }
+
+/* ---------- 2. agenda: header band, column hairline ---------- */
+[data-layout="agenda"] [data-actor="alt"]   { --x: 0px; --y: 0px; --w: 1920px; --h: 220px; }
+[data-layout="agenda"] [data-actor="frame"] { --x: 120px; --y: 220px; --w: 1680px; --h: 800px; }
+[data-layout="agenda"] [data-actor="vline"] { --x: 960px; --y: 290px; --h: 680px; }
+[data-layout="agenda"] [data-actor="rings"] { --x: 1560px; --y: -170px; --w: 420px; --o: 0.3; }
+[data-layout="agenda"] [data-actor="rule"]  { --x: 120px; --y: 186px; --w: 36px; }
+
+/* ---------- 3. section: forest-alt slab right, big rings ---------- */
+[data-layout="section"] [data-actor="alt"]   { --x: 1100px; --y: 0px; --w: 820px; --h: 1080px; }
+[data-layout="section"] [data-actor="rings"] { --x: 1160px; --y: 190px; --w: 700px; --o: 0.4; }
+[data-layout="section"] [data-actor="vline"] { --x: 1100px; --y: 0px; --h: 1080px; }
+[data-layout="section"] [data-actor="frame"] { --x: 160px; --y: 90px; --w: 780px; --h: 900px; }
+[data-layout="section"] [data-actor="rule"]  { --x: 160px; --y: 300px; --w: 36px; }
+
+/* ---------- 4. content: highlight on a forest-alt plate ---------- */
+[data-layout="content"] [data-actor="alt"]   { --x: 1250px; --y: 270px; --w: 550px; --h: 720px; }
+[data-layout="content"] [data-actor="vline"] { --x: 1200px; --y: 270px; --h: 720px; }
+[data-layout="content"] [data-actor="frame"] { --x: 120px; --y: 220px; --w: 1680px; --h: 800px; }
+[data-layout="content"] [data-actor="rule"]  { --x: 120px; --y: 186px; --w: 36px; }
+[data-layout="content"] [data-actor="rings"] { --x: 1640px; --y: 850px; --w: 300px; --o: 0.3; }
+/* even: a parchment page slides in, the plate rises into a header band */
+[data-layout="content"][data-parity="even"] [data-actor="page"]  { --x: 1250px; --w: 670px; }
+[data-layout="content"][data-parity="even"] [data-actor="alt"]   { --x: 0px; --y: 0px; --w: 1250px; --h: 220px; }
+[data-layout="content"][data-parity="even"] [data-actor="vline"] { --x: 1250px; --y: 0px; --h: 1080px; }
+[data-layout="content"][data-parity="even"] [data-actor="frame"] { --w: 1060px; }
+[data-layout="content"][data-parity="even"] [data-actor="rule"]  { --x: 1300px; --y: 160px; --w: 120px; }
+[data-layout="content"][data-parity="even"] [data-actor="rings"] { --x: 1520px; --y: 760px; --w: 440px; --o: 0.16; background-color: var(--forest); }
+
+/* ---------- 5. two-col: forest plate + parchment page, coral spine on takeaway ---------- */
+[data-layout="two-col"] [data-actor="alt"]   { --x: 120px; --y: 270px; --w: 808px; --h: 720px; }
+[data-layout="two-col"] [data-actor="page"]  { --x: 992px; --y: 270px; --w: 808px; --h: 720px; }
+[data-layout="two-col"] [data-actor="vline"] { --x: 960px; --y: 270px; --h: 720px; }
+[data-layout="two-col"] [data-actor="frame"] { --x: 120px; --y: 220px; --w: 1680px; --h: 800px; }
+[data-layout="two-col"] [data-actor="rule"]  { --x: 120px; --y: 186px; --w: 36px; }
+[data-layout="two-col"] [data-actor="rings"] { --x: 1640px; --y: -170px; --w: 400px; --o: 0.3; }
+.deck-stage:has(.slide.active .takeaway)[data-layout="two-col"] :is([data-actor="alt"], [data-actor="page"]) { --h: 570px; }
+.deck-stage:has(.slide.active .takeaway)[data-layout="two-col"] [data-actor="vline"] { --h: 570px; }
+.deck-stage:has(.slide.active .takeaway)[data-layout="two-col"] [data-actor="rule"] { --x: 120px; --y: 880px; --w: 2px; --h: 110px; }
+
+/* ---------- 6. stats: parchment floods, forest foot bar ---------- */
+[data-layout="stats"] [data-actor="page"]  { --x: 0px; --w: 1920px; }
+[data-layout="stats"] [data-actor="alt"]   { --x: 0px; --y: 1030px; --w: 1920px; --h: 50px; background: var(--forest); }
+[data-layout="stats"] [data-actor="frame"] { --x: 120px; --y: 220px; --w: 1680px; --h: 780px; }
+[data-layout="stats"] [data-actor="rule"]  { --x: 120px; --y: 186px; --w: 36px; }
+[data-layout="stats"] [data-actor="rings"] { --x: 1580px; --y: -180px; --w: 440px; --o: 0.14; }
+[data-layout="stats"] [data-actor="vline"] { --x: 1800px; --y: 220px; --h: 0px; }
+
+/* ---------- 7. timeline: coral rule becomes the axis, lower half steps down ---------- */
+[data-layout="timeline"] [data-actor="page"]  { --x: 0px; --w: 0px; }
+[data-layout="timeline"] [data-actor="alt"]   { --x: 0px; --y: 630px; --w: 1920px; --h: 450px; }
+[data-layout="timeline"] [data-actor="rule"]  { --x: 120px; --y: 629px; --w: 1680px; }
+[data-layout="timeline"] [data-actor="vline"] { --x: 1800px; --y: 590px; --h: 80px; background: var(--coral); }
+[data-layout="timeline"] [data-actor="frame"] { --x: 120px; --y: 220px; --w: 1680px; --h: 800px; }
+[data-layout="timeline"] [data-actor="rings"] { --x: 1560px; --y: -170px; --w: 420px; --o: 0.3; }
+
+/* ---------- 8. quote: the parchment page, coral quote mark ---------- */
+[data-layout="quote"] [data-actor="page"]  { --x: 0px; --w: 1920px; }
+[data-layout="quote"] [data-actor="mark"]  { --x: -20px; --y: 330px; --o: 1; --s: 1; }
+[data-layout="quote"] [data-actor="frame"] { --x: 280px; --y: 200px; --w: 1360px; --h: 680px; }
+[data-layout="quote"] [data-actor="rule"]  { --x: 280px; --y: 180px; --w: 36px; }
+[data-layout="quote"] [data-actor="rings"] { --x: 1560px; --y: 720px; --w: 520px; --o: 0.14; }
+[data-layout="quote"] [data-actor="vline"] { --x: 1640px; --y: 200px; --h: 0px; }
+
+/* ---------- 9. closing: forest again, rings centred like a watermark ---------- */
+[data-layout="closing"] [data-actor="page"]  { --x: 0px; --y: 1080px; --w: 1920px; --h: 0px; }
+[data-layout="closing"] [data-actor="rings"] { --x: 560px; --y: 140px; --w: 800px; --o: 0.14; }
+[data-layout="closing"] [data-actor="frame"] { --x: 300px; --y: 140px; --w: 1320px; --h: 800px; }
+[data-layout="closing"] [data-actor="alt"]   { --x: 0px; --y: 940px; --w: 1920px; --h: 140px; }
+[data-layout="closing"] [data-actor="rule"]  { --x: 942px; --y: 730px; --w: 36px; }
+[data-layout="closing"] [data-actor="vline"] { --x: 960px; --y: 940px; --h: 0px; }
+
+/* ---------- content tweaks: quiet editorial, serif never bold ---------- */
+.slide h3 { font-weight: 400; }
+.slide .title em, .slide .quote em { font-style: italic; color: var(--accent); }
+.slide .kicker { font-family: var(--font-mono); font-weight: 400; font-size: 22px; letter-spacing: 0.18em; }
+.slide .subtitle { font-weight: 300; }
+.slide .meta, .slide .cite { font-family: var(--font-mono); font-weight: 400; font-size: 20px; letter-spacing: 0.14em; text-transform: uppercase; }
+.slide { font-weight: 300; }
+.slide b, .slide strong { font-weight: 500; }
+.slide[data-layout="cover"] { align-items: flex-start; justify-content: flex-start; text-align: left; padding: 280px 820px 0 120px; }
+.slide[data-layout="cover"] .kicker { margin-bottom: 40px; }
+.slide[data-layout="cover"] .title { font-size: 100px; line-height: 1.06; }
+.slide[data-layout="closing"] .title { font-size: 140px; }
+.slide[data-layout="section"] .num { font-size: 240px; font-style: italic; font-weight: 400; }
+.agenda-list { --agenda-gap: 200px; --tile-line: 1px solid var(--line); }
+.agenda-list li { align-items: flex-start; padding-top: 32px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list .num { font-style: italic; }
+.bullets li { padding-left: 1.7em; }
+.bullets li::before, .col li::before { width: 0.9em; height: 2px; top: 0.72em; }
+.col li::before { width: 0.7em; top: 0.68em; }
+.slide[data-layout="content"] { --hl-left: 1250px; }
+.slide[data-layout="content"] .hl-text { font-weight: 400; font-style: italic; font-size: 38px; }
+.slide[data-layout="content"][data-parity="even"] { --hl-right: 0px; }
+.slide[data-layout="content"][data-parity="even"] .highlight { color: var(--forest); padding: 0 60px; }
+.col { padding: 48px 56px; }
+.col + .col { color: var(--forest); }
+.takeaway { border-left: 0; padding-left: 40px; font-weight: 400; font-style: italic; }
+.stat { border-bottom: 1px solid var(--line); padding-bottom: 36px; }
+.stat-num { font-weight: 400; }
+.timeline::before { opacity: 0; }
+.step::before { background: var(--bg); border: 2px solid var(--accent); }
+.slide[data-layout="quote"] { padding: 0 300px 0 280px; }
+.slide[data-layout="quote"] .quote { font-style: italic; font-weight: 400; font-size: 62px; }

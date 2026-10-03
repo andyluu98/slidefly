@@ -1,0 +1,168 @@
+/* ===========================================================
+   STYLE: VELLUM (adapted from frontend-slides bold template, MIT)
+   Essay pinned to a gallery wall: one deep periwinkle field,
+   warm chartreuse italic serif, a dusty teal annotation voice.
+   Actors: deep (navy-deep panel), mid (navy-mid panel),
+           frame (1px hairline frame), dash (dashed image slot),
+           rule (teal accent rule), mark (teal quote glyph),
+           pin (typed tag pinned bottom-left).
+   Fonts: Courier Prime -> IBM Plex Mono, DM Sans -> Be Vietnam Pro
+          (no Vietnamese in the originals). DOM order = z-order.
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,500;1,600&family=Be+Vietnam+Pro:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+.deck-stage {
+  --actors: "deep mid frame dash rule mark pin";
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Be Vietnam Pro', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+  --bg: #2A3870; --fg: #E8D85C; --muted: #B9AF5E;
+  --accent: #E8D85C; --accent-2: #F5E168;
+  --card-bg: transparent; --card-fg: #E8D85C; --card-radius: 0px;
+  --title-weight: 500; --title-tracking: -0.005em; --title-style: italic; --bullet-radius: 0;
+  --deep: #1F2858; --mid: #34407A; --alt: #343F80;
+  --teal: #3F8580; --teal-text: #7DBAB4; --hair: rgba(232, 216, 92, 0.22);
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="deep"]  { background: var(--deep); --x: 0px; --y: 1080px; --w: 1920px; --h: 0px; }
+[data-actor="mid"]   { background: var(--mid); border-left: 1px solid var(--hair); --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-actor="frame"] { border: 1px solid var(--hair); --x: 960px; --y: 540px; --w: 0px; --h: 0px; --o: 0; }
+[data-actor="dash"]  { border: 1px dashed rgba(232, 216, 92, 0.42); background: rgba(31, 40, 88, 0.35); --x: 960px; --y: 540px; --w: 0px; --h: 0px; --o: 0; }
+[data-actor="rule"]  { background: var(--teal); --x: 120px; --y: 66px; --w: 0px; --h: 2px; }
+[data-actor="mark"]  { color: var(--teal); --x: 1920px; --y: -320px; --w: 300px; --h: 260px; --o: 0; --s: 0.4; }
+[data-actor="mark"]::before {
+  content: "\201C"; position: absolute; left: 0; top: 0; width: 100%;
+  font: italic 400 460px/0.9 'Cormorant Garamond', Georgia, serif; text-align: center;
+}
+/* the pin-note: a typed tag, teal tack + three typed lines */
+[data-actor="pin"] {
+  --x: 120px; --y: 1004px; --w: 236px; --h: 52px; --r: 0deg;
+  background:
+    linear-gradient(var(--teal-text), var(--teal-text)) 46px 15px / 150px 2px,
+    linear-gradient(var(--teal-text), var(--teal-text)) 46px 25px / 112px 2px,
+    linear-gradient(var(--teal), var(--teal)) 46px 35px / 70px 2px,
+    var(--alt);
+  background-repeat: no-repeat;
+  border: 1px solid var(--hair);
+}
+[data-actor="pin"]::before {
+  content: ""; position: absolute; left: 16px; top: 18px; width: 14px; height: 14px;
+  border-radius: 50%; background: var(--teal-text);
+}
+
+/* ---------- 1. cover: gallery frame, tag pinned on its corner ---------- */
+[data-layout="cover"] [data-actor="frame"] { --x: 140px; --y: 110px; --w: 1640px; --h: 860px; --o: 1; }
+[data-layout="cover"] [data-actor="dash"]  { --x: 180px; --y: 150px; --w: 1560px; --h: 780px; --o: 0; }
+[data-layout="cover"] [data-actor="rule"]  { --x: 932px; --y: 236px; --w: 56px; }
+[data-layout="cover"] [data-actor="pin"]   { --x: 100px; --y: 930px; --r: -3deg; }
+[data-layout="cover"] [data-actor="mark"]  { --x: 1620px; --y: -300px; }
+
+/* ---------- 2. agenda: deep header band, hairline gutter ---------- */
+[data-layout="agenda"] [data-actor="deep"]  { --x: 0px; --y: 0px; --w: 1920px; --h: 236px; }
+[data-layout="agenda"] [data-actor="frame"] { --x: 959px; --y: 300px; --w: 2px; --h: 660px; --o: 1; }
+[data-layout="agenda"] [data-actor="rule"]  { --x: 120px; --y: 235px; --w: 260px; }
+[data-layout="agenda"] [data-actor="pin"]   { --x: 120px; --y: 1006px; }
+
+/* ---------- 3. section: deep floods the wall, frame closes in ---------- */
+[data-layout="section"] [data-actor="deep"]  { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="section"] [data-actor="frame"] { --x: 260px; --y: 150px; --w: 1400px; --h: 780px; --o: 1; }
+[data-layout="section"] [data-actor="rule"]  { --x: 900px; --y: 870px; --w: 120px; }
+[data-layout="section"] [data-actor="pin"]   { --x: 220px; --y: 900px; --r: 2deg; }
+
+/* ---------- 4. content: mid strip holds a dashed slot for the highlight ---------- */
+[data-layout="content"] [data-actor="mid"]   { --x: 1200px; --y: 0px; --w: 720px; --h: 1080px; }
+[data-layout="content"] [data-actor="dash"]  { --x: 1270px; --y: 290px; --w: 520px; --h: 680px; --o: 1; }
+[data-layout="content"] [data-actor="frame"] { --x: 120px; --y: 236px; --w: 1000px; --h: 2px; --o: 1; }
+[data-layout="content"] [data-actor="rule"]  { --x: 120px; --y: 66px; --w: 56px; }
+[data-layout="content"] [data-actor="pin"]   { --x: 120px; --y: 1006px; }
+/* even: deep column swings to the left, slot follows, bullets move right */
+[data-layout="content"][data-parity="even"] [data-actor="mid"]   { --x: 1920px; --w: 0px; }
+[data-layout="content"][data-parity="even"] [data-actor="deep"]  { --x: 0px; --y: 256px; --w: 700px; --h: 824px; }
+[data-layout="content"][data-parity="even"] [data-actor="dash"]  { --x: 130px; --y: 290px; --w: 520px; --h: 680px; }
+[data-layout="content"][data-parity="even"] [data-actor="frame"] { --x: 760px; --y: 236px; --w: 1040px; --h: 2px; }
+[data-layout="content"][data-parity="even"] [data-actor="rule"]  { --x: 1744px; --y: 66px; --w: 56px; }
+[data-layout="content"][data-parity="even"] [data-actor="pin"]   { --x: 760px; --y: 1006px; }
+
+/* ---------- 5. two-col: the compare pair, deep left / mid right ---------- */
+[data-layout="two-col"] [data-actor="deep"]  { --x: 0px; --y: 250px; --w: 960px; --h: 830px; }
+[data-layout="two-col"] [data-actor="mid"]   { --x: 960px; --y: 250px; --w: 960px; --h: 830px; }
+[data-layout="two-col"] [data-actor="rule"]  { --x: 120px; --y: 66px; --w: 56px; }
+[data-layout="two-col"] [data-actor="frame"] { --x: 120px; --y: 236px; --w: 1680px; --h: 2px; --o: 1; }
+[data-layout="two-col"] [data-actor="pin"]   { --x: 1564px; --y: 1006px; }
+.deck-stage:has(.slide.active .takeaway) [data-layout="two-col"] [data-actor="deep"],
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="deep"] { --h: 610px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="mid"]  { --h: 610px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="frame"] { --x: 120px; --y: 880px; --w: 1680px; --h: 110px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="pin"]   { --x: 120px; --y: 1006px; }
+
+/* ---------- 6. stats: deep band, framed like a wall label ---------- */
+[data-layout="stats"] [data-actor="deep"]  { --x: 0px; --y: 290px; --w: 1920px; --h: 680px; }
+[data-layout="stats"] [data-actor="frame"] { --x: 120px; --y: 330px; --w: 1680px; --h: 600px; --o: 1; }
+[data-layout="stats"] [data-actor="rule"]  { --x: 900px; --y: 329px; --w: 120px; }
+[data-layout="stats"] [data-actor="pin"]   { --x: 120px; --y: 1006px; --r: -1deg; }
+
+/* ---------- 7. timeline: the rule becomes the teal axis, deep below ---------- */
+[data-layout="timeline"] [data-actor="deep"]  { --x: 0px; --y: 630px; --w: 1920px; --h: 450px; }
+[data-layout="timeline"] [data-actor="rule"]  { --x: 120px; --y: 628px; --w: 1680px; --h: 4px; }
+[data-layout="timeline"] [data-actor="frame"] { --x: 120px; --y: 236px; --w: 1680px; --h: 2px; --o: 1; }
+[data-layout="timeline"] [data-actor="pin"]   { --x: 1564px; --y: 1006px; }
+
+/* ---------- 8. quote: the teal quote glyph lands above the essay ---------- */
+[data-layout="quote"] [data-actor="mark"]  { --x: 810px; --y: 120px; --o: 1; --s: 1; }
+[data-layout="quote"] [data-actor="frame"] { --x: 200px; --y: 90px; --w: 1520px; --h: 900px; --o: 1; }
+[data-layout="quote"] [data-actor="rule"]  { --x: 900px; --y: 900px; --w: 120px; }
+[data-layout="quote"] [data-actor="pin"]   { --x: 160px; --y: 950px; --r: -2deg; }
+
+/* ---------- 9. closing: mid lifts the field, double mat frame ---------- */
+[data-layout="closing"] [data-actor="mid"]   { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="closing"] [data-actor="frame"] { --x: 140px; --y: 110px; --w: 1640px; --h: 860px; --o: 1; }
+[data-layout="closing"] [data-actor="dash"]  { --x: 190px; --y: 160px; --w: 1540px; --h: 760px; --o: 1; background: transparent; }
+[data-layout="closing"] [data-actor="rule"]  { --x: 900px; --y: 250px; --w: 120px; }
+[data-layout="closing"] [data-actor="mark"]  { --x: 1440px; --y: 620px; --o: 0.35; --s: 0.55; }
+[data-layout="closing"] [data-actor="pin"]   { --x: 110px; --y: 930px; --r: -3deg; }
+
+/* ---------- content tweaks: centred gallery wall, typed teal annotation ---------- */
+.slide .kicker { font-family: var(--font-mono); font-weight: 500; font-size: 24px; letter-spacing: 0.1em; text-transform: none; color: var(--teal-text); }
+.slide .meta, .slide .cite { font-family: var(--font-mono); font-size: 24px; color: var(--teal-text); }
+.slide .subtitle { font-weight: 300; }
+.slide b, .slide strong { font-weight: 600; color: #F5E168; }
+.slide .title em { font-style: normal; font-weight: 600; color: #F5E168; }
+.slide[data-layout="cover"] .title { font-size: 112px; line-height: 1; font-weight: 400; }
+.slide[data-layout="closing"] .title { font-size: 180px; font-weight: 400; line-height: 1; }
+.slide[data-layout="section"] { align-items: center; text-align: center; padding: 0 340px; }
+.slide[data-layout="section"] .num { font-size: 200px; font-style: italic; font-weight: 400; color: var(--teal-text); }
+.slide[data-layout="section"] .title { font-size: 92px; font-weight: 400; }
+.agenda-list { --agenda-gap: 240px; --tile-line: 1px solid var(--hair); }
+.agenda-list li { align-items: flex-start; padding-top: 30px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list .num { font-style: italic; font-weight: 400; color: var(--teal-text); }
+.agenda-list h3 { font-style: italic; font-weight: 500; }
+/* numbered lists: typed teal counters instead of dots */
+.bullets, .col ul { counter-reset: v; }
+.bullets li, .col li { counter-increment: v; padding-left: 2.1em; font-weight: 300; }
+.bullets li::before, .col li::before {
+  content: counter(v, decimal-leading-zero); background: none; width: auto; height: auto;
+  top: 0.32em; font: 500 0.62em/1 var(--font-mono); color: var(--teal-text);
+}
+.slide[data-layout="content"][data-parity="even"] .bullets { left: 760px; }
+.slide[data-layout="content"][data-parity="even"] { --hl-left: 130px; --hl-right: 1270px; }
+.slide[data-layout="content"] .highlight { left: var(--hl-left, 1270px); right: var(--hl-right, 130px); padding: 0 40px; }
+.hl-big { font-style: italic; font-weight: 400; }
+.hl-icon svg { stroke-width: 1.2; }
+.slide .hl-text { font-size: 46px; font-weight: 500; font-style: italic; }
+.col h3 { font-style: italic; font-weight: 500; }
+.col { padding: 40px 56px 40px 0; }
+.col + .col { padding: 40px 0 40px 64px; }
+.takeaway { font-size: 46px; border-left: 0; justify-content: center; text-align: center; font-style: italic; font-weight: 500; padding: 20px 80px; }
+.slide[data-layout="stats"] .stat + .stat { border-left: 1px solid var(--hair); }
+.stat-num { font-style: italic; font-weight: 400; }
+.stat-label { font-family: var(--font-mono); padding: 0 24px; }
+.slide[data-layout="timeline"] .timeline::before { opacity: 0; }
+.step::before { width: 22px; height: 22px; background: var(--fg); }
+.step:nth-child(odd)::before { bottom: -11px; } .step:nth-child(even)::before { top: -11px; }
+.step .when { font-style: italic; font-weight: 400; color: var(--teal-text); }
+.step h3 { font-style: italic; font-weight: 500; font-size: calc(var(--t-h) * 1.15); }
+.slide[data-layout="quote"] { align-items: center; text-align: center; padding: 300px 300px 0; }
+.slide[data-layout="quote"] .quote { font-weight: 400; font-style: italic; font-size: 70px; }

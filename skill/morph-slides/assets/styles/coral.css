@@ -1,0 +1,152 @@
+/* ===========================================================
+   STYLE: CORAL (adapted from frontend-slides bold template, MIT)
+   Magazine poster: coral fire, ink black, warm cream paper meet
+   at hard edges. Coral planes carry a 45deg hatch; condensed caps
+   (Oswald replaces Bebas Neue for Vietnamese), zigzag line,
+   coral sun with cream halo, giant quote mark.
+   Actors: ink (ink plane), coral (hatched coral plane), paper
+           (white card), glyph (giant quote mark), zig (zigzag
+           line), rule (ink rule), bar (accent bar), dot (coral
+           sun). DOM order = z-order (ink first).
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;600;700&display=swap');
+
+.deck-stage {
+  --actors: "ink coral paper glyph zig rule bar dot";
+  --font-display: 'Oswald', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --bg: #f5f0e8; --fg: #1a1a1a; --muted: #6b6b6b;
+  --accent: #e85d5d; --accent-2: #1a1a1a;
+  --card-bg: #ffffff; --card-fg: #1a1a1a; --card-radius: 0px;
+  --title-weight: 600; --title-tracking: 0.02em; --title-case: uppercase; --bullet-radius: 0;
+  --coral: #e85d5d; --ink: #1a1a1a; --cream: #f5f0e8; --white: #ffffff;
+  --hatch: repeating-linear-gradient(45deg, transparent 0 20px, rgba(0, 0, 0, 0.06) 20px 40px);
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="ink"]   { background: var(--ink); --x: 0px; --y: 1080px; --w: 1920px; --h: 0px; }
+[data-actor="coral"] { background: var(--hatch), var(--coral); --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-actor="paper"] { background: var(--white); --x: 1260px; --y: 1080px; --w: 540px; --h: 0px; }
+[data-actor="glyph"] { color: var(--ink); --x: 1920px; --y: -400px; --w: 360px; --h: 360px; --o: 0; --s: 0.4; }
+[data-actor="glyph"]::before {
+  content: "\201C"; position: absolute; left: 0; top: -40px; width: 100%;
+  font: 700 620px/1 'Oswald', sans-serif; text-align: center;
+}
+[data-actor="zig"] {
+  --x: 120px; --y: 1040px; --w: 0px; --h: 24px; --o: 0.5;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='24'%3E%3Cpath d='M0 20L10 4L20 20L30 4L40 20' fill='none' stroke='%231a1a1a' stroke-width='3'/%3E%3C/svg%3E") repeat-x 0 0 / 40px 24px;
+}
+[data-actor="rule"]  { background: var(--ink); --x: 120px; --y: 220px; --w: 0px; --h: 4px; }
+[data-actor="bar"]   { background: var(--coral); --x: 120px; --y: 60px; --w: 0px; --h: 10px; }
+[data-actor="dot"]   { background: var(--coral); border: 6px solid var(--cream); border-radius: 50%; --x: 1760px; --y: 540px; --w: 60px; --s: 0; }
+
+/* ---------- 1. cover: hatched coral page left, coral sun on cream, ink block ---------- */
+.deck-stage[data-layout="cover"] { --muted: #1a1a1a; --accent: #1a1a1a; }
+[data-layout="cover"] [data-actor="coral"] { --x: 0px; --w: 1240px; }
+[data-layout="cover"] [data-actor="ink"]   { --x: 1240px; --y: 720px; --w: 680px; --h: 360px; }
+[data-layout="cover"] [data-actor="dot"]   { --x: 1430px; --y: 220px; --w: 340px; --s: 1; }
+[data-layout="cover"] [data-actor="zig"]   { --x: 120px; --y: 110px; --w: 640px; }
+[data-layout="cover"] [data-actor="rule"]  { --x: 120px; --y: 950px; --w: 1000px; }
+[data-layout="cover"] [data-actor="bar"]   { --x: 1240px; --y: 710px; --w: 680px; --h: 10px; }
+
+/* ---------- 2. agenda: ink masthead, coral corner block, column divider ---------- */
+[data-layout="agenda"] [data-actor="ink"]   { --y: 0px; --h: 220px; }
+[data-layout="agenda"] [data-actor="coral"] { --x: 1720px; --w: 200px; --h: 220px; }
+[data-layout="agenda"] [data-actor="dot"]   { --x: 1790px; --y: 80px; --w: 60px; --s: 1; }
+[data-layout="agenda"] [data-actor="rule"]  { --x: 958px; --y: 300px; --w: 4px; --h: 660px; }
+[data-layout="agenda"] [data-actor="bar"]   { --x: 120px; --y: 220px; --w: 160px; --h: 12px; }
+[data-layout="agenda"] [data-actor="zig"]   { --x: 120px; --y: 1016px; --w: 1680px; --o: 0.3; }
+
+/* ---------- 3. section: coral page left, ink page right, sun rises on ink ---------- */
+.deck-stage[data-layout="section"] { --muted: #1a1a1a; --accent: #1a1a1a; }
+[data-layout="section"] [data-actor="coral"] { --x: 0px; --w: 1100px; }
+[data-layout="section"] [data-actor="ink"]   { --x: 1100px; --y: 0px; --w: 820px; --h: 1080px; }
+[data-layout="section"] [data-actor="dot"]   { --x: 1330px; --y: 340px; --w: 380px; --s: 1; }
+[data-layout="section"] [data-actor="zig"]   { --x: 1180px; --y: 900px; --w: 640px; filter: invert(1); }
+[data-layout="section"] [data-actor="rule"]  { --x: 160px; --y: 960px; --w: 860px; }
+[data-layout="section"] [data-actor="bar"]   { --x: 1180px; --y: 140px; --w: 160px; --h: 12px; }
+
+/* ---------- 4. content: coral page right, white card holds the highlight ---------- */
+[data-layout="content"] [data-actor="coral"] { --x: 1200px; --w: 720px; }
+[data-layout="content"] [data-actor="paper"] { --y: 270px; --h: 720px; }
+[data-layout="content"] [data-actor="bar"]   { --x: 1260px; --y: 270px; --w: 540px; --h: 10px; background: var(--ink); }
+[data-layout="content"] [data-actor="ink"]   { --x: 0px; --y: 1040px; --w: 1200px; --h: 40px; }
+[data-layout="content"] [data-actor="rule"]  { --x: 120px; --y: 220px; --w: 1040px; }
+[data-layout="content"] [data-actor="dot"]   { --x: 1810px; --y: 110px; --w: 56px; --s: 1; }
+[data-layout="content"] [data-actor="zig"]   { --x: 1260px; --y: 1018px; --w: 540px; }
+/* even: ink takes the right page, coral shrinks to a hatched cap, card drops away */
+[data-layout="content"][data-parity="even"] [data-actor="ink"]   { --x: 1200px; --y: 0px; --w: 720px; --h: 1080px; }
+[data-layout="content"][data-parity="even"] [data-actor="coral"] { --h: 200px; }
+[data-layout="content"][data-parity="even"] [data-actor="paper"] { --y: 1080px; --h: 0px; }
+[data-layout="content"][data-parity="even"] [data-actor="bar"]   { --x: 1260px; --y: 1000px; --w: 160px; --h: 10px; background: var(--coral); }
+[data-layout="content"][data-parity="even"] [data-actor="glyph"] { --x: 1640px; --y: -60px; --o: 0.35; --s: 0.6; }
+[data-layout="content"][data-parity="even"] [data-actor="dot"]   { --x: 1120px; --y: 1000px; --w: 44px; }
+[data-layout="content"][data-parity="even"] [data-actor="zig"]   { --x: 1260px; --y: 150px; --w: 360px; }
+
+/* ---------- 5. two-col: cream title / ink stage for white cards / coral takeaway ---------- */
+[data-layout="two-col"] [data-actor="ink"]   { --y: 240px; --h: 625px; }
+[data-layout="two-col"] [data-actor="coral"] { --x: 0px; --y: 865px; --w: 1920px; --h: 215px; }
+[data-layout="two-col"] [data-actor="zig"]   { --x: 0px; --y: 244px; --w: 1920px; --h: 24px; --o: 0.35; filter: invert(1); }
+[data-layout="two-col"] [data-actor="bar"]   { --x: 120px; --y: 60px; --w: 120px; }
+[data-layout="two-col"] [data-actor="dot"]   { --x: 1760px; --y: 100px; --w: 60px; --s: 1; }
+
+/* ---------- 6. stats: coral floods the page, ink figures ---------- */
+.deck-stage[data-layout="stats"] { --muted: #1a1a1a; --accent: #1a1a1a; }
+[data-layout="stats"] [data-actor="coral"] { --x: 0px; --w: 1920px; --h: 1040px; }
+[data-layout="stats"] [data-actor="ink"]   { --y: 1040px; --h: 40px; }
+[data-layout="stats"] [data-actor="zig"]   { --x: 120px; --y: 212px; --w: 1680px; }
+[data-layout="stats"] [data-actor="bar"]   { --x: 120px; --y: 60px; --w: 120px; background: var(--ink); }
+[data-layout="stats"] [data-actor="dot"]   { --x: 1750px; --y: 90px; --w: 70px; --s: 1; }
+
+/* ---------- 7. timeline: coral hatched band carries the ink axis ---------- */
+[data-layout="timeline"] [data-actor="coral"] { --x: 0px; --y: 604px; --w: 1920px; --h: 52px; }
+[data-layout="timeline"] [data-actor="rule"]  { --x: 120px; --y: 628px; --w: 1680px; }
+[data-layout="timeline"] [data-actor="ink"]   { --x: 1700px; --y: 0px; --w: 220px; --h: 220px; }
+[data-layout="timeline"] [data-actor="zig"]   { --x: 1730px; --y: 150px; --w: 160px; filter: invert(1); }
+[data-layout="timeline"] [data-actor="bar"]   { --x: 120px; --y: 60px; --w: 120px; }
+[data-layout="timeline"] [data-actor="dot"]   { --x: 1760px; --y: 70px; --w: 60px; --s: 1; }
+
+/* ---------- 8. quote: ink floods, coral panel left holds the giant mark ---------- */
+.deck-stage[data-layout="quote"] { --fg: #f5f0e8; --muted: #b0b0b0; }
+[data-layout="quote"] [data-actor="ink"]   { --y: 0px; --h: 1080px; }
+[data-layout="quote"] [data-actor="coral"] { --x: 0px; --w: 520px; }
+[data-layout="quote"] [data-actor="glyph"] { --x: 80px; --y: 220px; --o: 0.35; --s: 1; }
+[data-layout="quote"] [data-actor="bar"]   { --x: 640px; --y: 200px; --w: 120px; }
+[data-layout="quote"] [data-actor="zig"]   { --x: 640px; --y: 960px; --w: 1160px; --o: 0.3; filter: invert(1); }
+[data-layout="quote"] [data-actor="dot"]   { --x: 1770px; --y: 100px; --w: 50px; --s: 1; }
+
+/* ---------- 9. closing: coral floods the page, ink footer band ---------- */
+.deck-stage[data-layout="closing"] { --muted: #1a1a1a; --accent: #1a1a1a; }
+[data-layout="closing"] [data-actor="coral"] { --x: 0px; --w: 1920px; --h: 960px; }
+[data-layout="closing"] [data-actor="ink"]   { --y: 960px; --h: 120px; }
+[data-layout="closing"] [data-actor="glyph"] { --x: 1520px; --y: 560px; --o: 0.12; --s: 1; }
+[data-layout="closing"] [data-actor="rule"]  { --x: 810px; --y: 300px; --w: 300px; }
+[data-layout="closing"] [data-actor="zig"]   { --x: 810px; --y: 780px; --w: 300px; }
+[data-layout="closing"] [data-actor="bar"]   { --x: 120px; --y: 1015px; --w: 160px; }
+[data-layout="closing"] [data-actor="dot"]   { --x: 1770px; --y: 995px; --w: 50px; --s: 1; }
+
+/* ---------- content tweaks: poster caps, flat cards, hard edges ---------- */
+.slide .kicker { letter-spacing: 0.3em; }
+.slide .title { line-height: 1.22; }
+.slide :is(.col h3, .agenda-list h3, .step h3, .hl-text) { text-transform: uppercase; letter-spacing: 0.02em; font-weight: 600; }
+.slide[data-layout="cover"] { align-items: flex-start; text-align: left; padding: 0 800px 0 120px; }
+.slide[data-layout="cover"] .title { font-size: 100px; line-height: 1.3; }
+.slide[data-layout="closing"] .title { font-size: 160px; line-height: 1.15; }
+.slide[data-layout="agenda"] > .title { color: var(--cream); }
+.agenda-list { --agenda-gap: 160px; --tile-line: 4px solid var(--ink); }
+.agenda-list li { align-items: flex-start; padding-top: 32px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list .num { font-weight: 500; }
+.slide[data-layout="section"] .num { font-size: 260px; font-weight: 500; }
+.slide[data-layout="content"] { --title-w: 1040px; }
+.slide[data-layout="content"] .hl-big { font-size: 180px; font-weight: 600; }
+.slide[data-layout="content"][data-parity="even"] .hl-text { color: var(--cream); }
+.col { border-top: 8px solid var(--coral); }
+.takeaway { border-left-color: var(--ink); color: var(--ink); }
+.slide[data-layout="stats"] .stat-num { font-weight: 600; }
+.timeline::before { opacity: 0; }
+.step::before { background: var(--cream); border: 6px solid var(--ink); }
+.slide[data-layout="quote"] { padding: 0 200px 0 640px; }
+.slide[data-layout="quote"] .quote { font-size: 76px; font-weight: 500; line-height: 1.2; }
+.slide[data-layout="quote"] .cite { color: var(--coral); font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; font-size: 24px; }

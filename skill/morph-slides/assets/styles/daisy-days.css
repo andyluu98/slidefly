@@ -1,0 +1,189 @@
+/* ===========================================================
+   STYLE: DAISY DAYS (adapted from frontend-slides bold template, MIT)
+   Cream storybook page that turns mint, turquoise, peach, sky,
+   pink, lavender. A white sticker card (3px charcoal outline,
+   hard offset shadow) travels: hero card, list board, sun disc,
+   highlight frame, takeaway pill, timeline axis, tilted card.
+   Hand-drawn stickers (SVG data URI): smiling sun, rainbow,
+   cloud, two daisies, two stars, cluster at the corners and roll.
+   Actors: card, cloud, rainbow, sun, daisy-a, daisy-b, star-a,
+           star-b. DOM order = z-order (card first).
+   Font: Fredoka One has no Vietnamese -> Baloo 2 (800).
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Quicksand:wght@500;600;700&display=swap');
+
+.deck-stage {
+  --actors: "card cloud rainbow sun daisy-a daisy-b star-a star-b";
+  --font-display: 'Baloo 2', cursive;
+  --font-body: 'Quicksand', sans-serif;
+  --bg: #f5f0e6; --fg: #2d2d2d; --muted: #6b6b6b;
+  --accent: #f8635f; --accent-2: #7ecdc0;
+  --card-bg: #ffffff; --card-fg: #2d2d2d; --card-radius: 28px;
+  --title-weight: 800; --title-tracking: 0.01em; --bullet-radius: 50%;
+  --ink: #2d2d2d; --butter: #fde68a; --pink: #f7c8d4; --mint: #a8e6cf;
+  --lav: #d4a5e8; --sky: #a8d8f0; --turq: #7ecdc0; --peach: #ffcba4;
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor] { background: center / contain no-repeat; }
+[data-actor="card"] {
+  --bw: 3px; --x: 960px; --y: 540px; --w: 0px; --h: 0px;
+  background-color: #fff; border: 3px solid var(--ink); border-radius: var(--rad, 28px);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+[data-actor="sun"] { --x: -400px; --y: -400px; --w: 300px; background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g stroke='%232d2d2d' stroke-width='3' fill='%23fde68a'><rect id='r' x='45' y='2' width='10' height='22' rx='5' vector-effect='non-scaling-stroke'/><use href='%23r' transform='rotate(45 50 50)'/><use href='%23r' transform='rotate(90 50 50)'/><use href='%23r' transform='rotate(135 50 50)'/><use href='%23r' transform='rotate(180 50 50)'/><use href='%23r' transform='rotate(225 50 50)'/><use href='%23r' transform='rotate(270 50 50)'/><use href='%23r' transform='rotate(315 50 50)'/><circle cx='50' cy='50' r='30' vector-effect='non-scaling-stroke'/><path d='M40 57q10 9 20 0' fill='none' stroke-linecap='round' vector-effect='non-scaling-stroke'/></g><g fill='%232d2d2d'><circle cx='41' cy='46' r='3.5'/><circle cx='59' cy='46' r='3.5'/></g><g fill='%23f7c8d4'><circle cx='34' cy='56' r='4'/><circle cx='66' cy='56' r='4'/></g></svg>"); }
+[data-actor="rainbow"] { --x: 2000px; --y: 900px; --w: 400px; --h: 210px; background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 104'><g stroke='%232d2d2d' stroke-width='3' stroke-linejoin='round'><path d='M5 100A95 95 0 0 1 195 100H177A77 77 0 0 0 23 100Z' fill='%23f8635f' vector-effect='non-scaling-stroke'/><path d='M23 100A77 77 0 0 1 177 100H159A59 59 0 0 0 41 100Z' fill='%23fde68a' vector-effect='non-scaling-stroke'/><path d='M41 100A59 59 0 0 1 159 100H141A41 41 0 0 0 59 100Z' fill='%23a8e6cf' vector-effect='non-scaling-stroke'/><path d='M59 100A41 41 0 0 1 141 100H123A23 23 0 0 0 77 100Z' fill='%23a8d8f0' vector-effect='non-scaling-stroke'/></g></svg>"); }
+[data-actor="cloud"] { --x: 2000px; --y: 80px; --w: 300px; --h: 190px; background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 100'><g stroke='%232d2d2d' stroke-width='3' stroke-linejoin='round' stroke-linecap='round'><path d='M36 88A22 22 0 0 1 34 45A30 30 0 0 1 90 30A24 24 0 0 1 130 47A21 21 0 0 1 126 88Z' fill='%23fff' vector-effect='non-scaling-stroke'/><path d='M52 72q10 7 20 0' fill='none' stroke='%23a8d8f0' vector-effect='non-scaling-stroke'/></g></svg>"); }
+[data-actor^="daisy"] { --w: 240px; background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g stroke='%232d2d2d' stroke-width='3' fill='%23fff'><ellipse id='p' cx='50' cy='25' rx='13' ry='23' vector-effect='non-scaling-stroke'/><use href='%23p' transform='rotate(60 50 50)'/><use href='%23p' transform='rotate(120 50 50)'/><use href='%23p' transform='rotate(180 50 50)'/><use href='%23p' transform='rotate(240 50 50)'/><use href='%23p' transform='rotate(300 50 50)'/><circle cx='50' cy='50' r='15' fill='%23fde68a' vector-effect='non-scaling-stroke'/></g></svg>"); }
+[data-actor="daisy-a"] { --x: -400px; --y: 900px; }
+[data-actor="daisy-b"] { --x: 2000px; --y: -300px; }
+[data-actor^="star"] { --w: 100px; --x: 960px; --y: -200px; background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50 6 61 36 93 37 68 57 77 89 50 71 23 89 32 57 7 37 39 36Z' fill='%23f7c8d4' stroke='%232d2d2d' stroke-width='3' stroke-linejoin='round' vector-effect='non-scaling-stroke'/></svg>"); }
+[data-actor="star-b"] { --y: 1200px; filter: hue-rotate(150deg) saturate(1.3); }
+
+/* ---------- pastel surfaces per layout (stage bg morphs too) ---------- */
+.deck-stage[data-layout="agenda"]  { --bg: #a8e6cf; }
+.deck-stage[data-layout="section"] { --bg: #7ecdc0; }
+.deck-stage[data-layout="content"][data-parity="even"] { --bg: #ffcba4; }
+.deck-stage[data-layout="stats"]   { --bg: #a8d8f0; }
+.deck-stage[data-layout="quote"]   { --bg: #f7c8d4; }
+.deck-stage[data-layout="closing"] { --bg: #d4a5e8; }
+
+/* ---------- 1. cover: hero card, sun peeks top-left, rainbow bottom-right ---------- */
+[data-layout="cover"] [data-actor="card"]    { --x: 230px; --y: 160px; --w: 1460px; --h: 760px; }
+[data-layout="cover"] [data-actor="sun"]     { --x: -70px; --y: -70px; --w: 340px; }
+[data-layout="cover"] [data-actor="rainbow"] { --x: 1540px; --y: 830px; --w: 440px; --h: 230px; }
+[data-layout="cover"] [data-actor="cloud"]   { --x: 1480px; --y: 50px; --w: 300px; --h: 190px; }
+[data-layout="cover"] [data-actor="daisy-a"] { --x: 30px; --y: 760px; --w: 280px; --r: -15deg; }
+[data-layout="cover"] [data-actor="daisy-b"] { --x: 1770px; --y: 380px; --w: 200px; --r: 20deg; }
+[data-layout="cover"] [data-actor="star-a"]  { --x: 100px; --y: 340px; --w: 110px; --r: -12deg; }
+[data-layout="cover"] [data-actor="star-b"]  { --x: 900px; --y: 950px; --w: 100px; --r: 10deg; }
+
+/* ---------- 2. agenda (mint): card becomes the list board ---------- */
+[data-layout="agenda"] [data-actor="card"]    { --x: 80px; --y: 240px; --w: 1760px; --h: 780px; }
+[data-layout="agenda"] [data-actor="sun"]     { --x: 1670px; --y: 30px; --w: 190px; --r: 30deg; }
+[data-layout="agenda"] [data-actor="rainbow"] { --x: 1370px; --y: 90px; --w: 270px; --h: 142px; }
+[data-layout="agenda"] [data-actor="cloud"]   { --x: 1180px; --y: -60px; --w: 220px; --h: 140px; }
+[data-layout="agenda"] [data-actor="daisy-a"] { --x: -70px; --y: 940px; --w: 210px; --r: 40deg; }
+[data-layout="agenda"] [data-actor="daisy-b"] { --x: 1790px; --y: 950px; --w: 190px; --r: -30deg; }
+[data-layout="agenda"] [data-actor="star-a"]  { --x: 28px; --y: 96px; --w: 70px; --r: 15deg; }
+[data-layout="agenda"] [data-actor="star-b"]  { --x: 930px; --y: 995px; --w: 76px; --r: -20deg; }
+
+/* ---------- 3. section (turquoise): card rounds into a sun disc ---------- */
+[data-layout="section"] [data-actor="card"]    { --x: 1180px; --y: 240px; --w: 620px; --h: 620px; --rad: 50%; }
+[data-layout="section"] [data-actor="sun"]     { --x: 1290px; --y: 350px; --w: 400px; --r: 0deg; }
+[data-layout="section"] [data-actor="rainbow"] { --x: 1250px; --y: 110px; --w: 480px; --h: 252px; }
+[data-layout="section"] [data-actor="cloud"]   { --x: 1060px; --y: 760px; --w: 320px; --h: 200px; }
+[data-layout="section"] [data-actor="daisy-a"] { --x: 1640px; --y: 820px; --w: 270px; --r: 25deg; }
+[data-layout="section"] [data-actor="daisy-b"] { --x: -70px; --y: -70px; --w: 230px; --r: -10deg; }
+[data-layout="section"] [data-actor="star-a"]  { --x: 1790px; --y: 110px; --w: 100px; --r: 20deg; }
+[data-layout="section"] [data-actor="star-b"]  { --x: 120px; --y: 930px; --w: 90px; --r: -15deg; }
+
+/* ---------- 4. content: card frames the highlight on the right ---------- */
+[data-layout="content"] [data-actor="card"]    { --x: 1240px; --y: 250px; --w: 580px; --h: 760px; }
+[data-layout="content"] [data-actor="sun"]     { --x: 1720px; --y: 140px; --w: 180px; --r: -25deg; }
+[data-layout="content"] [data-actor="rainbow"] { --x: 1400px; --y: 950px; --w: 260px; --h: 137px; }
+[data-layout="content"] [data-actor="cloud"]   { --x: 1440px; --y: 60px; --w: 220px; --h: 140px; }
+[data-layout="content"] [data-actor="daisy-a"] { --x: -60px; --y: 960px; --w: 220px; --r: 60deg; }
+[data-layout="content"] [data-actor="daisy-b"] { --x: 1790px; --y: 560px; --w: 160px; --r: 10deg; }
+[data-layout="content"] [data-actor="star-a"]  { --x: 28px; --y: 96px; --w: 66px; --r: -10deg; }
+[data-layout="content"] [data-actor="star-b"]  { --x: 1170px; --y: 990px; --w: 70px; --r: 25deg; }
+/* even (peach): card slides left under the bullets, stickers swap sides */
+[data-layout="content"][data-parity="even"] [data-actor="card"]    { --x: 80px; --y: 250px; --w: 1130px; --h: 760px; }
+[data-layout="content"][data-parity="even"] [data-actor="sun"]     { --x: 1640px; --y: 840px; --w: 250px; --r: 20deg; }
+[data-layout="content"][data-parity="even"] [data-actor="rainbow"] { --x: 1390px; --y: 50px; --w: 360px; --h: 190px; }
+[data-layout="content"][data-parity="even"] [data-actor="cloud"]   { --x: 1190px; --y: 900px; --w: 230px; --h: 145px; }
+[data-layout="content"][data-parity="even"] [data-actor="daisy-a"] { --x: 1800px; --y: 330px; --w: 190px; --r: -20deg; }
+[data-layout="content"][data-parity="even"] [data-actor="daisy-b"] { --x: -90px; --y: -90px; --w: 200px; --r: 30deg; }
+[data-layout="content"][data-parity="even"] [data-actor="star-a"]  { --x: 30px; --y: 970px; --w: 84px; --r: 15deg; }
+[data-layout="content"][data-parity="even"] [data-actor="star-b"]  { --x: 1250px; --y: 170px; --w: 70px; --r: -15deg; }
+
+/* ---------- 5. two-col: card flattens into the butter takeaway pill ---------- */
+[data-layout="two-col"] [data-actor="card"]    { --x: 120px; --y: 872px; --w: 1680px; --h: 124px; --rad: 62px; background-color: var(--butter); }
+[data-layout="two-col"] [data-actor="sun"]     { --x: 1690px; --y: 36px; --w: 170px; --r: 45deg; }
+[data-layout="two-col"] [data-actor="rainbow"] { --x: 1390px; --y: 80px; --w: 260px; --h: 137px; }
+[data-layout="two-col"] [data-actor="cloud"]   { --x: -90px; --y: 950px; --w: 220px; --h: 140px; }
+[data-layout="two-col"] [data-actor="daisy-a"] { --x: 1770px; --y: 930px; --w: 200px; --r: 80deg; }
+[data-layout="two-col"] [data-actor="daisy-b"] { --x: -90px; --y: -90px; --w: 190px; --r: -40deg; }
+[data-layout="two-col"] [data-actor="star-a"]  { --x: 1836px; --y: 520px; --w: 70px; --r: 10deg; }
+[data-layout="two-col"] [data-actor="star-b"]  { --x: 20px; --y: 520px; --w: 70px; --r: -10deg; }
+
+/* ---------- 6. stats (sky): card is the number board, big sun top-right ---------- */
+[data-layout="stats"] [data-actor="card"]    { --x: 100px; --y: 320px; --w: 1720px; --h: 620px; }
+[data-layout="stats"] [data-actor="sun"]     { --x: 1580px; --y: -80px; --w: 360px; --r: -15deg; }
+[data-layout="stats"] [data-actor="rainbow"] { --x: 40px; --y: 880px; --w: 380px; --h: 200px; }
+[data-layout="stats"] [data-actor="cloud"]   { --x: 1250px; --y: 110px; --w: 290px; --h: 180px; }
+[data-layout="stats"] [data-actor="daisy-a"] { --x: 1640px; --y: 850px; --w: 260px; --r: 120deg; }
+[data-layout="stats"] [data-actor="daisy-b"] { --x: 560px; --y: 960px; --w: 150px; --r: 0deg; }
+[data-layout="stats"] [data-actor="star-a"]  { --x: 1060px; --y: 980px; --w: 80px; --r: 30deg; }
+[data-layout="stats"] [data-actor="star-b"]  { --x: 24px; --y: 220px; --w: 80px; --r: 0deg; }
+
+/* ---------- 7. timeline: card is the axis, stickers fill the zig-zag gaps ---------- */
+[data-layout="timeline"] [data-actor="card"]    { --x: 100px; --y: 618px; --w: 1720px; --h: 24px; --rad: 12px; background-color: var(--butter); }
+[data-layout="timeline"] [data-actor="cloud"]   { --x: 480px; --y: 330px; --w: 270px; --h: 170px; }
+[data-layout="timeline"] [data-actor="sun"]     { --x: 1190px; --y: 300px; --w: 230px; --r: 10deg; }
+[data-layout="timeline"] [data-actor="rainbow"] { --x: 820px; --y: 780px; --w: 300px; --h: 158px; }
+[data-layout="timeline"] [data-actor="daisy-a"] { --x: 160px; --y: 750px; --w: 200px; --r: 200deg; }
+[data-layout="timeline"] [data-actor="daisy-b"] { --x: 1540px; --y: 750px; --w: 200px; --r: 60deg; }
+[data-layout="timeline"] [data-actor="star-a"]  { --x: 1700px; --y: 110px; --w: 80px; --r: -20deg; }
+[data-layout="timeline"] [data-actor="star-b"]  { --x: 1832px; --y: 598px; --w: 64px; --r: 90deg; }
+
+/* ---------- 8. quote (pink): big quote card, daisies in opposite corners ---------- */
+[data-layout="quote"] [data-actor="card"]    { --x: 200px; --y: 200px; --w: 1520px; --h: 680px; }
+[data-layout="quote"] [data-actor="daisy-a"] { --x: -80px; --y: -80px; --w: 340px; --r: 30deg; }
+[data-layout="quote"] [data-actor="daisy-b"] { --x: 1660px; --y: 780px; --w: 340px; --r: -20deg; }
+[data-layout="quote"] [data-actor="sun"]     { --x: 1690px; --y: 40px; --w: 190px; --r: 0deg; }
+[data-layout="quote"] [data-actor="rainbow"] { --x: 60px; --y: 860px; --w: 360px; --h: 190px; }
+[data-layout="quote"] [data-actor="cloud"]   { --x: 800px; --y: 920px; --w: 300px; --h: 180px; }
+[data-layout="quote"] [data-actor="star-a"]  { --x: 1790px; --y: 440px; --w: 90px; --r: 15deg; filter: hue-rotate(70deg) saturate(2); }
+[data-layout="quote"] [data-actor="star-b"]  { --x: 60px; --y: 460px; --w: 80px; --r: -15deg; }
+
+/* ---------- 9. closing (lavender): tilted card under a rainbow ---------- */
+[data-layout="closing"] [data-actor="card"]    { --x: 400px; --y: 230px; --w: 1120px; --h: 620px; --r: -3deg; }
+[data-layout="closing"] [data-actor="rainbow"] { --x: 760px; --y: 40px; --w: 400px; --h: 210px; --r: -3deg; }
+[data-layout="closing"] [data-actor="sun"]     { --x: 110px; --y: 100px; --w: 270px; --r: -20deg; }
+[data-layout="closing"] [data-actor="cloud"]   { --x: 1500px; --y: 120px; --w: 320px; --h: 200px; }
+[data-layout="closing"] [data-actor="daisy-a"] { --x: 200px; --y: 760px; --w: 280px; --r: 90deg; }
+[data-layout="closing"] [data-actor="daisy-b"] { --x: 1440px; --y: 740px; --w: 300px; --r: 15deg; }
+[data-layout="closing"] [data-actor="star-a"]  { --x: 1760px; --y: 500px; --w: 110px; --r: -10deg; }
+[data-layout="closing"] [data-actor="star-b"]  { --x: 120px; --y: 520px; --w: 90px; --r: 20deg; }
+
+/* ---------- content tweaks: storybook stickers, rounded, outlined ---------- */
+.slide { --title-w: 1150px; }
+.slide .kicker {
+  display: inline-block; padding: 6px 26px; border: 3px solid var(--ink); border-radius: 50px;
+  background: var(--butter); color: var(--ink); box-shadow: 4px 4px 0 var(--ink);
+  font-family: var(--font-display); font-size: 26px; letter-spacing: 0.02em; text-transform: none;
+}
+.slide[data-layout="cover"] { padding: 0 360px; }
+.slide[data-layout="cover"] .title { font-size: 96px; line-height: 1.05; }
+.slide[data-layout="closing"] { padding: 0 470px; }
+.slide[data-layout="closing"] .title { font-size: 150px; line-height: 1; }
+.slide:is([data-layout="agenda"], [data-layout="section"]) > .title,
+.slide[data-layout="section"] .num { color: #fff; text-shadow: 4px 4px 0 var(--ink); }
+.slide[data-layout="section"] .num { text-shadow: 7px 7px 0 var(--ink); }
+.slide[data-layout="section"] .subtitle { color: var(--ink); font-weight: 600; }
+.agenda-list { --agenda-gap: 140px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+:is(.agenda-list .num, .hl-big, .stat-num, .step .when) { text-shadow: 4px 4px 0 var(--ink); }
+.bullets li::before, .col li::before { background: var(--butter); border: 2px solid var(--ink); }
+.bullets li:nth-child(3n+2)::before, .col li:nth-child(3n+2)::before { background: var(--mint); }
+.bullets li:nth-child(3n)::before, .col li:nth-child(3n)::before { background: var(--lav); }
+.hl-icon { color: var(--ink); }
+.slide[data-layout="content"] .hl-text { font-weight: 700; }
+.col { border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); padding: 0 48px 36px; overflow: hidden; }
+.col h3 { margin: 0 -48px 20px; padding: 18px 48px; background: var(--mint); color: var(--ink); border-bottom: 3px solid var(--ink); }
+.col + .col h3 { background: var(--lav); }
+.takeaway { border-left: 0; padding: 20px 64px; }
+.timeline::before { display: none; }
+.step::before { border: 3px solid var(--ink); }
+.step:nth-child(5n+2)::before { background: var(--mint); }
+.step:nth-child(5n+3)::before { background: var(--sky); }
+.step:nth-child(5n+4)::before { background: var(--lav); }
+.step:nth-child(5n)::before { background: var(--butter); }
+.slide[data-layout="quote"] { padding: 0 300px; }
+.slide[data-layout="quote"] .quote { font-weight: 700; }
+.slide[data-layout="quote"] .quote::before {
+  content: "\201C"; display: block; height: 0.5em; margin-top: -0.12em; font-size: 340px; line-height: 1;
+  color: var(--pink); text-shadow: 4px 4px 0 var(--ink);
+}

@@ -1,0 +1,199 @@
+/* ===========================================================
+   STYLE: 8-BIT ORBIT (adapted from frontend-slides bold
+   template pack, MIT). Pixel-art neon arcade on a deep navy
+   void: 40px cyan grid, CRT scanlines, hard 4px offset
+   shadows, L-shaped corner brackets, neon trio cyan/pink/yellow.
+   Actors: grid (cyan grid + scanlines + vignette), stars
+           (pixel starfield, drifts), panel
+           (coloured grid surface: strip, card, band, full
+           screen), planet (pixel planet sprite), brk (corner brackets),
+           bar-c / bar-p (pixel bars: underline, divider,
+           axis, loading bar), invader (pixel sprite).
+           DOM order = z-order (grid first).
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Tektur:wght@500;700;900&family=Chakra+Petch:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+.deck-stage {
+  --actors: "grid stars panel planet brk bar-c bar-p invader";
+  --font-display: 'Tektur', sans-serif;
+  --font-body: 'Chakra Petch', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+  --bg: #0a0e27; --fg: #eef1fa; --muted: #aab4d8;
+  --accent: #5edcf4; --accent-2: #f0a6ca;
+  --card-bg: rgba(94, 220, 244, 0.08); --card-fg: #eef1fa; --card-radius: 0px;
+  --title-weight: 700; --title-tracking: 0.02em; --bullet-radius: 0;
+  --navy: #0f1b3d; --cyan: #5edcf4; --pink: #f0a6ca; --yellow: #f4d03f; --lav: #e2d5f2;
+  --title-c: var(--cyan);
+}
+/* ---------- actor looks (geometry comes from poses) ---------- */
+[data-actor="grid"] {
+  --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; --o: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 2px, rgba(0, 0, 0, 0.16) 2px 4px),
+    radial-gradient(ellipse at center, transparent 55%, rgba(5, 7, 20, 0.6) 100%),
+    linear-gradient(rgba(94, 220, 244, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(94, 220, 244, 0.08) 1px, transparent 1px);
+  background-size: auto, auto, 40px 40px, 40px 40px;
+}
+[data-actor="panel"] {
+  --x: 960px; --y: 1180px; --w: 0px; --h: 0px; --pc: var(--pink); --ps: var(--yellow);
+  background-color: var(--pc); box-shadow: 12px 12px 0 var(--ps);
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 2px, rgba(10, 14, 39, 0.05) 2px 4px),
+    linear-gradient(rgba(15, 27, 61, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 27, 61, 0.1) 1px, transparent 1px);
+  background-size: auto, 40px 40px, 40px 40px;
+}
+[data-actor="stars"] {
+  --x: 0px; --y: 0px; --w: 2400px; --h: 1400px; --o: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='220' shape-rendering='crispEdges'%3E%3Cg fill='%235EDCF4'%3E%3Crect x='24' y='30' width='6' height='6'/%3E%3Crect x='210' y='150' width='4' height='4'/%3E%3Crect x='140' y='96' width='4' height='4'/%3E%3C/g%3E%3Cg fill='%23F4D03F'%3E%3Crect x='96' y='176' width='6' height='6'/%3E%3Crect x='262' y='40' width='4' height='4'/%3E%3C/g%3E%3Cg fill='%23F0A6CA'%3E%3Crect x='180' y='16' width='4' height='4'/%3E%3Crect x='56' y='120' width='4' height='4'/%3E%3Crect x='282' y='196' width='6' height='6'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 300px 220px;
+  animation: orbit-drift 40s linear infinite;
+}
+@keyframes orbit-drift { to { background-position: -300px 220px; } }
+[data-actor="planet"] {
+  --x: 2000px; --y: -400px; --w: 200px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' shape-rendering='crispEdges'%3E%3Cpath fill='%23F4D03F' d='M8 4h4v1H8zM6 5h8v1H6zM5 6h10v2H5zM4 8h12v4H4zM5 12h10v2H5zM6 14h8v1H6zM8 15h4v1H8z'/%3E%3Cpath fill='%23C99A1C' d='M7 6h2v1H7zM12 8h2v2h-2zM6 10h1v1H6zM11 13h2v1h-2z'/%3E%3Cpath fill='%23F0A6CA' d='M0 13h3v2H0zM3 12h4v2H3zM7 11h6v2H7zM13 10h4v2h-4zM17 9h3v2h-3z'/%3E%3C/svg%3E") center / contain no-repeat;
+  filter: drop-shadow(8px 8px 0 #0f1b3d);
+}
+[data-actor="brk"] {
+  --x: 960px; --y: 540px; --w: 0px; --h: 0px; --k: 56px; --t: 8px; --bc: var(--cyan);
+  background:
+    linear-gradient(var(--bc), var(--bc)) left top / var(--k) var(--t),
+    linear-gradient(var(--bc), var(--bc)) left top / var(--t) var(--k),
+    linear-gradient(var(--bc), var(--bc)) right bottom / var(--k) var(--t),
+    linear-gradient(var(--bc), var(--bc)) right bottom / var(--t) var(--k),
+    linear-gradient(var(--yellow), var(--yellow)) right top / 12px 12px,
+    linear-gradient(var(--pink), var(--pink)) left bottom / 12px 12px;
+  background-repeat: no-repeat;
+}
+[data-actor="bar-c"] { --x: -200px; --y: 200px; --w: 0px; --h: 12px; background: var(--cyan); box-shadow: 4px 4px 0 var(--yellow); }
+[data-actor="bar-p"] { --x: 2120px; --y: 200px; --w: 0px; --h: 12px; background: var(--pink); box-shadow: 4px 4px 0 var(--cyan); }
+[data-actor="invader"] {
+  --x: -300px; --y: 900px; --w: 120px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 8' shape-rendering='crispEdges'%3E%3Cpath fill='%235EDCF4' d='M2 0h1v1H2zM8 0h1v1H8zM3 1h1v1H3zM7 1h1v1H7zM2 2h7v1H2zM1 3h2v1H1zM4 3h3v1H4zM8 3h2v1H8zM0 4h11v1H0zM0 5h1v1H0zM2 5h7v1H2zM10 5h1v1h-1zM0 6h1v1H0zM2 6h1v1H2zM8 6h1v1H8zM10 6h1v1h-1zM3 7h2v1H3zM6 7h2v1H6z'/%3E%3C/svg%3E") center / contain no-repeat;
+  filter: drop-shadow(6px 6px 0 #f0a6ca);
+}
+/* ---------- 1. cover: booting screen, planet rising top right ---------- */
+[data-layout="cover"] [data-actor="grid"]    { --o: 1; }
+[data-layout="cover"] [data-actor="stars"]   { --x: -240px; --y: -160px; --o: 1; }
+[data-layout="cover"] [data-actor="panel"]   { --x: 0px; --y: 1004px; --w: 1920px; --h: 76px; }
+[data-layout="cover"] [data-actor="planet"]  { --x: 1480px; --y: -140px; --w: 520px; }
+[data-layout="cover"] [data-actor="brk"]     { --x: 220px; --y: 230px; --w: 1480px; --h: 620px; }
+[data-layout="cover"] [data-actor="bar-c"]   { --x: 760px; --y: 896px; --w: 320px; }
+[data-layout="cover"] [data-actor="bar-p"]   { --x: 1096px; --y: 896px; --w: 64px; }
+[data-layout="cover"] [data-actor="invader"] { --x: 180px; --y: 840px; --w: 150px; }
+/* ---------- 2. agenda: pink spine left, pink divider between columns ---------- */
+[data-layout="agenda"] [data-actor="grid"]    { --o: 0.7; }
+[data-layout="agenda"] [data-actor="stars"]   { --x: -480px; --y: -60px; --o: 0.45; }
+[data-layout="agenda"] [data-actor="panel"]   { --x: 0px; --y: 0px; --w: 48px; --h: 1080px; }
+[data-layout="agenda"] [data-actor="planet"]  { --x: 1680px; --y: 56px; --w: 140px; }
+[data-layout="agenda"] [data-actor="brk"]     { --x: 90px; --y: 245px; --w: 1740px; --h: 770px; }
+[data-layout="agenda"] [data-actor="bar-c"]   { --x: 120px; --y: 200px; --w: 360px; }
+[data-layout="agenda"] [data-actor="bar-p"]   { --x: 958px; --y: 300px; --w: 4px; --h: 660px; }
+[data-layout="agenda"] [data-actor="invader"] { --x: 1540px; --y: 76px; --w: 110px; }
+/* ---------- 3. section: lavender half screen, planet in the brackets ---------- */
+[data-layout="section"] [data-actor="grid"]    { --o: 0.8; --s: 1.12; }
+[data-layout="section"] [data-actor="stars"]   { --x: -60px; --y: -300px; --o: 0.8; }
+[data-layout="section"] [data-actor="panel"]   { --x: 1100px; --y: 0px; --w: 820px; --h: 1080px; --pc: var(--lav); }
+[data-layout="section"] [data-actor="planet"]  { --x: 1260px; --y: 270px; --w: 500px; }
+[data-layout="section"] [data-actor="brk"]     { --x: 1220px; --y: 230px; --w: 580px; --h: 580px; --bc: var(--navy); }
+[data-layout="section"] [data-actor="bar-c"]   { --x: 160px; --y: 880px; --w: 480px; }
+[data-layout="section"] [data-actor="bar-p"]   { --x: 160px; --y: 908px; --w: 240px; }
+[data-layout="section"] [data-actor="invader"] { --x: 1630px; --y: 830px; --w: 150px; }
+/* ---------- 4. content: pink card frames the highlight (even: cyan card, left) ---------- */
+[data-layout="content"] [data-actor="grid"]    { --o: 0.5; }
+[data-layout="content"] [data-actor="stars"]   { --x: -360px; --y: -200px; --o: 0.35; }
+[data-layout="content"] [data-actor="panel"]   { --x: 1240px; --y: 270px; --w: 560px; --h: 720px; }
+[data-layout="content"] [data-actor="planet"]  { --x: 1700px; --y: 70px; --w: 100px; }
+[data-layout="content"] [data-actor="brk"]     { --x: 1216px; --y: 246px; --w: 608px; --h: 768px; }
+[data-layout="content"] [data-actor="bar-c"]   { --x: 120px; --y: 200px; --w: 300px; }
+[data-layout="content"] [data-actor="bar-p"]   { --x: 1196px; --y: 300px; --w: 4px; --h: 660px; }
+[data-layout="content"] [data-actor="invader"] { --x: 1570px; --y: 80px; --w: 96px; }
+[data-layout="content"][data-parity="even"] [data-actor="stars"]   { --x: -120px; --y: -100px; }
+[data-layout="content"][data-parity="even"] [data-actor="panel"]   { --x: 120px; --pc: var(--cyan); --ps: var(--pink); }
+[data-layout="content"][data-parity="even"] [data-actor="planet"]  { --x: 1700px; --y: 900px; --w: 110px; }
+[data-layout="content"][data-parity="even"] [data-actor="brk"]     { --x: 96px; --bc: var(--yellow); }
+[data-layout="content"][data-parity="even"] [data-actor="bar-c"]   { --w: 640px; }
+[data-layout="content"][data-parity="even"] [data-actor="bar-p"]   { --x: 740px; }
+[data-layout="content"][data-parity="even"] [data-actor="invader"] { --x: 1700px; --y: 76px; --w: 104px; }
+/* ---------- 5. two-col: yellow strip under the takeaway, invader in the gap ---------- */
+[data-layout="two-col"] [data-actor="grid"]    { --o: 0.5; }
+[data-layout="two-col"] [data-actor="stars"]   { --x: -400px; --y: 0px; --o: 0.35; }
+[data-layout="two-col"] [data-actor="panel"]   { --x: 120px; --y: 880px; --w: 1680px; --h: 110px; --pc: var(--yellow); --ps: var(--pink); }
+[data-layout="two-col"] [data-actor="planet"]  { --x: 1660px; --y: 72px; --w: 136px; }
+[data-layout="two-col"] [data-actor="brk"]     { --x: 1636px; --y: 56px; --w: 184px; --h: 168px; --k: 36px; --t: 6px; }
+[data-layout="two-col"] [data-actor="bar-c"]   { --x: 120px; --y: 200px; --w: 420px; }
+[data-layout="two-col"] [data-actor="bar-p"]   { --x: 958px; --y: 300px; --w: 4px; --h: 520px; }
+[data-layout="two-col"] [data-actor="invader"] { --x: 930px; --y: 206px; --w: 60px; }
+/* ---------- 6. stats: full-width cyan band holds the numbers ---------- */
+[data-layout="stats"] [data-actor="grid"]    { --o: 0.6; }
+[data-layout="stats"] [data-actor="stars"]   { --x: -200px; --y: -320px; --o: 0.5; }
+[data-layout="stats"] [data-actor="panel"]   { --x: 0px; --y: 330px; --w: 1920px; --h: 600px; --pc: var(--cyan); }
+[data-layout="stats"] [data-actor="planet"]  { --x: 1640px; --y: 40px; --w: 180px; }
+[data-layout="stats"] [data-actor="brk"]     { --x: 90px; --y: 300px; --w: 1740px; --h: 660px; --bc: var(--yellow); }
+[data-layout="stats"] [data-actor="bar-c"]   { --x: 120px; --y: 200px; --w: 300px; }
+[data-layout="stats"] [data-actor="bar-p"]   { --x: 0px; --y: 318px; --w: 1920px; }
+[data-layout="stats"] [data-actor="invader"] { --x: 1500px; --y: 70px; --w: 120px; }
+/* ---------- 7. timeline: cyan bar = axis (y 630), invader starts, planet ends ---------- */
+[data-layout="timeline"] [data-actor="grid"]    { --o: 0.7; }
+[data-layout="timeline"] [data-actor="stars"]   { --x: -520px; --y: -200px; --o: 0.55; }
+[data-layout="timeline"] [data-actor="panel"]   { --x: 0px; --y: 1032px; --w: 1920px; --h: 48px; --pc: var(--lav); }
+[data-layout="timeline"] [data-actor="planet"]  { --x: 1796px; --y: 588px; --w: 84px; }
+[data-layout="timeline"] [data-actor="brk"]     { --x: 90px; --y: 245px; --w: 1740px; --h: 770px; }
+[data-layout="timeline"] [data-actor="bar-c"]   { --x: 120px; --y: 626px; --w: 1680px; --h: 8px; }
+[data-layout="timeline"] [data-actor="bar-p"]   { --x: 120px; --y: 200px; --w: 360px; }
+[data-layout="timeline"] [data-actor="invader"] { --x: 24px; --y: 594px; --w: 76px; }
+/* ---------- 8. quote: CRT close-up, brackets frame the quote ---------- */
+[data-layout="quote"] [data-actor="grid"]    { --o: 0.6; --s: 1.08; }
+[data-layout="quote"] [data-actor="stars"]   { --x: -300px; --y: -40px; --o: 0.8; }
+[data-layout="quote"] [data-actor="panel"]   { --x: 0px; --y: 0px; --w: 56px; --h: 1080px; --pc: var(--lav); }
+[data-layout="quote"] [data-actor="planet"]  { --x: 1480px; --y: 740px; --w: 520px; }
+[data-layout="quote"] [data-actor="brk"]     { --x: 200px; --y: 250px; --w: 1520px; --h: 580px; --bc: var(--pink); }
+[data-layout="quote"] [data-actor="bar-c"]   { --x: 280px; --y: 860px; --w: 120px; }
+[data-layout="quote"] [data-actor="bar-p"]   { --x: 236px; --y: 380px; --w: 8px; --h: 320px; }
+[data-layout="quote"] [data-actor="invader"] { --x: 160px; --y: 120px; --w: 120px; }
+/* ---------- 9. closing: pink grid takes the whole screen ---------- */
+.deck-stage[data-layout="closing"] { --fg: #0f1b3d; --muted: #2a2f57; --accent: #0f1b3d; --title-c: #0f1b3d; }
+[data-layout="closing"] [data-actor="grid"]    { --o: 0.3; }
+[data-layout="closing"] [data-actor="stars"]   { --x: -240px; --y: -160px; --o: 0; }
+[data-layout="closing"] [data-actor="panel"]   { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="closing"] [data-actor="planet"]  { --x: 1460px; --y: 100px; --w: 340px; }
+[data-layout="closing"] [data-actor="brk"]     { --x: 60px; --y: 60px; --w: 1800px; --h: 960px; --bc: var(--navy); }
+[data-layout="closing"] [data-actor="bar-c"]   { --x: 760px; --y: 820px; --w: 400px; background: var(--navy); }
+[data-layout="closing"] [data-actor="bar-p"]   { --x: 2000px; --y: 540px; --w: 200px; }
+[data-layout="closing"] [data-actor="invader"] { --x: 240px; --y: 720px; --w: 180px; }
+/* ---------- content tweaks: pixel type, label pill, hard shadows ---------- */
+.slide .title { color: var(--title-c); text-shadow: 4px 4px 0 #1f2f66; }
+.slide:is([data-layout="cover"], [data-layout="closing"]) .title { font-weight: 900; letter-spacing: 0.04em; text-shadow: 4px 4px 0 var(--yellow), 8px 8px 0 var(--navy); }
+.slide[data-layout="closing"] .title { font-size: 150px; text-shadow: 6px 6px 0 #fff, 12px 12px 0 var(--cyan); }
+.kicker { display: inline-block; align-self: flex-start; font-family: var(--font-mono); font-size: 22px; letter-spacing: 0.2em; padding: 10px 22px; background: var(--navy); color: var(--yellow); }
+.slide:is([data-layout="cover"], [data-layout="closing"]) .kicker { align-self: center; }
+.meta, .cite { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.15em; }
+.cite { color: var(--yellow); font-size: 24px; }
+.bullets li { line-height: 1.45; }
+.bullets li::before, .col li::before { box-shadow: 0.12em 0.12em 0 var(--pink); }
+.agenda-list { --agenda-gap: 160px; --tile-line: 2px solid rgba(94, 220, 244, 0.3); }
+.agenda-list li.is-right { flex-direction: row; text-align: left; } .agenda-list li.is-right .num { text-align: left; }
+.agenda-list .num, .stat-num, .hl-big { text-shadow: 4px 4px 0 var(--navy); }
+.agenda-list .num { color: var(--yellow); }
+.slide[data-layout="section"] .num { color: var(--yellow); text-shadow: 8px 8px 0 var(--pink); }
+.slide[data-layout="content"] { --hl-left: 1280px; --hl-right: 160px; }
+.slide[data-layout="content"][data-parity="even"] { --hl-left: 160px; --hl-right: 1280px; }
+.slide[data-layout="content"][data-parity="even"] .bullets { left: 800px; width: 1000px; }
+.slide[data-layout="content"] .highlight { color: var(--navy); }
+.slide[data-layout="content"] :is(.hl-big, .hl-icon) { color: var(--navy); text-shadow: 6px 6px 0 #fff; }
+.slide[data-layout="content"] .hl-big { font-size: 140px; }
+.col { background:
+    linear-gradient(var(--yellow), var(--yellow)) left top / 40px 6px no-repeat,
+    linear-gradient(var(--yellow), var(--yellow)) left top / 6px 40px no-repeat,
+    linear-gradient(var(--cyan), var(--cyan)) right bottom / 40px 6px no-repeat,
+    linear-gradient(var(--cyan), var(--cyan)) right bottom / 6px 40px no-repeat,
+    var(--card-bg);
+  border: 2px solid rgba(94, 220, 244, 0.22); }
+.takeaway { color: var(--navy); border-left: 12px solid var(--navy); }
+.slide[data-layout="stats"] .stat-num { color: var(--navy); text-shadow: 6px 6px 0 #fff; font-weight: 900; }
+.slide[data-layout="stats"] .stat-label { color: var(--navy); font-weight: 600; }
+.step::before { border-radius: 0; width: 28px; height: 28px; background: var(--yellow); box-shadow: 4px 4px 0 var(--pink); }
+.step:nth-child(odd)::before { bottom: -14px; } .step:nth-child(even)::before { top: -14px; }
+.step .when { color: var(--yellow); }
+.slide[data-layout="quote"] .quote { font-family: var(--font-body); font-weight: 600; font-size: 66px; line-height: 1.3; color: #fff; }
+.deck-progress { background: var(--yellow, #f4d03f) !important; }

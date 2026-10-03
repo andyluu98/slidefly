@@ -1,0 +1,155 @@
+/* ===========================================================
+   STYLE: NOTEBOOK TABS (adapted from frontend-slides, MIT)
+   Cream paper sheet on a dark desk, binder holes on the left,
+   five pastel divider tabs on the right edge (vertical labels).
+   Each layout "pulls" one tab into the page: it grows into a
+   divider sheet, an index card, washi tape, a sticky note...
+   Actors: paper (cream sheet), holes (binder holes), rule (ink
+           rule), tab1 mint, tab2 lavender, tab3 pink, tab4 sky,
+           tab5 cream. DOM order = z-order (paper first).
+   Fonts: Bodoni Moda -> Libre Bodoni, DM Sans -> Be Vietnam Pro
+   (originals have no Vietnamese glyphs).
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Libre+Bodoni:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
+
+.deck-stage {
+  --actors: "paper holes rule tab1 tab2 tab3 tab4 tab5";
+  --font-display: 'Libre Bodoni', serif;
+  --font-body: 'Be Vietnam Pro', sans-serif;
+  --bg: #2d2d2d; --fg: #1a1a1a; --muted: #5f5a52;
+  --accent: #5a3e9b; --accent-2: #1a1a1a;
+  --card-bg: transparent; --card-fg: #1a1a1a; --card-radius: 18px;
+  --title-weight: 600; --title-tracking: -0.01em; --bullet-radius: 3px;
+  --page: #f8f6f1; --desk: #2d2d2d; --ink: #1a1a1a;
+  --t1: #98d4bb; --t2: #c7b8ea; --t3: #f4b8c5; --t4: #a8d8ea; --t5: #ffe6a7;
+}
+
+/* ---------- actor looks + resting pose (tabs on the sheet's right edge) ---------- */
+[data-actor="paper"] {
+  background: var(--page); border-radius: 8px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+  --x: 40px; --y: 40px; --w: 1800px; --h: 1000px;
+}
+[data-actor="holes"] {
+  background: radial-gradient(circle at 17px 17px, var(--desk) 12px, rgba(0, 0, 0, 0.16) 13px, transparent 16px) 0 0 / 34px 176px repeat-y;
+  --x: 56px; --y: 110px; --w: 34px; --h: 880px;
+}
+[data-actor="rule"] { background: var(--ink); --x: 120px; --y: 216px; --w: 1680px; --h: 2px; }
+[data-actor^="tab"] {
+  border-radius: 0 14px 14px 0; box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
+  display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl;
+  font: italic 600 22px/1 'Libre Bodoni', serif; color: rgba(26, 26, 26, calc(0.72 * var(--lo)));
+  --x: 1840px; --w: 56px; --h: 150px; --lo: 1;
+}
+[data-actor^="tab"]::after { content: var(--lbl); }
+[data-actor="tab1"] { background: var(--t1); --y: 110px; --lbl: "01"; }
+[data-actor="tab2"] { background: var(--t2); --y: 290px; --lbl: "02"; }
+[data-actor="tab3"] { background: var(--t3); --y: 470px; --lbl: "03"; }
+[data-actor="tab4"] { background: var(--t4); --y: 650px; --lbl: "04"; }
+[data-actor="tab5"] { background: var(--t5); --y: 830px; --lbl: "05"; }
+
+/* ---------- 1. cover: a card on the desk, tabs stick out on its right ---------- */
+[data-layout="cover"] [data-actor="paper"] { --x: 240px; --y: 110px; --w: 1400px; --h: 860px; }
+[data-layout="cover"] [data-actor="holes"] { --x: 270px; --y: 170px; --h: 740px; }
+[data-layout="cover"] [data-actor="rule"]  { --x: 840px; --y: 920px; --w: 200px; }
+[data-layout="cover"] [data-actor^="tab"]  { --x: 1640px; --w: 72px; --h: 140px; }
+[data-layout="cover"] [data-actor="tab1"]  { --y: 170px; }
+[data-layout="cover"] [data-actor="tab2"]  { --y: 330px; }
+[data-layout="cover"] [data-actor="tab3"]  { --y: 490px; }
+[data-layout="cover"] [data-actor="tab4"]  { --y: 650px; }
+[data-layout="cover"] [data-actor="tab5"]  { --y: 810px; }
+
+/* ---------- 2. agenda: tabs jump to the top edge, labels turn horizontal ---------- */
+[data-layout="agenda"] [data-actor="paper"] { --y: 60px; --h: 980px; }
+[data-layout="agenda"] [data-actor="holes"] { --y: 120px; --h: 880px; }
+[data-layout="agenda"] [data-actor^="tab"]  { --y: 8px; --w: 140px; --h: 62px; writing-mode: horizontal-tb; border-radius: 14px 14px 0 0; }
+[data-layout="agenda"] [data-actor="tab1"]  { --x: 1060px; --y: -4px; --h: 74px; }
+[data-layout="agenda"] [data-actor="tab2"]  { --x: 1210px; }
+[data-layout="agenda"] [data-actor="tab3"]  { --x: 1360px; }
+[data-layout="agenda"] [data-actor="tab4"]  { --x: 1510px; }
+[data-layout="agenda"] [data-actor="tab5"]  { --x: 1660px; }
+
+/* ---------- 3. section: pink tab becomes a divider sheet on the right ---------- */
+[data-layout="section"] [data-actor="tab3"] { --x: 1100px; --y: 40px; --w: 740px; --h: 1000px; --lo: 0; border-radius: 0 8px 8px 0; box-shadow: none; }
+[data-layout="section"] [data-actor="rule"] { --x: 160px; --y: 900px; --w: 320px; }
+[data-layout="section"] [data-actor="tab1"] { --y: 140px; --w: 64px; }
+[data-layout="section"] [data-actor="tab5"] { --y: 790px; --w: 64px; }
+
+/* ---------- 4. content: lavender tab becomes the highlight index card ---------- */
+[data-layout="content"] [data-actor="tab2"] { --x: 1220px; --y: 260px; --w: 600px; --h: 740px; --lo: 0; border-radius: 18px; }
+[data-layout="content"] [data-actor="rule"] { --w: 1040px; }
+/* even: sky tab becomes a full-height divider column, lavender returns */
+[data-layout="content"][data-parity="even"] [data-actor="tab2"] { --x: 1840px; --y: 290px; --w: 56px; --h: 150px; --lo: 1; border-radius: 0 14px 14px 0; }
+[data-layout="content"][data-parity="even"] [data-actor="tab4"] { --x: 1220px; --y: 40px; --w: 620px; --h: 1000px; --lo: 0; border-radius: 0 8px 8px 0; box-shadow: none; }
+[data-layout="content"][data-parity="even"] [data-actor="holes"] { --y: 198px; --h: 704px; }
+
+/* ---------- 5. two-col: mint + pink become the cards, lavender the sticky note ---------- */
+[data-layout="two-col"] [data-actor="tab1"] { --x: 120px; --y: 270px; --w: 808px; --h: 570px; --lo: 0; border-radius: 18px; }
+[data-layout="two-col"] [data-actor="tab3"] { --x: 992px; --y: 270px; --w: 808px; --h: 570px; --lo: 0; border-radius: 18px; }
+[data-layout="two-col"] [data-actor="tab2"] { --x: 120px; --y: 880px; --w: 1680px; --h: 110px; --lo: 0; border-radius: 4px; }
+[data-layout="two-col"] [data-actor="tab4"] { --y: 320px; }
+[data-layout="two-col"] [data-actor="tab5"] { --y: 520px; }
+
+/* ---------- 6. stats: cream tab becomes a highlighter band ---------- */
+[data-layout="stats"] [data-actor="tab5"] { --x: 120px; --y: 280px; --w: 1680px; --h: 700px; --lo: 0; border-radius: 18px; }
+[data-layout="stats"] [data-actor="holes"] { --y: 286px; --h: 528px; }
+[data-layout="stats"] [data-actor="tab1"] { --y: 60px; }
+[data-layout="stats"] [data-actor="tab2"] { --y: 240px; }
+[data-layout="stats"] [data-actor="tab3"] { --y: 420px; }
+[data-layout="stats"] [data-actor="tab4"] { --y: 600px; }
+
+/* ---------- 7. timeline: mint tab becomes washi tape along the axis ---------- */
+[data-layout="timeline"] [data-actor="tab1"] { --x: 20px; --y: 604px; --w: 1880px; --h: 52px; --lo: 0; --o: 0.9; border-radius: 3px; box-shadow: none; }
+[data-layout="timeline"] [data-actor="tab2"] { --y: 110px; }
+[data-layout="timeline"] [data-actor="tab3"] { --y: 290px; }
+[data-layout="timeline"] [data-actor="tab4"] { --y: 720px; }
+[data-layout="timeline"] [data-actor="tab5"] { --y: 880px; --h: 120px; }
+
+/* ---------- 8. quote: sheet shrinks to a card, cream tab tapes it down ---------- */
+[data-layout="quote"] [data-actor="paper"] { --x: 200px; --y: 150px; --w: 1520px; --h: 780px; }
+[data-layout="quote"] [data-actor="holes"] { --x: 222px; --y: 210px; --h: 680px; }
+[data-layout="quote"] [data-actor="rule"]  { --x: 280px; --y: 290px; --w: 160px; --h: 4px; background: var(--accent); }
+[data-layout="quote"] [data-actor^="tab"]  { --x: 1720px; --h: 110px; }
+[data-layout="quote"] [data-actor="tab1"]  { --y: 230px; }
+[data-layout="quote"] [data-actor="tab2"]  { --y: 360px; }
+[data-layout="quote"] [data-actor="tab3"]  { --y: 490px; }
+[data-layout="quote"] [data-actor="tab4"]  { --y: 620px; }
+[data-layout="quote"] [data-actor="tab5"]  { --x: 860px; --y: 118px; --w: 200px; --h: 56px; --r: -3deg; --lo: 0; --o: 0.85; border-radius: 2px; box-shadow: none; }
+
+/* ---------- 9. closing: sheet slides away, the five tabs fan into stripes ---------- */
+.deck-stage[data-layout="closing"] { --accent: #1a1a1a; --muted: #2b2b2b; }
+[data-layout="closing"] [data-actor="paper"] { --x: -1900px; }
+[data-layout="closing"] [data-actor="holes"] { --x: -1880px; }
+[data-layout="closing"] [data-actor="rule"]  { --x: 960px; --y: 540px; --w: 0px; }
+[data-layout="closing"] [data-actor^="tab"]  { --y: 0px; --w: 384px; --h: 1080px; --lo: 0; border-radius: 0; box-shadow: none; }
+[data-layout="closing"] [data-actor="tab1"]  { --x: 0px; }
+[data-layout="closing"] [data-actor="tab2"]  { --x: 384px; }
+[data-layout="closing"] [data-actor="tab3"]  { --x: 768px; }
+[data-layout="closing"] [data-actor="tab4"]  { --x: 1152px; }
+[data-layout="closing"] [data-actor="tab5"]  { --x: 1536px; }
+
+/* ---------- content tweaks: editorial Bodoni, centred cover on the card ---------- */
+.slide .kicker { font-weight: 600; letter-spacing: 0.26em; }
+.slide[data-layout="cover"] { padding: 0 420px 0 380px; }
+.slide[data-layout="cover"] .title { font-size: 96px; line-height: 1.05; }
+.slide[data-layout="cover"] .subtitle { font-family: var(--font-display); font-style: italic; }
+.slide[data-layout="section"] .num { font-size: 240px; font-weight: 500; font-style: italic; }
+.agenda-list { --agenda-gap: 160px; --tile-line: 6px solid var(--t1); }
+.agenda-list li { align-items: flex-start; padding-top: 30px; }
+.agenda-list li:nth-child(5n+2) { border-top-color: var(--t2); }
+.agenda-list li:nth-child(5n+3) { border-top-color: var(--t3); }
+.agenda-list li:nth-child(5n+4) { border-top-color: var(--t4); }
+.agenda-list li:nth-child(5n+5) { border-top-color: var(--t5); }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list .num { font-style: italic; font-weight: 500; }
+.slide[data-layout="content"] .hl-big { color: var(--ink); font-style: italic; }
+.slide[data-layout="content"] :is(.hl-icon, .hl-text) { color: var(--ink); }
+.slide:not(:has(.takeaway)) .col { background: #fffdf8; }
+.col h3 { color: var(--ink); }
+.takeaway { border-left: 0; padding-left: 44px; font-style: italic; }
+.slide[data-layout="stats"] .stat-num { font-style: italic; }
+.slide[data-layout="stats"] .stat-label { color: #2b2b2b; }
+.step h3 { font-weight: 600; }
+.slide[data-layout="quote"] .quote { font-weight: 500; font-style: italic; }
+.slide[data-layout="quote"] .cite { letter-spacing: 0.14em; text-transform: uppercase; font-size: 24px; }
+.slide[data-layout="closing"] .title { font-size: 150px; font-style: italic; }

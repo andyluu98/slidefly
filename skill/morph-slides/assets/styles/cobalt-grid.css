@@ -1,0 +1,178 @@
+/* ===========================================================
+   STYLE: COBALT GRID (adapted from frontend-slides bold
+   template pack "cobalt-grid", MIT)
+   Two-colour risograph trend report: cream paper, electric
+   cobalt ink, permanent graph-paper grid + top/bottom hairlines
+   (drawn on the stage background). Newsreader 400 statements,
+   Hanken Grotesk body, IBM Plex Mono chrome (DM Mono has no
+   Vietnamese).
+   Actors: slab (cobalt plate), glitch (stair-stepped scanline
+           column), glitch-b (stepped scan strip), qr (8x8 QR
+           patch), frame (1.5px box), rule (topbar rule),
+           rule-v (vertical hairline). DOM order = z-order.
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Hanken+Grotesk:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+.deck-stage {
+  --actors: "slab glitch glitch-b qr frame rule rule-v";
+  --font-display: 'Newsreader', Georgia, serif;
+  --font-body: 'Hanken Grotesk', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --paper: #F0EBDE; --ink: #1F2BE0; --ink-soft: #5560E5;
+  --grid: rgba(31, 43, 224, 0.10); --ink-faint: rgba(31, 43, 224, 0.18);
+  --bg: var(--paper); --fg: var(--ink); --muted: var(--ink-soft);
+  --accent: var(--ink); --accent-2: var(--ink);
+  --card-bg: transparent; --card-fg: var(--ink); --card-radius: 0px;
+  --title-weight: 400; --title-tracking: -0.008em; --bullet-radius: 0;
+  /* permanent graph paper + top/bottom 1.5px hairline frame */
+  background-image:
+    linear-gradient(var(--ink), var(--ink)), linear-gradient(var(--ink), var(--ink)),
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 1776px 1.5px, 1776px 1.5px, 40px 40px, 40px 40px;
+  background-position: 72px 28px, 72px 1050px, 0 0, 0 0;
+  background-repeat: no-repeat, no-repeat, repeat, repeat;
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="slab"]  { background: var(--ink); --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-actor="glitch"], [data-actor="glitch-b"] {
+  background: repeating-linear-gradient(90deg, var(--ink) 0 3px, var(--paper) 3px 11px);
+  -webkit-mask: var(--steps) 0 0 / 100% 100% no-repeat; mask: var(--steps) 0 0 / 100% 100% no-repeat;
+}
+[data-actor="glitch"] {
+  --x: 1920px; --y: 60px; --w: 0px; --h: 960px;
+  --steps: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0h100v12H0zM22 12h78v14H22zM8 26h92v12H8zM40 38h60v14H40zM18 52h82v11H18zM55 63h45v14H55zM30 77h70v11H30zM62 88h38v12H62z'/%3E%3C/svg%3E");
+}
+[data-actor="glitch-b"] {
+  --x: -700px; --y: 930px; --w: 560px; --h: 40px;
+  --steps: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0h10v100H0zM10 40h14v60H10zM24 15h11v85H24zM35 60h15v40H35zM50 25h12v75H50zM62 70h16v30H62zM78 45h12v55H78zM90 80h10v20H90z'/%3E%3C/svg%3E");
+}
+[data-actor="qr"] {
+  --x: 1920px; --y: -200px; --w: 96px;
+  padding: 5px; box-shadow: 0 0 0 1.5px var(--paper); background-color: var(--paper);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7.84 7.84'%3E%3Cpath fill='%231F2BE0' d='M0 0h.84v.84h-.84zM1 0h.84v.84h-.84zM2 0h.84v.84h-.84zM4 0h.84v.84h-.84zM6 0h.84v.84h-.84zM7 0h.84v.84h-.84zM0 1h.84v.84h-.84zM2 1h.84v.84h-.84zM5 1h.84v.84h-.84zM6 1h.84v.84h-.84zM0 2h.84v.84h-.84zM1 2h.84v.84h-.84zM2 2h.84v.84h-.84zM4 2h.84v.84h-.84zM5 2h.84v.84h-.84zM7 2h.84v.84h-.84zM3 3h.84v.84h-.84zM5 3h.84v.84h-.84zM6 3h.84v.84h-.84zM0 4h.84v.84h-.84zM2 4h.84v.84h-.84zM3 4h.84v.84h-.84zM6 4h.84v.84h-.84zM7 4h.84v.84h-.84zM1 5h.84v.84h-.84zM4 5h.84v.84h-.84zM5 5h.84v.84h-.84zM7 5h.84v.84h-.84zM0 6h.84v.84h-.84zM1 6h.84v.84h-.84zM2 6h.84v.84h-.84zM5 6h.84v.84h-.84zM7 6h.84v.84h-.84zM0 7h.84v.84h-.84zM2 7h.84v.84h-.84zM3 7h.84v.84h-.84zM4 7h.84v.84h-.84zM6 7h.84v.84h-.84z'/%3E%3C/svg%3E");
+  background-origin: content-box; background-clip: content-box; background-size: 100% 100%; background-repeat: no-repeat;
+}
+[data-actor="frame"]  { border: 1.5px solid var(--ink); --bw: 1.5px; --x: 960px; --y: 540px; --w: 0px; --h: 0px; --o: 0; }
+[data-actor="rule"]   { background: var(--ink); --x: 120px; --y: 205px; --w: 0px; --h: 1.5px; }
+[data-actor="rule-v"] { background: var(--ink); --x: 960px; --y: 630px; --w: 1.5px; --h: 0px; }
+
+/* ---------- 1. cover: signature glitch column right, QR stamp, masthead rule ---------- */
+[data-layout="cover"] [data-actor="slab"]     { --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-layout="cover"] [data-actor="glitch"]   { --x: 1300px; --y: 60px; --w: 560px; --h: 960px; --r: 0deg; }
+[data-layout="cover"] [data-actor="glitch-b"] { --x: 120px; --y: 930px; --w: 560px; --h: 40px; }
+[data-layout="cover"] [data-actor="qr"]       { --x: 1236px; --y: 120px; --w: 112px; }
+[data-layout="cover"] [data-actor="frame"]    { --x: 1300px; --y: 540px; --w: 0px; --h: 0px; --o: 0; }
+[data-layout="cover"] [data-actor="rule"]     { --x: 120px; --y: 150px; --w: 1040px; --h: 1.5px; }
+[data-layout="cover"] [data-actor="rule-v"]   { --x: 1220px; --y: 300px; --h: 480px; }
+
+/* ---------- 2. agenda: topbar rule, index gutter, thin glitch on the edge ---------- */
+[data-layout="agenda"] [data-actor="slab"]     { --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-layout="agenda"] [data-actor="glitch"]   { --x: 1836px; --y: 270px; --w: 64px; --h: 720px; --r: 0deg; }
+[data-layout="agenda"] [data-actor="glitch-b"] { --x: -700px; --y: 205px; --w: 560px; --h: 40px; }
+[data-layout="agenda"] [data-actor="qr"]       { --x: 1704px; --y: 80px; --w: 96px; }
+[data-layout="agenda"] [data-actor="frame"]    { --x: 960px; --y: 630px; --w: 0px; --h: 0px; --o: 0; }
+[data-layout="agenda"] [data-actor="rule"]     { --x: 120px; --y: 205px; --w: 1680px; --h: 1.5px; }
+[data-layout="agenda"] [data-actor="rule-v"]   { --x: 960px; --y: 290px; --h: 680px; }
+
+/* ---------- 3. section: cobalt plate right, QR on the plate, glitch steps into it ---------- */
+[data-layout="section"] [data-actor="slab"]     { --x: 1100px; --y: 0px; --w: 820px; --h: 1080px; }
+[data-layout="section"] [data-actor="glitch"]   { --x: 990px; --y: 0px; --w: 110px; --h: 1080px; --r: 0deg; }
+[data-layout="section"] [data-actor="glitch-b"] { --x: 160px; --y: 930px; --w: 520px; --h: 40px; }
+[data-layout="section"] [data-actor="qr"]       { --x: 1420px; --y: 450px; --w: 180px; }
+[data-layout="section"] [data-actor="frame"]    { --x: 1510px; --y: 540px; --w: 0px; --h: 0px; --o: 0; }
+[data-layout="section"] [data-actor="rule"]     { --x: 160px; --y: 150px; --w: 780px; --h: 1.5px; }
+[data-layout="section"] [data-actor="rule-v"]   { --x: 1100px; --y: 630px; --h: 0px; }
+
+/* ---------- 4. content (odd): framed highlight, gutter rule, scan strip in the frame ---------- */
+[data-layout="content"] [data-actor="slab"]     { --x: 1920px; --y: 230px; --w: 0px; --h: 850px; }
+[data-layout="content"] [data-actor="glitch"]   { --x: 1290px; --y: 880px; --w: 480px; --h: 50px; --r: 0deg; }
+[data-layout="content"] [data-actor="glitch-b"] { --x: -700px; --y: 930px; --w: 560px; --h: 40px; }
+[data-layout="content"] [data-actor="qr"]       { --x: 1704px; --y: 80px; --w: 96px; }
+[data-layout="content"] [data-actor="frame"]    { --x: 1260px; --y: 290px; --w: 540px; --h: 680px; --o: 1; border-color: var(--ink); }
+[data-layout="content"] [data-actor="rule"]     { --x: 120px; --y: 205px; --w: 1680px; --h: 1.5px; }
+[data-layout="content"] [data-actor="rule-v"]   { --x: 1200px; --y: 290px; --h: 680px; }
+/* even: plate slides in under the highlight, frame turns paper, glitch jumps to the left edge */
+[data-layout="content"][data-parity="even"] [data-actor="slab"]     { --x: 1240px; --y: 230px; --w: 680px; --h: 850px; }
+[data-layout="content"][data-parity="even"] [data-actor="glitch"]   { --x: 24px; --y: 290px; --w: 60px; --h: 680px; }
+[data-layout="content"][data-parity="even"] [data-actor="glitch-b"] { --x: -700px; --y: 930px; }
+[data-layout="content"][data-parity="even"] [data-actor="qr"]       { --x: 1196px; --y: 186px; --w: 88px; }
+[data-layout="content"][data-parity="even"] [data-actor="frame"]    { --x: 1280px; --y: 290px; --w: 600px; --h: 680px; border-color: var(--paper); }
+[data-layout="content"][data-parity="even"] [data-actor="rule"]     { --x: 120px; --y: 205px; --w: 1060px; }
+[data-layout="content"][data-parity="even"] [data-actor="rule-v"]   { --x: 1240px; --y: 290px; --h: 0px; }
+
+/* ---------- 5. two-col: plate shrinks into the takeaway band, rule splits the columns ---------- */
+[data-layout="two-col"] [data-actor="slab"]     { --x: 120px; --y: 880px; --w: 1680px; --h: 110px; }
+[data-layout="two-col"] [data-actor="glitch"]   { --x: 1836px; --y: 270px; --w: 64px; --h: 570px; --r: 0deg; }
+[data-layout="two-col"] [data-actor="glitch-b"] { --x: -700px; --y: 930px; --w: 560px; --h: 40px; }
+[data-layout="two-col"] [data-actor="qr"]       { --x: 1704px; --y: 80px; --w: 96px; }
+[data-layout="two-col"] [data-actor="frame"]    { --x: 960px; --y: 555px; --w: 0px; --h: 0px; --o: 0; }
+[data-layout="two-col"] [data-actor="rule"]     { --x: 120px; --y: 205px; --w: 1680px; --h: 1.5px; }
+[data-layout="two-col"] [data-actor="rule-v"]   { --x: 960px; --y: 290px; --h: 530px; }
+.deck-stage[data-layout="two-col"]:not(:has(> .slide.active .takeaway)) [data-actor="slab"] { --y: 990px; --h: 0px; }
+
+/* ---------- 6. stats: frame boxes the figures, QR stamps its corner, scan strip below ---------- */
+[data-layout="stats"] [data-actor="slab"]     { --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-layout="stats"] [data-actor="glitch"]   { --x: 1836px; --y: 300px; --w: 64px; --h: 660px; --r: 0deg; }
+[data-layout="stats"] [data-actor="glitch-b"] { --x: 150px; --y: 900px; --w: 1620px; --h: 36px; }
+[data-layout="stats"] [data-actor="qr"]       { --x: 84px; --y: 264px; --w: 72px; }
+[data-layout="stats"] [data-actor="frame"]    { --x: 120px; --y: 300px; --w: 1680px; --h: 660px; --o: 1; border-color: var(--ink); }
+[data-layout="stats"] [data-actor="rule"]     { --x: 120px; --y: 205px; --w: 1680px; --h: 1.5px; }
+[data-layout="stats"] [data-actor="rule-v"]   { --x: 960px; --y: 630px; --h: 0px; }
+
+/* ---------- 7. timeline: rule drops to the axis, scan strip becomes the topbar ---------- */
+[data-layout="timeline"] [data-actor="slab"]     { --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-layout="timeline"] [data-actor="glitch"]   { --x: 1920px; --y: 60px; --w: 0px; --h: 960px; --r: 0deg; }
+[data-layout="timeline"] [data-actor="glitch-b"] { --x: 120px; --y: 196px; --w: 1680px; --h: 20px; }
+[data-layout="timeline"] [data-actor="qr"]       { --x: 1808px; --y: 598px; --w: 64px; }
+[data-layout="timeline"] [data-actor="frame"]    { --x: 960px; --y: 630px; --w: 0px; --h: 0px; --o: 0; }
+[data-layout="timeline"] [data-actor="rule"]     { --x: 120px; --y: 629px; --w: 1680px; --h: 3px; }
+[data-layout="timeline"] [data-actor="rule-v"]   { --x: 88px; --y: 270px; --h: 720px; }
+
+/* ---------- 8. quote: compact glitch column right with QR, bar beside the quote ---------- */
+[data-layout="quote"] [data-actor="slab"]     { --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-layout="quote"] [data-actor="glitch"]   { --x: 1660px; --y: 60px; --w: 200px; --h: 960px; --r: 0deg; }
+[data-layout="quote"] [data-actor="glitch-b"] { --x: -700px; --y: 930px; --w: 560px; --h: 40px; }
+[data-layout="quote"] [data-actor="qr"]       { --x: 1600px; --y: 840px; --w: 100px; }
+[data-layout="quote"] [data-actor="frame"]    { --x: 900px; --y: 540px; --w: 0px; --h: 0px; --o: 0; }
+[data-layout="quote"] [data-actor="rule"]     { --x: 300px; --y: 220px; --w: 280px; --h: 1.5px; }
+[data-layout="quote"] [data-actor="rule-v"]   { --x: 240px; --y: 300px; --h: 480px; }
+
+/* ---------- 9. closing: colophon, glitch flips to the left edge ---------- */
+[data-layout="closing"] [data-actor="slab"]     { --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-layout="closing"] [data-actor="glitch"]   { --x: 60px; --y: 60px; --w: 560px; --h: 960px; --r: 180deg; }
+[data-layout="closing"] [data-actor="glitch-b"] { --x: 1240px; --y: 930px; --w: 560px; --h: 40px; }
+[data-layout="closing"] [data-actor="qr"]       { --x: 572px; --y: 848px; --w: 112px; }
+[data-layout="closing"] [data-actor="frame"]    { --x: 340px; --y: 540px; --w: 0px; --h: 0px; --o: 0; }
+[data-layout="closing"] [data-actor="rule"]     { --x: 760px; --y: 150px; --w: 1040px; --h: 1.5px; }
+[data-layout="closing"] [data-actor="rule-v"]   { --x: 700px; --y: 300px; --h: 480px; }
+
+/* ---------- content tweaks: serif statements, mono chrome, flat rules ---------- */
+.kicker { font-weight: 600; letter-spacing: 0.18em; }
+.meta, .cite { font-family: var(--font-mono); letter-spacing: 0.06em; }
+.slide > .title:first-child { font-size: 70px; }
+.slide:is([data-layout="cover"], [data-layout="closing"]) { align-items: flex-start; text-align: left; padding: 0 760px 0 120px; }
+.slide[data-layout="closing"] { align-items: flex-end; text-align: right; padding: 0 120px 0 760px; }
+.slide[data-layout="cover"] .title { font-size: 116px; line-height: 1.02; }
+.slide[data-layout="closing"] .title { font-size: 168px; line-height: 1; }
+.slide[data-layout="section"] { padding: 0 980px 0 160px; }
+.slide[data-layout="section"] .num { font-size: 240px; letter-spacing: -0.015em; }
+.agenda-list { --agenda-gap: 160px; --tile-line: 1px solid var(--ink-faint); }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list :is(h3, .num), .col h3, .step h3 { font-weight: 400; }
+.slide[data-layout="content"] { --hl-left: 1290px; --hl-right: 150px; --bullets-w: 1020px; }
+.slide[data-layout="content"] :is(.hl-big, .hl-text) { font-weight: 400; }
+.slide[data-layout="content"][data-parity="even"] { --hl-left: 1300px; --hl-right: 60px; --title-w: 1060px; }
+.slide[data-layout="content"][data-parity="even"] .highlight { color: var(--bg); }
+.slide[data-layout="content"][data-parity="even"] :is(.hl-big, .hl-icon) { color: var(--bg); }
+.col { border-top: 1.5px solid var(--ink); padding: 40px 48px 40px 0; }
+.col + .col { padding: 40px 0 40px 8px; }
+.takeaway { border-left: 0; padding: 20px 48px; color: var(--bg); font-weight: 400; font-size: 40px; }
+.stat-num { letter-spacing: -0.015em; }
+.step::before { border-radius: 0; }
+.timeline::before { opacity: 0; }
+.slide[data-layout="quote"] { padding: 0 380px 0 300px; }
+.slide[data-layout="quote"] .quote { font-size: 72px; line-height: 1.12; }
+.deck-progress { background: #1F2BE0; }

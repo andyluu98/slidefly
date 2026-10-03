@@ -1,0 +1,232 @@
+/* STYLE: STENCIL & TABLET (adapted from frontend-slides, MIT). Bone paper, black fields,
+   rounded "tablet" cards in an earth palette; Bricolage headlines, stencil numerals.
+   Actors (DOM order = z-order): blk blob orange teal mustard magenta paper mark.
+   Repeated section/content/two-col slides get 3 poses via data-variant. */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Big+Shoulders+Stencil+Display:wght@800;900&family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600&family=Dela+Gothic+One&display=swap');
+
+.deck-stage {
+  --actors: "blk blob orange teal mustard magenta paper mark";
+  --font-display: 'Bricolage Grotesque', sans-serif;
+  --font-num: 'Big Shoulders Stencil Display', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-chrome: 'Barlow Condensed', sans-serif;
+  --bone: #E2DCC9; --black: #000000; --ink: #0A0A0A; --paper: #F4EFE0;
+  --c-sienna: #A06A3C; --c-magenta: #C73B7A; --c-orange: #EE7A2E; --c-teal: #2D7E73;
+  --c-blue: #3F73B7; --c-mustard: #D8A93B; --c-olive: #6F7A2E;
+  --bg: var(--bone); --fg: var(--ink); --muted: #4A443A;
+  --accent: var(--c-magenta); --accent-2: var(--c-teal);
+  --card-bg: transparent; --card-fg: var(--ink); --card-radius: 26px;
+  --title-weight: 800; --title-tracking: -0.03em; --title-case: none; --bullet-radius: 4px;
+}
+.deck-stage:is([data-layout="agenda"], [data-layout="section"], [data-layout="stats"], [data-layout="closing"]) {
+  --fg: var(--bone); --muted: #B8B09A; --accent: var(--c-orange);
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="blk"]     { background: var(--black); --x: 0px; --y: 1080px; --w: 1920px; --h: 0px; }
+[data-actor="blob"] {
+  background: var(--c-sienna); --x: 1960px; --y: -460px; --w: 420px; --h: 400px;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' preserveAspectRatio='none'%3E%3Cpath d='M44 26C72 2 128 4 160 30s40 82 18 118-70 52-112 40S6 140 8 96 16 50 44 26Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' preserveAspectRatio='none'%3E%3Cpath d='M44 26C72 2 128 4 160 30s40 82 18 118-70 52-112 40S6 140 8 96 16 50 44 26Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+[data-actor="orange"]  { background: var(--c-orange);  border-radius: 26px; --x: -700px; --y: 250px; --w: 584px; --h: 760px; }
+[data-actor="teal"]    { background: var(--c-teal);    border-radius: 26px; --x: 1960px; --y: 250px; --w: 584px; --h: 760px; }
+[data-actor="mustard"] { background: var(--c-mustard); border-radius: 22px; --x: 96px; --y: -220px; --w: 1728px; --h: 132px; }
+[data-actor="magenta"] { background: var(--c-magenta); border-radius: 14px; --x: 1960px; --y: 1120px; --w: 56px; --h: 56px; }
+[data-actor="paper"]   { background: var(--paper);     border-radius: 22px; --x: 96px; --y: 1120px; --w: 1104px; --h: 760px; }
+[data-actor="mark"]    { color: var(--bone); --x: 110px; --y: -420px; --w: 220px; --h: 220px; --o: 0; --s: 0.4; }
+[data-actor="mark"]::before {
+  content: "\201C"; position: absolute; left: 0; top: 0;
+  font: 400 320px/0.9 'Dela Gothic One', sans-serif;
+}
+
+/* ---------- 1. cover: bone page, tablets tile the right third ---------- */
+[data-layout="cover"] [data-actor="blob"]    { --x: 1600px; --y: -150px; --w: 440px; --h: 400px; }
+[data-layout="cover"] [data-actor="orange"]  { --x: 1240px; --y: 80px; --w: 616px; --h: 560px; }
+[data-layout="cover"] [data-actor="teal"]    { --x: 1240px; --y: 664px; --w: 296px; --h: 336px; }
+[data-layout="cover"] [data-actor="mustard"] { --x: 1560px; --y: 664px; --w: 296px; --h: 336px; border-radius: 26px; }
+[data-layout="cover"] [data-actor="magenta"] { --x: 120px; --y: 944px; }
+
+/* ---------- 2. agenda: black field, each number sits on a tablet ---------- */
+[data-layout="agenda"] [data-actor="blk"]     { --y: 0px; --h: 1080px; }
+[data-layout="agenda"] [data-actor="blob"]    { --x: 1560px; --y: -170px; --w: 500px; --h: 430px; background: var(--c-olive); }
+[data-layout="agenda"] [data-actor="orange"]  { --x: 120px; --y: 350px; --w: 200px; --h: 200px; }
+[data-layout="agenda"] [data-actor="magenta"] { --x: 120px; --y: 710px; --w: 200px; --h: 200px; border-radius: 26px; }
+[data-layout="agenda"] [data-actor="mustard"] { --x: 1040px; --y: 350px; --w: 200px; --h: 200px; border-radius: 26px; }
+[data-layout="agenda"] [data-actor="teal"]    { --x: 1040px; --y: 710px; --w: 200px; --h: 200px; }
+[data-layout="agenda"] [data-actor="paper"]   { --x: 120px; --y: 214px; --w: 1680px; --h: 4px; border-radius: 2px; }
+
+/* ---------- 3. section: mega stencil numeral, tablets shrink to chips ---------- */
+[data-layout="section"] [data-actor="blk"]     { --y: 0px; --h: 1080px; }
+[data-layout="section"] [data-actor="blob"]    { --x: -170px; --y: 820px; --w: 560px; --h: 420px; background: var(--c-magenta); }
+[data-layout="section"] [data-actor="orange"]  { --x: 1516px; --y: 90px; --w: 56px; --h: 56px; border-radius: 14px; }
+[data-layout="section"] [data-actor="magenta"] { --x: 1592px; --y: 90px; }
+[data-layout="section"] [data-actor="mustard"] { --x: 1668px; --y: 90px; --w: 56px; --h: 56px; border-radius: 14px; }
+[data-layout="section"] [data-actor="teal"]    { --x: 1744px; --y: 90px; --w: 56px; --h: 56px; border-radius: 14px; }
+[data-layout="section"] [data-actor="paper"]   { --x: 976px; --y: 300px; --w: 4px; --h: 480px; border-radius: 2px; }
+
+/* ---------- 4. content: mustard action bar, paper card, teal tablet ---------- */
+[data-layout="content"] [data-actor="mustard"] { --y: 62px; }
+[data-layout="content"] [data-actor="paper"]   { --y: 250px; }
+[data-layout="content"] [data-actor="teal"]    { --x: 1240px; }
+[data-layout="content"] [data-actor="blob"]    { --x: 1700px; --y: 880px; --w: 320px; --h: 280px; }
+/* even: tablets swap sides, orange carries the highlight */
+[data-layout="content"][data-parity="even"] [data-actor="teal"]   { --x: 1960px; }
+[data-layout="content"][data-parity="even"] [data-actor="orange"] { --x: 96px; }
+[data-layout="content"][data-parity="even"] [data-actor="paper"]  { --x: 720px; }
+[data-layout="content"][data-parity="even"] [data-actor="blob"]   { --x: -100px; --y: 880px; background: var(--c-olive); }
+
+/* ---------- 5. two-col: two tablets are the columns ---------- */
+[data-layout="two-col"] [data-actor="orange"]  { --x: 120px; --y: 270px; --w: 808px; --h: 720px; }
+[data-layout="two-col"] [data-actor="teal"]    { --x: 992px; --y: 270px; --w: 808px; --h: 720px; }
+[data-layout="two-col"] [data-actor="mustard"] { --x: 120px; --y: 192px; --w: 240px; --h: 14px; border-radius: 7px; }
+[data-layout="two-col"] [data-actor="magenta"] { --x: 1744px; --y: 100px; }
+[data-layout="two-col"] [data-actor="blob"]    { --x: 1640px; --y: -230px; --w: 420px; --h: 360px; background: var(--c-olive); }
+/* with a takeaway: tablets shorten, mustard becomes the action bar */
+.deck-stage:has(.slide.active .takeaway)[data-layout="two-col"] [data-actor="orange"],
+.deck-stage:has(.slide.active .takeaway)[data-layout="two-col"] [data-actor="teal"] { --h: 570px; }
+.deck-stage:has(.slide.active .takeaway)[data-layout="two-col"] [data-actor="mustard"] { --x: 120px; --y: 880px; --w: 1680px; --h: 110px; border-radius: 22px; }
+
+/* ---------- 6. stats: black field, one tablet per figure ---------- */
+[data-layout="stats"] [data-actor="blk"]     { --y: 0px; --h: 1080px; }
+[data-layout="stats"] [data-actor="orange"]  { --x: 120px; --y: 270px; --w: 528px; --h: 720px; }
+[data-layout="stats"] [data-actor="mustard"] { --x: 696px; --y: 270px; --w: 528px; --h: 720px; border-radius: 26px; }
+[data-layout="stats"] [data-actor="teal"]    { --x: 1272px; --y: 270px; --w: 528px; --h: 720px; }
+[data-layout="stats"] [data-actor="magenta"] { --x: 1744px; --y: 100px; }
+[data-layout="stats"] [data-actor="blob"]    { --x: 1580px; --y: -250px; --w: 440px; --h: 380px; background: var(--c-blue); }
+
+/* ---------- 7. timeline: action bar on top, paper bar is the axis ---------- */
+[data-layout="timeline"] [data-actor="mustard"] { --y: 62px; }
+[data-layout="timeline"] [data-actor="paper"]   { --x: 96px; --y: 605px; --w: 1728px; --h: 50px; border-radius: 14px; }
+[data-layout="timeline"] [data-actor="teal"]    { --x: -100px; --y: 580px; --w: 160px; --h: 100px; }
+[data-layout="timeline"] [data-actor="orange"]  { --x: 1860px; --y: 580px; --w: 160px; --h: 100px; }
+[data-layout="timeline"] [data-actor="blob"]    { --x: -140px; --y: 930px; --w: 380px; --h: 280px; }
+
+/* ---------- 8. quote: magenta panel fills the page ---------- */
+.deck-stage[data-layout="quote"] { --fg: var(--ink); --muted: #3A1426; --accent: var(--ink); }
+[data-layout="quote"] [data-actor="magenta"] { --x: 64px; --y: 64px; --w: 1792px; --h: 952px; border-radius: 26px; }
+[data-layout="quote"] [data-actor="mark"]    { --x: 90px; --y: 300px; --o: 1; --s: 1; }
+[data-layout="quote"] [data-actor="mustard"] { --x: 1500px; --y: -220px; --w: 356px; }
+
+/* ---------- 9. closing: lineup poster, four tablets frame the thanks ---------- */
+[data-layout="closing"] [data-actor="blk"]     { --y: 0px; --h: 1080px; }
+[data-layout="closing"] [data-actor="orange"]  { --x: 64px; --y: 64px; --w: 680px; --h: 200px; }
+[data-layout="closing"] [data-actor="mustard"] { --x: 768px; --y: 64px; --w: 1088px; --h: 200px; border-radius: 26px; }
+[data-layout="closing"] [data-actor="teal"]    { --x: 64px; --y: 816px; --w: 968px; --h: 200px; }
+[data-layout="closing"] [data-actor="magenta"] { --x: 1056px; --y: 816px; --w: 800px; --h: 200px; border-radius: 26px; }
+[data-layout="closing"] [data-actor="blob"]    { --x: -500px; --y: 400px; background: var(--c-olive); }
+
+/* ---------- content tweaks: Bricolage headlines, stencil numerals, Barlow chrome ---------- */
+.slide .title { line-height: 1.1; }
+.slide :is(.num, .stat-num, .when, .hl-big) { font-family: var(--font-num); letter-spacing: 0; }
+.slide .kicker {
+  display: inline-block; align-self: flex-start; padding: 8px 22px; border-radius: 999px;
+  background: var(--c-teal); color: var(--bone); font-family: var(--font-chrome); font-size: 26px; font-weight: 800; letter-spacing: 0.12em;
+}
+.slide :is(.meta, .cite) { font-family: var(--font-chrome); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.slide :is(.agenda-list h3, .col h3, .step h3, .hl-text, .takeaway) { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.02em; }
+.slide b { font-family: var(--font-chrome); font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
+.slide[data-layout="cover"] { align-items: flex-start; text-align: left; padding: 0 800px 0 120px; }
+.slide[data-layout="cover"] .title { font-size: 120px; line-height: 1.06; }
+.slide[data-layout="closing"] .kicker { align-self: center; }
+.slide[data-layout="closing"] .title { font-size: 190px; line-height: 1.02; }
+/* agenda: number centred inside its 200px tablet */
+.agenda-list { --agenda-gap: 160px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list .num { flex: none; width: 200px; height: 200px; display: flex; align-items: center; justify-content: center; color: var(--ink); }
+.agenda-list li:nth-child(4) .num { color: var(--bone); }
+[data-density="lg"] .agenda-list, [data-density="md"] .agenda-list { --n-num: 120px; }
+/* section: 540px numeral left, headline right of the paper rule */
+.slide[data-layout="section"] {
+  display: grid; grid-template-columns: 820px 1fr; grid-template-rows: 1fr auto auto 1fr;
+  column-gap: 80px; row-gap: 24px; padding: 0 120px;
+}
+.slide[data-layout="section"] .num { grid-column: 1; grid-row: 1 / 5; align-self: center; font-size: 540px; line-height: 0.8; }
+.slide[data-layout="section"] .title { grid-column: 2; grid-row: 2; font-size: 110px; line-height: 1.05; }
+.slide[data-layout="section"] .subtitle { grid-column: 2; grid-row: 3; }
+/* content: bullets on the paper card, highlight on the tablet */
+.slide[data-layout="content"] .title { width: 1600px; }
+.slide[data-layout="content"] .bullets { left: 160px; width: 1000px; }
+.slide[data-layout="content"] .highlight { --accent: var(--bone); color: var(--bone); }
+.slide[data-layout="content"][data-parity="even"] { --hl-left: 120px; --hl-right: 1240px; }
+.slide[data-layout="content"][data-parity="even"] .bullets { left: 784px; }
+.slide[data-layout="content"][data-parity="even"] .highlight { --accent: var(--ink); color: var(--ink); }
+.slide[data-layout="content"] .hl-big { font-size: 180px; }
+.slide[data-layout="content"] .hl-text { font-size: 44px; }
+/* two-col: ink on orange, bone on teal; mustard takeaway bar */
+.col:first-child { --accent: var(--ink); color: var(--ink); }
+.col:last-child { --accent: var(--bone); color: var(--bone); }
+.takeaway { border-left: 0; padding: 20px 40px; color: var(--ink); font-size: 38px; }
+/* stats: figures sit on their tablets */
+.slide[data-layout="stats"] .stat { padding: 0 36px; }
+.slide[data-layout="stats"] .stat :is(.stat-num, .stat-label) { color: var(--ink); }
+.slide[data-layout="stats"] .stat:nth-child(3) :is(.stat-num, .stat-label) { color: var(--bone); }
+/* timeline: ink axis inside the paper bar, dots cycle the palette */
+.slide[data-layout="timeline"] .title { width: 1600px; }
+.timeline::before { background: var(--ink); opacity: 0.55; height: 3px; top: calc(50% - 1.5px); }
+.step:nth-child(5n+1)::before { background: var(--c-orange); }
+.step:nth-child(5n+2)::before { background: var(--c-teal); }
+.step:nth-child(5n+3)::before { background: var(--c-mustard); }
+.step:nth-child(5n+4)::before { background: var(--c-magenta); }
+.step:nth-child(5n+5)::before { background: var(--c-blue); }
+/* quote: stencil sentence on the magenta panel */
+.slide[data-layout="quote"] .quote { font-size: 88px; font-weight: 700; line-height: 1.12; letter-spacing: -0.025em; }
+.slide[data-layout="quote"] .cite { font-size: 28px; }
+
+/* agenda with 5+ items: tablets fold into chips, every number carries its own colour */
+.deck-stage:has(.slide.active .agenda-list > li:nth-child(5)) [data-actor="orange"]  { --x: 1516px; --y: 90px; --w: 56px; --h: 56px; }
+.deck-stage:has(.slide.active .agenda-list > li:nth-child(5)) [data-actor="magenta"] { --x: 1592px; --y: 90px; --w: 56px; --h: 56px; }
+.deck-stage:has(.slide.active .agenda-list > li:nth-child(5)) [data-actor="mustard"] { --x: 1668px; --y: 90px; --w: 56px; --h: 56px; }
+.deck-stage:has(.slide.active .agenda-list > li:nth-child(5)) [data-actor="teal"]    { --x: 1744px; --y: 90px; --w: 56px; --h: 56px; }
+.agenda-list:has(> li:nth-child(5)) .num { border-radius: 26px; background: var(--c-orange); color: var(--ink); }
+.agenda-list:has(> li:nth-child(5)) li:nth-child(2) .num { background: var(--c-mustard); }
+.agenda-list:has(> li:nth-child(5)) li:nth-child(3) .num { background: var(--c-magenta); color: var(--bone); }
+.agenda-list:has(> li:nth-child(5)) li:nth-child(4) .num { background: var(--c-teal); color: var(--bone); }
+.agenda-list:has(> li:nth-child(5)) li:nth-child(5) .num { background: var(--c-blue); color: var(--bone); }
+.agenda-list:has(> li:nth-child(5)) li:nth-child(6) .num { background: var(--c-olive); color: var(--bone); }
+
+/* stats with 4 figures: four tablets on the four columns */
+.deck-stage:has(.slide.active .stats > .stat:nth-child(4)) [data-actor="orange"]  { --x: 120px; --w: 384px; }
+.deck-stage:has(.slide.active .stats > .stat:nth-child(4)) [data-actor="mustard"] { --x: 552px; --w: 384px; }
+.deck-stage:has(.slide.active .stats > .stat:nth-child(4)) [data-actor="teal"]    { --x: 984px; --w: 384px; }
+.deck-stage:has(.slide.active .stats > .stat:nth-child(4)) [data-actor="magenta"] { --x: 1416px; --y: 270px; --w: 384px; --h: 720px; border-radius: 26px; }
+.slide[data-layout="stats"] .stat:nth-child(4) :is(.stat-num, .stat-label) { color: var(--bone); }
+
+/* ---------- variants: repeated layouts take a different pose ---------- */
+/* section v2: orange slab carries the numeral | v3: mirrored, teal slab on the right */
+[data-layout="section"][data-variant="2"] [data-actor="orange"] { --x: 96px; --y: 96px; --w: 808px; --h: 888px; border-radius: 26px; }
+[data-layout="section"][data-variant="2"] [data-actor="blob"]   { --x: 1560px; --y: -220px; --w: 520px; --h: 440px; background: var(--c-blue); }
+[data-layout="section"][data-variant="3"] [data-actor="teal"]   { --x: 1016px; --y: 96px; --w: 808px; --h: 888px; border-radius: 26px; }
+[data-layout="section"][data-variant="3"] [data-actor="orange"] { --x: 120px; }
+[data-layout="section"][data-variant="3"] [data-actor="magenta"] { --x: 196px; }
+[data-layout="section"][data-variant="3"] [data-actor="mustard"] { --x: 272px; }
+[data-layout="section"][data-variant="3"] [data-actor="paper"]  { --x: 938px; }
+[data-layout="section"][data-variant="3"] [data-actor="blob"]   { background: var(--c-olive); }
+.slide[data-layout="section"] .num { justify-self: center; }
+.slide[data-layout="section"][data-variant="2"] .num { color: var(--ink); }
+.slide[data-layout="section"][data-variant="3"] { grid-template-columns: 1fr 820px; }
+.slide[data-layout="section"][data-variant="3"] .num { grid-column: 2; color: var(--bone); }
+.slide[data-layout="section"][data-variant="3"] :is(.title, .subtitle) { grid-column: 1; }
+/* content v2: teal title bar, mustard tablet | v3: black field, magenta tablet */
+[data-layout="content"][data-variant="2"] [data-actor="teal"]    { --x: 96px; --y: 62px; --w: 1728px; --h: 132px; border-radius: 22px; }
+[data-layout="content"][data-variant="2"] [data-actor="mustard"] { --x: 1240px; --y: 250px; --w: 584px; --h: 760px; border-radius: 26px; }
+[data-layout="content"][data-variant="2"][data-parity="even"] [data-actor="mustard"] { --x: 96px; }
+[data-layout="content"][data-variant="2"][data-parity="even"] [data-actor="orange"]  { --x: -700px; }
+[data-layout="content"][data-variant="3"] [data-actor="blk"]     { --y: 0px; --h: 1080px; }
+[data-layout="content"][data-variant="3"] [data-actor="teal"]    { --x: 1960px; }
+[data-layout="content"][data-variant="3"] [data-actor="orange"]  { --x: -700px; }
+[data-layout="content"][data-variant="3"] [data-actor="magenta"] { --x: 1240px; --y: 250px; --w: 584px; --h: 760px; border-radius: 26px; }
+[data-layout="content"][data-variant="3"][data-parity="even"] [data-actor="magenta"] { --x: 96px; }
+.slide[data-layout="content"][data-variant="2"] > .title { color: var(--bone); }
+.slide[data-layout="content"][data-variant="2"] .highlight { --accent: var(--ink); color: var(--ink); }
+.slide[data-layout="content"][data-variant="3"] .highlight { --accent: var(--bone); color: var(--bone); }
+/* two-col v2: tablets swap sides | v3: magenta replaces orange */
+[data-layout="two-col"][data-variant="2"] [data-actor="orange"] { --x: 992px; }
+[data-layout="two-col"][data-variant="2"] [data-actor="teal"]   { --x: 120px; }
+[data-layout="two-col"][data-variant="3"] [data-actor="magenta"] { --x: 120px; --y: 270px; --w: 808px; --h: 720px; border-radius: 26px; }
+.deck-stage:has(.slide.active .takeaway)[data-layout="two-col"][data-variant="3"] [data-actor="magenta"] { --h: 570px; }
+.deck-stage[data-layout="two-col"][data-variant="3"] [data-actor="orange"],
+.deck-stage:has(.slide.active .takeaway)[data-layout="two-col"][data-variant="3"] [data-actor="orange"] { --x: 1744px; --y: 100px; --w: 56px; --h: 56px; }
+.slide[data-layout="two-col"][data-variant="2"] .col:first-child { --accent: var(--bone); color: var(--bone); }
+.slide[data-layout="two-col"][data-variant="2"] .col:last-child  { --accent: var(--ink); color: var(--ink); }
+.slide[data-layout="two-col"][data-variant="3"] .col:first-child { --accent: var(--bone); color: var(--bone); }

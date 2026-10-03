@@ -1,0 +1,198 @@
+/* ===========================================================
+   STYLE: RETRO WINDOWS (adapted from frontend-slides, MIT)
+   Windows 95 desktop: teal desktop, beveled gray windows with a
+   navy title bar and _ [] X buttons, white sunken wells, navy
+   block progress bar, taskbar with Start, CRT scanlines.
+   Actors: ico-a, ico-b (desktop icons), win (main window),
+           dlg (second window, minimizes to the taskbar),
+           pane (white sunken well), bar (navy block progress),
+           task (taskbar), cursor (mouse pointer).
+           DOM order = z-order (icons first, cursor last).
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&family=VT323&display=swap');
+
+.deck-stage {
+  --actors: "ico-a ico-b win dlg pane bar task cursor";
+  --font-display: 'Be Vietnam Pro', sans-serif;
+  --font-body: 'Be Vietnam Pro', sans-serif;
+  --font-pixel: 'VT323', monospace;
+  --bg: #008080; --fg: #222222; --muted: #555555;
+  --accent: #000080; --accent-2: #1084d0;
+  --card-bg: #ffffff; --card-fg: #222222; --card-radius: 0px;
+  --title-weight: 700; --title-tracking: 0; --bullet-radius: 0;
+  --face: #d4d0c8; --navy: #000080;
+}
+/* CRT scanlines over the whole stage (3%, never hurts contrast) */
+.deck-stage::after {
+  content: ""; position: absolute; inset: 0; z-index: 30; pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.03) 0 1px, transparent 1px 3px);
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="win"], [data-actor="dlg"] {
+  --tb: linear-gradient(90deg, #000080, #1084d0);
+  background: var(--face); border: 3px solid; border-color: #fff #000 #000 #fff;
+  box-shadow: inset 2px 2px 0 #dfdfdf, inset -2px -2px 0 #808080;
+}
+[data-actor="win"]::before, [data-actor="dlg"]::before {
+  content: var(--file, "PRESENTATION.EXE"); position: absolute; left: 3px; right: 3px; top: 3px; height: 40px;
+  padding: 0 130px 0 48px; overflow: hidden; white-space: nowrap; color: #fff;
+  font: 700 21px/40px 'Be Vietnam Pro', sans-serif; letter-spacing: 0.06em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26'%3E%3Crect x='1' y='1' width='24' height='24' fill='white' stroke='black' stroke-width='2'/%3E%3Crect x='2' y='2' width='22' height='6' fill='%23000080'/%3E%3C/svg%3E") 10px 7px / 26px 26px no-repeat, var(--tb);
+}
+[data-actor="win"]::after, [data-actor="dlg"]::after {
+  content: ""; position: absolute; top: 9px; right: 10px; width: 100px; height: 28px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 28'%3E%3Cg fill='%23d4d0c8' stroke-width='2'%3E%3Crect x='0' y='1' width='30' height='26'/%3E%3Crect x='32' y='1' width='30' height='26'/%3E%3Crect x='70' y='1' width='30' height='26'/%3E%3C/g%3E%3Cpath d='M1 27V2h29M33 27V2h29M71 27V2h29' stroke='white' stroke-width='2' fill='none'/%3E%3Cpath d='M0 27h30V1M32 27h30V1M70 27h30V1' stroke='black' stroke-width='2' fill='none'/%3E%3Crect x='8' y='18' width='12' height='3'/%3E%3Crect x='40' y='7' width='14' height='12' fill='none' stroke='black' stroke-width='2'/%3E%3Crect x='40' y='7' width='14' height='3'/%3E%3Cpath d='M79 8l12 12M91 8L79 20' stroke='black' stroke-width='3'/%3E%3C/svg%3E") no-repeat;
+}
+[data-actor="win"] { --x: 24px; --y: 24px; --w: 1872px; --h: 1006px; }
+[data-actor="dlg"] { --x: 140px; --y: 1040px; --w: 300px; --h: 34px; --o: 0; --file: "README.DOC"; }
+[data-actor="pane"] {
+  background: #fff; border: 3px solid; border-color: #808080 #fff #fff #808080;
+  box-shadow: inset 2px 2px 0 #000; --x: 960px; --y: 540px; --w: 0px; --h: 0px; --o: 0;
+}
+[data-actor="bar"] {
+  background: repeating-linear-gradient(90deg, var(--navy) 0 22px, transparent 22px 28px);
+  --x: 120px; --y: 1080px; --w: 0px; --h: 24px;
+}
+[data-actor="bar"]::before {
+  content: "i"; position: absolute; inset: 0; text-align: center; color: #fff;
+  font: 700 42px/56px Georgia, serif; opacity: var(--glyph, 0);
+}
+[data-actor="task"] {
+  background: var(--face); border-top: 3px solid #fff; box-shadow: inset 0 1px 0 #dfdfdf;
+  --x: 0px; --y: 1036px; --w: 1920px; --h: 44px;
+}
+[data-actor="task"]::before {
+  content: "Start"; position: absolute; left: 6px; top: 4px; width: 118px; height: 34px; padding-left: 42px;
+  border: 2px solid; border-color: #fff #000 #000 #fff; color: #000; font: 700 20px/30px 'Be Vietnam Pro', sans-serif;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='2' y='2' width='9' height='9' fill='%23e03c31'/%3E%3Crect x='13' y='2' width='9' height='9' fill='%2329a329'/%3E%3Crect x='2' y='13' width='9' height='9' fill='%231084d0'/%3E%3Crect x='13' y='13' width='9' height='9' fill='%23f2c40f'/%3E%3C/svg%3E") 8px center / 24px no-repeat var(--face);
+}
+[data-actor="task"]::after {
+  content: "9:41 AM"; position: absolute; right: 6px; top: 4px; width: 116px; height: 34px; text-align: center;
+  border: 2px solid; border-color: #808080 #fff #fff #808080; color: #000; font: 500 18px/30px 'Be Vietnam Pro', sans-serif;
+}
+[data-actor="ico-a"], [data-actor="ico-b"] { --w: 72px; --h: 72px; background: center / contain no-repeat; }
+[data-actor="ico-a"]::after, [data-actor="ico-b"]::after {
+  content: "My Computer"; position: absolute; top: 100%; left: -50px; right: -50px; margin-top: 6px;
+  text-align: center; color: #fff; font: 500 19px/1.2 'Be Vietnam Pro', sans-serif;
+}
+[data-actor="ico-b"]::after { content: "Slides"; }
+[data-actor="ico-a"] { --x: 46px; --y: 36px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 72 72'%3E%3Crect x='8' y='4' width='56' height='44' fill='%23d4d0c8' stroke='black' stroke-width='2'/%3E%3Crect x='14' y='10' width='44' height='31' fill='%231084d0' stroke='%23808080' stroke-width='2'/%3E%3Crect x='26' y='48' width='20' height='8' fill='%23808080' stroke='black' stroke-width='2'/%3E%3Crect x='10' y='56' width='52' height='12' fill='%23d4d0c8' stroke='black' stroke-width='2'/%3E%3C/svg%3E"); }
+[data-actor="ico-b"] { --x: 46px; --y: 196px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 72 72'%3E%3Cpath d='M4 16h24l6 7h34v41H4z' fill='%23f2c40f' stroke='black' stroke-width='2'/%3E%3Cpath d='M4 30h64' stroke='%23a37f00' stroke-width='2'/%3E%3C/svg%3E"); }
+[data-actor="cursor"] {
+  --x: 1500px; --y: 1200px; --w: 38px; --h: 56px; --s: 1.2; background: center / contain no-repeat;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 38 56'%3E%3Cpath d='M2 2v44l11-11 8 17 7-3-8-17h15z' fill='white' stroke='black' stroke-width='2.5' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+/* icons rest top-left of the desktop (hidden under maximized windows) in
+   cover, agenda, two-col, stats, timeline, quote, closing */
+:is([data-layout="cover"], [data-layout="agenda"], [data-layout="two-col"], [data-layout="stats"], [data-layout="timeline"], [data-layout="quote"], [data-layout="closing"]) [data-actor="ico-a"] { --x: 46px; --y: 36px; }
+:is([data-layout="cover"], [data-layout="agenda"], [data-layout="two-col"], [data-layout="stats"], [data-layout="timeline"], [data-layout="quote"], [data-layout="closing"]) [data-actor="ico-b"] { --x: 46px; --y: 196px; }
+
+/* ---------- 1. cover: SETUP dialog on the desktop, loading bar ---------- */
+[data-layout="cover"] [data-actor="win"]    { --x: 280px; --y: 150px; --w: 1360px; --h: 780px; --file: "SETUP.EXE"; }
+[data-layout="cover"] [data-actor="pane"]   { --x: 460px; --y: 806px; --w: 1000px; --h: 44px; --o: 1; }
+[data-layout="cover"] [data-actor="bar"]    { --x: 470px; --y: 816px; --w: 616px; --h: 24px; }
+[data-layout="cover"] [data-actor="cursor"] { --x: 1092px; --y: 826px; }
+
+/* ---------- 2. agenda: maximized window, white list box ---------- */
+[data-layout="agenda"] [data-actor="win"]    { --file: "AGENDA.TXT"; }
+[data-layout="agenda"] [data-actor="pane"]   { --x: 96px; --y: 244px; --w: 1728px; --h: 768px; --o: 1; }
+[data-layout="agenda"] [data-actor="bar"]    { --x: 1560px; --y: 112px; --w: 240px; --h: 28px; }
+[data-layout="agenda"] [data-actor="cursor"] { --x: 1770px; --y: 940px; }
+
+/* ---------- 3. section: window left with status bar, big icons right ---------- */
+[data-layout="section"] [data-actor="win"]    { --x: 100px; --y: 130px; --w: 1000px; --h: 820px; --file: "CHAPTER.DOC"; }
+[data-layout="section"] [data-actor="pane"]   { --x: 112px; --y: 906px; --w: 976px; --h: 34px; --o: 1; }
+[data-layout="section"] [data-actor="bar"]    { --x: 120px; --y: 911px; --w: 364px; --h: 24px; }
+[data-layout="section"] [data-actor="ico-a"]  { --x: 1360px; --y: 380px; --s: 1.9; }
+[data-layout="section"] [data-actor="ico-b"]  { --x: 1640px; --y: 380px; --s: 1.9; }
+[data-layout="section"] [data-actor="cursor"] { --x: 1740px; --y: 440px; --s: 1.6; }
+
+/* ---------- 4. content: notes window + viewer window framing the highlight ---------- */
+[data-layout="content"] [data-actor="win"]    { --x: 24px; --w: 1180px; --file: "NOTES.TXT"; --tb: linear-gradient(90deg, #808080, #b5b5b5); }
+[data-layout="content"] [data-actor="dlg"]    { --x: 1232px; --y: 236px; --w: 640px; --h: 780px; --o: 1; --file: "VIEWER.EXE"; }
+[data-layout="content"] [data-actor="pane"]   { --x: 1250px; --y: 290px; --w: 604px; --h: 708px; --o: 1; }
+[data-layout="content"] [data-actor="bar"]    { --x: 1268px; --y: 958px; --w: 334px; --h: 22px; }
+[data-layout="content"] [data-actor="cursor"] { --x: 1790px; --y: 900px; }
+[data-layout="content"] [data-actor="ico-a"]  { --x: 1300px; --y: 40px; }
+[data-layout="content"] [data-actor="ico-b"]  { --x: 1480px; --y: 40px; }
+/* even: the two windows swap sides */
+[data-layout="content"][data-parity="even"] [data-actor="win"]    { --x: 716px; }
+[data-layout="content"][data-parity="even"] [data-actor="dlg"]    { --x: 48px; }
+[data-layout="content"][data-parity="even"] [data-actor="pane"]   { --x: 66px; }
+[data-layout="content"][data-parity="even"] [data-actor="bar"]    { --x: 84px; --w: 502px; }
+[data-layout="content"][data-parity="even"] [data-actor="cursor"] { --x: 610px; --y: 900px; }
+[data-layout="content"][data-parity="even"] [data-actor="ico-a"]  { --x: 70px; }
+[data-layout="content"][data-parity="even"] [data-actor="ico-b"]  { --x: 250px; }
+
+/* ---------- 5. two-col: maximized, message box holds the takeaway ---------- */
+[data-layout="two-col"] [data-actor="win"]    { --file: "COMPARE.XLS"; }
+[data-layout="two-col"] [data-actor="bar"]    { --x: 1560px; --y: 112px; --w: 240px; --h: 28px; }
+[data-layout="two-col"] [data-actor="cursor"] { --x: 1770px; --y: 940px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="dlg"] { --x: 96px; --y: 846px; --w: 1728px; --h: 176px; --o: 1; --file: "MESSAGE.TXT"; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="pane"] { --x: 112px; --y: 898px; --w: 1696px; --h: 112px; --o: 1; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="bar"] {
+  --x: 140px; --y: 926px; --w: 56px; --h: 56px; --glyph: 1; background: var(--navy); border-radius: 50%;
+}
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="cursor"] { --x: 1770px; --y: 940px; }
+
+/* ---------- 6. stats: system monitor window inside the main one ---------- */
+[data-layout="stats"] [data-actor="win"]    { --file: "METRICS.LOG"; --tb: linear-gradient(90deg, #808080, #b5b5b5); }
+[data-layout="stats"] [data-actor="dlg"]    { --x: 72px; --y: 236px; --w: 1776px; --h: 780px; --o: 1; --file: "MONITOR.EXE"; }
+[data-layout="stats"] [data-actor="pane"]   { --x: 90px; --y: 290px; --w: 1740px; --h: 708px; --o: 1; }
+[data-layout="stats"] [data-actor="bar"]    { --x: 120px; --y: 950px; --w: 1680px; --h: 22px; }
+[data-layout="stats"] [data-actor="cursor"] { --x: 1780px; --y: 110px; }
+
+/* ---------- 7. timeline: the axis is a sunken progress well ---------- */
+[data-layout="timeline"] [data-actor="win"]    { --file: "TIMELINE.PRJ"; }
+[data-layout="timeline"] [data-actor="pane"]   { --x: 108px; --y: 608px; --w: 1704px; --h: 44px; --o: 1; }
+[data-layout="timeline"] [data-actor="bar"]    { --x: 118px; --y: 618px; --w: 1064px; --h: 24px; }
+[data-layout="timeline"] [data-actor="cursor"] { --x: 1196px; --y: 628px; }
+
+/* ---------- 8. quote: notepad window, white page ---------- */
+[data-layout="quote"] [data-actor="win"]    { --x: 180px; --y: 130px; --w: 1580px; --h: 820px; --file: "QUOTE.TXT"; }
+[data-layout="quote"] [data-actor="pane"]   { --x: 200px; --y: 196px; --w: 1540px; --h: 730px; --o: 1; }
+[data-layout="quote"] [data-actor="bar"]    { --x: 200px; --y: 926px; --w: 0px; }
+[data-layout="quote"] [data-actor="cursor"] { --x: 1660px; --y: 840px; }
+
+/* ---------- 9. closing: shut down dialog, desktop dims, taskbar drops ---------- */
+.deck-stage[data-layout="closing"] { --bg: #004c4c; }
+[data-layout="closing"] [data-actor="win"]    { --x: 400px; --y: 220px; --w: 1120px; --h: 640px; --file: "SHUTDOWN.EXE"; }
+[data-layout="closing"] [data-actor="pane"]   { --x: 520px; --y: 750px; --w: 880px; --h: 44px; --o: 1; }
+[data-layout="closing"] [data-actor="bar"]    { --x: 530px; --y: 760px; --w: 860px; --h: 24px; }
+[data-layout="closing"] [data-actor="task"]   { --y: 1090px; }
+[data-layout="closing"] [data-actor="cursor"] {
+  --x: 1440px; --y: 620px; --w: 36px; --h: 52px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 52'%3E%3Cpath d='M3 2h30v6l-11 18 11 18v6H3v-6l11-18L3 8z' fill='white' stroke='black' stroke-width='2.5'/%3E%3Cpath d='M9 46h18l-9-14z' fill='%23000080'/%3E%3C/svg%3E");
+}
+
+/* ---------- content tweaks: navy app-title voice, pixel numbers ---------- */
+.slide .title { color: var(--accent); }
+.slide:is([data-layout="cover"], [data-layout="closing"]) .title { font-family: var(--font-pixel); font-weight: 400; line-height: 1; letter-spacing: 0.01em; }
+.slide[data-layout="cover"] { padding: 0 340px 140px; }
+.slide[data-layout="cover"] .title { font-size: 128px; }
+.slide[data-layout="closing"] { padding: 0 460px; }
+.slide[data-layout="closing"] .title { font-size: 180px; }
+:is(.slide[data-layout="section"] .num, .agenda-list .num, .hl-big, .stat-num, .step .when) { font-family: var(--font-pixel); font-weight: 400; letter-spacing: 0; }
+.slide[data-layout="section"] .num { font-size: 280px; line-height: 0.8; }
+.slide[data-layout="content"] { --title-w: 1040px; }
+.slide[data-layout="content"][data-parity="even"] { --hl-left: 80px; --hl-right: 1260px; }
+.slide[data-layout="content"][data-parity="even"] > .title:first-child,
+.slide[data-layout="content"][data-parity="even"] .bullets { left: 800px; }
+.hl-big { font-size: 220px; }
+.bullets li::before, .col li::before {
+  content: ">"; top: 0; width: auto; height: auto; background: none; color: var(--accent); font-weight: 700;
+}
+.agenda-list { --agenda-gap: 200px; --tile-line: 2px solid #c0c0c0; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list .num { font-size: calc(var(--n-num) * 1.2); }
+.col { border: 3px solid; border-color: #808080 #fff #fff #808080; box-shadow: inset 2px 2px 0 #000; }
+.slide:has(.takeaway) .cols { bottom: 270px; }
+.takeaway { bottom: 72px; min-height: 108px; border-left: 0; padding-left: 112px; font-size: 34px; }
+.stat-num { font-size: calc(var(--s-num) * 1.15); }
+.step .when { font-size: calc(var(--t-when) * 1.3); }
+.timeline::before { opacity: 0; }
+.step::before { border-radius: 0; background: #fff; border: 3px solid #000; }
+.slide[data-layout="quote"] .quote { font-weight: 500; font-size: 72px; }

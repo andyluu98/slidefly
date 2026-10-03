@@ -1,0 +1,927 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mẫu morph-slides</title>
+<!-- Đổi style: thay đúng 1 dòng link styles/*.css bên dưới. -->
+<style>
+/* ===========================================================
+   MORPH-SLIDES BASE
+   Stage 1920x1080 scaled by JS (idea from frontend-slides
+   viewport-base.css, MIT). Actors = persistent shapes that
+   morph between poses; slides = per-slide content layer.
+   =========================================================== */
+
+:root {
+  --morph-dur: 1.2s;
+  --morph-ease: cubic-bezier(0.16, 1, 0.3, 1);   /* ease-out-expo */
+  --fade-dur: 0.35s;
+  --reveal-base: 0.45s;   /* content waits for actors to start moving */
+  --reveal-step: 0.09s;
+  --stage-bg: #000;
+}
+
+html, body {
+  width: 100%; height: 100%; margin: 0;
+  overflow: hidden;
+  background: var(--stage-bg);
+}
+*, *::before, *::after { box-sizing: border-box; }
+
+.deck-viewport { position: fixed; inset: 0; overflow: hidden; background: var(--stage-bg); }
+
+.deck-stage {
+  position: absolute; left: 0; top: 0;
+  width: 1920px; height: 1080px;
+  overflow: hidden;
+  transform-origin: 0 0;
+  background-color: var(--bg, #fff);
+  color: var(--fg, #111);
+  font-family: var(--font-body, system-ui, sans-serif);
+  transition: background-color var(--morph-dur) var(--morph-ease),
+              color var(--morph-dur) var(--morph-ease);
+}
+
+/* ---------- ACTORS ----------
+   Pose = CSS variables set by style files per layout/pose:
+   --x --y --w --h (px, --h defaults to --w), --r (deg), --s (scale),
+   --o (opacity), --bw (outline width, centered on the edge like
+   PowerPoint lines). Width/height animate so borders keep thickness. */
+.actors { position: absolute; inset: 0; pointer-events: none; }
+.actors.back  { z-index: 0; }
+.actors.front { z-index: 20; }
+
+.actor {
+  position: absolute; left: 0; top: 0;
+  width: calc(var(--w, 200px) + var(--bw, 0px));
+  height: calc(var(--h, var(--w, 200px)) + var(--bw, 0px));
+  transform: translate(calc(var(--x, -400px) - var(--bw, 0px) / 2), calc(var(--y, -400px) - var(--bw, 0px) / 2))
+             rotate(var(--r, 0deg)) scale(var(--s, 1));
+  opacity: var(--o, 1);
+  transition-property: transform, width, height, opacity, background-color,
+                       border-color, border-width, border-radius, box-shadow, filter, color;
+  transition-duration: var(--morph-dur);
+  transition-timing-function: var(--morph-ease);
+  /* no will-change: it caused 1px seams on large panels when the stage is scaled down */
+}
+.actor > svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+/* ---------- SLIDES (content layer) ---------- */
+.slide {
+  position: absolute; inset: 0; z-index: 10;
+  width: 1920px; height: 1080px;
+  overflow: hidden;
+  visibility: hidden; opacity: 0; pointer-events: none;
+  transition: opacity var(--fade-dur) ease, visibility 0s linear var(--fade-dur);
+}
+.slide.active {
+  visibility: visible; opacity: 1; pointer-events: auto;
+  transition: opacity var(--fade-dur) ease, visibility 0s;
+}
+
+/* Reveal: hidden until slide is active, staggered by --i (set by engine) */
+.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur {
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease, filter 0.3s ease;
+}
+.reveal       { transform: translateY(40px); }
+.reveal-left  { transform: translateX(-60px); }
+.reveal-right { transform: translateX(60px); }
+.reveal-scale { transform: scale(0.85); }
+.reveal-blur  { filter: blur(12px); }
+/* repeated layouts enter differently: variant 2 slides in from the left, variant 3 zooms in */
+.slide[data-variant="2"] .reveal { transform: translateX(-56px); }
+.slide[data-variant="3"] .reveal { transform: scale(0.92); }
+
+.slide.active :is(.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur) {
+  opacity: 1; transform: none; filter: none;
+  transition-duration: 0.8s;
+  transition-timing-function: var(--morph-ease);
+  transition-delay: calc(var(--reveal-base) + var(--i, 0) * var(--reveal-step));
+}
+
+/* FLIP: element shared between two slides (data-morph-id) */
+.slide .flip-run {
+  opacity: 1 !important; filter: none !important;
+  transform-origin: 0 0;
+  transition: transform var(--morph-dur) var(--morph-ease) !important;
+}
+.slide .flip-src { opacity: 0 !important; transition: none !important; }
+
+/* ---------- UI chrome (outside design) ---------- */
+.deck-progress {
+  position: fixed; left: 0; bottom: 0; height: 4px; width: 0;
+  background: var(--accent, #3b82f6); z-index: 1000;
+  /* dark + light hairline so the bar stays visible on any background colour */
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.35), 0 -2px 0 rgba(255, 255, 255, 0.35);
+  transition: width 0.6s var(--morph-ease);
+}
+.deck-counter {
+  position: fixed; right: 18px; bottom: 12px; z-index: 1000;
+  font: 600 13px/1 system-ui, sans-serif; letter-spacing: 0.08em;
+  color: #fff; mix-blend-mode: difference; opacity: 0.55;
+}
+
+/* Reduced motion (often from Windows "Animation effects" = off):
+   keep a short, gentle morph because motion IS the deck's content. */
+@media (prefers-reduced-motion: reduce) {
+  :root { --morph-dur: 0.7s; --reveal-base: 0.2s; --reveal-step: 0.04s; }
+  .reveal-blur { filter: none; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; }
+}
+
+</style>
+<style>
+/* ===========================================================
+   MORPH-SLIDES LAYOUTS: 9 slide types that FILL their zone.
+   - Inner slides: title row + body zone (--body-top..--body-bottom)
+   - Engine sets data-density="lg|md|sm" from item count,
+     so few items => bigger type, many items => smaller type.
+   Tokens: --fg --muted --accent --card-bg --card-fg --font-display
+           --font-body --title-weight --title-case --title-tracking
+   =========================================================== */
+
+.slide {
+  --body-top: 270px; --body-bottom: 90px; --pad-x: 120px;
+  color: var(--fg); font-family: var(--font-body); font-size: 32px; line-height: 1.45;
+}
+.slide h1, .slide h2, .slide h3, .slide p, .slide ul, .slide ol, .slide blockquote { margin: 0; }
+.slide ul, .slide ol { padding: 0; list-style: none; }
+
+.title, .num, .stat-num, .quote, .hl-big, .when {
+  font-family: var(--font-display); font-weight: var(--title-weight, 800);
+  letter-spacing: var(--title-tracking, -0.01em); font-style: var(--title-style, normal);
+}
+.title { text-transform: var(--title-case, none); line-height: 1.1; }
+.kicker { font-size: 22px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); }
+.subtitle { font-size: 34px; color: var(--muted); }
+.meta { font-size: 24px; color: var(--muted); }
+.accent { color: var(--accent); }
+b, strong { font-weight: 700; }
+
+/* body zone shared by inner layouts */
+.slide > .title:first-child { position: absolute; left: var(--pad-x); top: 90px; width: var(--title-w, 1500px); font-size: 64px; }
+.slide:is([data-layout="cover"], [data-layout="closing"], [data-layout="section"], [data-layout="quote"]) > .title:first-child { position: static; width: auto; }
+.body-zone, .bullets, .cols, .stats, .timeline, .agenda-list, .highlight {
+  position: absolute; top: var(--body-top); bottom: var(--body-bottom);
+}
+
+/* ---------- 1. cover / 9. closing ---------- */
+.slide:is([data-layout="cover"], [data-layout="closing"]) {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 28px; padding: 0 300px; text-align: center;
+}
+.slide:is([data-layout="cover"], [data-layout="closing"]) .title { font-size: 92px; }
+.slide[data-layout="closing"] .title { font-size: 120px; }
+
+/* ---------- 2. agenda: 2 columns of tiles filling the zone ---------- */
+.agenda-list {
+  left: var(--pad-x); right: var(--pad-x);
+  display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--agenda-gap, 640px);
+  grid-template-rows: repeat(var(--rows, 4), 1fr); grid-auto-flow: column;
+}
+.agenda-list li { display: flex; align-items: center; gap: 28px; border-top: var(--tile-line, none); }
+.agenda-list li.is-right { flex-direction: row-reverse; text-align: right; }
+.agenda-list .num { line-height: 1; color: var(--accent); min-width: 1.3em; }
+.agenda-list li.is-right .num { text-align: right; }
+.agenda-list h3 { font-family: var(--font-display); line-height: 1.15; }
+.agenda-list p { color: var(--muted); margin-top: 6px; }
+[data-density="lg"] .agenda-list { --n-num: 120px; --n-h: 52px; --n-p: 30px; }
+[data-density="md"] .agenda-list { --n-num: 88px;  --n-h: 40px; --n-p: 26px; }
+[data-density="sm"] .agenda-list { --n-num: 64px;  --n-h: 32px; --n-p: 22px; }
+.agenda-list .num { font-size: var(--n-num); }
+.agenda-list h3 { font-size: var(--n-h); }
+.agenda-list p { font-size: var(--n-p); }
+
+/* ---------- 3. section ---------- */
+.slide[data-layout="section"] { display: flex; flex-direction: column; justify-content: center; gap: 24px; padding: 0 900px 0 160px; }
+.slide[data-layout="section"] .num { font-size: 220px; line-height: 0.9; color: var(--accent); }
+.slide[data-layout="section"] .title { font-size: 84px; }
+
+/* ---------- 4. content: bullets left + highlight right ---------- */
+.bullets { left: var(--pad-x); width: var(--bullets-w, 1040px); display: flex; flex-direction: column; justify-content: center; gap: var(--b-gap); }
+.bullets li { position: relative; padding-left: 1.4em; font-size: var(--b-fs); line-height: 1.35; }
+.bullets li::before {
+  content: ""; position: absolute; left: 0; top: 0.45em;
+  width: 0.45em; height: 0.45em; border-radius: var(--bullet-radius, 50%); background: var(--accent);
+}
+[data-density="lg"] .bullets { --b-fs: 44px; --b-gap: 52px; }
+[data-density="md"] .bullets { --b-fs: 36px; --b-gap: 40px; }
+[data-density="sm"] .bullets { --b-fs: 30px; --b-gap: 20px; }
+
+/* highlight = the real point of the slide shown big (number, icon, short claim) */
+.highlight {
+  left: var(--hl-left, 1260px); right: var(--hl-right, 120px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; text-align: center;
+}
+.hl-big { font-size: 160px; line-height: 1; color: var(--accent); }
+.hl-icon { width: 200px; height: 200px; color: var(--accent); }
+.hl-icon svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.hl-text { font-family: var(--font-display); font-size: 34px; font-weight: 700; line-height: 1.25; }
+
+/* ---------- 5. two-col: cards stretch full height ---------- */
+.cols { left: var(--pad-x); right: var(--pad-x); display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
+.slide:has(.takeaway) .cols { bottom: 240px; }
+.col { display: flex; flex-direction: column; padding: 48px 56px; border-radius: var(--card-radius, 24px); background: var(--card-bg, transparent); color: var(--card-fg, var(--fg)); }
+.col h3 { font-family: var(--font-display); font-size: var(--c-h); line-height: 1.15; color: var(--accent); }
+.col ul { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; }
+.col p, .col li { font-size: var(--c-fs); line-height: 1.35; }
+.col li { position: relative; padding-left: 1.2em; }
+.col li::before { content: ""; position: absolute; left: 0; top: 0.5em; width: 0.4em; height: 0.4em; border-radius: var(--bullet-radius, 50%); background: var(--accent); }
+[data-density="lg"] .cols { --c-h: 52px; --c-fs: 36px; }
+[data-density="md"] .cols { --c-h: 46px; --c-fs: 32px; }
+[data-density="sm"] .cols { --c-h: 40px; --c-fs: 28px; }
+.takeaway {
+  position: absolute; left: var(--pad-x); right: var(--pad-x); bottom: var(--body-bottom); min-height: 110px;
+  display: flex; align-items: center; padding: 20px 36px; border-left: 10px solid var(--accent);
+  font-family: var(--font-display); font-size: 36px; font-weight: 700; line-height: 1.25;
+}
+
+/* ---------- 6. stats: numbers centred in the zone ---------- */
+.stats { left: var(--pad-x); right: var(--pad-x); display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 48px; align-content: center; }
+.stat { text-align: center; }
+.stat-num { display: block; line-height: 1; color: var(--accent); font-size: var(--s-num); }
+.stat-label { display: block; margin-top: 22px; color: var(--muted); font-size: var(--s-fs); line-height: 1.35; }
+[data-density="lg"] .stats { --s-num: 220px; --s-fs: 36px; }
+[data-density="md"] .stats { --s-num: 150px; --s-fs: 30px; }
+[data-density="sm"] .stats { --s-num: 110px; --s-fs: 26px; }
+
+/* ---------- 7. timeline: zig-zag around a centred axis ---------- */
+.timeline {
+  left: var(--pad-x); right: var(--pad-x);
+  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; grid-template-rows: 1fr 1fr; column-gap: 32px;
+}
+.timeline::before { content: ""; position: absolute; left: 0; right: 0; top: calc(50% - 2px); height: 4px; background: var(--accent); opacity: 0.35; }
+.step { position: relative; }
+/* each step owns a column, odd above / even below the axis */
+.step:nth-child(1) { grid-column: 1; } .step:nth-child(2) { grid-column: 2; } .step:nth-child(3) { grid-column: 3; } .step:nth-child(4) { grid-column: 4; } .step:nth-child(5) { grid-column: 5; } .step:nth-child(6) { grid-column: 6; } .step:nth-child(7) { grid-column: 7; } .step:nth-child(8) { grid-column: 8; }
+.step:nth-child(odd)  { grid-row: 1; align-self: end; padding-bottom: 52px; }
+.step:nth-child(even) { grid-row: 2; align-self: start; padding-top: 52px; }
+.step::before { content: ""; position: absolute; left: 0; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); }
+.step:nth-child(odd)::before  { bottom: -16px; }
+.step:nth-child(even)::before { top: -16px; }
+.step .when { font-size: var(--t-when); line-height: 1; color: var(--accent); }
+.step h3 { font-family: var(--font-display); font-size: var(--t-h); line-height: 1.2; margin: 10px 0 6px; }
+.step p { font-size: var(--t-fs); color: var(--muted); line-height: 1.35; }
+[data-density="lg"] .timeline { --t-when: 76px; --t-h: 50px; --t-fs: 32px; }
+[data-density="md"] .timeline { --t-when: 64px; --t-h: 42px; --t-fs: 29px; }
+[data-density="sm"] .timeline { --t-when: 50px; --t-h: 34px; --t-fs: 25px; }
+
+/* ---------- 8. quote ---------- */
+.slide[data-layout="quote"] { display: flex; flex-direction: column; justify-content: center; padding: 0 280px; gap: 36px; }
+.quote { font-size: 64px; line-height: 1.25; }
+.cite { font-size: 28px; color: var(--muted); }
+
+/* audit mode: measure final positions (no reveal offsets) */
+.deck-stage.auditing :is(.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur) {
+  transform: none !important; filter: none !important; transition: none !important;
+}
+
+</style>
+<style>
+/* ===========================================================
+   STYLE: SAKURA CHROMA (adapted from frontend-slides, MIT)
+   Vintage Japanese cassette package: cream halftone paper,
+   warm-brown ink, condensed display type, diagonal rainbow
+   ribbons, petal clusters, a 32-point ink seal, red stamp.
+   Actors: slab (paper-dk / ink / blue panel), ribbons (5-band
+           stack: -22 / +22 / vertical divider / axis / stripes),
+           petals (cluster), dot (single petal), frame (paper card
+           with hard ink shadow), stamp (red tab / stamp), seal.
+           DOM order = z-order (slab first).
+   Fonts: Albert Sans has no Vietnamese -> Be Vietnam Pro.
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Be+Vietnam+Pro:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap');
+
+.deck-stage {
+  --actors: "slab ribbons petals dot frame stamp seal";
+  --font-display: 'Big Shoulders Display', sans-serif;
+  --font-body: 'Be Vietnam Pro', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --bg: #F1E6CB; --fg: #3A2516; --muted: #6B5440; --accent: #E5392A;
+  --card-bg: #F1E6CB; --card-fg: #3A2516; --card-radius: 0px;
+  --title-weight: 900; --title-tracking: -0.02em; --bullet-radius: 0;
+  --paper: #F1E6CB; --paper-dk: #E5D6B0; --ink: #3A2516; --red: #E5392A; --pink: #E54489;
+  --orange: #F09131; --yellow: #F0BC2A; --green: #3D9F47; --blue: #3F8BC4;
+  --grain: radial-gradient(circle at 1px 1px, rgba(58, 37, 22, 0.1) 1px, transparent 1.6px) 0 0 / 4px 4px;
+  background-image: radial-gradient(circle at 1px 1px, rgba(58, 37, 22, 0.09) 1px, transparent 1.6px);
+  background-size: 4px 4px;
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="slab"] { background: var(--grain); background-color: var(--paper-dk); --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-actor="ribbons"] {
+  --x: -2000px; --y: 500px; --w: 1800px; --h: 400px; --r: -22deg;
+  background: var(--grain), linear-gradient(to bottom, var(--pink) 0 18%, transparent 18% 20.5%, var(--orange) 20.5% 38.5%,
+    transparent 38.5% 41%, var(--yellow) 41% 59%, transparent 59% 61.5%, var(--green) 61.5% 79.5%, transparent 79.5% 82%, var(--blue) 82% 100%);
+}
+[data-actor="petals"] {
+  --x: 2000px; --y: -400px; --w: 300px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='34' cy='34' r='24' fill='%23E5392A'/%3E%3Ccircle cx='68' cy='32' r='20' fill='%23F09131'/%3E%3Ccircle cx='70' cy='67' r='22' fill='%233F8BC4'/%3E%3Ccircle cx='34' cy='70' r='20' fill='%233D9F47'/%3E%3Ccircle cx='52' cy='50' r='12' fill='%23F0BC2A'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+[data-actor="dot"] { border-radius: 50%; background: var(--grain); background-color: var(--pink); --x: -400px; --y: 1200px; --w: 300px; }
+[data-actor="frame"] {
+  background: var(--grain); background-color: var(--paper); border: 1.5px solid var(--ink); box-shadow: 8px 8px 0 var(--ink);
+  --x: 1250px; --y: 290px; --w: 560px; --h: 680px; --o: 0; --s: 0.6;
+}
+[data-actor="stamp"] { background-color: var(--red); --x: 120px; --y: -100px; --w: 140px; --h: 14px; }
+[data-actor="seal"] {
+  container-type: size; background-color: var(--ink); color: var(--paper); --x: 2000px; --y: 400px; --w: 160px;
+  clip-path: polygon(50% 0%, 54% 9.2%, 59.8% 1%, 61.9% 10.8%, 69.1% 3.8%, 69.3% 13.8%, 77.8% 8.4%, 76% 18.3%, 85.4% 14.6%, 81.7% 24%, 91.6% 22.2%, 86.2% 30.7%, 96.2% 30.9%, 89.2% 38.1%, 99% 40.2%, 90.8% 46%, 100% 50%, 90.8% 54%, 99% 59.8%, 89.2% 61.9%, 96.2% 69.1%, 86.2% 69.3%, 91.6% 77.8%, 81.7% 76%, 85.4% 85.4%, 76% 81.7%, 77.8% 91.6%, 69.3% 86.2%, 69.1% 96.2%, 61.9% 89.2%, 59.8% 99%, 54% 90.8%, 50% 100%, 46% 90.8%, 40.2% 99%, 38.1% 89.2%, 30.9% 96.2%, 30.7% 86.2%, 22.2% 91.6%, 24% 81.7%, 14.6% 85.4%, 18.3% 76%, 8.4% 77.8%, 13.8% 69.3%, 3.8% 69.1%, 10.8% 61.9%, 1% 59.8%, 9.2% 54%, 0% 50%, 9.2% 46%, 1% 40.2%, 10.8% 38.1%, 3.8% 30.9%, 13.8% 30.7%, 8.4% 22.2%, 18.3% 24%, 14.6% 14.6%, 24% 18.3%, 22.2% 8.4%, 30.7% 13.8%, 30.9% 3.8%, 38.1% 10.8%, 40.2% 1%, 46% 9.2%);
+}
+[data-actor="seal"]::before {
+  content: "A"; position: absolute; inset: 0; display: grid; place-items: center;
+  font: 900 46cqw/1 'Big Shoulders Display', sans-serif;
+}
+
+/* ---------- 1. cover: paper-dk panel right, ribbons sweep up from the bottom, seal rides them ---------- */
+[data-layout="cover"] [data-actor="slab"]    { --x: 1100px; --y: 0px; --w: 820px; --h: 1080px; }
+[data-layout="cover"] [data-actor="ribbons"] { --x: 900px; --y: 500px; --w: 1800px; --h: 400px; --r: -22deg; }
+[data-layout="cover"] [data-actor="petals"]  { --x: 1380px; --y: 110px; --w: 400px; --r: 0deg; }
+[data-layout="cover"] [data-actor="dot"]     { --x: -140px; --y: 860px; --w: 340px; background-color: var(--pink); }
+[data-layout="cover"] [data-actor="frame"]   { --o: 0; --s: 0.6; }
+[data-layout="cover"] [data-actor="stamp"]   { --x: 120px; --y: 196px; --w: 180px; --h: 20px; }
+[data-layout="cover"] [data-actor="seal"]    { --x: 1140px; --y: 740px; --w: 200px; --r: -12deg; }
+
+/* ---------- 2. agenda: paper-dk header band, short ribbon in the corner ---------- */
+[data-layout="agenda"] [data-actor="slab"]    { --x: 0px; --y: 0px; --w: 1920px; --h: 236px; }
+[data-layout="agenda"] [data-actor="ribbons"] { --x: 1480px; --y: 0px; --w: 640px; --h: 140px; --r: -22deg; }
+[data-layout="agenda"] [data-actor="petals"]  { --x: -90px; --y: 930px; --w: 230px; --r: 30deg; }
+[data-layout="agenda"] [data-actor="dot"]     { --x: 1790px; --y: 980px; --w: 260px; background-color: var(--blue); }
+[data-layout="agenda"] [data-actor="frame"]   { --x: 120px; --y: 270px; --w: 1680px; --h: 720px; --o: 0; --s: 0.9; }
+[data-layout="agenda"] [data-actor="stamp"]   { --x: 120px; --y: 208px; --w: 140px; --h: 14px; }
+[data-layout="agenda"] [data-actor="seal"]    { --x: 1580px; --y: 90px; --w: 120px; --r: 8deg; }
+
+/* ---------- 3. section: ink panel, ribbons flip to +22 and cross it ---------- */
+[data-layout="section"] [data-actor="slab"]    { --x: 1100px; --y: 0px; --w: 820px; --h: 1080px; background-color: var(--ink); }
+[data-layout="section"] [data-actor="ribbons"] { --x: 1050px; --y: 350px; --w: 1100px; --h: 380px; --r: 22deg; }
+[data-layout="section"] [data-actor="petals"]  { --x: 1600px; --y: 790px; --w: 270px; --r: 45deg; }
+[data-layout="section"] [data-actor="dot"]     { --x: 1660px; --y: -140px; --w: 380px; background-color: var(--yellow); }
+[data-layout="section"] [data-actor="frame"]   { --x: 1150px; --y: 300px; --w: 600px; --h: 480px; --o: 0; --s: 0.6; }
+[data-layout="section"] [data-actor="stamp"]   { --x: 160px; --y: 900px; --w: 220px; --h: 18px; }
+[data-layout="section"] [data-actor="seal"]    { --x: 1000px; --y: 60px; --w: 200px; --r: 10deg; background-color: var(--red); }
+
+/* ---------- 4. content: product card holds the highlight (red topstrip) ---------- */
+[data-layout="content"] [data-actor="slab"]    { --x: 1210px; --y: 0px; --w: 710px; --h: 1080px; }
+[data-layout="content"] [data-actor="ribbons"] { --x: 1430px; --y: 940px; --w: 900px; --h: 160px; --r: -22deg; }
+[data-layout="content"] [data-actor="petals"]  { --x: 1690px; --y: 30px; --w: 180px; --r: 15deg; }
+[data-layout="content"] [data-actor="dot"]     { --x: -110px; --y: 950px; --w: 230px; background-color: var(--orange); }
+[data-layout="content"] [data-actor="frame"]   { --x: 1250px; --y: 290px; --w: 560px; --h: 680px; --o: 1; --s: 1; }
+[data-layout="content"] [data-actor="stamp"]   { --x: 1250px; --y: 290px; --w: 560px; --h: 28px; }
+[data-layout="content"] [data-actor="seal"]    { --x: 1725px; --y: 225px; --w: 150px; --r: -8deg; }
+/* even: blue panel, ribbons become stripes at its foot, card gets a red stamp */
+[data-layout="content"][data-parity="even"] [data-actor="slab"]    { --x: 1220px; --w: 700px; background-color: var(--blue); }
+[data-layout="content"][data-parity="even"] [data-actor="ribbons"] { --x: 1220px; --y: 990px; --w: 700px; --h: 90px; --r: 0deg; }
+[data-layout="content"][data-parity="even"] [data-actor="petals"]  { --x: -90px; --y: 920px; --w: 240px; --r: -20deg; }
+[data-layout="content"][data-parity="even"] [data-actor="dot"]     { --x: 1700px; --y: -120px; --w: 300px; background-color: var(--red); }
+[data-layout="content"][data-parity="even"] [data-actor="frame"]   { --x: 1270px; --y: 300px; --w: 520px; --h: 640px; }
+[data-layout="content"][data-parity="even"] [data-actor="stamp"]   { --x: 1236px; --y: 264px; --w: 200px; --h: 56px; --r: -3deg; }
+[data-layout="content"][data-parity="even"] [data-actor="seal"]    { --x: 1195px; --y: 865px; --w: 150px; --r: 12deg; }
+
+/* ---------- 5. two-col: paper-dk band, ribbons stand up as the column divider ---------- */
+[data-layout="two-col"] [data-actor="slab"]    { --x: 0px; --y: 236px; --w: 1920px; --h: 790px; }
+[data-layout="two-col"] [data-actor="ribbons"] { --x: 585px; --y: 600px; --w: 750px; --h: 60px; --r: 90deg; }
+[data-layout="two-col"] [data-actor="petals"]  { --x: -80px; --y: 930px; --w: 220px; --r: 60deg; }
+[data-layout="two-col"] [data-actor="dot"]     { --x: 1830px; --y: 900px; --w: 300px; background-color: var(--green); }
+[data-layout="two-col"] [data-actor="frame"]   { --x: 120px; --y: 872px; --w: 1680px; --h: 118px; --o: 0; --s: 1; }
+[data-layout="two-col"] [data-actor="stamp"]   { --x: 120px; --y: 208px; --w: 140px; --h: 14px; }
+[data-layout="two-col"] [data-actor="seal"]    { --x: 1690px; --y: 70px; --w: 140px; --r: -6deg; }
+/* with takeaway: band stops above it, the frame becomes the takeaway box, stamp its red spine */
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="slab"]    { --h: 630px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="ribbons"] { --x: 660px; --y: 525px; --w: 600px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="frame"]   { --o: 1; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="stamp"]   { --x: 120px; --y: 872px; --w: 22px; --h: 118px; }
+
+/* ---------- 6. stats: catalogue card with a red topstrip, ribbons as foot stripes ---------- */
+[data-layout="stats"] [data-actor="slab"]    { --x: 0px; --y: 236px; --w: 1920px; --h: 844px; }
+[data-layout="stats"] [data-actor="ribbons"] { --x: 0px; --y: 1000px; --w: 1920px; --h: 80px; --r: 0deg; }
+[data-layout="stats"] [data-actor="petals"]  { --x: 1660px; --y: 36px; --w: 170px; --r: 90deg; }
+[data-layout="stats"] [data-actor="dot"]     { --x: -100px; --y: 820px; --w: 200px; background-color: var(--green); }
+[data-layout="stats"] [data-actor="frame"]   { --x: 120px; --y: 290px; --w: 1680px; --h: 660px; --o: 1; --s: 1; }
+[data-layout="stats"] [data-actor="stamp"]   { --x: 120px; --y: 290px; --w: 1680px; --h: 26px; }
+[data-layout="stats"] [data-actor="seal"]    { --x: 1720px; --y: 220px; --w: 160px; --r: -10deg; }
+
+/* ---------- 7. timeline: the ribbon stack lies down as the axis ---------- */
+[data-layout="timeline"] [data-actor="slab"]    { --x: 0px; --y: 590px; --w: 1920px; --h: 80px; }
+[data-layout="timeline"] [data-actor="ribbons"] { --x: 120px; --y: 615px; --w: 1680px; --h: 30px; --r: 0deg; }
+[data-layout="timeline"] [data-actor="petals"]  { --x: 1740px; --y: 930px; --w: 200px; --r: 0deg; }
+[data-layout="timeline"] [data-actor="dot"]     { --x: 1700px; --y: -140px; --w: 340px; background-color: var(--yellow); }
+[data-layout="timeline"] [data-actor="frame"]   { --x: 120px; --y: 590px; --w: 1680px; --h: 80px; --o: 0; --s: 1; }
+[data-layout="timeline"] [data-actor="stamp"]   { --x: 120px; --y: 208px; --w: 140px; --h: 14px; }
+[data-layout="timeline"] [data-actor="seal"]    { --x: 1805px; --y: 575px; --w: 110px; --r: 0deg; }
+
+/* ---------- 8. quote: paper box with hard shadow over full diagonal ribbons ---------- */
+.deck-stage[data-layout="quote"] { --accent: var(--blue); }
+[data-layout="quote"] [data-actor="slab"]    { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="quote"] [data-actor="ribbons"] { --x: -340px; --y: 280px; --w: 2600px; --h: 520px; --r: -22deg; }
+[data-layout="quote"] [data-actor="petals"]  { --x: 70px; --y: 60px; --w: 280px; --r: 0deg; }
+[data-layout="quote"] [data-actor="dot"]     { --x: 1540px; --y: 700px; --w: 340px; background-color: var(--red); }
+[data-layout="quote"] [data-actor="frame"]   { --x: 220px; --y: 280px; --w: 1480px; --h: 520px; --o: 1; --s: 1; }
+[data-layout="quote"] [data-actor="stamp"]   { --x: 260px; --y: 248px; --w: 200px; --h: 56px; --r: -3deg; }
+[data-layout="quote"] [data-actor="seal"]    { --x: 1610px; --y: 710px; --w: 180px; --r: 12deg; }
+
+/* ---------- 9. closing: ink floods the page, ribbons bleed from the corner ---------- */
+.deck-stage[data-layout="closing"] { --fg: #F1E6CB; --muted: #D9C9A8; --accent: var(--yellow); }
+[data-layout="closing"] [data-actor="slab"]    { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; background-color: var(--ink); }
+[data-layout="closing"] [data-actor="ribbons"] { --x: 1100px; --y: 810px; --w: 1400px; --h: 300px; --r: -22deg; }
+[data-layout="closing"] [data-actor="petals"]  { --x: 130px; --y: 110px; --w: 300px; --r: -30deg; }
+[data-layout="closing"] [data-actor="dot"]     { --x: 1600px; --y: -200px; --w: 480px; background-color: var(--pink); }
+[data-layout="closing"] [data-actor="frame"]   { --x: 460px; --y: 380px; --w: 1000px; --h: 320px; --o: 0; --s: 0.6; }
+[data-layout="closing"] [data-actor="stamp"]   { --x: 160px; --y: 880px; --w: 280px; --h: 72px; --r: -3deg; }
+[data-layout="closing"] [data-actor="seal"]    { --x: 1430px; --y: 220px; --w: 220px; --r: -10deg; background-color: var(--yellow); color: var(--ink); }
+
+/* ---------- content tweaks: catalogue typesetting ---------- */
+.slide .kicker, .slide .meta { font-family: var(--font-mono); letter-spacing: 0.2em; text-transform: uppercase; }
+.slide .meta { font-size: 22px; }
+.slide:is([data-layout="agenda"], [data-layout="content"], [data-layout="two-col"], [data-layout="stats"], [data-layout="timeline"]) > .title:first-child { --title-w: 1440px; font-size: 80px; padding-bottom: 14px; border-bottom: 1.5px solid var(--ink); }
+.slide[data-layout="agenda"] > .title:first-child { --title-w: 1300px; }
+.slide[data-layout="cover"] { align-items: flex-start; text-align: left; padding: 0 920px 0 120px; }
+.slide[data-layout="cover"] .title { font-size: 124px; line-height: 1.02; }
+.slide[data-layout="closing"] { padding: 0 380px; }
+.slide[data-layout="closing"] .title { font-size: 168px; line-height: 1; }
+.slide[data-layout="section"] { padding: 0 940px 0 160px; }
+.slide[data-layout="section"] .title { font-size: 104px; line-height: 1.02; }
+.slide[data-layout="section"] .num { font-size: 260px; }
+.agenda-list { --agenda-gap: 200px; --tile-line: 1.5px solid var(--ink); }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list li:nth-child(4n+2) .num { color: var(--blue); }
+.agenda-list li:nth-child(4n+3) .num { color: var(--green); }
+.agenda-list li:nth-child(4n+4) .num { color: var(--pink); }
+.agenda-list h3 { font-weight: 800; }
+[data-density="lg"] .agenda-list { --n-h: 62px; } [data-density="md"] .agenda-list { --n-h: 50px; } [data-density="sm"] .agenda-list { --n-h: 40px; }
+.slide[data-layout="content"] { --hl-left: 1290px; --hl-right: 150px; }
+.slide[data-layout="content"] .hl-text { font-size: 50px; font-weight: 800; line-height: 1.12; }
+.col { border: 1.5px solid var(--ink); border-top: 24px solid var(--red); padding: 40px 52px; }
+.col + .col { border-top-color: var(--blue); }
+.col + .col h3 { color: var(--blue); }
+.col h3 { font-weight: 900; }
+[data-density="lg"] .cols { --c-h: 62px; } [data-density="md"] .cols { --c-h: 54px; } [data-density="sm"] .cols { --c-h: 46px; }
+.takeaway { border-left: 0; padding: 20px 48px 20px 72px; font-size: 46px; font-weight: 800; line-height: 1.12; }
+.stat:nth-child(2) .stat-num { color: var(--blue); }
+.stat:nth-child(3) .stat-num { color: var(--green); }
+.timeline::before { opacity: 0; }
+.step::before { border: 3px solid var(--ink); }
+.step h3 { font-weight: 800; }
+[data-density="lg"] .timeline { --t-when: 92px; --t-h: 60px; } [data-density="md"] .timeline { --t-when: 80px; --t-h: 52px; --t-fs: 30px; } [data-density="sm"] .timeline { --t-when: 64px; --t-h: 42px; }
+.slide[data-layout="quote"] { padding: 0 330px; }
+.slide[data-layout="quote"] .quote { font-size: 76px; line-height: 1.12; }
+.slide[data-layout="quote"] .cite { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.16em; font-size: 22px; }
+
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<div class="deck-stage">
+  <!-- Diễn viên (hình trang trí) do engine tự tạo từ --actors của style. -->
+
+  <!-- 1. cover -->
+  <section class="slide" data-layout="cover">
+    <p class="kicker reveal">morph-slides</p>
+    <h1 class="title reveal">Slide chuyển cảnh kiểu Morph trên trình duyệt</h1>
+    <p class="subtitle reveal">Một file HTML, mở bằng Chrome là trình chiếu được</p>
+    <p class="meta reveal">Bộ mẫu 9 kiểu slide</p>
+  </section>
+
+  <!-- 2. agenda -->
+  <section class="slide" data-layout="agenda">
+    <h2 class="title reveal">Nội dung</h2>
+    <ol class="agenda-list">
+      <li><span class="num reveal">01</span><div><h3 class="reveal" data-morph-id="s1">Cơ chế diễn viên</h3><p class="reveal">Hình cố định, chỉ đổi tư thế</p></div></li>
+      <li><span class="num reveal">02</span><div><h3 class="reveal">Chín kiểu slide</h3><p class="reveal">Từ trang bìa đến lời cảm ơn</p></div></li>
+      <li><span class="num reveal">03</span><div><h3 class="reveal">Tự co giãn</h3><p class="reveal">Ít chữ thì chữ to hơn</p></div></li>
+      <li><span class="num reveal">04</span><div><h3 class="reveal">Đo độ lấp đầy</h3><p class="reveal">Máy tự soát slide bị trống</p></div></li>
+    </ol>
+  </section>
+
+  <!-- 3. section -->
+  <section class="slide" data-layout="section">
+    <p class="num reveal">01</p>
+    <h2 class="title reveal" data-morph-id="s1">Cơ chế diễn viên</h2>
+    <p class="subtitle reveal">Morph là cùng một vật đổi vị trí giữa hai slide</p>
+  </section>
+
+  <!-- 4. content (bullets + highlight) -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Hình cố định, chỉ đổi tư thế</h2>
+    <ul class="bullets">
+      <li class="reveal">Mỗi style có một nhóm hình cố định, gọi là <b>diễn viên</b>.</li>
+      <li class="reveal">Mỗi kiểu slide quy định một <b>tư thế</b>: vị trí, kích thước, màu.</li>
+      <li class="reveal">Khi chuyển slide, trình duyệt cho hình <b>trượt dần</b> sang tư thế mới.</li>
+      <li class="reveal">Chữ của slide mới hiện sau, khi hình đã bắt đầu chuyển động.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <div class="hl-icon"><svg viewBox="0 0 24 24"><path d="M12 2v20"/><path d="m15 19-3 3-3-3"/><path d="m19 9 3 3-3 3"/><path d="M2 12h20"/><path d="m5 9-3 3 3 3"/><path d="m9 5 3-3 3 3"/></svg></div>
+      <p class="hl-text">Cùng tên là cùng một vật</p>
+    </aside>
+  </section>
+
+  <!-- 5. content (second in a row: parity changes the pose) -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Một khung cho mọi màn hình</h2>
+    <ul class="bullets">
+      <li class="reveal">Slide được thiết kế ở một kích thước cố định 1920×1080.</li>
+      <li class="reveal">Màn hình to hay nhỏ, cả khung được phóng to, thu nhỏ theo.</li>
+      <li class="reveal">Không vỡ bố cục trên máy chiếu, laptop hay điện thoại.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-big">16:9</p>
+      <p class="hl-text">Tỷ lệ khung chuẩn</p>
+    </aside>
+  </section>
+
+  <!-- 6. two-col + takeaway -->
+  <section class="slide" data-layout="two-col">
+    <h2 class="title reveal">PowerPoint Morph và morph-slides</h2>
+    <div class="cols">
+      <div class="col reveal-left">
+        <h3>PowerPoint</h3>
+        <ul>
+          <li>Chạy trong PowerPoint</li>
+          <li>Sửa trực tiếp bằng chuột</li>
+          <li>Khớp hình theo tên</li>
+        </ul>
+      </div>
+      <div class="col reveal-right">
+        <h3>morph-slides</h3>
+        <ul>
+          <li>Chạy trên trình duyệt</li>
+          <li>Sửa bằng nội dung chữ</li>
+          <li>Khớp hình theo data-actor</li>
+        </ul>
+      </div>
+    </div>
+    <p class="takeaway reveal">Cùng một ý tưởng: vật trùng tên thì trượt sang vị trí mới.</p>
+  </section>
+
+  <!-- 7. stats -->
+  <section class="slide" data-layout="stats">
+    <h2 class="title reveal">Ba bậc cỡ chữ tự chọn</h2>
+    <div class="stats">
+      <div class="stat reveal"><span class="stat-num">≤3</span><span class="stat-label">ý trên một slide: chữ lớn nhất, dễ đọc từ xa</span></div>
+      <div class="stat reveal"><span class="stat-num">4-5</span><span class="stat-label">ý trên một slide: chữ vừa, vẫn thoáng</span></div>
+      <div class="stat reveal"><span class="stat-num">6+</span><span class="stat-label">ý trên một slide: chữ nhỏ, nên tách slide</span></div>
+    </div>
+  </section>
+
+  <!-- 8. timeline -->
+  <section class="slide" data-layout="timeline">
+    <h2 class="title reveal">Quy trình dựng một deck</h2>
+    <div class="timeline">
+      <div class="step reveal"><div class="when">01</div><h3>Nội dung</h3><p>Gom dàn ý, số liệu có nguồn</p></div>
+      <div class="step reveal"><div class="when">02</div><h3>Chọn style</h3><p>Xem 3 bản thử rồi chọn</p></div>
+      <div class="step reveal"><div class="when">03</div><h3>Dựng</h3><p>Viết HTML theo khung mẫu</p></div>
+      <div class="step reveal"><div class="when">04</div><h3>Đo</h3><p>Chạy deck.audit() từng slide</p></div>
+      <div class="step reveal"><div class="when">05</div><h3>Bàn giao</h3><p>Gộp thành một file HTML</p></div>
+    </div>
+  </section>
+
+  <!-- 9. quote -->
+  <section class="slide" data-layout="quote">
+    <blockquote class="quote reveal-blur">Hình trang trí đứng yên chỉ là nền. Khi nó di chuyển, nó kể chuyện.</blockquote>
+    <p class="cite reveal">Nguyên tắc của bộ mẫu</p>
+  </section>
+
+  <!-- 10. closing -->
+  <section class="slide" data-layout="closing">
+    <p class="kicker reveal">Hết phần mẫu</p>
+    <h2 class="title reveal">Cảm ơn</h2>
+    <p class="subtitle reveal">Đổi style chỉ cần thay một dòng link CSS.</p>
+  </section>
+
+</div>
+</div>
+<script>
+/* ===========================================================
+   MORPH-SLIDES ENGINE (no dependencies)
+   - Scales the 1920x1080 stage to the window (letterbox)
+   - Builds actors from the style's --actors list
+   - Sets data-layout / data-pose / data-parity on .deck-stage
+     -> style CSS moves actors, CSS transitions do the "morph"
+   - FLIP for elements sharing data-morph-id across two slides
+   Input (keys, click, swipe, wheel, #hash) lives in morph-nav.js.
+   =========================================================== */
+(() => {
+  const stage = document.querySelector('.deck-stage');
+  const slides = stage ? [...stage.querySelectorAll(':scope > .slide')] : [];
+  if (!slides.length) return;
+  const REVEAL = '.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur';
+  let cur = -1;
+  let scale = 1;
+
+  /* ---------- fit stage to window ---------- */
+  function fit() {
+    scale = Math.min(innerWidth / 1920, innerHeight / 1080);
+    const x = (innerWidth - 1920 * scale) / 2;
+    const y = (innerHeight - 1080 * scale) / 2;
+    stage.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+  }
+
+  /* Actors: if the deck has no .actors markup, build them from the style's
+     --actors list (DOM order = z-order), so switching style = swapping one CSS link. */
+  if (!stage.querySelector('.actors')) {
+    const names = getComputedStyle(stage).getPropertyValue('--actors').replace(/["']/g, '').trim().split(/\s+/).filter(Boolean);
+    const layer = Object.assign(document.createElement('div'), { className: 'actors back' });
+    layer.setAttribute('aria-hidden', 'true');
+    names.forEach((name) => {
+      const el = Object.assign(document.createElement('div'), { className: 'actor' });
+      el.dataset.actor = name;
+      layer.append(el);
+    });
+    stage.prepend(layer);
+  }
+
+  /* item count -> type size step. Agenda/timeline/stats tiles are bigger, so they allow more items. */
+  function densityOf(slide) {
+    const cols = [...slide.querySelectorAll('.col')];
+    const n = cols.length
+      ? Math.max(...cols.map((c) => c.querySelectorAll('li, p').length))
+      : slide.querySelectorAll('.bullets > li, .agenda-list > li, .stats > .stat, .timeline > .step').length;
+    const [lg, md] = slide.querySelector('.agenda-list, .timeline, .stats') ? [4, 6] : [3, 5];
+    return n <= lg ? 'lg' : n <= md ? 'md' : 'sm';
+  }
+
+  /* ---------- one-time prep per slide ---------- */
+  const seen = {};
+  slides.forEach((slide, k) => {
+    // stagger order for reveal items (author may override with style="--i:n")
+    slide.querySelectorAll(REVEAL).forEach((el, i) => {
+      if (!el.style.getPropertyValue('--i')) el.style.setProperty('--i', i);
+    });
+    if (!slide.dataset.density) slide.dataset.density = densityOf(slide);
+    // parity of the slide itself: content tweaks must not follow the *current* slide
+    slide.dataset.parity = k % 2 ? 'even' : 'odd';
+    // variant 1..3: Nth time this layout appears (styles may give repeats a different pose)
+    const lay = slide.dataset.layout || 'content';
+    seen[lay] = (seen[lay] || 0) + 1;
+    if (!slide.dataset.variant) slide.dataset.variant = String(((seen[lay] - 1) % 3) + 1);
+    slide.querySelectorAll('.agenda-list').forEach((list) => {
+      const items = [...list.children];
+      const rows = Math.ceil(items.length / 2);
+      list.style.setProperty('--rows', rows);
+      items.forEach((li, i) => li.classList.toggle('is-right', i >= rows));
+    });
+  });
+
+  /* ---------- UI chrome ---------- */
+  const progress = Object.assign(document.createElement('div'), { className: 'deck-progress' });
+  const counter = Object.assign(document.createElement('div'), { className: 'deck-counter' });
+  counter.setAttribute('aria-live', 'polite');
+  document.body.append(progress, counter);
+
+  function morphMs() {
+    const v = getComputedStyle(stage).getPropertyValue('--morph-dur').trim();
+    const ms = v.endsWith('ms') ? parseFloat(v) : parseFloat(v) * 1000;
+    return Number.isFinite(ms) ? ms : 1200;
+  }
+
+  /* rect in stage coordinates (only differences are used) */
+  function rectOf(el) {
+    const r = el.getBoundingClientRect();
+    return { x: r.left / scale, y: r.top / scale, w: r.width / scale, h: r.height / scale };
+  }
+
+  /* ---------- FLIP: First, Last, Invert, Play ---------- */
+  function flip(a, b, ra, fontA) {
+    a._flipDone?.();             // finish any flight still running on either element
+    b._flipDone?.();
+    b.classList.remove('flip-src');
+    b.style.transition = 'none';
+    b.style.transformOrigin = '0 0';
+    b.style.transform = 'none';
+    const rb = rectOf(b);
+    if (!rb.w || !rb.h) { b.style.transition = ''; b.style.transform = ''; b.style.transformOrigin = ''; return; }
+    const isText = b.textContent.trim() && !b.querySelector('img, svg, video');
+    const fontB = parseFloat(getComputedStyle(b).fontSize);
+    // text: uniform scale by font-size ratio (avoids squashed letters)
+    const sx = isText ? fontA / fontB : ra.w / rb.w;
+    const sy = isText ? fontA / fontB : ra.h / rb.h;
+    b.style.transform = `translate(${ra.x - rb.x}px, ${ra.y - rb.y}px) scale(${sx}, ${sy})`;
+    a.classList.add('flip-src');
+    void b.offsetWidth; // commit the inverted position
+    b.style.transition = '';
+    b.classList.add('flip-run');
+    b.style.transform = 'none';
+
+    let timer = 0;
+    const onEnd = (e) => { if (e.target === b && e.propertyName === 'transform') done(); };
+    const done = () => {
+      clearTimeout(timer);
+      b.removeEventListener('transitionend', onEnd);
+      b.classList.remove('flip-run');
+      b.style.transform = '';
+      b.style.transformOrigin = '';
+      a.classList.remove('flip-src');
+      a._flipDone = b._flipDone = null;
+    };
+    a._flipDone = b._flipDone = done;
+    b.addEventListener('transitionend', onEnd);
+    timer = setTimeout(done, morphMs() + 150);
+  }
+
+  /* ---------- go to slide n ---------- */
+  function go(n) {
+    n = Math.max(0, Math.min(slides.length - 1, Number(n) || 0));
+    if (n === cur) return;
+    const from = slides[cur];
+    const to = slides[n];
+
+    // FIRST: measure shared elements on the outgoing slide
+    const pairs = [];
+    if (from) {
+      from.querySelectorAll('[data-morph-id]').forEach((a) => {
+        const b = to.querySelector(`[data-morph-id="${CSS.escape(a.dataset.morphId)}"]`);
+        if (b) pairs.push([a, b, rectOf(a), parseFloat(getComputedStyle(a).fontSize)]);
+      });
+    }
+
+    // switch: actors re-pose via CSS, content cross-fades.
+    // A slide with its own data-pose gets parity "none" so the pose is never fought by parity rules.
+    stage.dataset.dir = n > cur ? 'fwd' : 'back';
+    stage.dataset.layout = to.dataset.layout || 'content';
+    stage.dataset.pose = to.dataset.pose || '';
+    stage.dataset.parity = to.dataset.pose ? 'none' : to.dataset.parity;
+    stage.dataset.variant = to.dataset.variant;
+    stage.dataset.slide = String(n + 1);
+    from?.classList.remove('active');
+    to.classList.add('active');
+    cur = n;
+
+    pairs.forEach(([a, b, ra, fa]) => flip(a, b, ra, fa));
+
+    progress.style.width = `${((n + 1) / slides.length) * 100}%`;
+    progress.style.background = getComputedStyle(stage).getPropertyValue('--accent'); // bar lives outside the stage
+    counter.textContent = `${n + 1} / ${slides.length}`;
+    history.replaceState(null, '', `#${n + 1}`);
+  }
+
+  addEventListener('resize', fit);
+
+  /* ---------- start: actors fly in from off-stage defaults ---------- */
+  fit();
+  const start = Math.max(0, (parseInt(location.hash.slice(1), 10) || 1) - 1);
+  requestAnimationFrame(() => requestAnimationFrame(() => go(start)));
+
+  window.deck = {
+    go,
+    next: () => go(cur + 1),
+    prev: () => go(cur - 1),
+    get index() { return cur; },
+    get count() { return slides.length; },
+  };
+})();
+
+</script>
+<script>
+/* ===========================================================
+   MORPH-SLIDES NAVIGATION (load after morph-engine.js)
+   Keys: Right/Down/PageDown/Space/Enter = next,
+         Left/Up/PageUp/Backspace = back, Home/End, F = fullscreen.
+   Click: left quarter = back, elsewhere = next. One-finger swipe.
+   Mouse wheel (throttled). Editing the #hash jumps to that slide.
+   =========================================================== */
+(() => {
+  const deck = window.deck;
+  if (!deck) return;
+  const isEditable = (t) => t.closest?.('a, button, input, textarea, select, [contenteditable]');
+  let wheelLock = 0;
+
+  addEventListener('keydown', (e) => {
+    // leave browser shortcuts alone (Ctrl+F, Alt+Left, ...)
+    if (e.ctrlKey || e.metaKey || e.altKey || isEditable(e.target)) return;
+    const k = e.key;
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(k)) { e.preventDefault(); deck.next(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(k)) { e.preventDefault(); deck.prev(); }
+    else if (k === 'Home') deck.go(0);
+    else if (k === 'End') deck.go(deck.count - 1);
+    else if (k === 'f' || k === 'F') {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen?.();
+    }
+  });
+
+  addEventListener('click', (e) => {
+    if (isEditable(e.target)) return;
+    (e.clientX < innerWidth * 0.25 ? deck.prev : deck.next)();
+  });
+
+  let touch = null;
+  addEventListener('touchstart', (e) => {
+    touch = e.touches.length === 1 ? { x: e.touches[0].clientX, y: e.touches[0].clientY } : null;
+  }, { passive: true });
+  addEventListener('touchend', (e) => {
+    if (!touch || e.touches.length) { touch = null; return; } // pinch / multi-finger: ignore
+    const dx = e.changedTouches[0].clientX - touch.x;
+    const dy = e.changedTouches[0].clientY - touch.y;
+    touch = null;
+    if (Math.max(Math.abs(dx), Math.abs(dy)) < 50) return;
+    const forward = Math.abs(dx) > Math.abs(dy) ? dx < 0 : dy < 0;
+    (forward ? deck.next : deck.prev)();
+  });
+
+  addEventListener('wheel', (e) => {
+    const now = Date.now();
+    if (e.ctrlKey || now < wheelLock || Math.abs(e.deltaY) < 20) return; // ctrl+wheel = zoom
+    wheelLock = now + 900;
+    (e.deltaY > 0 ? deck.next : deck.prev)();
+  }, { passive: true });
+
+  addEventListener('hashchange', () => {
+    const n = parseInt(location.hash.slice(1), 10);
+    if (n) deck.go(n - 1);
+  });
+})();
+
+</script>
+<script>
+/* ===========================================================
+   MORPH-SLIDES AUDIT: measures how well each slide fills space.
+   Run in the browser console (or via a test tool): deck.audit()
+   - Collects "ink" (text line boxes + media) per slide.
+   - maxGapY / maxGapX = biggest empty band inside the safe area.
+   - overflow = ink outside the slide or past the safe margins.
+   Display slides (cover, section, quote, closing) are only
+   checked for overflow: their emptiness is intentional.
+   =========================================================== */
+(() => {
+  const stage = document.querySelector('.deck-stage');
+  if (!stage || !window.deck) return;
+  const SAFE = { x0: 80, x1: 1840, y0: 60, y1: 1020 };
+  const LIMIT = { gapY: 0.28, gapX: 0.3 };
+  // big-number slides are meant to breathe around the figures
+  const LIMIT_Y_BY_LAYOUT = { stats: 0.34 };
+  const DISPLAY = ['cover', 'section', 'quote', 'closing'];
+
+  /* text line boxes + images/svg, in stage coordinates */
+  function inkRects(slide) {
+    const s = stage.getBoundingClientRect();
+    const k = s.width / 1920;
+    const out = [];
+    const push = (r) => {
+      if (r.width < 1 || r.height < 1) return;
+      out.push({ x0: (r.left - s.left) / k, x1: (r.right - s.left) / k, y0: (r.top - s.top) / k, y1: (r.bottom - s.top) / k });
+    };
+    const walker = document.createTreeWalker(slide, NodeFilter.SHOW_TEXT);
+    while (walker.nextNode()) {
+      const node = walker.currentNode;
+      if (!node.textContent.trim()) continue;
+      const range = document.createRange();
+      range.selectNodeContents(node);
+      [...range.getClientRects()].forEach(push);
+    }
+    slide.querySelectorAll('img, svg, video, canvas').forEach((el) => push(el.getBoundingClientRect()));
+    return out;
+  }
+
+  /* biggest uncovered interval of [lo, hi] given covered spans */
+  function maxGap(spans, lo, hi) {
+    const sorted = spans.map(([a, b]) => [Math.max(a, lo), Math.min(b, hi)]).filter(([a, b]) => b > a).sort((p, q) => p[0] - q[0]);
+    let gap = 0;
+    let cursor = lo;
+    for (const [a, b] of sorted) {
+      gap = Math.max(gap, a - cursor);
+      cursor = Math.max(cursor, b);
+    }
+    return Math.max(gap, hi - cursor);
+  }
+
+  function auditSlide(slide, i) {
+    const layout = slide.dataset.layout || 'content';
+    const ink = inkRects(slide);
+    const issues = [];
+    const out = ink.filter((r) => r.x0 < SAFE.x0 - 40 || r.x1 > SAFE.x1 + 40 || r.y0 < SAFE.y0 - 30 || r.y1 > SAFE.y1 + 30);
+    if (out.length) issues.push(`tràn khung (${out.length} dòng)`);
+    // text overflow = a text line box past its container (decorative pseudo-elements are ignored)
+    slide.querySelectorAll('.col, .takeaway, .highlight').forEach((box) => {
+      const b = box.getBoundingClientRect();
+      const range = document.createRange();
+      range.selectNodeContents(box);
+      const past = [...range.getClientRects()].some((r) => r.height && (r.bottom > b.bottom + 2 || r.right > b.right + 2));
+      if (past) issues.push(`chữ tràn hộp .${box.className.split(' ')[0]}`);
+    });
+    const gapY = maxGap(ink.map((r) => [r.y0, r.y1]), SAFE.y0, SAFE.y1) / (SAFE.y1 - SAFE.y0);
+    const gapX = maxGap(ink.map((r) => [r.x0, r.x1]), SAFE.x0, SAFE.x1) / (SAFE.x1 - SAFE.x0);
+    const display = DISPLAY.includes(layout);
+    if (!display && gapY > (LIMIT_Y_BY_LAYOUT[layout] || LIMIT.gapY)) issues.push(`trống dọc ${Math.round(gapY * 100)}%`);
+    if (!display && gapX > LIMIT.gapX) issues.push(`trống ngang ${Math.round(gapX * 100)}%`);
+    return {
+      slide: i + 1, layout, density: slide.dataset.density || '',
+      gapY: `${Math.round(gapY * 100)}%`, gapX: `${Math.round(gapX * 100)}%`,
+      status: issues.length ? 'SỬA' : 'OK', issues: issues.join('; '),
+    };
+  }
+
+  window.deck.audit = () => {
+    stage.classList.add('auditing');
+    const slides = [...stage.querySelectorAll(':scope > .slide')];
+    const report = slides.map(auditSlide);
+    stage.classList.remove('auditing');
+    console.table(report);
+    return report;
+  };
+})();
+
+</script>
+</body>
+</html>

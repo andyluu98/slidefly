@@ -1,0 +1,149 @@
+/* ===========================================================
+   STYLE: BOLD SIGNAL (adapted from frontend-slides, MIT)
+   Charcoal gradient stage, one signal-orange card that travels
+   between layouts, hard dark offset shadow, thin rules, huge numbers.
+   Actors: wash (gradient), panel (hard shadow), card (orange slab),
+           frame (outline), rule-h, rule-v, chip. DOM order = z-order.
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@700;800;900&family=Space+Grotesk:wght@400;500;700&display=swap');
+
+.deck-stage {
+  --actors: "wash panel card frame rule-h rule-v chip";
+  --font-display: 'Be Vietnam Pro', sans-serif;
+  --font-body: 'Space Grotesk', sans-serif;
+  --bg: #1a1a1a; --fg: #ffffff; --muted: #b8b8b8;
+  --accent: #FF5722; --accent-2: #ffffff;
+  --card-bg: #262626; --card-fg: #ffffff; --card-radius: 0px;
+  --title-weight: 800; --title-tracking: -0.025em; --bullet-radius: 0;
+  --signal: #FF5722; --ink: #1a1a1a;
+  --line-c: rgba(255, 255, 255, 0.22); --chip-c: var(--signal); --frame-c: rgba(255, 255, 255, 0.35);
+}
+/* readable text on the orange card (cover, closing) */
+.deck-stage:is([data-layout="cover"], [data-layout="closing"]) {
+  --fg: #1a1a1a; --muted: #3d1609; --accent: #1a1a1a;
+  --line-c: #1a1a1a; --chip-c: #1a1a1a; --frame-c: #1a1a1a;
+}
+.deck-stage[data-layout="section"] { --chip-c: #1a1a1a; --frame-c: #1a1a1a; }
+.deck-stage[data-layout="content"][data-parity="even"] { --frame-c: #1a1a1a; }
+
+/* ---------- actor looks (geometry comes from poses) ---------- */
+[data-actor="wash"] {
+  --x: -240px; --y: -660px; --w: 2400px; --h: 2400px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+}
+[data-actor="panel"]  { background-color: #0c0c0c; --x: 1960px; --y: 120px; --w: 600px; --h: 840px; }
+[data-actor="card"]   { background-color: var(--signal); --x: 1940px; --y: 100px; --w: 600px; --h: 840px; }
+[data-actor="frame"]  { --bw: 3px; border: var(--bw) solid var(--frame-c); --x: 1960px; --y: 540px; --w: 0px; }
+[data-actor="rule-h"] { background-color: var(--line-c); --h: 2px; --w: 0px; --x: 120px; --y: 215px; }
+[data-actor="rule-v"] { background-color: var(--line-c); --w: 2px; --h: 0px; --x: 960px; --y: 270px; }
+[data-actor="chip"]   { background-color: var(--chip-c); --w: 0px; --h: 0px; --x: 120px; --y: 207px; }
+
+/* ---------- 1. cover: orange card on charcoal, title bottom-left ---------- */
+[data-layout="cover"] [data-actor="card"]   { --x: 120px; --y: 110px; --w: 1680px; --h: 840px; }
+[data-layout="cover"] [data-actor="panel"]  { --x: 152px; --y: 142px; --w: 1680px; --h: 840px; }
+[data-layout="cover"] [data-actor="chip"]   { --x: 220px; --y: 210px; --w: 56px; --h: 56px; }
+[data-layout="cover"] [data-actor="rule-h"] { --x: 316px; --y: 237px; --w: 1328px; }
+[data-layout="cover"] [data-actor="frame"]  { --x: 1644px; --y: 210px; --w: 56px; --bw: 4px; }
+
+/* ---------- 2. agenda: card folds into a top-right flag ---------- */
+[data-layout="agenda"] [data-actor="wash"]   { --r: 40deg; }
+[data-layout="agenda"] [data-actor="card"]   { --x: 1660px; --y: 0px; --w: 260px; --h: 200px; }
+[data-layout="agenda"] [data-actor="panel"]  { --x: 1636px; --y: 24px; --w: 260px; --h: 200px; }
+[data-layout="agenda"] [data-actor="rule-h"] { --x: 120px; --y: 230px; --w: 1480px; }
+[data-layout="agenda"] [data-actor="chip"]   { --x: 120px; --y: 222px; --w: 140px; --h: 18px; }
+[data-layout="agenda"] [data-actor="rule-v"] { --x: 959px; --y: 270px; --h: 720px; }
+
+/* ---------- 3. section: card becomes the right half, framed square ---------- */
+[data-layout="section"] [data-actor="wash"]   { --r: 90deg; }
+[data-layout="section"] [data-actor="card"]   { --x: 1100px; --y: 0px; --w: 820px; --h: 1080px; }
+[data-layout="section"] [data-actor="panel"]  { --x: 1068px; --y: 0px; --w: 32px; --h: 1080px; }
+[data-layout="section"] [data-actor="frame"]  { --x: 1310px; --y: 340px; --w: 400px; --bw: 8px; }
+[data-layout="section"] [data-actor="chip"]   { --x: 1470px; --y: 500px; --w: 80px; --h: 80px; }
+[data-layout="section"] [data-actor="rule-h"] { --x: 160px; --y: 880px; --w: 760px; }
+
+/* ---------- 4. content: card holds the highlight (zone x 1260..1800) ---------- */
+[data-layout="content"] [data-actor="wash"]   { --r: 60deg; }
+[data-layout="content"] [data-actor="card"]   { --x: 1240px; --y: 250px; --w: 560px; --h: 740px; }
+[data-layout="content"] [data-actor="panel"]  { --x: 1268px; --y: 278px; --w: 560px; --h: 740px; }
+[data-layout="content"] [data-actor="frame"]  { --x: 1214px; --y: 224px; --w: 560px; --h: 740px; --bw: 2px; }
+[data-layout="content"] [data-actor="rule-h"] { --x: 120px; --y: 215px; --w: 1040px; }
+[data-layout="content"] [data-actor="chip"]   { --x: 120px; --y: 207px; --w: 140px; --h: 18px; }
+/* even: card bleeds full height, frame drops to a corner mark */
+[data-layout="content"][data-parity="even"] [data-actor="wash"]  { --r: 120deg; }
+[data-layout="content"][data-parity="even"] [data-actor="card"]  { --x: 1220px; --y: 0px; --w: 700px; --h: 1080px; }
+[data-layout="content"][data-parity="even"] [data-actor="panel"] { --x: 1190px; --y: 0px; --w: 30px; --h: 1080px; }
+[data-layout="content"][data-parity="even"] [data-actor="frame"] { --x: 1740px; --y: 950px; --w: 60px; --h: 60px; --bw: 4px; }
+[data-layout="content"][data-parity="even"] [data-actor="chip"]  { --x: 120px; --y: 207px; --w: 80px; --h: 18px; }
+
+/* ---------- 5. two-col: card becomes the takeaway bar ---------- */
+[data-layout="two-col"] [data-actor="wash"]   { --r: 150deg; }
+[data-layout="two-col"] [data-actor="card"]   { --x: 120px; --y: 880px; --w: 1680px; --h: 110px; }
+[data-layout="two-col"] [data-actor="panel"]  { --x: 144px; --y: 904px; --w: 1680px; --h: 110px; }
+[data-layout="two-col"] [data-actor="rule-h"] { --x: 120px; --y: 215px; --w: 1680px; }
+[data-layout="two-col"] [data-actor="chip"]   { --x: 120px; --y: 207px; --w: 200px; --h: 18px; }
+[data-layout="two-col"] [data-actor="rule-v"] { --x: 959px; --y: 270px; --h: 570px; }
+[data-layout="two-col"] [data-actor="frame"]  { --x: 1740px; --y: 100px; --w: 60px; }
+/* no takeaway on this slide: park the card as a corner flag */
+.deck-stage[data-layout="two-col"]:not(:has(.slide.active .takeaway)) [data-actor="card"]  { --x: 1660px; --y: 0px; --w: 260px; --h: 200px; }
+.deck-stage[data-layout="two-col"]:not(:has(.slide.active .takeaway)) [data-actor="panel"] { --x: 1636px; --y: 24px; --w: 260px; --h: 200px; }
+
+/* ---------- 6. stats: dark plate under the figures, card = footer band ---------- */
+[data-layout="stats"] [data-actor="wash"]   { --r: 180deg; }
+[data-layout="stats"] [data-actor="panel"]  { --x: 0px; --y: 250px; --w: 1920px; --h: 760px; }
+[data-layout="stats"] [data-actor="card"]   { --x: 0px; --y: 1010px; --w: 1920px; --h: 70px; }
+[data-layout="stats"] [data-actor="rule-h"] { --x: 120px; --y: 215px; --w: 1680px; }
+[data-layout="stats"] [data-actor="chip"]   { --x: 120px; --y: 207px; --w: 140px; --h: 18px; }
+[data-layout="stats"] [data-actor="rule-v"] { --x: 671px; --y: 330px; --h: 600px; }
+[data-layout="stats"] [data-actor="frame"]  { --x: 1248px; --y: 330px; --w: 0px; --h: 600px; --bw: 2px; }
+
+/* ---------- 7. timeline: card stretches into the axis (y=630) ---------- */
+[data-layout="timeline"] [data-actor="wash"]   { --r: 210deg; }
+[data-layout="timeline"] [data-actor="card"]   { --x: 0px; --y: 622px; --w: 1920px; --h: 16px; }
+[data-layout="timeline"] [data-actor="panel"]  { --x: 0px; --y: 638px; --w: 1920px; --h: 10px; }
+[data-layout="timeline"] [data-actor="rule-h"] { --x: 120px; --y: 215px; --w: 1680px; }
+[data-layout="timeline"] [data-actor="chip"]   { --x: 120px; --y: 207px; --w: 140px; --h: 18px; }
+[data-layout="timeline"] [data-actor="frame"]  { --x: 1740px; --y: 100px; --w: 60px; }
+
+/* ---------- 8. quote: card turns into a left pillar ---------- */
+[data-layout="quote"] [data-actor="wash"]   { --r: 240deg; }
+[data-layout="quote"] [data-actor="card"]   { --x: 0px; --y: 0px; --w: 180px; --h: 1080px; }
+[data-layout="quote"] [data-actor="panel"]  { --x: 180px; --y: 0px; --w: 28px; --h: 1080px; }
+[data-layout="quote"] [data-actor="chip"]   { --x: 280px; --y: 180px; --w: 96px; --h: 18px; }
+[data-layout="quote"] [data-actor="rule-h"] { --x: 280px; --y: 900px; --w: 1360px; }
+[data-layout="quote"] [data-actor="frame"]  { --x: 1700px; --y: 780px; --w: 400px; --bw: 2px; }
+
+/* ---------- 9. closing: card floods the stage ---------- */
+[data-layout="closing"] [data-actor="card"]   { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="closing"] [data-actor="panel"]  { --x: 960px; --y: 540px; --w: 0px; --h: 0px; }
+[data-layout="closing"] [data-actor="frame"]  { --x: 1360px; --y: 300px; --w: 440px; --bw: 10px; }
+[data-layout="closing"] [data-actor="chip"]   { --x: 1530px; --y: 470px; --w: 100px; --h: 100px; }
+[data-layout="closing"] [data-actor="rule-h"] { --x: 160px; --y: 840px; --w: 640px; --h: 4px; }
+[data-layout="closing"] [data-actor="rule-v"] { --x: 1240px; --y: 120px; --h: 840px; }
+
+/* ---------- content tweaks: left-aligned, heavy display type ---------- */
+.slide[data-layout="cover"] {
+  align-items: flex-start; justify-content: flex-end; text-align: left; gap: 22px;
+  padding: 0 380px 230px 220px;
+}
+.slide[data-layout="cover"] .title { font-size: 100px; font-weight: 900; line-height: 1.02; }
+.slide[data-layout="closing"] { align-items: flex-start; text-align: left; padding: 0 760px 0 160px; }
+.slide[data-layout="closing"] .title { font-size: 168px; font-weight: 900; }
+.slide[data-layout="section"] .num { font-size: 300px; font-weight: 900; }
+.slide[data-layout="section"] { padding-right: 920px; }
+.agenda-list { --agenda-gap: 160px; --tile-line: 2px solid rgba(255, 255, 255, 0.14); }
+.agenda-list li { align-items: flex-start; padding-top: 30px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list .num { font-weight: 900; }
+.slide[data-layout="content"] { --title-w: 1060px; }
+.slide[data-layout="content"] .highlight { color: var(--ink); --accent: var(--ink); }
+.slide[data-layout="content"] .hl-big { font-weight: 900; }
+.slide[data-layout="stats"] .stat-num { font-weight: 900; }
+.slide[data-layout="stats"] .stat-label { color: #d4d4d4; }
+.col { border-top: 6px solid var(--signal); }
+.takeaway { background: var(--signal); color: var(--ink); border-left-color: var(--ink); }
+.timeline::before { opacity: 0; }
+.step::before { background: var(--ink); border: 6px solid var(--signal); }
+.slide[data-layout="quote"] { padding-left: 300px; }
+.slide[data-layout="quote"] .quote { font-weight: 800; }
+.slide[data-layout="content"][data-parity="even"] { --hl-left: 1300px; --hl-right: 80px; }

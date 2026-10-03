@@ -1,0 +1,194 @@
+/* ===========================================================
+   STYLE: RETRO ZINE (adapted from frontend-slides bold template
+   "retro-zine", MIT). Risograph zine: khaki paper, forest green,
+   ink black, cream paper-on-paper cards with offset slabs,
+   masking tape, a rotated stamp and print grain on every slide.
+   Fonts: Bebas Neue -> Oswald, Caveat -> Patrick Hand (Vietnamese).
+   Actors: dark (khaki-dark paper), ink (black slab / rule),
+           green (green slab / offset), card (cream card, 3px ink
+           border, halftone dots), rule (3px ink line), stamp,
+           tape, tape2. DOM order = z-order (dark first).
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Patrick+Hand&display=swap');
+
+.deck-stage {
+  --actors: "dark ink green card rule stamp tape tape2";
+  --font-display: 'Oswald', sans-serif;
+  --font-body: 'Space Grotesk', sans-serif;
+  --font-hand: 'Patrick Hand', cursive;
+  --bg: #c8b99a; --fg: #1a1a1a; --muted: #4a4232;
+  --accent: #005c33; --accent-2: #1a1a1a;
+  --card-bg: #f4efe6; --card-fg: #1a1a1a; --card-radius: 0px;
+  --title-weight: 600; --title-tracking: 0.02em; --title-case: uppercase; --bullet-radius: 0;
+  --khaki-d: #b8a98a; --green: #008f4d; --green-l: #00a85d; --ink: #1a1a1a; --cream: #f4efe6;
+}
+/* print grain over everything (pointer-events off, like the original overlay) */
+.deck-stage::after {
+  content: ""; position: absolute; inset: 0; z-index: 30; pointer-events: none; opacity: 0.11;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="dark"]  { background: var(--khaki-d); --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-actor="ink"]   { background: var(--ink); --x: 0px; --y: 1080px; --w: 1920px; --h: 0px; }
+[data-actor="green"] { background: var(--green); --x: 2000px; --y: 300px; --w: 460px; --h: 580px; --r: 8deg; }
+[data-actor="card"]  { background: var(--cream); border: 3px solid var(--ink); --x: 2100px; --y: 280px; --w: 460px; --h: 580px; --r: 8deg; --dots: 0; }
+[data-actor="card"]::before {
+  content: ""; position: absolute; left: 22px; right: 22px; bottom: 22px; height: 52%;
+  background: radial-gradient(circle, var(--green) 32%, transparent 36%) 0 0 / 18px 18px;
+  -webkit-mask: linear-gradient(to top, #000 30%, transparent); mask: linear-gradient(to top, #000 30%, transparent);
+  opacity: var(--dots); transition: opacity 0.8s ease;
+}
+[data-actor="rule"]  { background: var(--ink); --x: 0px; --y: 225px; --w: 0px; --h: 3px; }
+[data-actor="stamp"] {
+  background: var(--ink); border: 3px solid var(--green); color: var(--green-l);
+  --x: 1700px; --y: -220px; --w: 260px; --h: 90px; --r: -8deg;
+}
+[data-actor="stamp"]::before {
+  content: "\2605  \2605  \2605"; position: absolute; inset: 6px; border: 1.5px dashed currentColor;
+  display: flex; align-items: center; justify-content: center; font: 600 34px/1 'Oswald', sans-serif; letter-spacing: 0.2em;
+}
+[data-actor="tape"], [data-actor="tape2"] { background: rgba(255, 255, 255, 0.42); border: 1px solid rgba(0, 0, 0, 0.12); --w: 150px; --h: 42px; }
+[data-actor="tape"]  { --x: 1500px; --y: -120px; --r: -14deg; }
+[data-actor="tape2"] { --x: 2040px; --y: 900px; --r: 32deg; }
+
+/* ---------- 1. cover: khaki-dark panel right, taped cream card with green offset ---------- */
+[data-layout="cover"] [data-actor="dark"]  { --x: 1180px; --w: 740px; }
+[data-layout="cover"] [data-actor="rule"]  { --x: 1179px; --y: 0px; --w: 3px; --h: 1080px; }
+[data-layout="cover"] [data-actor="ink"]   { --x: 120px; --y: 900px; --w: 320px; --h: 16px; }
+[data-layout="cover"] [data-actor="green"] { --x: 1340px; --y: 262px; --r: -4deg; }
+[data-layout="cover"] [data-actor="card"]  { --x: 1318px; --y: 240px; --r: -4deg; --dots: 1; }
+[data-layout="cover"] [data-actor="tape"]  { --x: 1470px; --y: 212px; --w: 160px; --h: 44px; }
+[data-layout="cover"] [data-actor="tape2"] { --x: 1680px; --y: 790px; }
+[data-layout="cover"] [data-actor="stamp"] { --x: 1210px; --y: 800px; --w: 290px; --h: 98px; }
+
+/* ---------- 2. agenda: masthead band, green spine, column rule, taped label ---------- */
+[data-layout="agenda"] [data-actor="dark"]  { --x: 0px; --w: 1920px; --h: 226px; }
+[data-layout="agenda"] [data-actor="rule"]  { --w: 1920px; }
+[data-layout="agenda"] [data-actor="ink"]   { --x: 958px; --y: 290px; --w: 3px; --h: 680px; }
+[data-layout="agenda"] [data-actor="green"] { --x: 0px; --y: 228px; --w: 44px; --h: 852px; --r: 0deg; }
+[data-layout="agenda"] [data-actor="card"]  { --x: 1600px; --y: 56px; --w: 200px; --h: 130px; --r: 4deg; --dots: 1; }
+[data-layout="agenda"] [data-actor="tape"]  { --x: 1640px; --y: 40px; --w: 120px; --h: 36px; --r: -10deg; }
+[data-layout="agenda"] [data-actor="tape2"] { --x: 1760px; --y: 160px; --w: 90px; --h: 30px; --r: 40deg; }
+[data-layout="agenda"] [data-actor="stamp"] { --x: 1590px; --y: 990px; --w: 240px; --h: 80px; --r: -6deg; }
+
+/* ---------- 3. section: green panel right, card turns over onto an ink slab ---------- */
+[data-layout="section"] [data-actor="green"] { --x: 1120px; --y: 0px; --w: 800px; --h: 1080px; --r: 0deg; }
+[data-layout="section"] [data-actor="rule"]  { --x: 1118px; --y: 0px; --w: 3px; --h: 1080px; }
+[data-layout="section"] [data-actor="ink"]   { --x: 1342px; --y: 302px; --w: 440px; --h: 520px; --r: 5deg; }
+[data-layout="section"] [data-actor="card"]  { --x: 1320px; --y: 280px; --w: 440px; --h: 520px; --r: 5deg; --dots: 1; }
+[data-layout="section"] [data-actor="tape"]  { --x: 1470px; --y: 258px; --w: 160px; --h: 44px; --r: -10deg; }
+[data-layout="section"] [data-actor="tape2"] { --x: 1262px; --y: 740px; --w: 140px; --h: 40px; --r: -36deg; }
+[data-layout="section"] [data-actor="stamp"] { --x: 1560px; --y: 790px; --w: 290px; --h: 98px; }
+[data-layout="section"] [data-actor="dark"]  { --x: 0px; --y: 940px; --w: 1118px; --h: 140px; }
+
+/* ---------- 4. content: paper panel + taped card frame the highlight (mirrors on even) ---------- */
+[data-layout="content"] [data-actor="rule"]  { --w: 1920px; }
+[data-layout="content"] [data-actor="dark"]  { --x: 1220px; --y: 228px; --w: 700px; --h: 852px; }
+[data-layout="content"] [data-actor="ink"]   { --x: 1218px; --y: 228px; --w: 3px; --h: 852px; }
+[data-layout="content"] [data-actor="green"] { --x: 1312px; --y: 382px; --w: 480px; --h: 540px; --r: 2deg; }
+[data-layout="content"] [data-actor="card"]  { --x: 1290px; --y: 360px; --w: 480px; --h: 540px; --r: 2deg; }
+[data-layout="content"] [data-actor="tape"]  { --x: 1460px; --y: 338px; --w: 140px; --h: 40px; --r: -6deg; }
+[data-layout="content"] [data-actor="tape2"] { --x: 1690px; --y: 870px; --w: 120px; --h: 36px; --r: 38deg; }
+[data-layout="content"] [data-actor="stamp"] { --x: 1580px; --y: 72px; --w: 240px; --h: 88px; }
+[data-layout="content"][data-parity="even"] [data-actor="dark"]  { --x: 0px; }
+[data-layout="content"][data-parity="even"] [data-actor="ink"]   { --x: 699px; }
+[data-layout="content"][data-parity="even"] [data-actor="green"] { --x: 172px; --r: -2deg; }
+[data-layout="content"][data-parity="even"] [data-actor="card"]  { --x: 150px; --r: -2deg; }
+[data-layout="content"][data-parity="even"] [data-actor="tape"]  { --x: 320px; --r: 8deg; }
+[data-layout="content"][data-parity="even"] [data-actor="tape2"] { --x: 92px; --y: 860px; --r: -38deg; }
+[data-layout="content"][data-parity="even"] [data-actor="stamp"] { --x: 1570px; --y: 66px; --r: 6deg; }
+
+/* ---------- 5. two-col: green + ink offset slabs under the cards, card = takeaway strip ---------- */
+[data-layout="two-col"] [data-actor="dark"]  { --x: 0px; --w: 1920px; --h: 226px; }
+[data-layout="two-col"] [data-actor="rule"]  { --w: 1920px; }
+[data-layout="two-col"] [data-actor="green"] { --x: 140px; --y: 290px; --w: 808px; --h: 570px; --r: 0deg; }
+[data-layout="two-col"] [data-actor="ink"]   { --x: 1012px; --y: 290px; --w: 808px; --h: 570px; }
+[data-layout="two-col"] [data-actor="card"]  { --x: 120px; --y: 880px; --w: 1680px; --h: 110px; --r: 0deg; }
+[data-layout="two-col"] [data-actor="tape"]  { --x: 444px; --y: 232px; --w: 160px; --h: 44px; --r: -8deg; }
+[data-layout="two-col"] [data-actor="tape2"] { --x: 1316px; --y: 234px; --w: 160px; --h: 44px; --r: 7deg; }
+[data-layout="two-col"] [data-actor="stamp"] { --x: 1580px; --y: 72px; --w: 240px; --h: 88px; }
+.deck-stage[data-layout="two-col"]:not(:has(.slide.active .takeaway)) :is([data-actor="green"], [data-actor="ink"]) { --h: 720px; }
+.deck-stage[data-layout="two-col"]:not(:has(.slide.active .takeaway)) [data-actor="card"] { --x: 1920px; --y: 900px; --w: 0px; --h: 110px; }
+
+/* ---------- 6. stats: ink band holds the figures, green edge, taped corners ---------- */
+[data-layout="stats"] [data-actor="dark"]  { --x: 0px; --w: 1920px; --h: 226px; }
+[data-layout="stats"] [data-actor="rule"]  { --w: 1920px; }
+[data-layout="stats"] [data-actor="ink"]   { --x: 0px; --y: 270px; --w: 1920px; --h: 720px; }
+[data-layout="stats"] [data-actor="green"] { --x: 0px; --y: 990px; --w: 1920px; --h: 18px; --r: 0deg; }
+[data-layout="stats"] [data-actor="card"]  { --x: 1600px; --y: 56px; --w: 200px; --h: 130px; --r: -4deg; --dots: 1; }
+[data-layout="stats"] [data-actor="tape"]  { --x: 120px; --y: 250px; --w: 170px; --h: 46px; --r: -28deg; }
+[data-layout="stats"] [data-actor="tape2"] { --x: 1640px; --y: 968px; --w: 170px; --h: 46px; --r: -28deg; }
+[data-layout="stats"] [data-actor="stamp"] { --x: 1880px; --y: -200px; }
+
+/* ---------- 7. timeline: dark paper turns into a cream track under the ink axis, card = masthead ---------- */
+[data-layout="timeline"] [data-actor="dark"]  { --x: -20px; --y: 594px; --w: 1960px; --h: 72px; background: var(--cream); }
+[data-layout="timeline"] [data-actor="rule"]  { --w: 1920px; }
+[data-layout="timeline"] [data-actor="card"]  { --x: -10px; --y: -10px; --w: 1940px; --h: 236px; --r: 0deg; background: var(--khaki-d); }
+[data-layout="timeline"] [data-actor="ink"]   { --x: 120px; --y: 628px; --w: 1680px; --h: 4px; }
+[data-layout="timeline"] [data-actor="green"] { --x: 120px; --y: 622px; --w: 520px; --h: 16px; --r: 0deg; }
+[data-layout="timeline"] [data-actor="tape"]  { --x: 30px; --y: 606px; --r: -30deg; }
+[data-layout="timeline"] [data-actor="tape2"] { --x: 1760px; --y: 606px; --r: 30deg; }
+[data-layout="timeline"] [data-actor="stamp"] { --x: 1580px; --y: 72px; --w: 240px; --h: 88px; }
+
+/* ---------- 8. quote: green floods the page, taped note, black stamp ---------- */
+.deck-stage[data-layout="quote"] { --fg: #f4efe6; --muted: #dcefe3; --accent: #f4efe6; }
+[data-layout="quote"] [data-actor="green"] { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; --r: 0deg; }
+[data-layout="quote"] [data-actor="dark"]  { --x: 0px; --w: 0px; }
+[data-layout="quote"] [data-actor="ink"]   { --x: 0px; --y: 1036px; --w: 1920px; --h: 44px; }
+[data-layout="quote"] [data-actor="rule"]  { --x: 220px; --y: 400px; --w: 10px; --h: 280px; }
+[data-layout="quote"] [data-actor="card"]  { --x: 1520px; --y: 110px; --w: 250px; --h: 180px; --r: 5deg; --dots: 1; }
+[data-layout="quote"] [data-actor="tape"]  { --x: 1580px; --y: 92px; --w: 130px; --h: 38px; --r: -10deg; }
+[data-layout="quote"] [data-actor="tape2"] { --x: -40px; --y: 60px; --w: 260px; --h: 52px; --r: -35deg; }
+[data-layout="quote"] [data-actor="stamp"] { --x: 1480px; --y: 840px; --w: 290px; --h: 98px; }
+
+/* ---------- 9. closing: ink floods, cream card + green offset, green stamp ---------- */
+.deck-stage[data-layout="closing"] { --fg: #c8b99a; --muted: #a99d84; --accent: #00a85d; }
+[data-layout="closing"] [data-actor="ink"]   { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="closing"] [data-actor="dark"]  { --x: 1920px; --w: 0px; }
+[data-layout="closing"] [data-actor="green"] { --x: 166px; --y: 746px; --w: 320px; --h: 220px; --r: -5deg; }
+[data-layout="closing"] [data-actor="card"]  { --x: 144px; --y: 724px; --w: 320px; --h: 220px; --r: -5deg; --dots: 1; }
+[data-layout="closing"] [data-actor="tape"]  { --x: 230px; --y: 702px; --w: 140px; --h: 40px; --r: -14deg; }
+[data-layout="closing"] [data-actor="tape2"] { --x: 1690px; --y: 940px; --r: 30deg; }
+[data-layout="closing"] [data-actor="rule"]  { --x: 900px; --y: 820px; --w: 120px; --h: 6px; background: var(--green-l); }
+[data-layout="closing"] [data-actor="stamp"] {
+  --x: 1480px; --y: 140px; --w: 300px; --h: 104px; background: var(--green); border-color: var(--ink); color: var(--ink);
+}
+
+/* ---------- content tweaks: zine type, left aligned cover, paper cards ---------- */
+.slide { --title-w: 1400px; }
+.slide .title { line-height: 1.2; color: var(--accent); }
+.slide > .title:first-child { font-size: 70px; }
+.slide .kicker {
+  display: inline-block; align-self: flex-start; padding: 8px 20px; background: var(--green); color: var(--cream);
+  font: 500 24px/1.2 var(--font-display); letter-spacing: 0.22em;
+}
+.slide :is(.meta, .cite) { font-family: var(--font-hand); }
+.slide[data-layout="cover"] { align-items: flex-start; text-align: left; padding: 0 820px 0 120px; }
+.slide[data-layout="cover"] .title { font-size: 100px; line-height: 1.3; }
+.slide[data-layout="cover"] .meta { font-size: 34px; color: var(--fg); }
+.slide[data-layout="closing"] .kicker { align-self: center; }
+.slide[data-layout="closing"] .title { font-size: 150px; color: var(--fg); }
+.slide[data-layout="section"] .num { font-size: 240px; line-height: 1.1; font-weight: 700; }
+.slide[data-layout="section"] .title { color: var(--fg); line-height: 1.2; }
+.agenda-list { --agenda-gap: 200px; --tile-line: 2px solid var(--ink); }
+.agenda-list li { align-items: flex-start; padding-top: 32px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list h3, .col h3, .step h3 { text-transform: uppercase; font-weight: 500; letter-spacing: 0.02em; line-height: 1.25; }
+.bullets li::before, .col li::before { background: var(--green); outline: 2px solid var(--ink); outline-offset: 0; }
+.slide[data-layout="content"] { --hl-left: 1290px; --hl-right: 150px; }
+.slide[data-layout="content"] .highlight { padding: 60px 40px; }
+.slide[data-layout="content"] .hl-text { font: 400 46px/1.2 var(--font-hand); }
+.slide[data-layout="content"] .hl-big { font-weight: 700; }
+.slide[data-layout="content"][data-parity="even"] { --hl-left: 150px; --hl-right: 1290px; }
+.slide[data-layout="content"][data-parity="even"] .bullets { left: 800px; width: 1000px; }
+.col { border: 3px solid var(--ink); padding: 44px 52px; }
+.takeaway { border-left: 14px solid var(--green); padding-left: 40px; text-transform: uppercase; font-weight: 500; letter-spacing: 0.02em; color: var(--ink); }
+.slide[data-layout="stats"] .stat-num { color: var(--green-l); font-weight: 700; }
+.slide[data-layout="stats"] .stat-label { color: var(--cream); }
+.timeline::before { opacity: 0; }
+.step::before { border-radius: 0; background: var(--green); border: 3px solid var(--ink); }
+.step .when { font-weight: 700; }
+.slide[data-layout="quote"] .quote { text-transform: uppercase; font-weight: 500; font-size: 68px; line-height: 1.36; }
+.slide[data-layout="quote"] .cite { font-size: 42px; color: var(--cream); }

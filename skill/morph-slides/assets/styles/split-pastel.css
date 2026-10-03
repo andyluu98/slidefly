@@ -1,0 +1,165 @@
+/* ===========================================================
+   STYLE: SPLIT PASTEL (adapted from frontend-slides, MIT)
+   Peach page split by a lavender panel with a grid overlay,
+   playful badge pills (mint, yellow, pink) with icons, a dark
+   rounded CTA pill. The lavender panel slides from side to side,
+   becomes a card, a band, a frame; pills turn into cards and bars.
+   Actors: lav (grid panel), pink, mint, yellow (badge pills),
+           ink (dark CTA pill / rule), ring (outline circle),
+           dot. DOM order = z-order (lav first).
+   Font: Outfit has no Vietnamese -> Plus Jakarta Sans.
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+.deck-stage {
+  --actors: "lav pink mint yellow ink ring dot";
+  --font-display: 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+  --bg: #f5e6dc; --fg: #1a1a1a; --muted: #574e5c;
+  --accent: #6a4c9c; --accent-2: #1a1a1a;
+  --card-bg: transparent; --card-fg: #1a1a1a; --card-radius: 36px;
+  --title-weight: 800; --title-tracking: -0.025em; --bullet-radius: 50%;
+  --peach: #f5e6dc; --lavender: #e4dff0; --ink: #1a1a1a;
+  --mint: #c8f0d8; --yellow: #f0f0c8; --pink: #f0d4e0;
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+.actor { border-radius: var(--rad, 999px); }
+[data-actor="lav"] {
+  --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; --rad: 0px;
+  background-color: var(--lavender);
+  background-image:
+    linear-gradient(to right, rgba(26, 26, 26, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(26, 26, 26, 0.07) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+[data-actor="pink"]   { background: var(--pink);   --x: 1920px; --y: 1100px; --w: 320px; --h: 100px; }
+[data-actor="mint"]   { background: var(--mint);   --x: -500px; --y: 300px;  --w: 360px; --h: 110px; }
+[data-actor="yellow"] { background: var(--yellow); --x: 1920px; --y: -200px; --w: 300px; --h: 96px; }
+[data-actor="ink"]    { background: var(--ink);    --x: -400px; --y: 900px;  --w: 280px; --h: 88px; }
+[data-actor="ring"]   { border: 4px solid var(--ink); --x: 1920px; --y: 540px; --w: 220px; --rad: 50%; }
+[data-actor="dot"]    { background: var(--ink); --x: 960px; --y: -100px; --w: 36px; --rad: 50%; }
+/* badge pill = icon at the left end + a label stub (shown with --io: 1) */
+:is([data-actor="pink"], [data-actor="mint"], [data-actor="yellow"])::before,
+:is([data-actor="pink"], [data-actor="mint"], [data-actor="yellow"])::after {
+  content: ""; position: absolute; opacity: var(--io, 0); transition: opacity calc(var(--morph-dur) * 0.4) ease;
+}
+:is([data-actor="pink"], [data-actor="mint"], [data-actor="yellow"])::before {
+  left: 4%; top: 0; height: 100%; aspect-ratio: 1; background: center / 46% no-repeat var(--icon);
+}
+:is([data-actor="pink"], [data-actor="mint"], [data-actor="yellow"])::after {
+  left: 34%; right: 14%; top: 43%; height: 14%; border-radius: 99px; background: rgba(26, 26, 26, 0.16);
+}
+[data-actor="mint"]   { --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a1a1a' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E"); }
+[data-actor="yellow"] { --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a1a1a' stroke-width='2.2' stroke-linejoin='round'%3E%3Cpath d='M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.8l6.1-.9z'/%3E%3C/svg%3E"); }
+[data-actor="pink"]   { --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a1a1a' stroke-width='2.2' stroke-linejoin='round'%3E%3Cpath d='M12 20s-7.5-4.6-7.5-10.2A4.1 4.1 0 0 1 12 7.4a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20z'/%3E%3C/svg%3E"); }
+/* ring can carry a big quotation mark (quote layout) */
+[data-actor="ring"]::before {
+  content: "\201C"; position: absolute; inset: 0; text-align: center; color: var(--ink);
+  font: 800 200px/1.15 'Plus Jakarta Sans', sans-serif; opacity: var(--qo, 0); transition: opacity calc(var(--morph-dur) * 0.4) ease;
+}
+
+/* ---------- 1. cover: the classic split, pills tumble on the lavender side ---------- */
+[data-layout="cover"] [data-actor="lav"]    { --x: 960px; --y: 0px; --w: 960px; --h: 1080px; }
+[data-layout="cover"] [data-actor="mint"]   { --x: 1140px; --y: 290px; --w: 440px; --h: 124px; --r: -6deg; --io: 1; }
+[data-layout="cover"] [data-actor="yellow"] { --x: 1370px; --y: 470px; --w: 400px; --h: 116px; --r: 5deg; --io: 1; }
+[data-layout="cover"] [data-actor="pink"]   { --x: 1160px; --y: 650px; --w: 360px; --h: 112px; --r: -3deg; --io: 1; }
+[data-layout="cover"] [data-actor="ink"]    { --x: 1440px; --y: 840px; --w: 300px; --h: 96px; }
+[data-layout="cover"] [data-actor="ring"]   { --x: 1600px; --y: 110px; --w: 200px; }
+[data-layout="cover"] [data-actor="dot"]    { --x: 1060px; --y: 170px; --w: 44px; }
+
+/* ---------- 2. agenda: panel swings to the left half, columns sit either side ---------- */
+[data-layout="agenda"] [data-actor="lav"]    { --x: 0px; --y: 0px; --w: 960px; --h: 1080px; }
+[data-layout="agenda"] [data-actor="ink"]    { --x: 958px; --y: 270px; --w: 4px; --h: 720px; }
+[data-layout="agenda"] [data-actor="mint"]   { --x: 1580px; --y: 92px; --w: 240px; --h: 76px; --r: 6deg; --io: 1; }
+[data-layout="agenda"] [data-actor="yellow"] { --x: 860px; --y: 1004px; --w: 200px; --h: 64px; --r: -4deg; --io: 1; }
+[data-layout="agenda"] [data-actor="pink"]   { --x: 1640px; --y: 1000px; --w: 320px; --h: 100px; --r: -8deg; }
+[data-layout="agenda"] [data-actor="ring"]   { --x: -160px; --y: 900px; --w: 260px; }
+[data-layout="agenda"] [data-actor="dot"]    { --x: 922px; --y: 140px; --w: 36px; }
+
+/* ---------- 3. section: panel holds the text, pink pill blooms into a sun ---------- */
+[data-layout="section"] [data-actor="lav"]    { --x: 0px; --y: 0px; --w: 1180px; --h: 1080px; }
+[data-layout="section"] [data-actor="pink"]   { --x: 1240px; --y: 220px; --w: 640px; --h: 640px; }
+[data-layout="section"] [data-actor="ring"]   { --x: 1180px; --y: 160px; --w: 760px; }
+[data-layout="section"] [data-actor="mint"]   { --x: 1290px; --y: 800px; --w: 380px; --h: 116px; --r: -8deg; --io: 1; }
+[data-layout="section"] [data-actor="yellow"] { --x: 1560px; --y: 120px; --w: 300px; --h: 96px; --r: 8deg; --io: 1; }
+[data-layout="section"] [data-actor="ink"]    { --x: 160px; --y: 900px; --w: 220px; --h: 16px; }
+[data-layout="section"] [data-actor="dot"]    { --x: 1536px; --y: 516px; --w: 48px; }
+
+/* ---------- 4. content: panel shrinks into a card that frames the highlight ---------- */
+[data-layout="content"] [data-actor="lav"]    { --x: 1240px; --y: 250px; --w: 580px; --h: 760px; --rad: 40px; }
+[data-layout="content"] [data-actor="mint"]   { --x: 1620px; --y: 212px; --w: 220px; --h: 72px; --r: 6deg; --io: 1; }
+[data-layout="content"] [data-actor="yellow"] { --x: 1200px; --y: 966px; --w: 240px; --h: 72px; --r: -5deg; --io: 1; }
+[data-layout="content"] [data-actor="pink"]   { --x: -120px; --y: 1012px; --w: 320px; --h: 100px; }
+[data-layout="content"] [data-actor="ring"]   { --x: 1720px; --y: 900px; --w: 200px; }
+[data-layout="content"] [data-actor="dot"]    { --x: 1190px; --y: 612px; --w: 24px; }
+/* even: card opens into a full-height side panel with a dark spine */
+[data-layout="content"][data-parity="even"] [data-actor="lav"]    { --x: 1220px; --y: 0px; --w: 700px; --h: 1080px; --rad: 0px; }
+[data-layout="content"][data-parity="even"] [data-actor="ink"]    { --x: 1216px; --y: 0px; --w: 8px; --h: 1080px; --rad: 0px; }
+[data-layout="content"][data-parity="even"] [data-actor="mint"]   { --x: 1320px; --y: 880px; --w: 400px; --h: 120px; --r: -4deg; --io: 1; }
+[data-layout="content"][data-parity="even"] [data-actor="yellow"] { --x: 1560px; --y: 80px; --w: 300px; --h: 96px; --r: 6deg; --io: 1; }
+[data-layout="content"][data-parity="even"] [data-actor="pink"]   { --x: 1120px; --y: -80px; --w: 180px; --h: 180px; }
+[data-layout="content"][data-parity="even"] [data-actor="ring"]   { --x: -110px; --y: 940px; --w: 220px; }
+[data-layout="content"][data-parity="even"] [data-actor="dot"]    { --x: 1760px; --y: 1010px; --w: 30px; }
+
+/* ---------- 5. two-col: pills grow into the two cards + the takeaway bar ---------- */
+[data-layout="two-col"] [data-actor="lav"]    { --x: 0px; --y: 0px; --w: 1920px; --h: 230px; }
+[data-layout="two-col"] [data-actor="mint"]   { --x: 120px; --y: 270px; --w: 808px; --h: 570px; --rad: 36px; }
+[data-layout="two-col"] [data-actor="pink"]   { --x: 992px; --y: 270px; --w: 808px; --h: 570px; --rad: 36px; }
+[data-layout="two-col"] [data-actor="yellow"] { --x: 120px; --y: 880px; --w: 1680px; --h: 110px; }
+[data-layout="two-col"] [data-actor="ink"]    { --x: 1660px; --y: 100px; --w: 140px; --h: 56px; }
+[data-layout="two-col"] [data-actor="ring"]   { --x: -60px; --y: -60px; --w: 180px; }
+[data-layout="two-col"] [data-actor="dot"]    { --x: 1860px; --y: 1030px; --w: 24px; }
+
+/* ---------- 6. stats: panel becomes a rounded frame, badges pinned to it ---------- */
+[data-layout="stats"] [data-actor="lav"]    { --x: 80px; --y: 250px; --w: 1760px; --h: 770px; --rad: 48px; }
+[data-layout="stats"] [data-actor="mint"]   { --x: 1560px; --y: 212px; --w: 240px; --h: 76px; --r: 6deg; --io: 1; }
+[data-layout="stats"] [data-actor="yellow"] { --x: 140px; --y: 984px; --w: 260px; --h: 80px; --r: -4deg; --io: 1; }
+[data-layout="stats"] [data-actor="pink"]   { --x: 1700px; --y: 940px; --w: 160px; --h: 160px; }
+[data-layout="stats"] [data-actor="ring"]   { --x: -140px; --y: -140px; --w: 260px; }
+[data-layout="stats"] [data-actor="dot"]    { --x: 1830px; --y: 120px; --w: 28px; }
+
+/* ---------- 7. timeline: horizontal split, the ink pill stretches into the axis ---------- */
+[data-layout="timeline"] [data-actor="lav"]    { --x: 0px; --y: 630px; --w: 1920px; --h: 450px; }
+[data-layout="timeline"] [data-actor="ink"]    { --x: 120px; --y: 626px; --w: 1680px; --h: 8px; }
+[data-layout="timeline"] [data-actor="dot"]    { --x: 92px; --y: 602px; --w: 56px; }
+[data-layout="timeline"] [data-actor="ring"]   { --x: 1750px; --y: 580px; --w: 100px; }
+[data-layout="timeline"] [data-actor="mint"]   { --x: 1580px; --y: 96px; --w: 220px; --h: 72px; --r: 6deg; --io: 1; }
+[data-layout="timeline"] [data-actor="yellow"] { --x: -60px; --y: 960px; --w: 280px; --h: 90px; }
+[data-layout="timeline"] [data-actor="pink"]   { --x: 1720px; --y: 940px; --w: 260px; --h: 260px; }
+
+/* ---------- 8. quote: panel becomes an inset card, ring carries the quote mark ---------- */
+[data-layout="quote"] [data-actor="lav"]    { --x: 60px; --y: 60px; --w: 1800px; --h: 960px; --rad: 60px; }
+[data-layout="quote"] [data-actor="pink"]   { --x: 120px; --y: 110px; --w: 180px; --h: 180px; }
+[data-layout="quote"] [data-actor="ring"]   { --x: 104px; --y: 94px; --w: 212px; --qo: 1; }
+[data-layout="quote"] [data-actor="mint"]   { --x: 1420px; --y: 880px; --w: 360px; --h: 110px; --r: -6deg; --io: 1; }
+[data-layout="quote"] [data-actor="yellow"] { --x: 1540px; --y: 110px; --w: 280px; --h: 90px; --r: 6deg; --io: 1; }
+[data-layout="quote"] [data-actor="dot"]    { --x: 1360px; --y: 960px; --w: 30px; }
+
+/* ---------- 9. closing: lavender floods the page, all badges come back ---------- */
+[data-layout="closing"] [data-actor="lav"]    { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="closing"] [data-actor="mint"]   { --x: 140px; --y: 820px; --w: 460px; --h: 140px; --r: -8deg; --io: 1; }
+[data-layout="closing"] [data-actor="yellow"] { --x: 1380px; --y: 140px; --w: 420px; --h: 130px; --r: 7deg; --io: 1; }
+[data-layout="closing"] [data-actor="pink"]   { --x: 1440px; --y: 820px; --w: 380px; --h: 120px; --r: -4deg; --io: 1; }
+[data-layout="closing"] [data-actor="ink"]    { --x: 140px; --y: 150px; --w: 300px; --h: 100px; --r: -5deg; }
+[data-layout="closing"] [data-actor="ring"]   { --x: 1650px; --y: 470px; --w: 200px; }
+[data-layout="closing"] [data-actor="dot"]    { --x: 250px; --y: 560px; --w: 40px; }
+
+/* ---------- content tweaks: friendly, rounded, left aligned cover ---------- */
+.slide { --title-w: 1400px; }
+.slide .kicker {
+  align-self: flex-start; display: inline-block; padding: 10px 26px; border-radius: 999px;
+  background: var(--mint); color: var(--ink); letter-spacing: 0.16em; font-size: 20px;
+}
+.slide[data-layout="closing"] .kicker { align-self: center; background: var(--yellow); }
+.slide[data-layout="cover"] { align-items: flex-start; text-align: left; padding: 0 1080px 0 120px; }
+.slide[data-layout="cover"] .title { font-size: 84px; line-height: 1.05; }
+.slide[data-layout="closing"] .title { font-size: 150px; }
+.slide[data-layout="section"] .num { font-size: 240px; }
+.agenda-list { --agenda-gap: 160px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.slide[data-layout="content"] .hl-text { font-size: 36px; }
+.col { padding: 44px 56px; }
+.takeaway { border-left: 0; padding: 0 64px; }
+.slide[data-layout="quote"] .quote { font-weight: 700; }

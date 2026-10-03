@@ -1,0 +1,172 @@
+/* ===========================================================
+   STYLE: LONG TABLE (adapted from frontend-slides bold template
+   "long-table", MIT). Supper-club program: one rust ink on cream
+   paper with a 4px dot texture, outlined shapes only, Bricolage
+   uppercase display, Fraunces italic body and jumbo numerals.
+   Actors: cloth (tonal paper panel), table (outlined card with
+           solid/dashed dividers), plate (rim + dashed inner ring),
+           amp (jumbo italic glyph), pill (outlined capsule),
+           rule (1.5px topbar rule), dash (dashed divider).
+           DOM order = z-order (cloth first).
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+
+.deck-stage {
+  --actors: "cloth table plate amp pill rule dash";
+  --font-display: 'Bricolage Grotesque', sans-serif;
+  --font-body: 'Lora', Georgia, serif; /* Fraunces italic h reads like k in Vietnamese: body uses Lora */
+  --bg: #faf1e2; --fg: #b53d2a; --muted: #c05440;
+  --accent: #b53d2a; --accent-2: #8e2d1f;
+  --card-bg: transparent; --card-fg: #b53d2a; --card-radius: 0px;
+  --title-weight: 800; --title-tracking: -0.012em; --title-case: uppercase; --bullet-radius: 50%;
+  --ink: #b53d2a; --ink-32: rgba(181, 61, 42, 0.32); --paper-d: #f2e5cf;
+  --dots: radial-gradient(circle at 1px 1px, rgba(181, 61, 42, 0.09) 0.6px, transparent 1px);
+  background-image: var(--dots); background-size: 4px 4px;
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="cloth"] { background-color: var(--paper-d); background-image: var(--dots); background-size: 4px 4px; --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-actor="table"] { border: 1.5px solid var(--ink); overflow: hidden; --bw: 1.5px; --x: 960px; --y: 540px; --w: 0px; --h: 0px; }
+[data-actor="table"]::before, [data-actor="table"]::after {
+  content: ""; position: absolute; left: 6%; right: 6%; opacity: var(--dl, 1); transition: opacity 0.6s ease;
+}
+[data-actor="table"]::before { top: 18%; border-top: 1px solid var(--ink-32); }
+[data-actor="table"]::after  { bottom: 18%; border-top: 1px dashed var(--ink-32); }
+[data-actor="plate"] { border: 1.5px solid var(--ink); border-radius: 50%; --bw: 1.5px; --x: 1920px; --y: 1080px; --w: 0px; }
+[data-actor="plate"]::after { content: ""; position: absolute; inset: 11%; border: 1px dashed var(--ink-32); border-radius: 50%; }
+[data-actor="amp"] {
+  display: flex; align-items: center; justify-content: center; color: var(--ink);
+  font: 400 400px/1 'Fraunces', Georgia, serif; --x: 1600px; --y: -500px; --w: 400px; --h: 400px; --s: 0.2;
+}
+[data-actor="amp"]::before { content: "&"; }
+[data-actor="pill"] { border: 1.5px solid var(--ink); border-radius: 999px; --bw: 1.5px; --x: 960px; --y: 1180px; --w: 0px; --h: 60px; }
+[data-actor="pill"]::before {
+  content: "\B7   \B7   \B7"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font: italic 400 34px/1 'Fraunces', serif; color: var(--ink); white-space: pre; opacity: var(--pt, 0); transition: opacity 0.6s ease;
+}
+[data-actor="rule"] { background: var(--ink); --x: 120px; --y: 214px; --w: 0px; --h: 1.5px; }
+[data-actor="dash"] { border-left: 1.5px dashed rgba(181, 61, 42, 0.5); --x: 960px; --y: 630px; --w: 0px; --h: 0px; }
+
+/* ---------- 1. cover: program card on the right, amp on a plate ---------- */
+[data-layout="cover"] [data-actor="cloth"] { --x: 1040px; --w: 880px; }
+[data-layout="cover"] [data-actor="table"] { --x: 1140px; --y: 110px; --w: 680px; --h: 860px; }
+[data-layout="cover"] [data-actor="plate"] { --x: 1230px; --y: 290px; --w: 500px; }
+[data-layout="cover"] [data-actor="amp"]   { --x: 1280px; --y: 334px; --s: 1; }
+[data-layout="cover"] [data-actor="pill"]  { --x: 1340px; --y: 160px; --w: 280px; --h: 56px; --pt: 1; }
+[data-layout="cover"] [data-actor="rule"]  { --x: 120px; --y: 940px; --w: 820px; }
+[data-layout="cover"] [data-actor="dash"]  { --x: 1000px; --y: 120px; --h: 840px; }
+
+/* ---------- 2. agenda: tonal topbar, page border, amp in a label pill ---------- */
+[data-layout="agenda"] [data-actor="cloth"] { --x: 0px; --w: 1920px; --h: 232px; }
+[data-layout="agenda"] [data-actor="table"] { --x: 40px; --y: 40px; --w: 1840px; --h: 1000px; --dl: 0; }
+[data-layout="agenda"] [data-actor="plate"] { --x: 900px; --y: 960px; --w: 120px; }
+[data-layout="agenda"] [data-actor="amp"]   { --x: 1500px; --y: -68px; --s: 0.3; }
+[data-layout="agenda"] [data-actor="pill"]  { --x: 1600px; --y: 86px; --w: 200px; --h: 88px; }
+[data-layout="agenda"] [data-actor="rule"]  { --x: 0px; --y: 232px; --w: 1920px; }
+[data-layout="agenda"] [data-actor="dash"]  { --x: 960px; --y: 300px; --h: 640px; }
+
+/* ---------- 3. section: cloth swaps to the left, tall card + plate right ---------- */
+[data-layout="section"] [data-actor="cloth"] { --x: 0px; --w: 1060px; }
+[data-layout="section"] [data-actor="table"] { --x: 1240px; --y: 90px; --w: 480px; --h: 900px; }
+[data-layout="section"] [data-actor="plate"] { --x: 1270px; --y: 330px; --w: 420px; }
+[data-layout="section"] [data-actor="amp"]   { --x: 1280px; --y: 344px; --s: 0.95; }
+[data-layout="section"] [data-actor="pill"]  { --x: 160px; --y: 890px; --w: 300px; --h: 64px; --pt: 1; }
+[data-layout="section"] [data-actor="rule"]  { --x: 160px; --y: 200px; --w: 860px; }
+[data-layout="section"] [data-actor="dash"]  { --x: 1140px; --y: 120px; --h: 840px; }
+
+/* ---------- 4. content: highlight sits on a framed tonal card ---------- */
+[data-layout="content"] [data-actor="cloth"] { --x: 1240px; --y: 262px; --w: 580px; --h: 736px; }
+[data-layout="content"] [data-actor="table"] { --x: 1260px; --y: 290px; --w: 540px; --h: 680px; }
+[data-layout="content"] [data-actor="plate"] { --x: 1780px; --y: 980px; --w: 300px; }
+[data-layout="content"] [data-actor="amp"]   { --x: 1480px; --y: -68px; --s: 0.2; }
+[data-layout="content"] [data-actor="pill"]  { --x: 1560px; --y: 96px; --w: 240px; --h: 72px; }
+[data-layout="content"] [data-actor="rule"]  { --x: 120px; --y: 214px; --w: 1680px; }
+[data-layout="content"] [data-actor="dash"]  { --x: 1200px; --y: 290px; --h: 680px; }
+/* even: cloth becomes a full-height column, pill grows into a menu stadium */
+[data-layout="content"][data-parity="even"] [data-actor="cloth"] { --x: 1220px; --y: 0px; --w: 700px; --h: 1080px; }
+[data-layout="content"][data-parity="even"] [data-actor="table"] { --x: 80px; --y: 250px; --w: 1100px; --h: 760px; --dl: 0; }
+[data-layout="content"][data-parity="even"] [data-actor="plate"] { --x: 1704px; --y: 84px; --w: 96px; }
+[data-layout="content"][data-parity="even"] [data-actor="amp"]   { --x: 1552px; --y: -66px; --s: 0.16; }
+[data-layout="content"][data-parity="even"] [data-actor="pill"]  { --x: 1290px; --y: 280px; --w: 480px; --h: 700px; }
+[data-layout="content"][data-parity="even"] [data-actor="rule"]  { --x: 120px; --y: 214px; --w: 1060px; }
+[data-layout="content"][data-parity="even"] [data-actor="dash"]  { --x: 1860px; --y: 120px; --h: 840px; }
+
+/* ---------- 5. two-col: tonal card vs outlined card, pill = takeaway ---------- */
+[data-layout="two-col"] [data-actor="cloth"] { --x: 120px; --y: 270px; --w: 808px; --h: 720px; }
+[data-layout="two-col"] [data-actor="table"] { --x: 992px; --y: 270px; --w: 808px; --h: 720px; --dl: 0; }
+[data-layout="two-col"] [data-actor="plate"] { --x: 1704px; --y: 84px; --w: 96px; }
+[data-layout="two-col"] [data-actor="amp"]   { --x: 1552px; --y: -66px; --s: 0.16; }
+[data-layout="two-col"] [data-actor="pill"]  { --x: 120px; --y: 1120px; --w: 1680px; --h: 110px; }
+[data-layout="two-col"] [data-actor="rule"]  { --x: 120px; --y: 214px; --w: 1680px; }
+[data-layout="two-col"] [data-actor="dash"]  { --x: 960px; --y: 300px; --h: 660px; }
+.deck-stage:has(.slide.active .takeaway)[data-layout="two-col"] :is([data-actor="cloth"], [data-actor="table"]) { --h: 570px; }
+.deck-stage:has(.slide.active .takeaway)[data-layout="two-col"] [data-actor="pill"] { --y: 876px; --h: 118px; }
+.deck-stage:has(.slide.active .takeaway)[data-layout="two-col"] [data-actor="dash"] { --h: 510px; }
+
+/* ---------- 6. stats: tonal runner, ledger card, plate peeks top-right ---------- */
+[data-layout="stats"] [data-actor="cloth"] { --x: 0px; --y: 262px; --w: 1920px; --h: 736px; }
+[data-layout="stats"] [data-actor="table"] { --x: 80px; --y: 290px; --w: 1760px; --h: 680px; }
+[data-layout="stats"] [data-actor="plate"] { --x: 1620px; --y: -220px; --w: 440px; }
+[data-layout="stats"] [data-actor="amp"]   { --x: 1600px; --y: -110px; --s: 0.3; }
+[data-layout="stats"] [data-actor="pill"]  { --x: -400px; --y: 600px; --w: 200px; --h: 60px; }
+[data-layout="stats"] [data-actor="rule"]  { --x: 0px; --y: 262px; --w: 1920px; }
+[data-layout="stats"] [data-actor="dash"]  { --x: 960px; --y: 1080px; --h: 0px; }
+
+/* ---------- 7. timeline: the long table runner, pill track, plate at the head ---------- */
+[data-layout="timeline"] [data-actor="cloth"] { --x: 0px; --y: 590px; --w: 1920px; --h: 80px; }
+[data-layout="timeline"] [data-actor="table"] { --x: 40px; --y: 40px; --w: 1840px; --h: 1000px; --dl: 0; }
+[data-layout="timeline"] [data-actor="plate"] { --x: 1806px; --y: 576px; --w: 108px; }
+[data-layout="timeline"] [data-actor="amp"]   { --x: 1660px; --y: 434px; --s: 0.16; }
+[data-layout="timeline"] [data-actor="pill"]  { --x: 100px; --y: 606px; --w: 1696px; --h: 48px; }
+[data-layout="timeline"] [data-actor="rule"]  { --x: 120px; --y: 214px; --w: 1680px; }
+[data-layout="timeline"] [data-actor="dash"]  { --x: 120px; --y: 630px; --h: 0px; }
+
+/* ---------- 8. quote: cloth floods, framed card, amp turns into a quote mark ---------- */
+[data-layout="quote"] [data-actor="cloth"] { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="quote"] [data-actor="table"] { --x: 200px; --y: 160px; --w: 1520px; --h: 760px; }
+[data-layout="quote"] [data-actor="plate"] { --x: 1580px; --y: 760px; --w: 480px; }
+[data-layout="quote"] [data-actor="amp"]   { --x: 20px; --y: 10px; --s: 0.8; }
+[data-layout="quote"] [data-actor="amp"]::before { content: "\201C"; }
+[data-layout="quote"] [data-actor="pill"]  { --x: 760px; --y: -200px; --w: 400px; --h: 60px; }
+[data-layout="quote"] [data-actor="rule"]  { --x: 200px; --y: 980px; --w: 1520px; }
+[data-layout="quote"] [data-actor="dash"]  { --x: 1860px; --y: 120px; --h: 840px; }
+
+/* ---------- 9. closing: tonal stadium inside a pill, lamp line from above ---------- */
+[data-layout="closing"] [data-actor="cloth"] { --x: 300px; --y: 320px; --w: 1320px; --h: 440px; border-radius: 999px; }
+[data-layout="closing"] [data-actor="table"] { --x: 40px; --y: 40px; --w: 1840px; --h: 1000px; --dl: 0; }
+[data-layout="closing"] [data-actor="plate"] { --x: -160px; --y: 380px; --w: 320px; }
+[data-layout="closing"] [data-actor="amp"]   { --x: 1600px; --y: 340px; --s: 0.45; }
+[data-layout="closing"] [data-actor="pill"]  { --x: 260px; --y: 290px; --w: 1400px; --h: 500px; }
+[data-layout="closing"] [data-actor="rule"]  { --x: 760px; --y: 840px; --w: 400px; }
+[data-layout="closing"] [data-actor="dash"]  { --x: 960px; --y: 40px; --h: 250px; }
+
+/* ---------- content tweaks: uppercase Bricolage display, italic Fraunces body ---------- */
+.slide { --title-w: 1360px; }
+.slide > .title:first-child { font-size: 60px; line-height: 1.2; }
+.slide .kicker { font-family: var(--font-display); font-size: 20px; letter-spacing: 0.18em; }
+.slide .subtitle, .slide .meta, .slide .cite, .bullets li, .col li, .col p, .step p, .agenda-list p, .stat-label, .takeaway { font-style: italic; }
+:is(.num, .stat-num, .hl-big, .when) { font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 400; letter-spacing: -0.02em; }
+:is(.agenda-list h3, .col h3, .step h3, .hl-text) { font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; line-height: 1.2; }
+.bullets li::before, .col li::before { background: transparent; border: 1.5px solid var(--ink); }
+.slide[data-layout="cover"] { align-items: flex-start; text-align: left; padding: 0 1000px 0 120px; }
+.slide[data-layout="cover"] .title { font-size: 92px; line-height: 1.12; }
+.slide[data-layout="cover"] .subtitle { font-size: 36px; }
+.slide[data-layout="closing"] .title { font-size: 150px; line-height: 1.15; }
+.slide[data-layout="section"] .num { font-size: 240px; }
+.slide[data-layout="section"] .title { font-size: 80px; line-height: 1.15; }
+.agenda-list { --agenda-gap: 200px; --tile-line: 1px solid var(--ink-32); }
+.agenda-list li { align-items: flex-start; padding-top: 32px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+[data-density="lg"] .bullets { --b-fs: 46px; --b-gap: 60px; }
+[data-density="md"] .bullets { --b-fs: 41px; --b-gap: 54px; }
+.slide[data-layout="content"] .hl-big { font-size: 170px; }
+.slide[data-layout="content"] .hl-text { font-size: 32px; padding: 0 40px; }
+.col { padding: 44px 52px; }
+.col h3 { padding-bottom: 18px; border-bottom: 1px solid var(--ink-32); }
+.takeaway { border-left: 0; padding: 20px 72px; font-family: var(--font-body); font-weight: 400; font-size: 38px; }
+.step::before { background: var(--bg); border: 1.5px solid var(--ink); }
+.slide[data-layout="stats"] .stat-num { letter-spacing: -0.03em; }
+.slide[data-layout="quote"] { padding: 0 300px; }
+.slide[data-layout="quote"] .quote { font-weight: 700; font-size: 60px; line-height: 1.2; text-transform: uppercase; }
+.slide[data-layout="quote"] .cite { font-size: 30px; }

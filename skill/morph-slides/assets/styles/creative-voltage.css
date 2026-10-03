@@ -1,0 +1,154 @@
+/* ===========================================================
+   STYLE: CREATIVE VOLTAGE (adapted from frontend-slides, MIT)
+   Electric blue split panels on deep navy, neon yellow
+   badges, halftone dots, a script-type kicker. Retro-modern.
+   Actors: chip (offset outline), panel (electric blue split),
+           halftone (dot field), ring, squiggle (script wave),
+           bar (neon seam), burst (neon starburst badge).
+   The panel is the hero: left split, centre column, right
+   split, floating card, band, lower half, full flood, circle.
+   DOM order = z-order (chip sits behind the panel).
+   Fonts: Syne -> Bricolage Grotesque 800 (no Vietnamese).
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Space+Mono:wght@400;700&family=Pacifico&display=swap');
+
+.deck-stage {
+  --actors: "chip panel halftone ring squiggle bar burst";
+  --font-display: 'Bricolage Grotesque', sans-serif;
+  --font-body: 'Space Mono', monospace;
+  --bg: #1a1a2e; --fg: #ffffff; --muted: #d9defa;
+  --accent: #d4ff00; --accent-2: #0066ff;
+  --card-bg: #26264d; --card-fg: #ffffff; --card-radius: 0px;
+  --title-weight: 800; --title-tracking: -0.02em; --bullet-radius: 0;
+  --blue: #0066ff; --neon: #d4ff00; --navy: #1a1a2e;
+}
+
+/* ---------- actor looks (geometry comes from poses) ---------- */
+[data-actor="chip"]  { --x: 960px; --y: 1200px; --w: 0px; --h: 0px; border: 3px solid var(--neon); border-radius: 999px; box-shadow: 0 0 18px rgba(212, 255, 0, 0.45); }
+[data-actor="panel"] { --x: 0px; --y: 0px; --w: 0px; --h: 1080px; background: var(--blue); border-radius: 0; }
+[data-actor="halftone"] {
+  --x: 1920px; --y: 0px; --w: 400px; --h: 300px; --o: 0.55;
+  background: radial-gradient(circle, var(--neon) 0 4px, transparent 5px) 0 0 / 22px 22px;
+  -webkit-mask-image: linear-gradient(135deg, #000 10%, transparent 85%);
+  mask-image: linear-gradient(135deg, #000 10%, transparent 85%);
+}
+[data-actor="ring"] { --x: 960px; --y: 540px; --w: 0px; border: 4px solid #fff; border-radius: 50%; }
+[data-actor="squiggle"] {
+  --x: 120px; --y: 190px; --w: 0px; --h: 40px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='40'%3E%3Cpath d='M0 20 Q20 2 40 20 T80 20' fill='none' stroke='%23d4ff00' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x left center / 80px 40px;
+}
+[data-actor="bar"] { --x: 0px; --y: 0px; --w: 0px; --h: 0px; background: var(--neon); box-shadow: 0 0 16px rgba(212, 255, 0, 0.55); }
+[data-actor="burst"] {
+  --x: 2000px; --y: -200px; --w: 160px; background: var(--neon);
+  clip-path: polygon(50% 0%, 59.8% 13.3%, 75% 6.7%, 76.9% 23.1%, 93.3% 25%, 86.7% 40.2%, 100% 50%, 86.7% 59.8%, 93.3% 75%, 76.9% 76.9%, 75% 93.3%, 59.8% 86.7%, 50% 100%, 40.2% 86.7%, 25% 93.3%, 23.1% 76.9%, 6.7% 75%, 13.3% 59.8%, 0% 50%, 13.3% 40.2%, 6.7% 25%, 23.1% 23.1%, 25% 6.7%, 40.2% 13.3%);
+}
+[data-actor="burst"]::after { content: ""; position: absolute; inset: 33%; border-radius: 50%; background: var(--navy); box-shadow: 0 0 0 6px var(--blue); }
+
+/* ---------- 1. cover: blue split on the left, badge + ring on the dark right ---------- */
+[data-layout="cover"] [data-actor="chip"]     { --x: 1440px; --y: 870px; --w: 280px; --h: 80px; }
+[data-layout="cover"] [data-actor="panel"]    { --x: 0px; --y: 0px; --w: 1240px; --h: 1080px; }
+[data-layout="cover"] [data-actor="halftone"] { --x: 1252px; --y: 0px; --w: 668px; --h: 560px; --o: 0.4; }
+[data-layout="cover"] [data-actor="ring"]     { --x: 1380px; --y: 200px; --w: 420px; }
+[data-layout="cover"] [data-actor="squiggle"] { --x: 140px; --y: 900px; --w: 480px; }
+[data-layout="cover"] [data-actor="bar"]      { --x: 1240px; --y: 0px; --w: 12px; --h: 1080px; }
+[data-layout="cover"] [data-actor="burst"]    { --x: 1470px; --y: 290px; --w: 240px; --r: 15deg; }
+
+/* ---------- 2. agenda: panel narrows to a centre column between the two lists ---------- */
+[data-layout="agenda"] [data-actor="chip"]     { --x: 1540px; --y: 92px; --w: 260px; --h: 70px; }
+[data-layout="agenda"] [data-actor="panel"]    { --x: 820px; --y: 0px; --w: 280px; --h: 1080px; }
+[data-layout="agenda"] [data-actor="halftone"] { --x: 820px; --y: 620px; --w: 280px; --h: 460px; --o: 0.5; }
+[data-layout="agenda"] [data-actor="ring"]     { --x: 860px; --y: 340px; --w: 200px; }
+[data-layout="agenda"] [data-actor="squiggle"] { --x: 120px; --y: 190px; --w: 320px; }
+[data-layout="agenda"] [data-actor="bar"]      { --x: 1100px; --y: 0px; --w: 12px; --h: 1080px; }
+[data-layout="agenda"] [data-actor="burst"]    { --x: 900px; --y: 380px; --w: 120px; --r: 60deg; }
+
+/* ---------- 3. section: panel swings to the right half, giant target ---------- */
+[data-layout="section"] [data-actor="chip"]     { --x: 760px; --y: 868px; --w: 240px; --h: 64px; }
+[data-layout="section"] [data-actor="panel"]    { --x: 1100px; --y: 0px; --w: 820px; --h: 1080px; }
+[data-layout="section"] [data-actor="halftone"] { --x: 1100px; --y: 0px; --w: 820px; --h: 400px; --o: 0.45; }
+[data-layout="section"] [data-actor="ring"]     { --x: 1210px; --y: 240px; --w: 600px; }
+[data-layout="section"] [data-actor="squiggle"] { --x: 160px; --y: 880px; --w: 560px; }
+[data-layout="section"] [data-actor="bar"]      { --x: 1088px; --y: 0px; --w: 12px; --h: 1080px; }
+[data-layout="section"] [data-actor="burst"]    { --x: 1360px; --y: 390px; --w: 300px; --r: 120deg; }
+
+/* ---------- 4. content: panel becomes a floating card behind the highlight ---------- */
+[data-layout="content"] [data-actor="chip"]     { --x: 1290px; --y: 300px; --w: 540px; --h: 720px; border-radius: 0; }
+[data-layout="content"] [data-actor="panel"]    { --x: 1260px; --y: 270px; --w: 540px; --h: 720px; }
+[data-layout="content"] [data-actor="halftone"] { --x: 1560px; --y: 0px; --w: 360px; --h: 240px; --o: 0.45; }
+[data-layout="content"] [data-actor="ring"]     { --x: 1740px; --y: 900px; --w: 150px; }
+[data-layout="content"] [data-actor="squiggle"] { --x: 120px; --y: 190px; --w: 400px; }
+[data-layout="content"] [data-actor="bar"]      { --x: 0px; --y: 92px; --w: 80px; --h: 66px; }
+[data-layout="content"] [data-actor="burst"]    { --x: 1700px; --y: 205px; --w: 140px; --r: 200deg; }
+/* even: highlight flips left, panel docks as a split block bottom-left */
+[data-layout="content"][data-parity="even"] [data-actor="chip"]     { --x: 30px; --y: 280px; --w: 680px; --h: 830px; }
+[data-layout="content"][data-parity="even"] [data-actor="panel"]    { --x: 0px; --y: 250px; --w: 680px; --h: 830px; }
+[data-layout="content"][data-parity="even"] [data-actor="halftone"] { --x: 1600px; --y: 0px; --w: 320px; --h: 220px; --o: 0.5; }
+[data-layout="content"][data-parity="even"] [data-actor="ring"]     { --x: 480px; --y: 880px; --w: 150px; }
+[data-layout="content"][data-parity="even"] [data-actor="squiggle"] { --x: 760px; --y: 960px; --w: 520px; }
+[data-layout="content"][data-parity="even"] [data-actor="bar"]      { --x: 680px; --y: 250px; --w: 12px; --h: 830px; }
+[data-layout="content"][data-parity="even"] [data-actor="burst"]    { --x: 560px; --y: 180px; --w: 160px; --r: 300deg; }
+
+/* ---------- 5. two-col: panel shrinks into the left card, chip = offset shadow ---------- */
+[data-layout="two-col"] [data-actor="chip"]     { --x: 150px; --y: 300px; --w: 808px; --h: 560px; border-radius: 0; }
+[data-layout="two-col"] [data-actor="panel"]    { --x: 120px; --y: 270px; --w: 808px; --h: 570px; }
+[data-layout="two-col"] [data-actor="halftone"] { --x: 1500px; --y: 0px; --w: 420px; --h: 240px; --o: 0.45; }
+[data-layout="two-col"] [data-actor="ring"]     { --x: 1800px; --y: 60px; --w: 220px; }
+[data-layout="two-col"] [data-actor="squiggle"] { --x: 120px; --y: 190px; --w: 400px; }
+[data-layout="two-col"] [data-actor="bar"]      { --x: 0px; --y: 1062px; --w: 1920px; --h: 18px; }
+[data-layout="two-col"] [data-actor="burst"]    { --x: 850px; --y: 200px; --w: 150px; --r: 400deg; }
+
+/* ---------- 6. stats: panel stretches into a full-width band under the numbers ---------- */
+[data-layout="stats"] [data-actor="chip"]     { --x: 1240px; --y: 96px; --w: 360px; --h: 64px; }
+[data-layout="stats"] [data-actor="panel"]    { --x: 0px; --y: 300px; --w: 1920px; --h: 660px; }
+[data-layout="stats"] [data-actor="halftone"] { --x: 0px; --y: 960px; --w: 1920px; --h: 120px; --o: 0.4; }
+[data-layout="stats"] [data-actor="ring"]     { --x: 1680px; --y: 60px; --w: 180px; }
+[data-layout="stats"] [data-actor="squiggle"] { --x: 120px; --y: 190px; --w: 400px; }
+[data-layout="stats"] [data-actor="bar"]      { --x: 0px; --y: 288px; --w: 1920px; --h: 12px; }
+[data-layout="stats"] [data-actor="burst"]    { --x: 1700px; --y: 220px; --w: 170px; --r: 500deg; }
+
+/* ---------- 7. timeline: lower half turns blue, neon bar is the axis ---------- */
+[data-layout="timeline"] [data-actor="chip"]     { --x: 140px; --y: 1000px; --w: 260px; --h: 44px; }
+[data-layout="timeline"] [data-actor="panel"]    { --x: 0px; --y: 630px; --w: 1920px; --h: 450px; }
+[data-layout="timeline"] [data-actor="halftone"] { --x: 1500px; --y: 0px; --w: 420px; --h: 230px; --o: 0.45; }
+[data-layout="timeline"] [data-actor="ring"]     { --x: 1760px; --y: 580px; --w: 100px; }
+[data-layout="timeline"] [data-actor="squiggle"] { --x: 120px; --y: 190px; --w: 400px; }
+[data-layout="timeline"] [data-actor="bar"]      { --x: 120px; --y: 624px; --w: 1680px; --h: 12px; }
+[data-layout="timeline"] [data-actor="burst"]    { --x: 1730px; --y: 890px; --w: 140px; --r: 580deg; }
+
+/* ---------- 8. quote: the panel floods the whole stage ---------- */
+[data-layout="quote"] [data-actor="chip"]     { --x: 1500px; --y: 120px; --w: 300px; --h: 70px; }
+[data-layout="quote"] [data-actor="panel"]    { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="quote"] [data-actor="halftone"] { --x: 0px; --y: 740px; --w: 720px; --h: 340px; --o: 0.5; }
+[data-layout="quote"] [data-actor="ring"]     { --x: 1520px; --y: 660px; --w: 520px; }
+[data-layout="quote"] [data-actor="squiggle"] { --x: 1220px; --y: 150px; --w: 400px; }
+[data-layout="quote"] [data-actor="bar"]      { --x: 1896px; --y: 0px; --w: 24px; --h: 1080px; }
+[data-layout="quote"] [data-actor="burst"]    { --x: 110px; --y: 130px; --w: 160px; --r: 640deg; }
+
+/* ---------- 9. closing: panel rounds into a big blue disc, chip echoes it ---------- */
+[data-layout="closing"] [data-actor="chip"]     { --x: 510px; --y: 90px; --w: 960px; --h: 960px; border-radius: 50%; }
+[data-layout="closing"] [data-actor="panel"]    { --x: 480px; --y: 60px; --w: 960px; --h: 960px; border-radius: 50%; }
+[data-layout="closing"] [data-actor="halftone"] { --x: 0px; --y: 0px; --w: 640px; --h: 420px; --o: 0.45; }
+[data-layout="closing"] [data-actor="ring"]     { --x: 380px; --y: -40px; --w: 1160px; }
+[data-layout="closing"] [data-actor="squiggle"] { --x: 760px; --y: 780px; --w: 400px; }
+[data-layout="closing"] [data-actor="bar"]      { --x: 1560px; --y: 532px; --w: 360px; --h: 16px; }
+[data-layout="closing"] [data-actor="burst"]    { --x: 1270px; --y: 90px; --w: 210px; --r: 720deg; }
+
+/* ---------- content tweaks: script kicker, bold display, card split ---------- */
+.slide .kicker { font-family: 'Pacifico', cursive; font-weight: 400; font-size: 40px; letter-spacing: 0; text-transform: none; }
+.slide[data-layout="cover"] { align-items: flex-start; text-align: left; padding: 0 760px 0 140px; }
+.slide[data-layout="cover"] .title { font-size: 88px; line-height: 1.02; }
+.slide[data-layout="section"] .num { text-shadow: 0 0 30px rgba(212, 255, 0, 0.35); }
+.slide[data-layout="closing"] .title { font-size: 150px; }
+.agenda-list { --agenda-gap: 360px; --tile-line: 2px solid rgba(255, 255, 255, 0.14); }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.slide[data-layout="content"] { --hl-left: 1290px; --hl-right: 150px; }
+.slide[data-layout="content"] .hl-big { font-size: 140px; }
+.slide[data-layout="content"] .hl-icon { width: 170px; height: 170px; }
+.slide[data-layout="content"][data-parity="even"] { --hl-left: 100px; --hl-right: 1340px; }
+.slide[data-layout="content"][data-parity="even"] .bullets { left: 780px; }
+.col:first-child { background: transparent; }
+.takeaway { background: rgba(212, 255, 0, 0.07); }
+.slide[data-layout="quote"] .quote { font-size: 70px; }
+.slide[data-layout="quote"] .cite { font-family: 'Pacifico', cursive; font-size: 36px; color: var(--neon); }
+.deck-progress { background: var(--neon, #d4ff00); }

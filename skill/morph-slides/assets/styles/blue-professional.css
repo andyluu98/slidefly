@@ -1,0 +1,167 @@
+/* ===========================================================
+   STYLE: BLUE PROFESSIONAL (adapted from frontend-slides
+   bold-template-pack "blue-professional", MIT)
+   Warm cream canvas, one saturated cobalt for every emphasis,
+   4% cobalt-tinted cards with soft borders. Consulting report.
+   Actors: panel (diagonal tinted cover panel), card (tinted
+           card frame), slab (solid cobalt: disc, spine, slab,
+           band, axis, flood), rings (two concentric circles),
+           dots (cobalt dot grid), line (60x4 accent rule),
+           bar (pill bar track + fill). DOM order = z-order.
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+.deck-stage {
+  --actors: "panel card slab rings dots line bar";
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --bg: #fdfae7; --fg: #111111; --muted: #6b6b6b;
+  --accent: #1e2bfa; --accent-2: #111111;
+  --card-bg: rgba(30, 43, 250, 0.04); --card-fg: #111111; --card-radius: 14px;
+  --title-weight: 700; --title-tracking: -0.02em; --bullet-radius: 50%;
+  --cobalt: #1e2bfa; --cream: #fdfae7;
+  --tint: rgba(30, 43, 250, 0.08); --edge: rgba(30, 43, 250, 0.2);
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="panel"] {
+  background: var(--tint); clip-path: polygon(30% 0, 100% 0, 100% 100%, 0 100%);
+  --x: 1920px; --y: 0px; --w: 0px; --h: 1080px;
+}
+[data-actor="card"] {
+  background: rgba(30, 43, 250, 0.04); border: 1.5px solid var(--edge); border-radius: var(--rad, 14px);
+  --x: 120px; --y: 1100px; --w: 1680px; --h: 0px;
+}
+[data-actor="slab"] { background: var(--cobalt); border-radius: var(--rad, 0px); --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-actor="rings"] {
+  border: 1.5px solid var(--ring-c, var(--edge)); border-radius: 50%;
+  --x: 1920px; --y: 1080px; --w: 500px; --o: 0;
+}
+[data-actor="rings"]::before {
+  content: ""; position: absolute; inset: 14%; border-radius: 50%;
+  border: 1.5px solid; border-color: inherit;
+}
+[data-actor="dots"] {
+  background-image: radial-gradient(circle, var(--dot-c, var(--cobalt)) 3px, transparent 3.6px);
+  background-size: 18px 18px; --x: 1920px; --y: 100px; --w: 54px; --o: 0.35;
+}
+[data-actor="line"] { background: var(--line-c, var(--cobalt)); border-radius: 2px; --x: 120px; --y: 210px; --w: 0px; --h: 4px; }
+[data-actor="bar"] {
+  border-radius: 100px; --x: 120px; --y: 1016px; --w: 0px; --h: 6px;
+  background: linear-gradient(90deg, var(--bar-a, var(--cobalt)) 0 var(--fill, 40%), var(--bar-b, var(--tint)) var(--fill, 40%) 100%);
+}
+
+/* ---------- 1. cover: diagonal panel right, cobalt disc inside the rings ---------- */
+[data-layout="cover"] [data-actor="panel"] { --x: 1180px; --y: 0px; --w: 740px; --h: 1080px; }
+[data-layout="cover"] [data-actor="slab"]  { --x: 1590px; --y: 480px; --w: 120px; --h: 120px; --rad: 50%; }
+[data-layout="cover"] [data-actor="rings"] { --x: 1400px; --y: 290px; --w: 500px; --o: 1; }
+[data-layout="cover"] [data-actor="dots"]  { --x: 1716px; --y: 110px; }
+[data-layout="cover"] [data-actor="line"]  { --x: 120px; --y: 190px; --w: 60px; }
+[data-layout="cover"] [data-actor="bar"]   { --x: 120px; --y: 950px; --w: 520px; --h: 10px; --fill: 30%; }
+[data-layout="cover"] [data-actor="card"]  { --x: 1180px; --y: 1100px; --w: 740px; --h: 0px; }
+
+/* ---------- 2. agenda: disc stretches into a left spine, card frames the list ---------- */
+[data-layout="agenda"] [data-actor="slab"]  { --x: 0px; --y: 0px; --w: 14px; --h: 1080px; }
+[data-layout="agenda"] [data-actor="panel"] { --x: 1440px; --y: 0px; --w: 480px; --h: 240px; }
+[data-layout="agenda"] [data-actor="rings"] { --x: 1640px; --y: -300px; --w: 460px; --o: 1; }
+[data-layout="agenda"] [data-actor="card"]  { --x: 90px; --y: 250px; --w: 1740px; --h: 760px; }
+[data-layout="agenda"] [data-actor="dots"]  { --x: 1776px; --y: 1022px; --w: 36px; }
+[data-layout="agenda"] [data-actor="line"]  { --x: 120px; --y: 206px; --w: 60px; }
+[data-layout="agenda"] [data-actor="bar"]   { --x: 120px; --y: 1036px; --w: 1560px; --fill: 25%; }
+
+/* ---------- 3. section: spine swells into the cobalt slab, rings turn cream ---------- */
+[data-layout="section"] [data-actor="slab"]  { --x: 1100px; --y: 0px; --w: 820px; --h: 1080px; }
+[data-layout="section"] [data-actor="panel"] { --x: 980px; --y: 0px; --w: 220px; --h: 1080px; }
+[data-layout="section"] [data-actor="rings"] { --x: 1260px; --y: 290px; --w: 500px; --o: 1; --ring-c: rgba(253, 250, 231, 0.45); }
+[data-layout="section"] [data-actor="dots"]  { --x: 1760px; --y: 110px; --o: 0.6; --dot-c: var(--cream); }
+[data-layout="section"] [data-actor="line"]  { --x: 160px; --y: 170px; --w: 120px; }
+[data-layout="section"] [data-actor="bar"]   { --x: 160px; --y: 930px; --w: 820px; --h: 8px; --fill: 20%; }
+[data-layout="section"] [data-actor="card"]  { --x: 1100px; --y: 1100px; --w: 820px; --h: 0px; }
+
+/* ---------- 4. content: card frames the highlight, slab is its top edge ---------- */
+[data-layout="content"] [data-actor="card"]  { --x: 1240px; --y: 270px; --w: 560px; --h: 720px; }
+[data-layout="content"] [data-actor="slab"]  { --x: 1240px; --y: 270px; --w: 560px; --h: 10px; --rad: 5px; }
+[data-layout="content"] [data-actor="panel"] { --x: 1820px; --y: 0px; --w: 100px; --h: 1080px; }
+[data-layout="content"] [data-actor="rings"] { --x: 1660px; --y: -330px; --w: 460px; --o: 1; }
+[data-layout="content"] [data-actor="dots"]  { --x: 1240px; --y: 1012px; --w: 54px; --h: 36px; }
+[data-layout="content"] [data-actor="line"]  { --x: 120px; --y: 206px; --w: 60px; }
+[data-layout="content"] [data-actor="bar"]   { --x: 1320px; --y: 1022px; --w: 480px; --fill: 50%; }
+/* even: card opens into a full-height column, slab becomes its spine */
+[data-layout="content"][data-parity="even"] [data-actor="card"]  { --x: 1220px; --y: -20px; --w: 720px; --h: 1120px; --rad: 0px; }
+[data-layout="content"][data-parity="even"] [data-actor="slab"]  { --x: 1220px; --y: 0px; --w: 8px; --h: 1080px; --rad: 0px; }
+[data-layout="content"][data-parity="even"] [data-actor="panel"] { --x: 1228px; --y: 800px; --w: 692px; --h: 280px; }
+[data-layout="content"][data-parity="even"] [data-actor="rings"] { --x: 1640px; --y: 800px; --w: 460px; }
+[data-layout="content"][data-parity="even"] [data-actor="dots"]  { --x: 1746px; --y: 100px; --w: 54px; --h: 54px; }
+[data-layout="content"][data-parity="even"] [data-actor="bar"]   { --x: 120px; --y: 1016px; --w: 1040px; --fill: 70%; }
+
+/* ---------- 5. two-col: slab is the gutter, card holds the takeaway ---------- */
+[data-layout="two-col"] [data-actor="slab"]  { --x: 956px; --y: 310px; --w: 8px; --h: 490px; --rad: 4px; }
+[data-layout="two-col"] [data-actor="card"]  { --x: 120px; --y: 880px; --w: 1680px; --h: 110px; --rad: 12px; }
+[data-layout="two-col"] [data-actor="panel"] { --x: 1440px; --y: 0px; --w: 480px; --h: 240px; }
+[data-layout="two-col"] [data-actor="rings"] { --x: 1640px; --y: -300px; --w: 460px; --o: 1; }
+[data-layout="two-col"] [data-actor="dots"]  { --x: 1764px; --y: 1022px; --w: 36px; }
+[data-layout="two-col"] [data-actor="line"]  { --x: 120px; --y: 206px; --w: 60px; }
+[data-layout="two-col"] [data-actor="bar"]   { --x: 120px; --y: 1030px; --w: 1600px; --fill: 55%; }
+
+/* ---------- 6. stats: cobalt header band, dashboard card below ---------- */
+.deck-stage[data-layout="stats"] { --fg: #fdfae7; }
+[data-layout="stats"] [data-actor="slab"]  { --x: 0px; --y: 0px; --w: 1920px; --h: 240px; }
+[data-layout="stats"] [data-actor="card"]  { --x: 120px; --y: 300px; --w: 1680px; --h: 660px; }
+[data-layout="stats"] [data-actor="panel"] { --x: 1920px; --y: 240px; --w: 0px; --h: 840px; }
+[data-layout="stats"] [data-actor="rings"] { --x: 1560px; --y: -230px; --w: 420px; --o: 1; --ring-c: rgba(253, 250, 231, 0.4); }
+[data-layout="stats"] [data-actor="dots"]  { --x: 1746px; --y: 994px; --w: 54px; --h: 36px; }
+[data-layout="stats"] [data-actor="line"]  { --x: 120px; --y: 192px; --w: 60px; --line-c: var(--cream); }
+[data-layout="stats"] [data-actor="bar"]   { --x: 120px; --y: 1006px; --w: 1580px; --fill: 66%; }
+
+/* ---------- 7. timeline: band collapses into the axis, card is its ribbon ---------- */
+[data-layout="timeline"] [data-actor="slab"]  { --x: 120px; --y: 626px; --w: 1680px; --h: 8px; --rad: 4px; }
+[data-layout="timeline"] [data-actor="card"]  { --x: -20px; --y: 592px; --w: 1960px; --h: 76px; --rad: 0px; }
+[data-layout="timeline"] [data-actor="panel"] { --x: 1440px; --y: 0px; --w: 480px; --h: 240px; }
+[data-layout="timeline"] [data-actor="rings"] { --x: -280px; --y: 780px; --w: 460px; --o: 1; }
+[data-layout="timeline"] [data-actor="dots"]  { --x: 1746px; --y: 110px; }
+[data-layout="timeline"] [data-actor="line"]  { --x: 120px; --y: 206px; --w: 60px; }
+[data-layout="timeline"] [data-actor="bar"]   { --x: 120px; --y: 1016px; --w: 1680px; --fill: 80%; }
+
+/* ---------- 8. quote: tinted card frames the words, slab is the cite rule ---------- */
+[data-layout="quote"] [data-actor="card"]  { --x: 200px; --y: 190px; --w: 1520px; --h: 700px; }
+[data-layout="quote"] [data-actor="slab"]  { --x: 220px; --y: 380px; --w: 8px; --h: 320px; --rad: 4px; }
+[data-layout="quote"] [data-actor="panel"] { --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-layout="quote"] [data-actor="rings"] { --x: 1600px; --y: 780px; --w: 460px; --o: 1; }
+[data-layout="quote"] [data-actor="dots"]  { --x: 1620px; --y: 230px; }
+[data-layout="quote"] [data-actor="line"]  { --x: 200px; --y: 940px; --w: 60px; }
+[data-layout="quote"] [data-actor="bar"]   { --x: 300px; --y: 942px; --w: 1420px; --fill: 90%; }
+
+/* ---------- 9. closing: cobalt floods, cream concentric circles ---------- */
+.deck-stage[data-layout="closing"] { --fg: #fdfae7; --muted: #d9dcff; --accent: #fdfae7; }
+[data-layout="closing"] [data-actor="slab"]  { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="closing"] [data-actor="rings"] { --x: 410px; --y: -10px; --w: 1100px; --o: 1; --ring-c: rgba(253, 250, 231, 0.35); }
+[data-layout="closing"] [data-actor="dots"]  { --x: 130px; --y: 130px; --w: 90px; --o: 0.6; --dot-c: var(--cream); }
+[data-layout="closing"] [data-actor="panel"] { --x: 1180px; --y: 0px; --w: 740px; --h: 1080px; }
+[data-layout="closing"] [data-actor="card"]  { --x: 120px; --y: 1100px; --w: 1680px; --h: 0px; }
+[data-layout="closing"] [data-actor="line"]  { --x: 930px; --y: 820px; --w: 60px; --line-c: var(--cream); }
+[data-layout="closing"] [data-actor="bar"]   { --x: 760px; --y: 930px; --w: 400px; --h: 8px; --fill: 100%; --bar-a: var(--cream); }
+
+/* ---------- content tweaks: consulting report, left aligned cover ---------- */
+.slide .kicker { font-family: var(--font-display); font-weight: 600; letter-spacing: 0.12em; }
+.slide[data-layout="cover"] { align-items: flex-start; text-align: left; padding: 0 860px 0 120px; }
+.slide[data-layout="cover"] .title { font-size: 88px; line-height: 1.05; }
+.slide[data-layout="closing"] .title { font-size: 140px; }
+.slide[data-layout="section"] .num { font-size: 230px; }
+.slide[data-layout="agenda"] .agenda-list { left: 170px; right: 170px; --agenda-gap: 140px; --tile-line: 1.5px solid var(--edge); }
+.agenda-list li { align-items: flex-start; padding-top: 30px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list h3 { font-weight: 600; }
+.col { border: 1.5px solid var(--edge); }
+.col h3 { font-weight: 600; }
+.takeaway { border-left-width: 6px; border-radius: 12px; padding-left: 48px; font-weight: 600; }
+.slide[data-layout="content"] .hl-text { font-weight: 600; }
+.slide[data-layout="stats"] .stat-label { color: #3d3d3d; }
+.step h3 { font-weight: 600; }
+.slide[data-layout="quote"] { padding: 0 300px; }
+.slide[data-layout="quote"] .quote { font-weight: 500; position: relative; }
+.slide[data-layout="quote"] .quote::before {
+  content: "\201C"; position: absolute; left: -10px; top: -150px;
+  font: 700 240px/1 var(--font-display); color: var(--accent); opacity: 0.15;
+}
+.slide[data-layout="quote"] .cite { font-family: var(--font-display); letter-spacing: 0.08em; text-transform: uppercase; font-size: 24px; }

@@ -1,0 +1,146 @@
+/* ===========================================================
+   STYLE: DARK BOTANICAL (adapted from frontend-slides, MIT)
+   Near-black stage, soft blurred warm blobs (gold, blush,
+   terracotta), thin gold ring, hairlines, a seed dot.
+   Actors: glow-a (gold), glow-b (blush), glow-c (terracotta),
+           ring, line-v, line-h, seed. DOM order = z-order.
+   Blobs drift slowly (translate) on top of their pose.
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+
+.deck-stage {
+  --actors: "glow-a glow-b glow-c ring line-v line-h seed";
+  --font-display: 'Cormorant', serif;
+  --font-body: 'IBM Plex Sans', sans-serif;
+  --bg: #0f0f0f; --fg: #e8e4df; --muted: #9a9590;
+  --accent: #d4a574; --accent-2: #e8b4b8;
+  --card-bg: rgba(232, 228, 223, 0.045); --card-fg: #e8e4df; --card-radius: 6px;
+  --title-weight: 600; --title-tracking: 0; --bullet-radius: 50%;
+  --gold: #c9b896; --pink: #e8b4b8; --terra: #d4a574;
+  --hair: rgba(201, 184, 150, 0.6);
+}
+
+/* ---------- actor looks (geometry comes from poses) ---------- */
+[data-actor^="glow-"] {
+  border-radius: 50%; --w: 0px; --x: 960px; --y: 540px; --o: 0.4; --bl: 100px;
+  background-color: var(--c); filter: blur(var(--bl));
+  animation: db-drift 17s ease-in-out infinite alternate;
+}
+[data-actor="glow-a"] { --c: var(--gold); }
+[data-actor="glow-b"] { --c: var(--pink); animation-delay: -6s; animation-duration: 21s; }
+[data-actor="glow-c"] { --c: var(--terra); animation-delay: -11s; animation-duration: 19s; }
+@keyframes db-drift { from { translate: -26px 18px; } to { translate: 30px -22px; } }
+
+[data-actor="ring"]   { --bw: 2px; --w: 0px; --x: 960px; --y: 540px; border: var(--bw) solid rgba(201, 184, 150, 0.55); border-radius: 50%; }
+[data-actor="line-v"] { --w: 2px; --h: 0px; --x: 960px; --y: 0px; background: var(--hair); }
+[data-actor="line-h"] { --h: 2px; --w: 0px; --x: 960px; --y: 1080px; background: var(--hair); }
+[data-actor="seed"]   { --w: 0px; --x: 960px; --y: 540px; border-radius: 50%; background: var(--terra); }
+
+/* ---------- 1. cover: warm glow in two corners, stem + seed above ---------- */
+[data-layout="cover"] [data-actor="glow-a"] { --x: 1110px; --y: -290px; --w: 900px; --o: 0.5; --bl: 110px; }
+[data-layout="cover"] [data-actor="glow-b"] { --x: -150px; --y: 520px; --w: 820px; --o: 0.4; --bl: 120px; }
+[data-layout="cover"] [data-actor="glow-c"] { --x: 1460px; --y: 660px; --w: 520px; --o: 0.45; }
+[data-layout="cover"] [data-actor="ring"]   { --x: 1500px; --y: 50px; --w: 300px; }
+[data-layout="cover"] [data-actor="line-v"] { --x: 959px; --y: 0px; --h: 190px; }
+[data-layout="cover"] [data-actor="seed"]   { --x: 954px; --y: 206px; --w: 12px; }
+[data-layout="cover"] [data-actor="line-h"] { --x: 840px; --y: 900px; --w: 240px; }
+
+/* ---------- 2. agenda: ring + gold bloom in the gap between columns ---------- */
+[data-layout="agenda"] [data-actor="glow-a"] { --x: 830px; --y: 500px; --w: 260px; --o: 0.42; --bl: 70px; }
+[data-layout="agenda"] [data-actor="glow-b"] { --x: -410px; --y: -230px; --w: 700px; --o: 0.3; }
+[data-layout="agenda"] [data-actor="glow-c"] { --x: 1520px; --y: 720px; --w: 760px; --o: 0.26; --bl: 120px; }
+[data-layout="agenda"] [data-actor="ring"]   { --x: 810px; --y: 480px; --w: 300px; }
+[data-layout="agenda"] [data-actor="line-v"] { --x: 959px; --y: 270px; --h: 210px; }
+[data-layout="agenda"] [data-actor="seed"]   { --x: 953px; --y: 623px; --w: 14px; }
+[data-layout="agenda"] [data-actor="line-h"] { --x: 120px; --y: 205px; --w: 1680px; }
+
+/* ---------- 3. section: big ring with a bloom on the right ---------- */
+[data-layout="section"] [data-actor="glow-a"] { --c: var(--terra); --x: 1200px; --y: 260px; --w: 560px; --o: 0.5; --bl: 90px; }
+[data-layout="section"] [data-actor="glow-b"] { --x: 1460px; --y: 580px; --w: 480px; --o: 0.45; --bl: 90px; }
+[data-layout="section"] [data-actor="glow-c"] { --c: var(--gold); --x: -400px; --y: 700px; --w: 600px; --o: 0.3; }
+[data-layout="section"] [data-actor="ring"]   { --x: 1120px; --y: 180px; --w: 720px; }
+[data-layout="section"] [data-actor="line-v"] { --x: 1040px; --y: 140px; --h: 800px; }
+[data-layout="section"] [data-actor="seed"]   { --x: 1473px; --y: 173px; --w: 14px; }
+[data-layout="section"] [data-actor="line-h"] { --x: 160px; --y: 850px; --w: 240px; }
+
+/* ---------- 4. content: ring frames the highlight, divider hairline ---------- */
+[data-layout="content"] [data-actor="glow-a"] { --x: 1330px; --y: 430px; --w: 400px; --o: 0.2; --bl: 90px; }
+[data-layout="content"] [data-actor="glow-b"] { --x: 1620px; --y: -200px; --w: 560px; --o: 0.34; }
+[data-layout="content"] [data-actor="glow-c"] { --x: -310px; --y: 790px; --w: 620px; --o: 0.26; --bl: 120px; }
+[data-layout="content"] [data-actor="ring"]   { --x: 1230px; --y: 330px; --w: 600px; }
+[data-layout="content"] [data-actor="line-v"] { --x: 1190px; --y: 270px; --h: 720px; }
+[data-layout="content"] [data-actor="seed"]   { --x: 1184px; --y: 258px; --w: 12px; }
+[data-layout="content"] [data-actor="line-h"] { --x: 120px; --y: 205px; --w: 1040px; }
+[data-layout="content"][data-parity="even"] [data-actor="glow-a"] { --x: 1520px; --y: -180px; --w: 600px; --o: 0.38; --bl: 110px; }
+[data-layout="content"][data-parity="even"] [data-actor="glow-b"] { --x: 1330px; --y: 430px; --w: 400px; --o: 0.2; --bl: 90px; }
+[data-layout="content"][data-parity="even"] [data-actor="glow-c"] { --x: 1600px; --y: 780px; --w: 560px; --o: 0.3; }
+[data-layout="content"][data-parity="even"] [data-actor="ring"]   { --x: 1290px; --y: 390px; --w: 480px; }
+[data-layout="content"][data-parity="even"] [data-actor="line-v"] { --x: 1220px; --y: 330px; --h: 600px; }
+[data-layout="content"][data-parity="even"] [data-actor="seed"]   { --x: 1524px; --y: 384px; --w: 12px; }
+[data-layout="content"][data-parity="even"] [data-actor="line-h"] { --x: 120px; --y: 1000px; --w: 1680px; }
+
+/* ---------- 5. two-col: glows warm the cards from behind ---------- */
+[data-layout="two-col"] [data-actor="glow-a"] { --x: 0px; --y: 500px; --w: 600px; --o: 0.3; }
+[data-layout="two-col"] [data-actor="glow-b"] { --x: 1400px; --y: 0px; --w: 600px; --o: 0.3; }
+[data-layout="two-col"] [data-actor="glow-c"] { --x: 710px; --y: 840px; --w: 500px; --o: 0.22; }
+[data-layout="two-col"] [data-actor="ring"]   { --x: 1702px; --y: 90px; --w: 76px; }
+[data-layout="two-col"] [data-actor="seed"]   { --x: 1735px; --y: 123px; --w: 10px; }
+[data-layout="two-col"] [data-actor="line-v"] { --x: 959px; --y: 300px; --h: 510px; }
+[data-layout="two-col"] [data-actor="line-h"] { --x: 120px; --y: 205px; --w: 1680px; }
+
+/* ---------- 6. stats: one glow behind each number, ring grows out of frame ---------- */
+[data-layout="stats"] [data-actor="glow-a"] { --x: 174px; --y: 380px; --w: 420px; --o: 0.26; --bl: 80px; }
+[data-layout="stats"] [data-actor="glow-b"] { --x: 750px; --y: 380px; --w: 420px; --o: 0.26; --bl: 80px; }
+[data-layout="stats"] [data-actor="glow-c"] { --x: 1326px; --y: 380px; --w: 420px; --o: 0.3; --bl: 80px; }
+[data-layout="stats"] [data-actor="ring"]   { --x: -240px; --y: -660px; --w: 2400px; --o: 0; }
+[data-layout="stats"] [data-actor="line-v"] { --x: 84px; --y: 96px; --h: 66px; }
+[data-layout="stats"] [data-actor="line-h"] { --x: 120px; --y: 1000px; --w: 1680px; }
+[data-layout="stats"] [data-actor="seed"]   { --x: 1795px; --y: 995px; --w: 12px; }
+
+/* ---------- 7. timeline: hairline axis (y=630), ring + seed close it ---------- */
+[data-layout="timeline"] [data-actor="glow-a"] { --x: -150px; --y: 30px; --w: 700px; --o: 0.28; }
+[data-layout="timeline"] [data-actor="glow-b"] { --x: 680px; --y: 620px; --w: 640px; --o: 0.2; --bl: 120px; }
+[data-layout="timeline"] [data-actor="glow-c"] { --x: 1470px; --y: 20px; --w: 560px; --o: 0.28; }
+[data-layout="timeline"] [data-actor="line-h"] { --x: 120px; --y: 629px; --w: 1680px; }
+[data-layout="timeline"] [data-actor="ring"]   { --x: 1768px; --y: 598px; --w: 64px; }
+[data-layout="timeline"] [data-actor="seed"]   { --x: 1795px; --y: 625px; --w: 10px; }
+[data-layout="timeline"] [data-actor="line-v"] { --x: 1799px; --y: 560px; --h: 140px; }
+
+/* ---------- 8. quote: deeper glow, ring parked on the left edge ---------- */
+[data-layout="quote"] [data-actor="glow-a"] { --x: 1150px; --y: 430px; --w: 900px; --o: 0.42; --bl: 130px; }
+[data-layout="quote"] [data-actor="glow-b"] { --x: -80px; --y: -160px; --w: 760px; --o: 0.4; --bl: 130px; }
+[data-layout="quote"] [data-actor="glow-c"] { --x: 1500px; --y: -80px; --w: 400px; --o: 0.34; }
+[data-layout="quote"] [data-actor="ring"]   { --x: -620px; --y: 140px; --w: 800px; }
+[data-layout="quote"] [data-actor="line-v"] { --x: 219px; --y: 390px; --h: 300px; }
+[data-layout="quote"] [data-actor="seed"]   { --x: 214px; --y: 378px; --w: 12px; }
+[data-layout="quote"] [data-actor="line-h"] { --x: 1600px; --y: 960px; --w: 200px; }
+
+/* ---------- 9. closing: all three glows bloom inside the ring ---------- */
+[data-layout="closing"] [data-actor="glow-a"] { --x: 640px; --y: 220px; --w: 640px; --o: 0.38; --bl: 120px; }
+[data-layout="closing"] [data-actor="glow-b"] { --x: 440px; --y: 400px; --w: 520px; --o: 0.32; --bl: 120px; }
+[data-layout="closing"] [data-actor="glow-c"] { --x: 1000px; --y: 220px; --w: 480px; --o: 0.34; --bl: 120px; }
+[data-layout="closing"] [data-actor="ring"]   { --x: 510px; --y: 90px; --w: 900px; }
+[data-layout="closing"] [data-actor="line-v"] { --x: 959px; --y: 0px; --h: 90px; }
+[data-layout="closing"] [data-actor="seed"]   { --x: 953px; --y: 83px; --w: 14px; }
+[data-layout="closing"] [data-actor="line-h"] { --x: 860px; --y: 1010px; --w: 200px; }
+
+/* ---------- content tweaks: serif display needs a bit more size ---------- */
+.slide > .title:first-child { font-size: 72px; }
+.slide[data-layout="cover"] .title { font-size: 104px; line-height: 1.05; }
+.slide[data-layout="closing"] .title { font-size: 150px; font-style: italic; }
+.slide[data-layout="section"] .num { font-style: italic; font-weight: 500; }
+.slide[data-layout="section"] .title { font-size: 96px; }
+.slide[data-layout="quote"] .quote { font-size: 76px; font-style: italic; font-weight: 500; line-height: 1.2; }
+.kicker { color: var(--gold); font-weight: 500; letter-spacing: 0.3em; }
+.agenda-list { --agenda-gap: 360px; }
+.slide[data-density="lg"] .agenda-list { --n-h: 60px; --n-p: 30px; }
+.agenda-list .num { font-style: italic; font-weight: 500; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.slide[data-density="md"] .bullets { --b-fs: 38px; --b-gap: 60px; }
+.agenda-list h3, .col h3, .step h3 { font-weight: 600; }
+.hl-big { font-style: italic; font-weight: 600; }
+.hl-text { font-size: 36px; font-weight: 600; }
+.col { border: 1px solid rgba(201, 184, 150, 0.22); }
+.takeaway { background: rgba(232, 228, 223, 0.04); border-left: 2px solid var(--accent); font-style: italic; font-weight: 600; font-size: 40px; }
+.bullets li::before { width: 0.32em; height: 0.32em; top: 0.55em; }

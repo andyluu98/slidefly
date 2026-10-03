@@ -1,0 +1,112 @@
+/* ===========================================================
+   STYLE: SWISS MODERN (adapted from frontend-slides, MIT)
+   White / black / signal red, visible 12-col grid, asymmetric.
+   Actors: grid, blk (black block), red (red block), dot,
+           rule-h, rule-v. DOM order = z-order (grid first).
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+
+.deck-stage {
+  --actors: "grid blk red dot rule-h rule-v";
+  --font-display: 'Archivo', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --bg: #ffffff; --fg: #0a0a0a; --muted: #555555;
+  --accent: #ff3300; --accent-2: #0a0a0a;
+  --card-bg: #f2f2f2; --card-fg: #0a0a0a; --card-radius: 0px;
+  --title-weight: 800; --title-tracking: -0.035em; --bullet-radius: 0;
+  --red: #ff3300; --ink: #0a0a0a;
+}
+
+/* ---------- actor looks (geometry comes from poses) ---------- */
+[data-actor="grid"] {
+  --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; --o: 0;
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: 160px 100%, 100% 120px;
+}
+[data-actor="blk"]    { background: var(--ink); --w: 0px; --h: 0px; --x: 1920px; --y: 1080px; }
+[data-actor="red"]    { background: var(--red); --w: 0px; --h: 0px; --x: 1920px; --y: 0px; }
+[data-actor="dot"]    { background: var(--red); border-radius: 50%; --w: 0px; --x: 1600px; --y: 540px; }
+[data-actor="rule-h"] { background: var(--ink); --h: 3px; --w: 0px; --x: 120px; --y: 220px; }
+[data-actor="rule-v"] { background: var(--ink); --w: 3px; --h: 0px; --x: 960px; --y: 280px; }
+
+/* ---------- 1. cover: red third on the right ---------- */
+[data-layout="cover"] [data-actor="grid"]   { --o: 1; }
+[data-layout="cover"] [data-actor="red"]    { --x: 1280px; --y: 0px; --w: 640px; --h: 1080px; }
+[data-layout="cover"] [data-actor="blk"]    { --x: 1080px; --y: 880px; --w: 200px; --h: 200px; }
+[data-layout="cover"] [data-actor="dot"]    { --x: 1520px; --y: 300px; --w: 240px; background: #fff; }
+[data-layout="cover"] [data-actor="rule-h"] { --x: 120px; --y: 860px; --w: 1040px; }
+
+/* ---------- 2. agenda: red spine on the left ---------- */
+[data-layout="agenda"] [data-actor="grid"]   { --o: 0.6; }
+[data-layout="agenda"] [data-actor="red"]    { --x: 0px; --y: 0px; --w: 64px; --h: 1080px; }
+[data-layout="agenda"] [data-actor="blk"]    { --x: 1680px; --y: 90px; --w: 120px; --h: 120px; }
+[data-layout="agenda"] [data-actor="rule-h"] { --x: 120px; --y: 220px; --w: 1680px; }
+[data-layout="agenda"] [data-actor="dot"]    { --x: 1720px; --y: 950px; --w: 40px; }
+
+/* ---------- 3. section: black slab right, red square inside ---------- */
+[data-layout="section"] [data-actor="blk"]    { --x: 1100px; --y: 0px; --w: 820px; --h: 1080px; }
+[data-layout="section"] [data-actor="red"]    { --x: 1300px; --y: 340px; --w: 400px; --h: 400px; }
+[data-layout="section"] [data-actor="dot"]    { --x: 1460px; --y: 500px; --w: 80px; background: #fff; }
+[data-layout="section"] [data-actor="rule-h"] { --x: 160px; --y: 920px; --w: 760px; }
+
+/* ---------- 4. content: divider, highlight zone on the right ---------- */
+[data-layout="content"] [data-actor="grid"]   { --o: 0.45; }
+[data-layout="content"] [data-actor="red"]    { --x: 1680px; --y: 90px; --w: 120px; --h: 120px; }
+[data-layout="content"] [data-actor="rule-h"] { --x: 120px; --y: 220px; --w: 1680px; }
+[data-layout="content"] [data-actor="rule-v"] { --x: 1220px; --y: 270px; --h: 720px; }
+[data-layout="content"] [data-actor="dot"]    { --x: 1760px; --y: 950px; --w: 40px; }
+[data-layout="content"][data-parity="even"] [data-actor="red"] { --x: 1860px; --y: 0px; --w: 60px; --h: 1080px; }
+[data-layout="content"][data-parity="even"] [data-actor="blk"] { --x: 1680px; --y: 90px; --w: 120px; --h: 120px; }
+[data-layout="content"][data-parity="even"] [data-actor="dot"] { --x: 1260px; --y: 950px; --w: 40px; }
+
+/* ---------- 5. two-col: column rule + red underline ---------- */
+[data-layout="two-col"] [data-actor="grid"]   { --o: 0.45; }
+[data-layout="two-col"] [data-actor="red"]    { --x: 120px; --y: 206px; --w: 200px; --h: 14px; }
+[data-layout="two-col"] [data-actor="rule-v"] { --x: 959px; --y: 270px; --h: 570px; }
+[data-layout="two-col"] [data-actor="rule-h"] { --x: 120px; --y: 220px; --w: 1680px; }
+[data-layout="two-col"] [data-actor="dot"]    { --x: 1760px; --y: 120px; --w: 40px; }
+
+/* ---------- 6. stats: black panel fills the body zone ---------- */
+[data-layout="stats"] [data-actor="blk"]    { --x: 0px; --y: 260px; --w: 1920px; --h: 740px; }
+[data-layout="stats"] [data-actor="red"]    { --x: 120px; --y: 206px; --w: 200px; --h: 14px; }
+[data-layout="stats"] [data-actor="rule-h"] { --x: 120px; --y: 1030px; --w: 1680px; }
+[data-layout="stats"] [data-actor="dot"]    { --x: 1760px; --y: 120px; --w: 40px; }
+
+/* ---------- 7. timeline: red block becomes the axis (body centre y=630) ---------- */
+[data-layout="timeline"] [data-actor="grid"]   { --o: 0.6; }
+[data-layout="timeline"] [data-actor="red"]    { --x: 120px; --y: 626px; --w: 1680px; --h: 8px; }
+[data-layout="timeline"] [data-actor="rule-h"] { --x: 120px; --y: 220px; --w: 1680px; }
+[data-layout="timeline"] [data-actor="blk"]    { --x: 1680px; --y: 90px; --w: 120px; --h: 120px; }
+[data-layout="timeline"] [data-actor="dot"]    { --x: 1800px; --y: 610px; --w: 40px; }
+
+/* ---------- 8. quote: black takes the stage ---------- */
+.deck-stage[data-layout="quote"] { --fg: #fff; --muted: #bdbdbd; }
+[data-layout="quote"] [data-actor="blk"]    { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="quote"] [data-actor="red"]    { --x: 280px; --y: 300px; --w: 160px; --h: 16px; }
+[data-layout="quote"] [data-actor="dot"]    { --x: 1640px; --y: 820px; --w: 120px; }
+
+/* ---------- 9. closing: red takes the stage ---------- */
+.deck-stage[data-layout="closing"] { --fg: #fff; --muted: #ffe0d6; --accent: #0a0a0a; }
+[data-layout="closing"] [data-actor="red"]    { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="closing"] [data-actor="blk"]    { --x: 1920px; --y: 1080px; --w: 0px; --h: 0px; }
+[data-layout="closing"] [data-actor="dot"]    { --x: 1680px; --y: 120px; --w: 120px; background: #fff; }
+[data-layout="closing"] [data-actor="rule-h"] { --x: 120px; --y: 860px; --w: 1040px; background: #fff; }
+
+/* ---------- content tweaks: Swiss = left aligned, asymmetric ---------- */
+.slide:is([data-layout="cover"], [data-layout="closing"]) {
+  align-items: flex-start; text-align: left; padding: 0 840px 0 120px;
+}
+.slide[data-layout="cover"] .title { font-size: 96px; }
+.slide[data-layout="closing"] .title { font-size: 150px; }
+.agenda-list { --agenda-gap: 140px; --tile-line: 3px solid var(--ink); }
+.agenda-list li { align-items: flex-start; padding-top: 40px; }
+[data-density="lg"] .agenda-list { --n-num: 150px; --n-h: 60px; --n-p: 32px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.slide[data-layout="section"] .num { font-size: 260px; }
+.slide[data-layout="stats"] .stat-label { color: #ffffff; }
+.slide[data-layout="quote"] .quote { font-weight: 700; }
+.col { border-top: 8px solid var(--ink); }
+.takeaway { background: var(--ink); color: #fff; border-left-color: var(--red); }

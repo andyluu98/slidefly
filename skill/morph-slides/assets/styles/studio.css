@@ -1,0 +1,161 @@
+/* ===========================================================
+   STYLE: STUDIO (adapted from frontend-slides bold-template-pack, MIT)
+   Design-agency deck: near-black field, acid-yellow type, Barlow 900
+   uppercase as graphic mass, IBM Plex Mono for metadata only.
+   Binary palette: yellow on near-black, or near-black on yellow.
+   Actors: field (acid-yellow surface), plate (near-black slab),
+           rule-t, rule-b (1px hairlines), bar (heavy rule),
+           plus (a heavy "+" that turns into the lockup "x").
+   field + plate trade places every layout: whole slide, side
+   panel, title band, takeaway band. DOM order = z-order.
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+.deck-stage {
+  --actors: "field plate rule-t rule-b bar plus";
+  --font-display: 'Barlow', sans-serif;
+  --font-body: 'Barlow', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --bg: #1c1c1c; --fg: #f5d200; --muted: rgba(245, 210, 0, 0.64);
+  --accent: #f5d200; --line: rgba(245, 210, 0, 0.28);
+  --card-bg: transparent; --card-fg: #f5d200; --card-radius: 0px;
+  --title-weight: 900; --title-tracking: -0.02em; --title-case: uppercase; --bullet-radius: 0;
+  --yellow: #f5d200; --ink: #1c1c1c; --ink-2: #242422;
+}
+/* yellow-surface layouts: the binary flips */
+.deck-stage:is([data-layout="agenda"], [data-layout="section"], [data-layout="stats"], [data-layout="closing"]) {
+  --fg: #1c1c1c; --muted: rgba(28, 28, 28, 0.7); --accent: #1c1c1c; --line: rgba(28, 28, 28, 0.3);
+}
+
+/* ---------- actor looks (geometry comes from poses) ---------- */
+[data-actor="field"]  { background: var(--yellow); --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-actor="plate"]  { background-color: var(--ink-2); --x: 0px; --y: 1080px; --w: 1920px; --h: 0px; }
+[data-actor="rule-t"] { background-color: var(--line); --x: 120px; --y: 236px; --w: 1680px; --h: 1px; }
+[data-actor="rule-b"] { background-color: var(--line); --x: 120px; --y: 1020px; --w: 1680px; --h: 1px; }
+[data-actor="bar"]    { background-color: var(--accent); --x: 120px; --y: 234px; --w: 240px; --h: 4px; }
+[data-actor="plus"] {
+  color: var(--yellow); --x: 1720px; --y: 92px; --w: 72px;
+  background:
+    linear-gradient(currentColor, currentColor) center / 100% 24% no-repeat,
+    linear-gradient(currentColor, currentColor) center / 24% 100% no-repeat;
+}
+
+/* ---------- 1. cover: image area on top, mono lockup underneath ---------- */
+[data-layout="cover"] [data-actor="plate"]  { --x: 0px; --y: 0px; --w: 1920px; --h: 820px; }
+[data-layout="cover"] [data-actor="rule-t"] { --x: 120px; --y: 72px; --w: 1680px; }
+[data-layout="cover"] [data-actor="rule-b"] { --x: 0px; --y: 840px; --w: 1920px; }
+[data-layout="cover"] [data-actor="bar"]    { --x: 120px; --y: 838px; --w: 280px; }
+[data-layout="cover"] [data-actor="plus"]   { --x: 1600px; --y: 600px; --w: 180px; }
+
+/* ---------- 2. agenda: yellow floods in, bar = column divider ---------- */
+[data-layout="agenda"] [data-actor="field"]  { --x: 0px; --w: 1920px; }
+[data-layout="agenda"] [data-actor="bar"]    { --x: 958px; --y: 290px; --w: 4px; --h: 680px; }
+[data-layout="agenda"] [data-actor="plus"]   { color: var(--ink); --r: 45deg; }
+
+/* ---------- 3. section: yellow left, near-black slab right holding a giant x ---------- */
+[data-layout="section"] [data-actor="field"]  { --x: 0px; --w: 1920px; }
+[data-layout="section"] [data-actor="plate"]  { background-color: var(--ink); --x: 1100px; --y: 0px; --w: 820px; --h: 1080px; }
+[data-layout="section"] [data-actor="rule-t"] { --x: 160px; --y: 160px; --w: 860px; }
+[data-layout="section"] [data-actor="rule-b"] { --x: 160px; --y: 920px; --w: 860px; }
+[data-layout="section"] [data-actor="bar"]    { --x: 160px; --y: 918px; --w: 220px; }
+[data-layout="section"] [data-actor="plus"]   { --x: 1310px; --y: 340px; --w: 400px; --r: 45deg; }
+
+/* ---------- 4. content: yellow panel holds the highlight, dark title band ---------- */
+[data-layout="content"] [data-actor="field"]  { --x: 1220px; --y: 270px; --w: 580px; --h: 720px; }
+[data-layout="content"] [data-actor="plate"]  { --x: 0px; --y: 0px; --w: 1920px; --h: 240px; }
+[data-layout="content"] [data-actor="rule-t"] { --x: 0px; --y: 240px; --w: 1920px; }
+/* even: the two surfaces swap, yellow becomes the title band */
+[data-layout="content"][data-parity="even"] [data-actor="field"]  { --x: 0px; --y: 0px; --w: 1920px; --h: 240px; }
+[data-layout="content"][data-parity="even"] [data-actor="plate"]  { --x: 1220px; --y: 270px; --w: 580px; --h: 720px; }
+[data-layout="content"][data-parity="even"] [data-actor="rule-t"] { --x: 1180px; --y: 270px; --w: 1px; --h: 720px; }
+[data-layout="content"][data-parity="even"] [data-actor="bar"]    { --x: 1220px; --y: 270px; --w: 580px; }
+[data-layout="content"][data-parity="even"] [data-actor="plus"]   { color: var(--ink); --r: 45deg; }
+
+/* ---------- 5. two-col: lifted left panel, heavy divider, yellow takeaway band ---------- */
+[data-layout="two-col"] [data-actor="field"]  { --x: 120px; --y: 1080px; --w: 1680px; --h: 110px; }
+[data-layout="two-col"] [data-actor="plate"]  { --x: 120px; --y: 270px; --w: 808px; --h: 720px; }
+[data-layout="two-col"] [data-actor="bar"]    { --x: 958px; --y: 270px; --w: 4px; --h: 720px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="field"] { --y: 880px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="plate"] { --h: 570px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="bar"]   { --h: 570px; }
+
+/* ---------- 6. stats: yellow surface, heavy baseline under the figures ---------- */
+[data-layout="stats"] [data-actor="field"]  { --x: 0px; --w: 1920px; }
+[data-layout="stats"] [data-actor="plate"]  { background-color: var(--ink); --x: 0px; --y: 1040px; --w: 1920px; --h: 40px; }
+[data-layout="stats"] [data-actor="rule-b"] { --x: 120px; --y: 1004px; }
+[data-layout="stats"] [data-actor="bar"]    { --x: 120px; --y: 1000px; --w: 1680px; }
+[data-layout="stats"] [data-actor="plus"]   { color: var(--ink); --r: 90deg; }
+
+/* ---------- 7. timeline: bar = axis (y=630), plus caps its end ---------- */
+[data-layout="timeline"] [data-actor="field"]  { --x: 0px; --y: 0px; --w: 48px; --h: 1080px; }
+[data-layout="timeline"] [data-actor="plate"]  { --x: 0px; --y: 0px; --w: 1920px; --h: 240px; }
+[data-layout="timeline"] [data-actor="rule-t"] { --x: 0px; --y: 240px; --w: 1920px; }
+[data-layout="timeline"] [data-actor="bar"]    { --x: 120px; --y: 628px; --w: 1680px; }
+[data-layout="timeline"] [data-actor="plus"]   { --x: 1812px; --y: 606px; --w: 48px; --r: 45deg; }
+
+/* ---------- 8. quote: statement on lifted dark, giant x bottom right ---------- */
+[data-layout="quote"] [data-actor="plate"]  { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="quote"] [data-actor="rule-t"] { --x: 280px; --y: 200px; --w: 1360px; }
+[data-layout="quote"] [data-actor="rule-b"] { --x: 280px; --y: 1080px; --w: 0px; }
+[data-layout="quote"] [data-actor="bar"]    { --x: 280px; --y: 198px; --w: 200px; }
+[data-layout="quote"] [data-actor="plus"]   { --x: 1660px; --y: 820px; --w: 180px; --r: 45deg; }
+
+/* ---------- 9. closing: yellow end slide, giant dark x ---------- */
+[data-layout="closing"] [data-actor="field"]  { --x: 0px; --w: 1920px; }
+[data-layout="closing"] [data-actor="rule-t"] { --x: 120px; --y: 120px; }
+[data-layout="closing"] [data-actor="rule-b"] { --x: 120px; --y: 960px; }
+[data-layout="closing"] [data-actor="bar"]    { --x: 120px; --y: 958px; --w: 320px; }
+[data-layout="closing"] [data-actor="plus"]   { color: var(--ink); --x: 1340px; --y: 290px; --w: 460px; --r: 135deg; }
+
+/* ---------- content tweaks: type as graphic mass, mono metadata ---------- */
+.slide > .title:first-child { font-size: 72px; line-height: 1.12; }
+.kicker, .meta, .cite { font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+.kicker { font-size: 22px; color: var(--fg); }
+.subtitle { font-weight: 500; }
+.slide :is(.agenda-list h3, .col h3, .step h3, .hl-text) { text-transform: uppercase; font-weight: 900; letter-spacing: -0.01em; }
+
+/* cover: massive headline in the image area, three-column mono lockup below */
+.slide[data-layout="cover"] { display: block; padding: 0; }
+.slide[data-layout="cover"] .title { position: absolute; left: 120px; top: 116px; width: 1440px; font-size: 128px; line-height: 1.08; text-align: left; }
+.slide[data-layout="cover"] :is(.kicker, .subtitle, .meta) {
+  position: absolute; top: 876px; width: 520px; font-family: var(--font-mono); font-size: 26px;
+  font-weight: 500; line-height: 1.5; letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg);
+}
+.slide[data-layout="cover"] .kicker { left: 120px; text-align: left; }
+.slide[data-layout="cover"] .subtitle { left: 700px; text-align: center; color: var(--muted); }
+.slide[data-layout="cover"] .meta { right: 120px; text-align: right; }
+
+/* agenda: hairline tiles, both columns left aligned around the divider */
+.agenda-list { --agenda-gap: 200px; --tile-line: 1px solid rgba(28, 28, 28, 0.3); }
+.agenda-list li { align-items: flex-start; padding-top: 34px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list .num { font-weight: 900; }
+
+.slide[data-layout="section"] .num { font-size: 240px; line-height: 0.9; }
+.slide[data-layout="section"] .title { font-size: 104px; line-height: 1.1; }
+
+/* em-dash bullets drawn as a heavy bar */
+.bullets li::before, .col li::before { width: 0.7em; height: 0.12em; top: 0.62em; }
+.bullets li, .col li { padding-left: 1.3em; }
+[data-density="md"] .bullets { --b-fs: 40px; --b-gap: 64px; }
+.slide[data-layout="content"] { --hl-left: 1250px; --hl-right: 150px; }
+.slide[data-layout="content"] .highlight { color: var(--ink); --accent: var(--ink); }
+.slide[data-layout="content"] .hl-big { font-size: 150px; }
+.slide[data-layout="content"][data-parity="even"] > .title { color: var(--ink); }
+.slide[data-layout="content"][data-parity="even"] .highlight { color: var(--yellow); --accent: var(--yellow); }
+
+.col { padding: 44px 52px; border-top: 2px solid var(--accent); }
+.takeaway { border-left: 0; padding: 20px 40px; color: var(--ink); text-transform: uppercase; font-weight: 900; font-size: 34px; }
+
+.stat { text-align: left; border-top: 2px solid var(--accent); padding-top: 28px; }
+.stat-num { letter-spacing: -0.03em; }
+
+.step::before { border-radius: 0; }
+.step .when { font-weight: 900; }
+
+.slide[data-layout="quote"] { padding: 0 300px 0 280px; }
+.slide[data-layout="quote"] .quote { font-size: 88px; line-height: 1.12; font-weight: 900; text-transform: uppercase; }
+
+.slide[data-layout="closing"] { align-items: flex-start; text-align: left; padding: 0 700px 0 120px; }
+.slide[data-layout="closing"] .title { font-size: 220px; line-height: 1; }

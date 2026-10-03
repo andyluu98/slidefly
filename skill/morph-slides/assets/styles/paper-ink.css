@@ -1,0 +1,142 @@
+/* ===========================================================
+   STYLE: PAPER & INK (adapted from frontend-slides, MIT)
+   Warm paper, near-black ink, crimson accent. Printed magazine:
+   thin and double ink rules that slide and stretch, a crimson
+   plate/bar that travels, a big quotation mark.
+   Actors: tint (paper panel), ink (ink slab), crim (crimson
+           block), rule-a (thin rule), rule-b (double rule),
+           rule-v (vertical hairline), mark (quote glyph).
+           DOM order = z-order (tint first).
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap');
+
+.deck-stage {
+  --actors: "tint ink crim rule-a rule-b rule-v mark";
+  --font-display: 'Cormorant Garamond', serif;
+  --font-body: 'Source Serif 4', serif;
+  --bg: #faf9f7; --fg: #1a1a1a; --muted: #5c5650;
+  --accent: #c41e3a; --accent-2: #1a1a1a;
+  --card-bg: transparent; --card-fg: #1a1a1a; --card-radius: 0px;
+  --title-weight: 600; --title-tracking: -0.005em; --bullet-radius: 0;
+  --paper: #faf9f7; --tint: #efe8dc; --ink: #1a1a1a; --crimson: #c41e3a;
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="tint"]   { background: var(--tint); --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-actor="ink"]    { background: var(--ink); --x: 0px; --y: 1080px; --w: 1920px; --h: 0px; }
+[data-actor="crim"]   { background: var(--crimson); --x: 1920px; --y: 540px; --w: 0px; --h: 10px; }
+[data-actor="rule-a"] { background: var(--ink); --x: 120px; --y: 1010px; --w: 0px; --h: 2px; }
+[data-actor="rule-b"] {
+  border-top: 4px solid var(--ink); border-bottom: 1px solid var(--ink);
+  --x: 120px; --y: 216px; --w: 0px; --h: 10px;
+}
+[data-actor="rule-v"] { background: var(--ink); --x: 960px; --y: 630px; --w: 1px; --h: 0px; }
+[data-actor="mark"]   { color: var(--crimson); --x: 1920px; --y: -300px; --w: 300px; --h: 300px; --o: 0; --s: 0.4; }
+[data-actor="mark"]::before {
+  content: "\201C"; position: absolute; left: 0; top: 0; width: 100%;
+  font: 700 520px/0.9 'Cormorant Garamond', serif; text-align: center;
+}
+
+/* ---------- 1. cover: paper panel right, crimson plate with the mark ---------- */
+[data-layout="cover"] [data-actor="tint"]   { --x: 1240px; --w: 680px; }
+[data-layout="cover"] [data-actor="ink"]    { --x: 1240px; --y: 0px; --w: 6px; --h: 1080px; }
+[data-layout="cover"] [data-actor="crim"]   { --x: 1400px; --y: 300px; --w: 360px; --h: 480px; }
+[data-layout="cover"] [data-actor="mark"]   { --x: 1430px; --y: 360px; --o: 1; --s: 1; color: var(--paper); }
+[data-layout="cover"] [data-actor="rule-b"] { --x: 120px; --y: 150px; --w: 1000px; }
+[data-layout="cover"] [data-actor="rule-a"] { --x: 120px; --y: 930px; --w: 1000px; }
+[data-layout="cover"] [data-actor="rule-v"] { --x: 1580px; --y: 840px; --h: 120px; }
+
+/* ---------- 2. agenda: header band, double rule, column gutter ---------- */
+[data-layout="agenda"] [data-actor="tint"]   { --x: 0px; --y: 0px; --w: 1920px; --h: 216px; }
+[data-layout="agenda"] [data-actor="crim"]   { --x: 1740px; --y: 104px; --w: 60px; --h: 60px; }
+[data-layout="agenda"] [data-actor="rule-b"] { --x: 0px; --y: 216px; --w: 1920px; }
+[data-layout="agenda"] [data-actor="rule-v"] { --x: 960px; --y: 290px; --h: 680px; }
+[data-layout="agenda"] [data-actor="rule-a"] { --x: 120px; --y: 1012px; --w: 1680px; }
+[data-layout="agenda"] [data-actor="mark"]   { --x: 1620px; --y: -260px; --s: 0.3; }
+
+/* ---------- 3. section: ink slab right, crimson band, paper gutter line ---------- */
+[data-layout="section"] [data-actor="ink"]    { --x: 1160px; --y: 0px; --w: 760px; --h: 1080px; }
+[data-layout="section"] [data-actor="crim"]   { --x: 1160px; --y: 500px; --w: 760px; --h: 80px; }
+[data-layout="section"] [data-actor="tint"]   { --x: 1160px; --w: 0px; }
+[data-layout="section"] [data-actor="rule-v"] { --x: 1260px; --y: 120px; --h: 840px; background: var(--paper); --o: 0.5; }
+[data-layout="section"] [data-actor="rule-b"] { --x: 160px; --y: 200px; --w: 860px; }
+[data-layout="section"] [data-actor="rule-a"] { --x: 160px; --y: 880px; --w: 860px; }
+[data-layout="section"] [data-actor="mark"]   { --x: 1600px; --y: 640px; --o: 1; --s: 0.7; color: var(--paper); }
+
+/* ---------- 4. content: paper panel holds the highlight ---------- */
+[data-layout="content"] [data-actor="tint"]   { --x: 1250px; --y: 270px; --w: 550px; --h: 720px; }
+[data-layout="content"] [data-actor="crim"]   { --x: 1250px; --y: 270px; --w: 550px; --h: 10px; }
+[data-layout="content"] [data-actor="rule-b"] { --x: 120px; --y: 216px; --w: 1680px; }
+[data-layout="content"] [data-actor="rule-a"] { --x: 1250px; --y: 988px; --w: 550px; }
+[data-layout="content"] [data-actor="rule-v"] { --x: 1200px; --y: 270px; --h: 720px; }
+[data-layout="content"] [data-actor="mark"]   { --x: 1250px; --y: 270px; --o: 0.18; --s: 0.45; }
+/* even: panel grows to a full-height column, crimson becomes its spine */
+[data-layout="content"][data-parity="even"] [data-actor="tint"]   { --x: 1240px; --y: 0px; --w: 680px; --h: 1080px; }
+[data-layout="content"][data-parity="even"] [data-actor="crim"]   { --x: 1240px; --y: 0px; --w: 10px; --h: 1080px; }
+[data-layout="content"][data-parity="even"] [data-actor="rule-b"] { --x: 120px; --y: 216px; --w: 1040px; }
+[data-layout="content"][data-parity="even"] [data-actor="rule-a"] { --x: 120px; --y: 1012px; --w: 1040px; }
+[data-layout="content"][data-parity="even"] [data-actor="rule-v"] { --x: 1880px; --y: 90px; --h: 900px; }
+[data-layout="content"][data-parity="even"] [data-actor="mark"]   { --x: 1620px; --y: 800px; --o: 0.18; --s: 0.45; }
+
+/* ---------- 5. two-col: column rule, panel flattens into the takeaway bar ---------- */
+[data-layout="two-col"] [data-actor="tint"]   { --x: 120px; --y: 880px; --w: 1680px; --h: 110px; }
+[data-layout="two-col"] [data-actor="crim"]   { --x: 120px; --y: 880px; --w: 10px; --h: 110px; }
+[data-layout="two-col"] [data-actor="rule-b"] { --x: 120px; --y: 216px; --w: 1680px; }
+[data-layout="two-col"] [data-actor="rule-v"] { --x: 960px; --y: 280px; --h: 550px; }
+[data-layout="two-col"] [data-actor="rule-a"] { --x: 120px; --y: 858px; --w: 1680px; }
+[data-layout="two-col"] [data-actor="mark"]   { --x: 1760px; --y: -260px; --s: 0.3; }
+
+/* ---------- 6. stats: paper band frames the figures ---------- */
+[data-layout="stats"] [data-actor="tint"]   { --x: 0px; --y: 270px; --w: 1920px; --h: 720px; }
+[data-layout="stats"] [data-actor="crim"]   { --x: 120px; --y: 196px; --w: 160px; --h: 10px; }
+[data-layout="stats"] [data-actor="rule-b"] { --x: 0px; --y: 260px; --w: 1920px; }
+[data-layout="stats"] [data-actor="rule-a"] { --x: 0px; --y: 998px; --w: 1920px; }
+[data-layout="stats"] [data-actor="rule-v"] { --x: 960px; --y: 630px; --h: 0px; }
+
+/* ---------- 7. timeline: ink axis, crimson progress, paper ribbon ---------- */
+[data-layout="timeline"] [data-actor="tint"]   { --x: 0px; --y: 604px; --w: 1920px; --h: 52px; }
+[data-layout="timeline"] [data-actor="ink"]    { --x: 120px; --y: 629px; --w: 1680px; --h: 2px; }
+[data-layout="timeline"] [data-actor="crim"]   { --x: 120px; --y: 626px; --w: 420px; --h: 8px; }
+[data-layout="timeline"] [data-actor="rule-b"] { --x: 120px; --y: 216px; --w: 1680px; }
+[data-layout="timeline"] [data-actor="rule-a"] { --x: 120px; --y: 1012px; --w: 1680px; }
+[data-layout="timeline"] [data-actor="rule-v"] { --x: 1800px; --y: 600px; --h: 60px; --w: 2px; }
+
+/* ---------- 8. quote: ink floods the page, crimson mark ---------- */
+.deck-stage[data-layout="quote"] { --fg: #faf9f7; --muted: #c9c1b5; --accent: #e04a63; }
+[data-layout="quote"] [data-actor="ink"]    { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="quote"] [data-actor="mark"]   { --x: 150px; --y: 90px; --o: 1; --s: 1; }
+[data-layout="quote"] [data-actor="crim"]   { --x: 236px; --y: 390px; --w: 8px; --h: 320px; }
+[data-layout="quote"] [data-actor="rule-b"] { --x: 120px; --y: 110px; --w: 1680px; border-color: var(--paper); }
+[data-layout="quote"] [data-actor="rule-a"] { --x: 120px; --y: 960px; --w: 1680px; background: var(--paper); }
+[data-layout="quote"] [data-actor="rule-v"] { --x: 1800px; --y: 120px; --h: 0px; }
+[data-layout="quote"] [data-actor="tint"]   { --x: 0px; --w: 0px; }
+
+/* ---------- 9. closing: crimson floods the page, paper rules ---------- */
+.deck-stage[data-layout="closing"] { --fg: #faf9f7; --muted: #f6d5db; --accent: #1a1a1a; }
+[data-layout="closing"] [data-actor="crim"]   { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="closing"] [data-actor="rule-b"] { --x: 460px; --y: 290px; --w: 1000px; border-color: var(--paper); }
+[data-layout="closing"] [data-actor="rule-a"] { --x: 460px; --y: 800px; --w: 1000px; background: var(--paper); }
+[data-layout="closing"] [data-actor="rule-v"] { --x: 960px; --y: 800px; --h: 0px; }
+[data-layout="closing"] [data-actor="mark"]   { --x: 1580px; --y: 640px; --o: 0.25; --s: 0.8; color: var(--ink); }
+[data-layout="closing"] [data-actor="tint"]   { --x: 0px; --y: 1080px; --w: 1920px; --h: 0px; }
+
+/* ---------- content tweaks: editorial, left aligned cover ---------- */
+.slide .kicker { font-weight: 600; letter-spacing: 0.24em; }
+.slide[data-layout="cover"] { align-items: flex-start; text-align: left; padding: 0 800px 0 120px; }
+.slide[data-layout="cover"] .title { font-size: 100px; line-height: 1.02; }
+.slide[data-layout="cover"] .subtitle { font-style: italic; }
+.slide[data-layout="closing"] .title { font-size: 150px; font-weight: 700; }
+.slide[data-layout="section"] .num { font-size: 240px; font-weight: 500; font-style: italic; }
+.agenda-list { --agenda-gap: 160px; --tile-line: 1px solid var(--ink); }
+.agenda-list li { align-items: flex-start; padding-top: 28px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list .num { font-style: italic; font-weight: 500; }
+[data-density="lg"] .bullets { --b-fs: 46px; --b-gap: 56px; }
+[data-density="md"] .bullets { --b-fs: 40px; --b-gap: 48px; }
+.slide[data-layout="content"] .hl-text { font-size: 38px; font-weight: 600; font-style: italic; }
+.col { padding: 36px 48px 36px 0; }
+.col + .col { padding: 36px 0 36px 48px; }
+.takeaway { border-left: 0; padding-left: 48px; font-style: italic; }
+.slide[data-layout="quote"] .quote { font-weight: 500; font-style: italic; }
+.slide[data-layout="quote"] .cite { font-style: normal; letter-spacing: 0.12em; text-transform: uppercase; font-size: 24px; }

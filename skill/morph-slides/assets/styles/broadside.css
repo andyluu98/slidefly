@@ -1,0 +1,172 @@
+/* ===========================================================
+   STYLE: BROADSIDE (adapted from frontend-slides bold template
+   pack "broadside", MIT)
+   Protest-poster editorial: ink black canvas, one fire orange,
+   cream type, massive lowercase Barlow, mono chrome, 1px hairlines.
+   Two registers: dark slides for content, orange slides for
+   declaration (cover, section, closing).
+   Actors: slab (raised ink panel), fire (the orange: environment,
+           panel, card, axis), rule-t / rule-b (hairline chrome),
+           slash / slash2 (the "/" bullet glyph as giant graphic;
+           together "//" = quote mark), stub (accent stub rule).
+   DOM order = z-order (slab first).
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;700&display=swap');
+
+.deck-stage {
+  --actors: "slab fire rule-t rule-b slash slash2 stub";
+  --font-display: 'Barlow', sans-serif;
+  --font-body: 'Barlow', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --bg: #111111; --fg: #f0ece5; --muted: #888880;
+  --accent: #e85d26; --accent-2: #111111;
+  --card-bg: transparent; --card-fg: #f0ece5; --card-radius: 0px;
+  --title-weight: 800; --title-tracking: -0.03em; --bullet-radius: 0;
+  --ink: #111111; --fire: #e85d26; --hint: #505048;
+  --line: rgba(240, 236, 229, 0.18);
+}
+/* orange register: ink on fire */
+.deck-stage:is([data-layout="cover"], [data-layout="section"], [data-layout="closing"]) {
+  --fg: #111111; --muted: rgba(17, 17, 17, 0.75); --accent: #111111;
+}
+
+/* ---------- actor looks (geometry comes from poses) ---------- */
+[data-actor="slab"]  { background: #1a1a18; --x: 1920px; --y: 0px; --w: 700px; --h: 1080px; }
+[data-actor="fire"]  { background: var(--fire); --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-actor="rule-t"], [data-actor="rule-b"] { background: var(--line); --h: 2px; --w: 0px; --x: 120px; --y: 210px; }
+[data-actor="slash"], [data-actor="slash2"] {
+  background: var(--fire); --x: 1920px; --y: -900px; --w: 400px; --h: 760px;
+  clip-path: polygon(62% 0, 100% 0, 38% 100%, 0 100%);
+}
+[data-actor="stub"]  { background: var(--fire); --x: 120px; --y: 66px; --w: 64px; --h: 6px; }
+
+/* ---------- 1. cover: orange environment, giant ink slash ---------- */
+[data-layout="cover"] [data-actor="slab"]   { --x: 1920px; --y: 0px; --w: 700px; --h: 1080px; }
+[data-layout="cover"] [data-actor="fire"]   { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="cover"] [data-actor="rule-t"] { --x: 120px; --y: 60px; --w: 0px; }
+[data-layout="cover"] [data-actor="rule-b"] { --x: 1800px; --y: 1020px; --w: 0px; }
+[data-layout="cover"] [data-actor="slash"]  { --x: 1320px; --y: 150px; --w: 460px; --h: 780px; background: var(--ink); }
+[data-layout="cover"] [data-actor="slash2"] { --x: 1920px; --y: -900px; --w: 460px; --h: 780px; background: var(--ink); }
+[data-layout="cover"] [data-actor="stub"]   { --x: 120px; --y: 930px; --w: 200px; --h: 10px; background: var(--ink); }
+
+/* ---------- 2. agenda: fire shrinks to a left spine, slash splits the columns ---------- */
+[data-layout="agenda"] [data-actor="slab"]   { --x: 1920px; --y: 0px; --w: 700px; --h: 1080px; }
+[data-layout="agenda"] [data-actor="fire"]   { --x: 0px; --y: 0px; --w: 24px; --h: 1080px; }
+[data-layout="agenda"] [data-actor="rule-t"] { --x: 120px; --y: 210px; --w: 1680px; }
+[data-layout="agenda"] [data-actor="rule-b"] { --x: 120px; --y: 1010px; --w: 1680px; }
+[data-layout="agenda"] [data-actor="slash"]  { --x: 915px; --y: 300px; --w: 90px; --h: 660px; }
+[data-layout="agenda"] [data-actor="slash2"] { --x: 1736px; --y: 84px; --w: 56px; --h: 90px; }
+[data-layout="agenda"] [data-actor="stub"]   { --x: 120px; --y: 66px; --w: 64px; --h: 6px; }
+
+/* ---------- 3. section: chapter on fire, ink slash behind a hairline ---------- */
+[data-layout="section"] [data-actor="slab"]   { --x: 1920px; --y: 0px; --w: 700px; --h: 1080px; }
+[data-layout="section"] [data-actor="fire"]   { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="section"] [data-actor="rule-t"] { --x: 1080px; --y: 0px; --w: 2px; --h: 1080px; background: rgba(17, 17, 17, 0.25); }
+[data-layout="section"] [data-actor="rule-b"] { --x: 160px; --y: 1020px; --w: 0px; }
+[data-layout="section"] [data-actor="slash"]  { --x: 1240px; --y: 140px; --w: 480px; --h: 800px; background: var(--ink); }
+[data-layout="section"] [data-actor="slash2"] { --x: 1500px; --y: 1200px; --w: 480px; --h: 800px; background: var(--ink); }
+[data-layout="section"] [data-actor="stub"]   { --x: 160px; --y: 190px; --w: 160px; --h: 10px; background: var(--ink); }
+
+/* ---------- 4. content: orange payoff panel holds the highlight ---------- */
+[data-layout="content"] [data-actor="slab"]   { --x: 1920px; --y: 0px; --w: 700px; --h: 1080px; }
+[data-layout="content"] [data-actor="fire"]   { --x: 1220px; --y: 0px; --w: 700px; --h: 1080px; }
+[data-layout="content"] [data-actor="rule-t"] { --x: 120px; --y: 210px; --w: 1040px; }
+[data-layout="content"] [data-actor="rule-b"] { --x: 120px; --y: 1010px; --w: 1040px; }
+[data-layout="content"] [data-actor="slash"]  { --x: 1740px; --y: 60px; --w: 90px; --h: 150px; background: var(--ink); }
+[data-layout="content"] [data-actor="slash2"] { --x: 1920px; --y: 1200px; --w: 90px; --h: 150px; }
+[data-layout="content"] [data-actor="stub"]   { --x: 120px; --y: 66px; --w: 64px; --h: 6px; }
+/* even: dark slab slides over the panel, fire thins to its edge */
+[data-layout="content"][data-parity="even"] [data-actor="slab"]   { --x: 1220px; --y: 0px; --w: 700px; --h: 1080px; }
+[data-layout="content"][data-parity="even"] [data-actor="fire"]   { --x: 1208px; --y: 0px; --w: 12px; --h: 1080px; }
+[data-layout="content"][data-parity="even"] [data-actor="rule-t"] { --x: 120px; --y: 210px; --w: 1040px; }
+[data-layout="content"][data-parity="even"] [data-actor="rule-b"] { --x: 120px; --y: 1010px; --w: 1040px; }
+[data-layout="content"][data-parity="even"] [data-actor="slash"]  { --x: 1740px; --y: 60px; --w: 90px; --h: 150px; background: var(--fire); }
+[data-layout="content"][data-parity="even"] [data-actor="slash2"] { --x: 1260px; --y: 1200px; --w: 90px; --h: 150px; }
+[data-layout="content"][data-parity="even"] [data-actor="stub"]   { --x: 120px; --y: 1002px; --w: 160px; --h: 10px; }
+
+/* ---------- 5. two-col: slab = left card, fire = orange payoff card ---------- */
+[data-layout="two-col"] [data-actor="slab"]   { --x: 120px; --y: 270px; --w: 808px; --h: 570px; }
+[data-layout="two-col"] [data-actor="fire"]   { --x: 992px; --y: 270px; --w: 808px; --h: 570px; }
+[data-layout="two-col"] [data-actor="rule-t"] { --x: 120px; --y: 210px; --w: 1680px; }
+[data-layout="two-col"] [data-actor="rule-b"] { --x: 120px; --y: 862px; --w: 1680px; }
+[data-layout="two-col"] [data-actor="slash"]  { --x: 120px; --y: 884px; --w: 60px; --h: 100px; }
+[data-layout="two-col"] [data-actor="slash2"] { --x: 1920px; --y: 884px; --w: 60px; --h: 100px; }
+[data-layout="two-col"] [data-actor="stub"]   { --x: 120px; --y: 66px; --w: 64px; --h: 6px; }
+
+/* ---------- 6. stats: raised band, orange top rule, slashes divide ---------- */
+[data-layout="stats"] [data-actor="slab"]   { --x: 0px; --y: 260px; --w: 1920px; --h: 740px; }
+[data-layout="stats"] [data-actor="fire"]   { --x: 120px; --y: 372px; --w: 1680px; --h: 6px; }
+[data-layout="stats"] [data-actor="rule-t"] { --x: 120px; --y: 210px; --w: 1680px; }
+[data-layout="stats"] [data-actor="rule-b"] { --x: 120px; --y: 1010px; --w: 1680px; }
+[data-layout="stats"] [data-actor="slash"]  { --x: 650px; --y: 430px; --w: 44px; --h: 400px; background: var(--hint); }
+[data-layout="stats"] [data-actor="slash2"] { --x: 1226px; --y: 430px; --w: 44px; --h: 400px; background: var(--hint); }
+[data-layout="stats"] [data-actor="stub"]   { --x: 120px; --y: 66px; --w: 64px; --h: 6px; }
+
+/* ---------- 7. timeline: fire is the axis (y=630), slab darkens the lower half ---------- */
+[data-layout="timeline"] [data-actor="slab"]   { --x: 0px; --y: 630px; --w: 1920px; --h: 450px; }
+[data-layout="timeline"] [data-actor="fire"]   { --x: 120px; --y: 627px; --w: 1690px; --h: 6px; }
+[data-layout="timeline"] [data-actor="rule-t"] { --x: 120px; --y: 210px; --w: 1680px; }
+[data-layout="timeline"] [data-actor="rule-b"] { --x: 120px; --y: 1010px; --w: 1680px; }
+[data-layout="timeline"] [data-actor="slash"]  { --x: 1806px; --y: 590px; --w: 50px; --h: 80px; }
+[data-layout="timeline"] [data-actor="slash2"] { --x: 54px; --y: 590px; --w: 50px; --h: 80px; }
+[data-layout="timeline"] [data-actor="stub"]   { --x: 120px; --y: 66px; --w: 64px; --h: 6px; }
+
+/* ---------- 8. quote: "//" opens the quote, fire drops to a footer band ---------- */
+[data-layout="quote"] [data-actor="slab"]   { --x: -700px; --y: 0px; --w: 700px; --h: 1080px; }
+[data-layout="quote"] [data-actor="fire"]   { --x: 0px; --y: 1044px; --w: 1920px; --h: 36px; }
+[data-layout="quote"] [data-actor="rule-t"] { --x: 280px; --y: 60px; --w: 0px; }
+[data-layout="quote"] [data-actor="rule-b"] { --x: 1640px; --y: 1000px; --w: 0px; }
+[data-layout="quote"] [data-actor="slash"]  { --x: 280px; --y: 150px; --w: 96px; --h: 160px; }
+[data-layout="quote"] [data-actor="slash2"] { --x: 392px; --y: 150px; --w: 96px; --h: 160px; }
+[data-layout="quote"] [data-actor="stub"]   { --x: 1520px; --y: 920px; --w: 120px; --h: 10px; }
+
+/* ---------- 9. closing: back on fire, giant ink "//" ---------- */
+[data-layout="closing"] [data-actor="slab"]   { --x: 1920px; --y: 0px; --w: 700px; --h: 1080px; }
+[data-layout="closing"] [data-actor="fire"]   { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="closing"] [data-actor="rule-t"] { --x: 120px; --y: 60px; --w: 0px; }
+[data-layout="closing"] [data-actor="rule-b"] { --x: 1800px; --y: 1020px; --w: 0px; }
+[data-layout="closing"] [data-actor="slash"]  { --x: 1150px; --y: 180px; --w: 400px; --h: 720px; background: var(--ink); }
+[data-layout="closing"] [data-actor="slash2"] { --x: 1440px; --y: 180px; --w: 400px; --h: 720px; background: var(--ink); }
+[data-layout="closing"] [data-actor="stub"]   { --x: 120px; --y: 930px; --w: 200px; --h: 10px; background: var(--ink); }
+
+/* ---------- content tweaks: lowercase poster type, mono chrome, "/" bullets ---------- */
+.slide .title { letter-spacing: var(--title-tracking); }
+.kicker, .meta, .cite { font-family: var(--font-mono); font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; }
+.meta, .cite { font-size: 22px; }
+.slide:is([data-layout="cover"], [data-layout="section"], [data-layout="closing"]) .kicker { color: rgba(17, 17, 17, 0.7); }
+.slide:is([data-layout="cover"], [data-layout="closing"]) {
+  align-items: flex-start; text-align: left; padding: 0 780px 0 120px;
+}
+.slide:is([data-layout="cover"], [data-layout="section"], [data-layout="closing"]) .title {
+  text-transform: lowercase; font-weight: 900; letter-spacing: -0.04em; line-height: 0.92;
+}
+.slide[data-layout="cover"] .title { font-size: 116px; }
+.slide[data-layout="closing"] .title { font-size: 220px; }
+.slide[data-layout="section"] .num { font-weight: 900; font-size: 240px; letter-spacing: -0.04em; }
+.slide[data-layout="section"] .title { font-size: 104px; }
+.bullets li::before, .col li::before {
+  content: "/"; width: auto; height: auto; top: 0; background: none; border-radius: 0;
+  font-family: var(--font-mono); font-weight: 700; color: var(--accent);
+}
+.agenda-list { --agenda-gap: 200px; --tile-line: 1px solid var(--line); }
+.agenda-list li { align-items: flex-start; padding-top: 32px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list .num { font-weight: 900; letter-spacing: -0.04em; }
+/* content: highlight on the orange panel (odd) or the dark slab (even) */
+.slide[data-layout="content"] { --title-w: 1040px; --hl-left: 1300px; --hl-right: 80px; }
+.slide[data-layout="content"] .highlight { color: var(--ink); --accent: var(--ink); }
+.slide[data-layout="content"][data-parity="even"] .highlight { color: var(--fg); --accent: var(--fire); }
+.slide[data-layout="content"][data-density="md"] .bullets { --b-fs: 40px; --b-gap: 64px; }
+.hl-big { font-weight: 900; letter-spacing: -0.04em; }
+/* two-col: left card on the slab, right card on fire (ink on fire) */
+.col { border-top: 2px solid var(--fire); }
+.cols .col:last-child { color: var(--ink); border-top-color: var(--ink); --accent: var(--ink); }
+.takeaway { border-left: none; padding-left: 100px; font-weight: 700; }
+.stat-num { font-weight: 900; letter-spacing: -0.04em; }
+.step::before { border-radius: 0; }
+.step .when { font-weight: 900; }
+.slide[data-layout="quote"] { padding: 0 300px 0 280px; }
+.slide[data-layout="quote"] .quote { font-size: 80px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+.slide[data-layout="quote"] .cite { color: var(--fire); }
+.deck-progress { background: #e85d26; }

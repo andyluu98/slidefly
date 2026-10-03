@@ -1,0 +1,158 @@
+/* ===========================================================
+   STYLE: PASTEL GEOMETRY (adapted from frontend-slides, MIT)
+   Soft powder-blue stage, an off-white rounded card with a soft
+   shadow, and a family of vertical pills (pink, mint, sage,
+   lavender, violet) in short-medium-tall-medium-short heights.
+   Pills travel: right-edge tabs, card tabs, giant columns,
+   column divider, colourful timeline axis, quote marks.
+   Actors: card (white card), p1..p5 (pills), icon (action
+           button with download arrow). DOM order = z-order.
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+.deck-stage {
+  --actors: "card p1 p2 p3 p4 p5 icon";
+  --font-display: 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+  --bg: #c8d9e6; --fg: #1f2a37; --muted: #4f5a6b;
+  --accent: #6c5aa3; --accent-2: #5a7c6a;
+  --card-bg: transparent; --card-fg: #1f2a37; --card-radius: 28px;
+  --title-weight: 800; --title-tracking: -0.02em; --bullet-radius: 999px;
+  --paper: #faf9f7; --pink: #f0b4d4; --mint: #a8d4c4; --sage: #5a7c6a;
+  --lavender: #9b8dc4; --violet: #7c6aad;
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="card"] {
+  background-color: var(--paper); border-radius: 44px;
+  box-shadow: 0 30px 80px rgba(52, 76, 104, 0.18), 0 6px 18px rgba(52, 76, 104, 0.08);
+  --x: 960px; --y: 540px; --w: 0px; --h: 0px;
+}
+[data-actor^="p"] { border-radius: 999px; --w: 56px; --h: 160px; --x: 1980px; --y: 460px; }
+[data-actor="p1"] { background-color: var(--pink); }
+[data-actor="p2"] { background-color: var(--mint); }
+[data-actor="p3"] { background-color: var(--sage); }
+[data-actor="p4"] { background-color: var(--lavender); }
+[data-actor="p5"] { background-color: var(--violet); }
+[data-actor="icon"] {
+  border-radius: 50%; background-color: var(--violet);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 4v11M7 10l5 5 5-5M5 20h14'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: center; background-size: 48%;
+  box-shadow: 0 10px 24px rgba(108, 90, 163, 0.28);
+  --x: 1980px; --y: -120px; --w: 80px;
+}
+
+/* ---------- 1. cover: card centre stage, pill tabs on the right edge ---------- */
+[data-layout="cover"] [data-actor="card"] { --x: 180px; --y: 120px; --w: 1460px; --h: 840px; }
+[data-layout="cover"] [data-actor="p1"]   { --x: 1696px; --y: 93px;  --w: 56px; --h: 110px; }
+[data-layout="cover"] [data-actor="p2"]   { --x: 1696px; --y: 219px; --w: 56px; --h: 180px; }
+[data-layout="cover"] [data-actor="p3"]   { --x: 1696px; --y: 415px; --w: 56px; --h: 250px; }
+[data-layout="cover"] [data-actor="p4"]   { --x: 1696px; --y: 681px; --w: 56px; --h: 180px; }
+[data-layout="cover"] [data-actor="p5"]   { --x: 1696px; --y: 877px; --w: 56px; --h: 110px; }
+[data-layout="cover"] [data-actor="icon"] { --x: 1508px; --y: 168px; --w: 88px; }
+
+/* ---------- 2. agenda: card holds the list, pills become folder tabs ---------- */
+[data-layout="agenda"] [data-actor="card"] { --x: 80px; --y: 240px; --w: 1760px; --h: 790px; }
+[data-layout="agenda"] [data-actor="p1"]   { --x: 1440px; --y: 190px; --w: 52px; --h: 60px; }
+[data-layout="agenda"] [data-actor="p2"]   { --x: 1512px; --y: 150px; --w: 52px; --h: 100px; }
+[data-layout="agenda"] [data-actor="p3"]   { --x: 1584px; --y: 110px; --w: 52px; --h: 140px; }
+[data-layout="agenda"] [data-actor="p4"]   { --x: 1656px; --y: 150px; --w: 52px; --h: 100px; }
+[data-layout="agenda"] [data-actor="p5"]   { --x: 1728px; --y: 190px; --w: 52px; --h: 60px; }
+[data-layout="agenda"] [data-actor="icon"] { --x: 1320px; --y: 120px; --w: 72px; }
+
+/* ---------- 3. section: card shrinks left, pills grow into giant columns ---------- */
+[data-layout="section"] [data-actor="card"] { --x: 100px; --y: 100px; --w: 1000px; --h: 880px; }
+[data-layout="section"] [data-actor="p1"]   { --x: 1200px; --y: 360px; --w: 110px; --h: 360px; }
+[data-layout="section"] [data-actor="p2"]   { --x: 1340px; --y: 260px; --w: 110px; --h: 560px; }
+[data-layout="section"] [data-actor="p3"]   { --x: 1480px; --y: 160px; --w: 110px; --h: 760px; }
+[data-layout="section"] [data-actor="p4"]   { --x: 1620px; --y: 260px; --w: 110px; --h: 560px; }
+[data-layout="section"] [data-actor="p5"]   { --x: 1760px; --y: 360px; --w: 110px; --h: 360px; }
+[data-layout="section"] [data-actor="icon"] { --x: 980px; --y: 140px; --w: 80px; }
+
+/* ---------- 4. content (odd): card frames the highlight, slim pills on the edge ---------- */
+[data-layout="content"] [data-actor="card"] { --x: 1240px; --y: 240px; --w: 600px; --h: 790px; }
+[data-layout="content"] [data-actor="p1"]   { --x: 1864px; --y: 332px; --w: 36px; --h: 70px; }
+[data-layout="content"] [data-actor="p2"]   { --x: 1864px; --y: 416px; --w: 36px; --h: 120px; }
+[data-layout="content"] [data-actor="p3"]   { --x: 1864px; --y: 550px; --w: 36px; --h: 170px; }
+[data-layout="content"] [data-actor="p4"]   { --x: 1864px; --y: 734px; --w: 36px; --h: 120px; }
+[data-layout="content"] [data-actor="p5"]   { --x: 1864px; --y: 868px; --w: 36px; --h: 70px; }
+[data-layout="content"] [data-actor="icon"] { --x: 1744px; --y: 272px; --w: 64px; }
+/* even: card slides left under the bullets, pills lie down as a bar row */
+[data-layout="content"][data-parity="even"] [data-actor="card"] { --x: 80px; --y: 240px; --w: 1120px; --h: 790px; }
+[data-layout="content"][data-parity="even"] [data-actor="p1"]   { --x: 1268px; --y: 1012px; --w: 64px; --h: 30px; }
+[data-layout="content"][data-parity="even"] [data-actor="p2"]   { --x: 1348px; --y: 1012px; --w: 100px; --h: 30px; }
+[data-layout="content"][data-parity="even"] [data-actor="p3"]   { --x: 1464px; --y: 1012px; --w: 140px; --h: 30px; }
+[data-layout="content"][data-parity="even"] [data-actor="p4"]   { --x: 1620px; --y: 1012px; --w: 100px; --h: 30px; }
+[data-layout="content"][data-parity="even"] [data-actor="p5"]   { --x: 1736px; --y: 1012px; --w: 64px; --h: 30px; }
+[data-layout="content"][data-parity="even"] [data-actor="icon"] { --x: 1740px; --y: 96px; --w: 64px; }
+
+/* ---------- 5. two-col: one card, pills stack into the column divider ---------- */
+[data-layout="two-col"] [data-actor="card"] { --x: 80px; --y: 240px; --w: 1760px; --h: 620px; }
+[data-layout="two-col"] [data-actor="p1"]   { --x: 948px; --y: 293px; --w: 24px; --h: 60px; }
+[data-layout="two-col"] [data-actor="p2"]   { --x: 948px; --y: 369px; --w: 24px; --h: 100px; }
+[data-layout="two-col"] [data-actor="p3"]   { --x: 948px; --y: 485px; --w: 24px; --h: 140px; }
+[data-layout="two-col"] [data-actor="p4"]   { --x: 948px; --y: 641px; --w: 24px; --h: 100px; }
+[data-layout="two-col"] [data-actor="p5"]   { --x: 948px; --y: 757px; --w: 24px; --h: 60px; }
+[data-layout="two-col"] [data-actor="icon"] { --x: 1816px; --y: 903px; --w: 64px; }
+
+/* ---------- 6. stats: card band, pill tabs back on the right edge ---------- */
+[data-layout="stats"] [data-actor="card"] { --x: 80px; --y: 240px; --w: 1680px; --h: 790px; }
+[data-layout="stats"] [data-actor="p1"]   { --x: 1792px; --y: 258px; --w: 44px; --h: 90px; }
+[data-layout="stats"] [data-actor="p2"]   { --x: 1792px; --y: 364px; --w: 44px; --h: 150px; }
+[data-layout="stats"] [data-actor="p3"]   { --x: 1792px; --y: 530px; --w: 44px; --h: 210px; }
+[data-layout="stats"] [data-actor="p4"]   { --x: 1792px; --y: 756px; --w: 44px; --h: 150px; }
+[data-layout="stats"] [data-actor="p5"]   { --x: 1792px; --y: 922px; --w: 44px; --h: 90px; }
+[data-layout="stats"] [data-actor="icon"] { --x: 1740px; --y: 96px; --w: 64px; }
+
+/* ---------- 7. timeline: pills lie end to end as a colourful axis (y=630) ---------- */
+[data-layout="timeline"] [data-actor="card"] { --x: 80px; --y: 240px; --w: 1760px; --h: 790px; }
+[data-layout="timeline"] [data-actor="p1"]   { --x: 120px;  --y: 622px; --w: 328px; --h: 16px; }
+[data-layout="timeline"] [data-actor="p2"]   { --x: 458px;  --y: 622px; --w: 328px; --h: 16px; }
+[data-layout="timeline"] [data-actor="p3"]   { --x: 796px;  --y: 622px; --w: 328px; --h: 16px; }
+[data-layout="timeline"] [data-actor="p4"]   { --x: 1134px; --y: 622px; --w: 328px; --h: 16px; }
+[data-layout="timeline"] [data-actor="p5"]   { --x: 1472px; --y: 622px; --w: 328px; --h: 16px; }
+[data-layout="timeline"] [data-actor="icon"] { --x: 1740px; --y: 96px; --w: 64px; }
+
+/* ---------- 8. quote: two tilted pills become the quotation marks ---------- */
+[data-layout="quote"] [data-actor="card"] { --x: 160px; --y: 120px; --w: 1600px; --h: 840px; }
+[data-layout="quote"] [data-actor="p1"]   { --x: 300px;  --y: 190px; --w: 48px; --h: 120px; --r: 18deg; }
+[data-layout="quote"] [data-actor="p2"]   { --x: 376px;  --y: 190px; --w: 48px; --h: 120px; --r: 18deg; }
+[data-layout="quote"] [data-actor="p3"]   { --x: 1430px; --y: 880px; --w: 70px; --h: 24px; }
+[data-layout="quote"] [data-actor="p4"]   { --x: 1516px; --y: 880px; --w: 110px; --h: 24px; }
+[data-layout="quote"] [data-actor="p5"]   { --x: 1642px; --y: 880px; --w: 70px; --h: 24px; }
+[data-layout="quote"] [data-actor="icon"] { --x: 1960px; --y: 160px; --w: 64px; --o: 0; }
+
+/* ---------- 9. closing: violet card, pills flank both sides ---------- */
+.deck-stage[data-layout="closing"] { --fg: #ffffff; --muted: #ece8f7; --accent: #f6c9e1; }
+[data-layout="closing"] [data-actor="card"] { --x: 400px; --y: 200px; --w: 1120px; --h: 680px; background-color: #6c5aa3; }
+[data-layout="closing"] [data-actor="p1"]   { --x: 150px;  --y: 360px; --w: 96px; --h: 360px; }
+[data-layout="closing"] [data-actor="p2"]   { --x: 266px;  --y: 260px; --w: 96px; --h: 560px; }
+[data-layout="closing"] [data-actor="p3"]   { --x: 1558px; --y: 160px; --w: 96px; --h: 760px; }
+[data-layout="closing"] [data-actor="p4"]   { --x: 1674px; --y: 260px; --w: 96px; --h: 560px; }
+[data-layout="closing"] [data-actor="p5"]   { --x: 1790px; --y: 360px; --w: 96px; --h: 360px; }
+[data-layout="closing"] [data-actor="icon"] { --x: 1416px; --y: 236px; --w: 72px; background-color: var(--pink); }
+
+/* ---------- content tweaks: friendly, rounded, airy ---------- */
+.slide .kicker { letter-spacing: 0.18em; }
+.slide[data-layout="cover"] { padding: 0 360px; }
+.slide[data-layout="cover"] .title { font-size: 88px; line-height: 1.08; }
+.slide[data-layout="closing"] { padding: 0 440px; }
+.slide[data-layout="agenda"] { --title-w: 1150px; }
+.agenda-list { --agenda-gap: 140px; --tile-line: 2px solid rgba(108, 90, 163, 0.16); }
+.agenda-list li { padding-top: 12px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.slide[data-layout="section"] .num { font-weight: 800; }
+.slide[data-layout="content"] { --hl-left: 1280px; --hl-right: 120px; }
+.bullets li::before { width: 0.3em; height: 0.72em; top: 0.3em; }
+.col li::before { width: 0.28em; height: 0.66em; top: 0.36em; }
+.slide[data-layout="two-col"] .col { padding: 44px 64px; }
+.takeaway {
+  border-left: 0; border-radius: 999px; padding: 20px 56px;
+  background: rgba(250, 249, 247, 0.62);
+}
+.slide[data-layout="stats"] .stats { right: 200px; }
+.slide[data-layout="timeline"] .timeline::before { display: none; }
+.slide[data-layout="quote"] { padding: 0 300px; }
+.slide[data-layout="quote"] .quote { font-weight: 700; }
+.slide[data-layout="quote"] .cite { font-weight: 600; letter-spacing: 0.06em; }

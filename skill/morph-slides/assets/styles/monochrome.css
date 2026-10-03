@@ -1,0 +1,161 @@
+/* ===========================================================
+   STYLE: MONOCHROME / IVORY LEDGER (adapted from frontend-slides
+   bold template pack, MIT). Black ink on cream paper, no colour.
+   Ultra light display sans, Lora for the human voice, mono labels.
+   Depth = 1px hairline rules + whitespace; a cream card travels.
+   Actors: warm (cream card, hairline border), ledger (ruled lines),
+           ring (hairline circle), rule-a / rule-b (1px rules),
+           rule-v (vertical hairline), short (36px rule), dot.
+           DOM order = z-order (warm first).
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@200;300;400;500&family=Lora:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+.deck-stage {
+  --actors: "warm ledger ring rule-a rule-b rule-v short dot";
+  --font-display: 'Be Vietnam Pro', sans-serif;
+  --font-body: 'Be Vietnam Pro', sans-serif;
+  --bg: #FAFADF; --fg: #1A1A16; --muted: #5E5E54;
+  --accent: #1A1A16; --accent-2: #5E5E54;
+  --card-bg: transparent; --card-fg: #1A1A16; --card-radius: 0px;
+  --title-weight: 300; --title-tracking: -0.01em; --bullet-radius: 0;
+  --ink: #1A1A16; --warm: #F5F0E4; --faint: #8A8A80;
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="warm"]   { background: var(--warm); border: 1px solid var(--ink); --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-actor="ledger"] {
+  background: repeating-linear-gradient(to bottom, transparent 0 47px, rgba(26, 26, 22, 0.16) 47px 48px);
+  --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; --o: 0;
+}
+[data-actor="ring"]   { border: 1px solid var(--ink); border-radius: 50%; --x: 1760px; --y: 100px; --w: 56px; }
+[data-actor="rule-a"] { background: var(--ink); --x: 120px; --y: 220px; --w: 1680px; --h: 1px; }
+[data-actor="rule-b"] { background: var(--ink); --x: 120px; --y: 1010px; --w: 1680px; --h: 1px; }
+[data-actor="rule-v"] { background: var(--ink); --x: 960px; --y: 1080px; --w: 1px; --h: 0px; }
+[data-actor="short"]  { background: var(--ink); --x: 120px; --y: 192px; --w: 36px; --h: 2px; }
+[data-actor="dot"]    { background: var(--ink); border-radius: 50%; --x: 1781px; --y: 121px; --w: 14px; }
+
+/* ---------- 1. cover: ruled ledger page on the right, ring + dot inside ---------- */
+[data-layout="cover"] [data-actor="warm"]   { --x: 1240px; --y: 120px; --w: 560px; --h: 840px; }
+[data-layout="cover"] [data-actor="ledger"] { --x: 1241px; --y: 121px; --w: 558px; --h: 838px; --o: 1; }
+[data-layout="cover"] [data-actor="ring"]   { --x: 1320px; --y: 340px; --w: 400px; background: var(--bg); }
+[data-layout="cover"] [data-actor="dot"]    { --x: 1512px; --y: 332px; --w: 16px; }
+[data-layout="cover"] [data-actor="rule-a"] { --x: 160px; --y: 120px; --w: 960px; }
+[data-layout="cover"] [data-actor="rule-b"] { --x: 160px; --y: 959px; --w: 960px; }
+[data-layout="cover"] [data-actor="rule-v"] { --x: 1520px; --y: 960px; --h: 0px; }
+[data-layout="cover"] [data-actor="short"]  { --x: 160px; --y: 160px; }
+
+/* ---------- 2. agenda: an open ledger, cream binding strip in the gutter ---------- */
+[data-layout="agenda"] [data-actor="warm"]   { --x: 900px; --y: 250px; --w: 120px; --h: 760px; }
+[data-layout="agenda"] [data-actor="ledger"] { --x: 901px; --y: 251px; --w: 118px; --h: 758px; --o: 1; }
+[data-layout="agenda"] [data-actor="rule-v"] { --x: 960px; --y: 250px; --h: 760px; }
+[data-layout="agenda"] [data-actor="dot"]    { --x: 953px; --y: 243px; }
+[data-layout="agenda"] [data-actor="rule-b"] { --x: 120px; --y: 1030px; }
+
+/* ---------- 3. section: cream band right, ring with a hairline crosshair ---------- */
+[data-layout="section"] [data-actor="warm"]   { --x: 1180px; --y: -2px; --w: 742px; --h: 1084px; }
+[data-layout="section"] [data-actor="ledger"] { --x: 1181px; --y: 0px; --w: 740px; --h: 1080px; --o: 0.7; }
+[data-layout="section"] [data-actor="ring"]   { --x: 1270px; --y: 260px; --w: 560px; background: var(--bg); }
+[data-layout="section"] [data-actor="rule-a"] { --x: 1180px; --y: 540px; --w: 740px; }
+[data-layout="section"] [data-actor="rule-v"] { --x: 1550px; --y: 0px; --h: 1080px; }
+[data-layout="section"] [data-actor="dot"]    { --x: 1540px; --y: 530px; --w: 20px; }
+[data-layout="section"] [data-actor="rule-b"] { --x: 160px; --y: 880px; --w: 860px; }
+[data-layout="section"] [data-actor="short"]  { --x: 160px; --y: 240px; }
+
+/* ---------- 4. content: the card becomes the insight card holding the highlight ---------- */
+[data-layout="content"] [data-actor="warm"]   { --x: 1250px; --y: 270px; --w: 550px; --h: 720px; border-radius: 16px; border-color: transparent; }
+[data-layout="content"] [data-actor="ledger"] { --x: 1250px; --y: 270px; --w: 550px; --h: 720px; }
+[data-layout="content"] [data-actor="rule-v"] { --x: 1200px; --y: 270px; --h: 720px; }
+[data-layout="content"] [data-actor="short"]  { --x: 1290px; --y: 316px; }
+/* even: card and bullets swap sides */
+[data-layout="content"][data-parity="even"] [data-actor="warm"]   { --x: 120px; }
+[data-layout="content"][data-parity="even"] [data-actor="ledger"] { --x: 120px; }
+[data-layout="content"][data-parity="even"] [data-actor="rule-v"] { --x: 720px; }
+[data-layout="content"][data-parity="even"] [data-actor="short"]  { --x: 160px; }
+[data-layout="content"][data-parity="even"] [data-actor="ring"]   { --x: 120px; --y: 1080px; --w: 0px; }
+[data-layout="content"][data-parity="even"] [data-actor="dot"]    { --x: 1793px; --y: 1003px; }
+
+/* ---------- 5. two-col: centre hairline, card flattens into the takeaway ---------- */
+[data-layout="two-col"] [data-actor="warm"]   { --x: 120px; --y: 1010px; --w: 1680px; --h: 0px; --o: 0; }
+[data-layout="two-col"] [data-actor="ledger"] { --x: 120px; --y: 1010px; --w: 1680px; --h: 0px; }
+[data-layout="two-col"] [data-actor="rule-v"] { --x: 960px; --y: 220px; --h: 770px; }
+[data-layout="two-col"] [data-actor="ring"]   { --x: 940px; --y: 200px; --w: 40px; background: var(--bg); }
+[data-layout="two-col"] [data-actor="dot"]    { --x: 954px; --y: 214px; --w: 12px; }
+.deck-stage:has(.slide.active .takeaway)[data-layout="two-col"] [data-actor="warm"]   { --y: 880px; --h: 110px; --o: 1; }
+.deck-stage:has(.slide.active .takeaway)[data-layout="two-col"] [data-actor="rule-v"] { --h: 620px; }
+[data-layout="two-col"] [data-actor="rule-b"] { --y: 1030px; }
+
+/* ---------- 6. stats: cream band behind rule-topped cells ---------- */
+[data-layout="stats"] [data-actor="warm"]   { --x: -2px; --y: 270px; --w: 1924px; --h: 720px; }
+[data-layout="stats"] [data-actor="ledger"] { --x: 0px; --y: 270px; --w: 1920px; --h: 720px; }
+[data-layout="stats"] [data-actor="rule-v"] { --x: 1800px; --y: 160px; --h: 0px; }
+[data-layout="stats"] [data-actor="rule-b"] { --y: 1030px; }
+
+/* ---------- 7. timeline: header rule drops to the axis, cream ribbon around it ---------- */
+[data-layout="timeline"] [data-actor="warm"]   { --x: -2px; --y: 590px; --w: 1924px; --h: 80px; }
+[data-layout="timeline"] [data-actor="ledger"] { --x: 0px; --y: 590px; --w: 1920px; --h: 80px; }
+[data-layout="timeline"] [data-actor="rule-b"] { --x: 120px; --y: 630px; --w: 1680px; }
+[data-layout="timeline"] [data-actor="ring"]   { --x: 1784px; --y: 614px; --w: 32px; background: var(--warm); }
+[data-layout="timeline"] [data-actor="dot"]    { --x: 1795px; --y: 625px; --w: 10px; }
+[data-layout="timeline"] [data-actor="rule-v"] { --x: 1800px; --y: 560px; --h: 140px; }
+
+/* ---------- 8. quote: cream warm page, quote held between two hairlines ---------- */
+[data-layout="quote"] [data-actor="warm"]   { --x: -2px; --y: -2px; --w: 1924px; --h: 1084px; }
+[data-layout="quote"] [data-actor="ledger"] { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="quote"] [data-actor="rule-a"] { --x: 280px; --y: 330px; --w: 1360px; }
+[data-layout="quote"] [data-actor="rule-b"] { --x: 280px; --y: 750px; --w: 1360px; }
+[data-layout="quote"] [data-actor="ring"]   { --x: 1560px; --y: 820px; --w: 560px; }
+[data-layout="quote"] [data-actor="dot"]    { --x: 272px; --y: 323px; --w: 16px; }
+[data-layout="quote"] [data-actor="short"]  { --x: 1604px; --y: 360px; }
+[data-layout="quote"] [data-actor="rule-v"] { --x: 1640px; --y: 330px; --h: 0px; }
+
+/* ---------- 9. closing: card turns into a cream disc inside a ring ---------- */
+[data-layout="closing"] [data-actor="warm"]   { --x: 510px; --y: 90px; --w: 900px; --h: 900px; border-radius: 50%; }
+[data-layout="closing"] [data-actor="ledger"] { --x: 510px; --y: 90px; --w: 900px; --h: 900px; border-radius: 50%; }
+[data-layout="closing"] [data-actor="ring"]   { --x: 470px; --y: 50px; --w: 980px; }
+[data-layout="closing"] [data-actor="dot"]    { --x: 952px; --y: 42px; --w: 16px; }
+[data-layout="closing"] [data-actor="rule-a"] { --x: 0px; --y: 540px; --w: 470px; }
+[data-layout="closing"] [data-actor="rule-b"] { --x: 1450px; --y: 540px; --w: 470px; }
+[data-layout="closing"] [data-actor="rule-v"] { --x: 960px; --y: 990px; --h: 90px; }
+[data-layout="closing"] [data-actor="short"]  { --x: 942px; --y: 900px; }
+
+/* ---------- content tweaks: ultra light sans, Lora voice, mono labels ---------- */
+.slide { font-weight: 300; }
+.slide b, .slide strong { font-family: 'Lora', serif; font-style: italic; font-weight: 400; }
+.slide :is(.kicker, .meta, .cite) {
+  font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 400;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+}
+.slide .subtitle { font-weight: 300; }
+.slide[data-layout="cover"] { align-items: flex-start; text-align: left; padding: 0 820px 0 160px; }
+.slide[data-layout="cover"] .title { font-size: 104px; font-weight: 200; line-height: 1.08; letter-spacing: -0.02em; }
+.slide[data-layout="closing"] .title { font-size: 150px; font-weight: 200; letter-spacing: -0.02em; }
+.slide[data-layout="section"] .num { font-size: 220px; font-weight: 200; letter-spacing: -0.03em; }
+.slide[data-layout="section"] .title { font-weight: 200; }
+.agenda-list { --agenda-gap: 200px; --tile-line: 1px solid var(--ink); }
+.agenda-list li { align-items: flex-start; padding-top: 30px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list .num { font-weight: 200; letter-spacing: -0.03em; }
+.agenda-list h3 { font-weight: 300; }
+.bullets li::before, .col li::before {
+  top: 0.68em; width: 0.7em; height: 2px; border-radius: 0; background: var(--faint);
+}
+.bullets li { padding-left: 1.5em; }
+.slide[data-layout="content"] { --hl-left: 1250px; }
+.slide[data-layout="content"][data-parity="even"] { --hl-left: 120px; --hl-right: 1250px; }
+.slide[data-layout="content"][data-parity="even"] .bullets { left: 780px; width: 1020px; }
+.hl-big { font-weight: 200; letter-spacing: -0.03em; }
+.hl-icon svg { stroke-width: 1; }
+.hl-text { font-family: 'Lora', serif; font-size: 38px; font-weight: 400; }
+.col { padding: 40px 56px; }
+.col h3 { font-family: 'Lora', serif; font-weight: 400; color: var(--ink); }
+.takeaway { border-left: 0; padding: 20px 48px; font-family: 'Lora', serif; font-style: italic; font-weight: 400; }
+.stat { text-align: left; border-top: 1px solid var(--ink); padding-top: 36px; }
+.stat-num { font-weight: 200; letter-spacing: -0.03em; }
+.timeline::before { opacity: 0; }
+.step::before { width: 20px; height: 20px; background: var(--ink); border: 4px solid var(--warm); }
+.step:nth-child(odd)::before { bottom: -10px; }
+.step:nth-child(even)::before { top: -10px; }
+.step .when { font-weight: 200; letter-spacing: -0.02em; }
+.step h3 { font-weight: 400; }
+.slide[data-layout="quote"] .quote { font-family: 'Lora', serif; font-style: italic; font-weight: 400; line-height: 1.3; }

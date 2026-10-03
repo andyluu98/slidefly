@@ -1,0 +1,193 @@
+/* ===========================================================
+   STYLE: SOFT EDITORIAL (adapted from frontend-slides, MIT)
+   Warm cream paper, Cormorant Garamond + Work Sans, five pastel
+   cards (lemon, pink, sage, blush, lilac) with 24-36px corners,
+   translucent white soft card, swatch-dot row, dashed hairline,
+   blush quotation mark. Pastels travel from swatch dots to tiles,
+   panels, an action bar and a full-bleed pink closer.
+   Actors: lemon pink sage blush lilac (pastel cards/dots),
+           card (translucent white), rule (dashed hairline),
+           mark (quote glyph). DOM order = z-order (lemon first).
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Work+Sans:wght@400;500;600&display=swap');
+
+.deck-stage {
+  --actors: "lemon pink sage blush lilac card rule mark";
+  --font-display: 'Cormorant Garamond', serif;
+  --font-body: 'Work Sans', sans-serif;
+  --bg: #F2EEDF; --fg: #2A241B; --muted: #5C5345;
+  --accent: #2A241B; --accent-2: #5C5345;
+  --card-bg: transparent; --card-fg: #2A241B; --card-radius: 32px;
+  --title-weight: 600; --title-tracking: -0.01em; --bullet-radius: 999px;
+  --ink: #2A241B; --pink: #E1A4C2; --lemon: #D6DD63; --blush: #E8C9B6;
+  --sage: #B7C7A8; --lilac: #C9BEDC; --soft: rgba(255, 255, 255, 0.55);
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+.actor { border-radius: var(--rad, 50%); }
+[data-actor="lemon"] { background: var(--lemon); --x: 1920px; --y: 1100px; --w: 0px; }
+[data-actor="pink"]  { background: var(--pink);  --x: 1920px; --y: -100px; --w: 0px; }
+[data-actor="sage"]  { background: var(--sage);  --x: -100px; --y: 1100px; --w: 0px; }
+[data-actor="blush"] { background: var(--blush); --x: -100px; --y: -100px; --w: 0px; }
+[data-actor="lilac"] { background: var(--lilac); --x: 960px;  --y: 1100px; --w: 0px; }
+[data-actor="card"]  { background: var(--soft); --rad: 36px; --x: 960px; --y: 540px; --w: 0px; --h: 0px; --o: 0; }
+[data-actor="rule"]  { border-top: 2px dashed rgba(42, 36, 27, 0.4); --rad: 0px; --x: 120px; --y: 214px; --w: 0px; --h: 2px; }
+[data-actor="mark"]  { --rad: 0px; --x: 260px; --y: -320px; --w: 260px; --h: 260px; --o: 0; color: var(--blush); }
+[data-actor="mark"]::before {
+  content: "\201C"; position: absolute; left: 0; top: 0; width: 100%; text-align: center;
+  font: italic 500 420px/0.9 'Cormorant Garamond', serif;
+}
+
+/* ---------- 1. cover: soft card holds the text, swatch row, blush plate ---------- */
+[data-layout="cover"] [data-actor="card"]  { --x: 100px; --y: 170px; --w: 1100px; --h: 740px; --o: 1; }
+[data-layout="cover"] [data-actor="blush"] { --x: 1270px; --y: 170px; --w: 530px; --h: 560px; --rad: 36px; }
+[data-layout="cover"] [data-actor="lilac"] { --x: 1500px; --y: 590px; --w: 320px; }
+[data-layout="cover"] [data-actor="pink"]  { --x: 1604px; --y: 72px; --w: 56px; }
+[data-layout="cover"] [data-actor="lemon"] { --x: 1676px; --y: 72px; --w: 56px; }
+[data-layout="cover"] [data-actor="sage"]  { --x: 1748px; --y: 72px; --w: 56px; }
+[data-layout="cover"] [data-actor="rule"]  { --x: 180px; --y: 850px; --w: 940px; }
+[data-layout="cover"] [data-actor="mark"]  { --x: 1400px; --y: -320px; }
+
+/* ---------- 2. agenda: four pastel tiles, one per item ---------- */
+[data-layout="agenda"] [data-actor="pink"]  { --x: 120px; --y: 270px; --w: 822px; --h: 342px; --rad: 32px; }
+[data-layout="agenda"] [data-actor="lemon"] { --x: 978px; --y: 270px; --w: 822px; --h: 342px; --rad: 32px; }
+[data-layout="agenda"] [data-actor="sage"]  { --x: 120px; --y: 648px; --w: 822px; --h: 342px; --rad: 32px; }
+[data-layout="agenda"] [data-actor="blush"] { --x: 978px; --y: 648px; --w: 822px; --h: 342px; --rad: 32px; }
+[data-layout="agenda"] [data-actor="lilac"] { --x: 1764px; --y: 108px; --w: 40px; }
+[data-layout="agenda"] [data-actor="card"]  { --x: 960px; --y: 630px; --w: 0px; --h: 0px; --o: 0; }
+[data-layout="agenda"] [data-actor="rule"]  { --x: 120px; --y: 214px; --w: 1680px; }
+[data-layout="agenda"] [data-actor="mark"]  { --x: 1600px; --y: -320px; }
+/* 5+ items: tiles merge into two column cards */
+.deck-stage[data-layout="agenda"]:has(.slide.active .agenda-list li:nth-child(5)) [data-actor="pink"]  { --h: 720px; }
+.deck-stage[data-layout="agenda"]:has(.slide.active .agenda-list li:nth-child(5)) [data-actor="lemon"] { --h: 720px; }
+.deck-stage[data-layout="agenda"]:has(.slide.active .agenda-list li:nth-child(5)) :is([data-actor="sage"], [data-actor="blush"]) { --y: 1100px; --h: 0px; --w: 0px; }
+
+/* ---------- 3. section: text card left, pink plate + tiles right ---------- */
+[data-layout="section"] [data-actor="card"]  { --x: 110px; --y: 190px; --w: 960px; --h: 700px; --o: 1; }
+[data-layout="section"] [data-actor="pink"]  { --x: 1120px; --y: 120px; --w: 680px; --h: 600px; --rad: 36px; }
+[data-layout="section"] [data-actor="lilac"] { --x: 1580px; --y: 180px; --w: 160px; }
+[data-layout="section"] [data-actor="lemon"] { --x: 1120px; --y: 748px; --w: 326px; --h: 212px; --rad: 28px; }
+[data-layout="section"] [data-actor="sage"]  { --x: 1474px; --y: 748px; --w: 326px; --h: 212px; --rad: 28px; }
+[data-layout="section"] [data-actor="blush"] { --x: 160px; --y: 100px; --w: 56px; }
+[data-layout="section"] [data-actor="rule"]  { --x: 160px; --y: 940px; --w: 860px; }
+[data-layout="section"] [data-actor="mark"]  { --x: 1300px; --y: -320px; }
+
+/* ---------- 4. content: soft card for bullets, lemon card frames the highlight ---------- */
+[data-layout="content"] [data-actor="card"]  { --x: 80px; --y: 250px; --w: 1120px; --h: 760px; --o: 1; }
+[data-layout="content"] [data-actor="lemon"] { --x: 1240px; --y: 250px; --w: 560px; --h: 760px; --rad: 36px; }
+[data-layout="content"] [data-actor="pink"]  { --x: 1664px; --y: 108px; --w: 40px; }
+[data-layout="content"] [data-actor="sage"]  { --x: 1714px; --y: 108px; --w: 40px; }
+[data-layout="content"] [data-actor="lilac"] { --x: 1764px; --y: 108px; --w: 40px; }
+[data-layout="content"] [data-actor="blush"] { --x: 1800px; --y: 1100px; --w: 0px; }
+[data-layout="content"] [data-actor="rule"]  { --x: 120px; --y: 214px; --w: 1680px; }
+[data-layout="content"] [data-actor="mark"]  { --x: 1400px; --y: -320px; }
+/* even: sage grows into a full-height side panel, lemon slips behind it */
+[data-layout="content"][data-parity="even"] [data-actor="sage"]  { --x: 1240px; --y: -40px; --w: 760px; --h: 1160px; --rad: 36px; }
+[data-layout="content"][data-parity="even"] [data-actor="lemon"] { --x: 1920px; --y: 540px; --w: 0px; --h: 0px; }
+[data-layout="content"][data-parity="even"] [data-actor="pink"]  { --x: -100px; --y: 1100px; --w: 0px; }
+[data-layout="content"][data-parity="even"] [data-actor="blush"] { --x: 1714px; --y: 108px; --w: 40px; }
+[data-layout="content"][data-parity="even"] [data-actor="lilac"] { --x: 1764px; --y: 108px; --w: 40px; }
+[data-layout="content"][data-parity="even"] [data-actor="card"]  { --x: 80px; --y: 250px; --w: 1120px; --h: 760px; --o: 1; }
+[data-layout="content"][data-parity="even"] [data-actor="rule"]  { --x: 120px; --y: 214px; --w: 1080px; }
+[data-layout="content"][data-parity="even"] [data-actor="mark"]  { --x: 1400px; --y: -320px; }
+
+/* ---------- 5. two-col: pink + sage cards, lemon action bar = takeaway ---------- */
+[data-layout="two-col"] [data-actor="pink"]  { --x: 120px; --y: 270px; --w: 808px; --h: 720px; --rad: 32px; }
+[data-layout="two-col"] [data-actor="sage"]  { --x: 992px; --y: 270px; --w: 808px; --h: 720px; --rad: 32px; }
+[data-layout="two-col"] [data-actor="lemon"] { --x: 1664px; --y: 108px; --w: 40px; }
+[data-layout="two-col"] [data-actor="blush"] { --x: 1714px; --y: 108px; --w: 40px; }
+[data-layout="two-col"] [data-actor="lilac"] { --x: 1764px; --y: 108px; --w: 40px; }
+[data-layout="two-col"] [data-actor="card"]  { --x: 960px; --y: 990px; --w: 0px; --h: 0px; --o: 0; }
+[data-layout="two-col"] [data-actor="rule"]  { --x: 120px; --y: 214px; --w: 1680px; }
+[data-layout="two-col"] [data-actor="mark"]  { --x: 1400px; --y: -320px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) :is([data-actor="pink"], [data-actor="sage"]) { --h: 570px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="lemon"] { --x: 120px; --y: 880px; --w: 1680px; --h: 110px; --rad: 24px; }
+
+/* ---------- 6. stats: one pastel card per figure ---------- */
+[data-layout="stats"] [data-actor="lemon"] { --x: 120px; --y: 300px; --w: 528px; --h: 660px; --rad: 36px; }
+[data-layout="stats"] [data-actor="pink"]  { --x: 696px; --y: 300px; --w: 528px; --h: 660px; --rad: 36px; }
+[data-layout="stats"] [data-actor="sage"]  { --x: 1272px; --y: 300px; --w: 528px; --h: 660px; --rad: 36px; }
+[data-layout="stats"] [data-actor="blush"] { --x: 1714px; --y: 108px; --w: 40px; }
+[data-layout="stats"] [data-actor="lilac"] { --x: 1764px; --y: 108px; --w: 40px; }
+[data-layout="stats"] [data-actor="card"]  { --x: 960px; --y: 630px; --w: 0px; --h: 0px; --o: 0; }
+[data-layout="stats"] [data-actor="rule"]  { --x: 120px; --y: 214px; --w: 1680px; }
+[data-layout="stats"] [data-actor="mark"]  { --x: 1400px; --y: -320px; }
+/* not exactly 3 figures: lemon becomes one band behind all of them */
+.deck-stage[data-layout="stats"]:not(:has(.slide.active .stat:nth-child(3))) [data-actor="lemon"],
+.deck-stage[data-layout="stats"]:has(.slide.active .stat:nth-child(4)) [data-actor="lemon"] { --w: 1680px; }
+.deck-stage[data-layout="stats"]:not(:has(.slide.active .stat:nth-child(3))) :is([data-actor="pink"], [data-actor="sage"]),
+.deck-stage[data-layout="stats"]:has(.slide.active .stat:nth-child(4)) :is([data-actor="pink"], [data-actor="sage"]) { --y: 1100px; --w: 0px; --h: 0px; }
+
+/* ---------- 7. timeline: lemon action bar under the title, dashed axis ---------- */
+[data-layout="timeline"] [data-actor="lemon"] { --x: 80px; --y: 62px; --w: 1760px; --h: 132px; --rad: 24px; }
+[data-layout="timeline"] [data-actor="card"]  { --x: 80px; --y: 260px; --w: 1760px; --h: 740px; --o: 1; }
+[data-layout="timeline"] [data-actor="pink"]  { --x: 1664px; --y: 108px; --w: 40px; }
+[data-layout="timeline"] [data-actor="sage"]  { --x: 1714px; --y: 108px; --w: 40px; }
+[data-layout="timeline"] [data-actor="lilac"] { --x: 1764px; --y: 108px; --w: 40px; }
+[data-layout="timeline"] [data-actor="blush"] { --x: 1920px; --y: 630px; --w: 0px; }
+[data-layout="timeline"] [data-actor="rule"]  { --x: 120px; --y: 629px; --w: 1680px; }
+[data-layout="timeline"] [data-actor="mark"]  { --x: 1400px; --y: -320px; }
+
+/* ---------- 8. quote: soft card, blush quotation mark, lilac moon ---------- */
+[data-layout="quote"] [data-actor="lilac"] { --x: -140px; --y: 760px; --w: 420px; }
+[data-layout="quote"] [data-actor="card"]  { --x: 200px; --y: 130px; --w: 1520px; --h: 820px; --o: 1; }
+[data-layout="quote"] [data-actor="mark"]  { --x: 250px; --y: 150px; --o: 1; }
+[data-layout="quote"] [data-actor="pink"]  { --x: 1564px; --y: 870px; --w: 40px; }
+[data-layout="quote"] [data-actor="lemon"] { --x: 1614px; --y: 870px; --w: 40px; }
+[data-layout="quote"] [data-actor="sage"]  { --x: 1664px; --y: 870px; --w: 40px; }
+[data-layout="quote"] [data-actor="blush"] { --x: 1920px; --y: 1100px; --w: 0px; }
+[data-layout="quote"] [data-actor="rule"]  { --x: 960px; --y: 950px; --w: 0px; }
+
+/* ---------- 9. closing: pink floods the page ---------- */
+.deck-stage[data-layout="closing"] { --muted: #463e33; }
+[data-layout="closing"] [data-actor="pink"]  { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; --rad: 0px; }
+[data-layout="closing"] [data-actor="card"]  { --x: 360px; --y: 230px; --w: 1200px; --h: 620px; --o: 1; }
+[data-layout="closing"] [data-actor="sage"]  { --x: 1604px; --y: 72px; --w: 56px; }
+[data-layout="closing"] [data-actor="blush"] { --x: 1676px; --y: 72px; --w: 56px; }
+[data-layout="closing"] [data-actor="lilac"] { --x: 1748px; --y: 72px; --w: 56px; }
+[data-layout="closing"] [data-actor="lemon"] { --x: 0px; --y: 1080px; --w: 0px; }
+[data-layout="closing"] [data-actor="rule"]  { --x: 760px; --y: 790px; --w: 400px; }
+[data-layout="closing"] [data-actor="mark"]  { --x: 1400px; --y: -320px; }
+
+/* ---------- content tweaks: literary, italic ornaments, ink on pastels ---------- */
+.slide .kicker { font-family: var(--font-display); font-size: 40px; font-weight: 500; font-style: italic; letter-spacing: 0; text-transform: none; color: var(--muted); }
+.slide > .title:first-child { font-size: 68px; }
+.slide[data-layout="cover"] { align-items: flex-start; text-align: left; padding: 0 820px 0 180px; }
+.slide[data-layout="cover"] .title { font-size: 104px; font-weight: 500; line-height: 1; }
+.slide[data-layout="closing"] { padding: 0 420px; }
+.slide[data-layout="closing"] .title { font-size: 168px; font-weight: 500; line-height: 1; }
+.slide[data-layout="section"] { padding: 0 900px 0 170px; }
+.slide[data-layout="section"] .num { font-size: 240px; font-weight: 500; font-style: italic; }
+.slide[data-layout="section"] .title { font-weight: 500; }
+.agenda-list { --agenda-gap: 36px; row-gap: 36px; }
+.agenda-list li { padding: 0 56px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list .num { font-style: italic; font-weight: 500; }
+.agenda-list h3 { font-weight: 600; }
+.agenda-list p { color: var(--ink); opacity: 0.78; }
+.slide[data-layout="content"] .bullets { left: 150px; width: 1010px; }
+.bullets li::before { top: 0.5em; width: 0.8em; height: 0.34em; background: var(--pink); }
+.bullets li { padding-left: 1.5em; }
+.bullets li:nth-child(4n+2)::before { background: var(--sage); }
+.bullets li:nth-child(4n+3)::before { background: var(--lilac); }
+.bullets li:nth-child(4n+4)::before { background: var(--blush); }
+.slide[data-layout="content"] { --hl-left: 1280px; --hl-right: 140px; }
+.slide[data-layout="content"][data-parity="even"] { --hl-left: 1300px; --hl-right: 100px; }
+.slide[data-layout="content"] .hl-text { font-size: 42px; font-weight: 600; }
+.slide[data-layout="content"] .hl-big { font-weight: 500; }
+.col { padding: 48px 56px; }
+.col h3 { font-weight: 600; }
+.col li::before { background: var(--ink); }
+.takeaway { border-left: 0; padding: 20px 48px; font-size: 44px; font-weight: 600; }
+.slide[data-layout="stats"] .stat-num { font-weight: 500; }
+.slide[data-layout="stats"] .stat-label { color: var(--ink); padding: 0 40px; }
+.timeline::before { opacity: 0; }
+.step::before { width: 28px; height: 28px; background: var(--pink); border: 3px solid var(--ink); }
+.step:nth-child(odd)::before { bottom: -14px; }
+.step:nth-child(even)::before { top: -14px; }
+.timeline { left: 140px; right: 140px; }
+.step .when { font-style: italic; font-weight: 500; }
+.slide[data-layout="quote"] { padding: 120px 320px 0; }
+.slide[data-layout="quote"] .quote { font-size: 68px; font-weight: 500; line-height: 1.2; }
+.slide[data-layout="quote"] .cite { font-family: var(--font-display); font-style: italic; font-size: 34px; }

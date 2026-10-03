@@ -1,0 +1,177 @@
+/* ===========================================================
+   STYLE: CREATIVE MODE (adapted from frontend-slides, MIT)
+   Neo-brutalist editorial: cream canvas, 4px ink borders, hard
+   offset shadows, flat green / pink / orange / yellow blocks,
+   uppercase heavy display, mono labels. Green floods the closing.
+   Actors: paper (cream-2 panel), slab (green panel), orange
+           (stacked block, ink shadow), yellow (circle), pink
+           (marker block, orange shadow), stamp (rotated seal),
+           badge (hazard tape), rule (ink bar / band / axis).
+           DOM order = z-order (paper first).
+   Font swap: Archivo Black -> Archivo 900 (Vietnamese glyphs).
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap');
+
+.deck-stage {
+  --actors: "paper slab orange yellow pink stamp badge rule";
+  --font-display: 'Archivo', sans-serif;
+  --font-body: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --bg: #EFE9D9; --fg: #0F0F0F; --muted: #2A2A2A;
+  --accent: #1F8A4C; --accent-2: #F06CA8;
+  --card-bg: #E4DCC4; --card-fg: #0F0F0F; --card-radius: 0px;
+  --title-weight: 900; --title-tracking: -0.01em; --title-case: uppercase; --bullet-radius: 0;
+  --cream: #EFE9D9; --cream-2: #E4DCC4; --ink: #0F0F0F;
+  --green: #1F8A4C; --pink: #F06CA8; --orange: #E85A1F; --yellow: #F5C518;
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+.deck-stage .actor { --bw: 4px; border: 4px solid var(--ink); }
+[data-actor="paper"]  { background: var(--cream-2); --x: 0px; --y: 1120px; --w: 1920px; --h: 230px; }
+[data-actor="slab"]   { background: var(--green); --x: 1960px; --y: 200px; --w: 500px; --h: 500px; }
+[data-actor="orange"] { background: var(--orange); box-shadow: 18px 18px 0 var(--ink); --x: 2000px; --y: 600px; --w: 160px; --h: 160px; }
+[data-actor="yellow"] { background: var(--yellow); border-radius: 50%; --x: 2000px; --y: 100px; --w: 140px; }
+[data-actor="pink"]   { background: var(--pink); box-shadow: 24px 24px 0 var(--orange), 24px 24px 0 4px var(--ink); --x: 1960px; --y: -400px; --w: 300px; --h: 260px; }
+[data-actor="stamp"]  { background: var(--pink); --x: 2100px; --y: 400px; --w: 220px; --r: -6deg; }
+[data-actor="stamp"]::after { content: ""; position: absolute; inset: 14%; border: 4px solid var(--cream); border-radius: 50%; }
+[data-actor="badge"]  {
+  background: repeating-linear-gradient(-45deg, var(--yellow) 0 28px, var(--ink) 28px 56px);
+  --x: -1000px; --y: 1000px; --w: 800px; --h: 56px; --r: -4deg;
+}
+.deck-stage [data-actor="rule"] { --bw: 0px; border: 0; background: var(--ink); --x: 120px; --y: 1100px; --w: 600px; --h: 10px; }
+
+/* ---------- 1. cover: cream-2 panel right, poster collage on it ---------- */
+[data-layout="cover"] [data-actor="paper"]  { --x: 1100px; --y: -10px; --w: 830px; --h: 1100px; }
+[data-layout="cover"] [data-actor="slab"]   { --x: 1200px; --y: 140px; --w: 560px; --h: 560px; }
+[data-layout="cover"] [data-actor="orange"] { --x: 1180px; --y: 770px; --w: 190px; --h: 190px; }
+[data-layout="cover"] [data-actor="yellow"] { --x: 1340px; --y: 280px; --w: 280px; }
+[data-layout="cover"] [data-actor="pink"]   { --x: 1450px; --y: 640px; --w: 340px; --h: 230px; }
+[data-layout="cover"] [data-actor="stamp"]  { --x: 2100px; --y: 300px; --w: 220px; }
+[data-layout="cover"] [data-actor="badge"]  { --x: 80px; --y: 978px; --w: 860px; --h: 52px; }
+[data-layout="cover"] [data-actor="rule"]   { --x: -700px; --y: 540px; --w: 600px; --h: 10px; }
+
+/* ---------- 2. agenda: header band, stacked blocks in the centre aisle ---------- */
+[data-layout="agenda"] [data-actor="paper"]  { --x: -10px; --y: -10px; --w: 1940px; --h: 226px; }
+[data-layout="agenda"] [data-actor="slab"]   { --x: 700px; --y: 1120px; --w: 500px; --h: 400px; }
+[data-layout="agenda"] [data-actor="orange"] { --x: 800px; --y: 330px; --w: 200px; --h: 180px; }
+[data-layout="agenda"] [data-actor="yellow"] { --x: 810px; --y: 690px; --w: 170px; }
+[data-layout="agenda"] [data-actor="pink"]   { --x: 890px; --y: 450px; --w: 220px; --h: 200px; }
+[data-layout="agenda"] [data-actor="stamp"]  { --x: 1660px; --y: 44px; --w: 140px; }
+[data-layout="agenda"] [data-actor="badge"]  { --x: -1000px; --y: 120px; --w: 800px; --h: 56px; }
+[data-layout="agenda"] [data-actor="rule"]   { --x: 120px; --y: 1026px; --w: 1680px; --h: 10px; }
+
+/* ---------- 3. section: green slab right, stamp seal on it ---------- */
+[data-layout="section"] [data-actor="paper"]  { --x: 0px; --y: 1120px; --w: 1920px; --h: 230px; }
+[data-layout="section"] [data-actor="slab"]   { --x: 1120px; --y: -10px; --w: 810px; --h: 1100px; }
+[data-layout="section"] [data-actor="orange"] { --x: 2000px; --y: 860px; --w: 160px; --h: 160px; }
+[data-layout="section"] [data-actor="yellow"] { --x: 1690px; --y: 60px; --w: 200px; }
+[data-layout="section"] [data-actor="pink"]   { --x: 1960px; --y: 1120px; --w: 300px; --h: 260px; }
+[data-layout="section"] [data-actor="stamp"]  { --x: 1350px; --y: 370px; --w: 340px; }
+[data-layout="section"] [data-actor="badge"]  { --x: 2000px; --y: 980px; --w: 800px; --h: 56px; }
+[data-layout="section"] [data-actor="rule"]   { --x: 160px; --y: 890px; --w: 320px; --h: 14px; }
+
+/* ---------- 4. content: cream-2 card with hard shadow frames the highlight ---------- */
+[data-layout="content"] [data-actor="paper"]  { --x: 1260px; --y: 290px; --w: 520px; --h: 640px; box-shadow: 18px 18px 0 var(--ink); }
+[data-layout="content"] [data-actor="slab"]   { --x: 1720px; --y: 96px; --w: 80px; --h: 80px; }
+[data-layout="content"] [data-actor="orange"] { --x: 2000px; --y: 600px; --w: 160px; --h: 160px; }
+[data-layout="content"] [data-actor="yellow"] { --x: 1700px; --y: 228px; --w: 124px; }
+[data-layout="content"] [data-actor="pink"]   { --x: -80px; --y: 1012px; --w: 280px; --h: 120px; }
+[data-layout="content"] [data-actor="stamp"]  { --x: 2100px; --y: 860px; --w: 180px; }
+[data-layout="content"] [data-actor="badge"]  { --x: 1330px; --y: 1004px; --w: 640px; --h: 48px; }
+[data-layout="content"] [data-actor="rule"]   { --x: 120px; --y: 205px; --w: 1500px; --h: 10px; }
+/* even: card slides under the bullets, green slab becomes the highlight panel */
+[data-layout="content"][data-parity="even"] [data-actor="paper"]  { --x: 100px; --y: 250px; --w: 1100px; --h: 760px; }
+[data-layout="content"][data-parity="even"] [data-actor="slab"]   { --x: 1240px; --y: 250px; --w: 690px; --h: 840px; }
+[data-layout="content"][data-parity="even"] [data-actor="orange"] { --x: 2000px; --y: 300px; --w: 160px; --h: 160px; }
+[data-layout="content"][data-parity="even"] [data-actor="yellow"] { --x: 1700px; --y: 86px; --w: 100px; }
+[data-layout="content"][data-parity="even"] [data-actor="pink"]   { --x: 1176px; --y: 176px; --w: 110px; --h: 110px; }
+[data-layout="content"][data-parity="even"] [data-actor="stamp"]  { --x: 1700px; --y: 900px; --w: 170px; }
+[data-layout="content"][data-parity="even"] [data-actor="badge"]  { --x: -1000px; --y: 1030px; --w: 800px; --h: 48px; }
+[data-layout="content"][data-parity="even"] [data-actor="rule"]   { --x: 120px; --y: 205px; --w: 1030px; --h: 10px; }
+
+/* ---------- 5. two-col: cream-2 band behind the cards, green spine ---------- */
+[data-layout="two-col"] [data-actor="paper"]  { --x: -10px; --y: 238px; --w: 1940px; --h: 634px; }
+[data-layout="two-col"] [data-actor="slab"]   { --x: -40px; --y: 270px; --w: 100px; --h: 570px; }
+[data-layout="two-col"] [data-actor="orange"] { --x: 2000px; --y: 600px; --w: 160px; --h: 160px; }
+[data-layout="two-col"] [data-actor="yellow"] { --x: 900px; --y: 196px; --w: 120px; }
+[data-layout="two-col"] [data-actor="pink"]   { --x: 1960px; --y: -400px; --w: 300px; --h: 260px; }
+[data-layout="two-col"] [data-actor="stamp"]  { --x: 1664px; --y: 56px; --w: 130px; }
+[data-layout="two-col"] [data-actor="badge"]  { --x: 1380px; --y: 1012px; --w: 640px; --h: 48px; }
+[data-layout="two-col"] [data-actor="rule"]   { --x: 120px; --y: 205px; --w: 1500px; --h: 10px; }
+
+/* ---------- 6. stats: the rule swells into an ink band behind the cells ---------- */
+[data-layout="stats"] [data-actor="paper"]  { --x: 0px; --y: 1120px; --w: 1920px; --h: 230px; }
+[data-layout="stats"] [data-actor="slab"]   { --x: 1600px; --y: 900px; --w: 400px; --h: 300px; }
+[data-layout="stats"] [data-actor="orange"] { --x: 2000px; --y: 600px; --w: 160px; --h: 160px; }
+[data-layout="stats"] [data-actor="yellow"] { --x: 1670px; --y: 64px; --w: 140px; }
+[data-layout="stats"] [data-actor="pink"]   { --x: 1960px; --y: -400px; --w: 300px; --h: 260px; }
+[data-layout="stats"] [data-actor="stamp"]  { --x: 2100px; --y: 400px; --w: 220px; }
+[data-layout="stats"] [data-actor="badge"]  { --x: 80px; --y: 1012px; --w: 760px; --h: 48px; }
+[data-layout="stats"] [data-actor="rule"]   { --x: -10px; --y: 480px; --w: 1940px; --h: 300px; }
+
+/* ---------- 7. timeline: rule = axis on a cream-2 track, orange arrow tip ---------- */
+[data-layout="timeline"] [data-actor="paper"]  { --x: -10px; --y: 594px; --w: 1940px; --h: 72px; }
+[data-layout="timeline"] [data-actor="slab"]   { --x: 1720px; --y: 96px; --w: 80px; --h: 80px; }
+[data-layout="timeline"] [data-actor="orange"] { --x: 1792px; --y: 606px; --w: 48px; --h: 48px; --r: 45deg; }
+[data-layout="timeline"] [data-actor="yellow"] { --x: 56px; --y: 590px; --w: 80px; }
+[data-layout="timeline"] [data-actor="pink"]   { --x: -90px; --y: 940px; --w: 230px; --h: 200px; }
+[data-layout="timeline"] [data-actor="stamp"]  { --x: 2100px; --y: 400px; --w: 220px; }
+[data-layout="timeline"] [data-actor="badge"]  { --x: 2000px; --y: 120px; --w: 800px; --h: 48px; }
+[data-layout="timeline"] [data-actor="rule"]   { --x: 120px; --y: 624px; --w: 1680px; --h: 12px; }
+
+/* ---------- 8. quote: pink marker block with orange offset holds the quote ---------- */
+[data-layout="quote"] [data-actor="paper"]  { --x: 0px; --y: 1120px; --w: 1920px; --h: 230px; }
+[data-layout="quote"] [data-actor="slab"]   { --x: 1960px; --y: 600px; --w: 500px; --h: 500px; }
+[data-layout="quote"] [data-actor="orange"] { --x: 2000px; --y: 900px; --w: 160px; --h: 160px; }
+[data-layout="quote"] [data-actor="yellow"] { --x: 130px; --y: 180px; --w: 170px; }
+[data-layout="quote"] [data-actor="pink"]   { --x: 200px; --y: 250px; --w: 1520px; --h: 570px; }
+[data-layout="quote"] [data-actor="stamp"]  { --x: 1590px; --y: 730px; --w: 200px; background: var(--green); }
+[data-layout="quote"] [data-actor="badge"]  { --x: 1400px; --y: 150px; --w: 460px; --h: 52px; }
+[data-layout="quote"] [data-actor="rule"]   { --x: 200px; --y: 900px; --w: 480px; --h: 12px; }
+
+/* ---------- 9. closing: green floods the stage, cream-ringed stamp ---------- */
+.deck-stage[data-layout="closing"] { --fg: #EFE9D9; --muted: #E4F1E8; --accent: #F5C518; }
+[data-layout="closing"] [data-actor="paper"]  { --x: 0px; --y: 1120px; --w: 1920px; --h: 230px; }
+[data-layout="closing"] [data-actor="slab"]   { --x: -10px; --y: -10px; --w: 1940px; --h: 1100px; }
+[data-layout="closing"] [data-actor="orange"] { --x: 2000px; --y: 600px; --w: 160px; --h: 160px; }
+[data-layout="closing"] [data-actor="yellow"] { --x: 1640px; --y: 110px; --w: 180px; }
+[data-layout="closing"] [data-actor="pink"]   { --x: 1960px; --y: 1120px; --w: 300px; --h: 260px; }
+[data-layout="closing"] [data-actor="stamp"]  { --x: 1360px; --y: 360px; --w: 340px; border-color: var(--cream); }
+[data-layout="closing"] [data-actor="badge"]  { --x: -40px; --y: 976px; --w: 980px; --h: 52px; }
+[data-layout="closing"] [data-actor="rule"]   { --x: 120px; --y: 870px; --w: 520px; --h: 12px; background: var(--cream); }
+
+/* ---------- content tweaks: brutalist type, mono labels, ink-bordered blocks ---------- */
+.slide .title { line-height: 1.08; }
+.slide:is([data-layout="cover"], [data-layout="closing"]) { align-items: flex-start; text-align: left; padding: 0 860px 0 120px; }
+.slide[data-layout="cover"] .title { font-size: 88px; }
+.slide[data-layout="closing"] .title { font-size: 170px; }
+.slide .kicker { font-family: var(--font-mono); font-weight: 700; font-size: 24px; letter-spacing: 0.14em; background: var(--ink); color: var(--cream); padding: 8px 16px; }
+.slide :is(.meta, .cite) { font-family: var(--font-mono); font-weight: 500; font-size: 24px; letter-spacing: 0.06em; text-transform: uppercase; }
+.slide :is(.agenda-list h3, .col h3, .step h3, .hl-text, .takeaway) { text-transform: uppercase; font-weight: 900; }
+.agenda-list { --agenda-gap: 400px; --tile-line: 4px solid var(--ink); }
+.agenda-list li { padding-top: 12px; }
+.slide[data-layout="section"] .num { font-size: 240px; }
+.slide[data-layout="content"] { --hl-left: 1290px; --hl-right: 150px; }
+.slide[data-layout="content"] .hl-big { font-size: 140px; }
+.slide[data-layout="content"] .hl-text { color: var(--ink); }
+.slide[data-layout="content"][data-parity="even"] .bullets { left: 160px; --bullets-w: 980px; }
+.slide[data-layout="content"][data-parity="even"] .highlight { --hl-left: 1290px; --hl-right: 60px; }
+.slide[data-layout="content"][data-parity="even"] :is(.hl-big, .hl-icon) { color: var(--yellow); }
+.slide[data-layout="content"][data-parity="even"] .hl-text { color: var(--cream); }
+.col { border: 4px solid var(--ink); }
+.col:nth-child(1) { background: var(--cream); }
+.col:nth-child(2) { background: var(--pink); }
+.col h3 { color: var(--ink); }
+.col li::before { background: var(--ink); }
+.takeaway { background: var(--ink); color: var(--cream); border-left: 18px solid var(--yellow); }
+.stat { border: 4px solid var(--ink); padding: 44px 28px; background: var(--pink); }
+.stat:nth-child(2) { background: var(--yellow); }
+.stat:nth-child(3) { background: var(--green); }
+.stat:nth-child(4) { background: var(--orange); }
+.slide[data-layout="stats"] :is(.stat-num, .stat-label) { color: var(--ink); }
+.slide[data-layout="stats"] .stat:nth-child(3) :is(.stat-num, .stat-label) { color: var(--cream); }
+.timeline::before { opacity: 0; }
+.step::before { border-radius: 0; background: var(--yellow); border: 4px solid var(--ink); }
+.slide[data-layout="quote"] .quote { font-size: 76px; text-transform: uppercase; line-height: 1.2; }
+.slide[data-layout="quote"] .cite { color: var(--ink); }
+.deck-progress { background: var(--orange, #E85A1F); }

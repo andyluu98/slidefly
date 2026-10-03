@@ -1,0 +1,151 @@
+/* ===========================================================
+   STYLE: ELECTRIC STUDIO (adapted from frontend-slides, MIT)
+   Bold, clean, high contrast: white / near-black / electric blue.
+   Signature: two-panel split (white top, blue bottom), an accent
+   bar sitting on the panel edge, brand marks in the corners,
+   a giant quote mark as the hero of the quote slide.
+   Actors: panel (blue panel), ink (black panel), rule (hairline),
+           bar (accent bar on a panel edge), qmark (quote glyph),
+           mark-a / mark-b (corner brand brackets).
+           DOM order = z-order (panel first).
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+.deck-stage {
+  --actors: "panel ink rule bar qmark mark-a mark-b";
+  --font-display: 'Manrope', sans-serif;
+  --font-body: 'Manrope', sans-serif;
+  --bg: #ffffff; --fg: #0a0a0a; --muted: #4a4d5c;
+  --accent: #4361ee; --accent-2: #0a0a0a;
+  --card-bg: transparent; --card-fg: #0a0a0a; --card-radius: 0px;
+  --title-weight: 800; --title-tracking: -0.03em; --bullet-radius: 0;
+  --blue: #4361ee; --blue-lt: #7b93ff; --ink: #0a0a0a; --paper: #ffffff;
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="panel"] { background: var(--blue); --x: 0px; --y: 1080px; --w: 1920px; --h: 0px; }
+[data-actor="ink"]   { background: var(--ink); --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-actor="rule"]  { background: var(--ink); --x: 120px; --y: 1010px; --w: 0px; --h: 2px; }
+[data-actor="bar"]   { background: var(--ink); --x: -400px; --y: 588px; --w: 320px; --h: 24px; }
+[data-actor="qmark"] {
+  --x: 2000px; --y: -300px; --w: 240px; --h: 225px; background: var(--blue);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 90'%3E%3Cpath d='M0 90V50C0 20 15 5 40 0v14C26 18 18 30 18 50h22v40zM56 90V50c0-30 15-45 40-50v14c-14 4-22 16-22 36h22v40z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 90'%3E%3Cpath d='M0 90V50C0 20 15 5 40 0v14C26 18 18 30 18 50h22v40zM56 90V50c0-30 15-45 40-50v14c-14 4-22 16-22 36h22v40z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+[data-actor="mark-a"] { border: 0 solid var(--ink); border-top-width: 6px; border-left-width: 6px; --x: -80px; --y: -80px; --w: 56px; }
+[data-actor="mark-b"] { border: 0 solid var(--ink); border-right-width: 6px; border-bottom-width: 6px; --x: 1960px; --y: 1100px; --w: 56px; }
+
+/* ---------- 1. cover: white top, blue bottom, black bar on the split ---------- */
+[data-layout="cover"] [data-actor="panel"]  { --x: 0px; --y: 620px; --w: 1920px; --h: 460px; }
+[data-layout="cover"] [data-actor="ink"]    { --x: 1680px; --y: 620px; --w: 240px; --h: 240px; }
+[data-layout="cover"] [data-actor="rule"]   { --x: 160px; --y: 800px; --w: 560px; background: var(--paper); }
+[data-layout="cover"] [data-actor="bar"]    { --x: 160px; --y: 608px; --w: 320px; --h: 24px; }
+[data-layout="cover"] [data-actor="qmark"]  { --x: 2000px; --y: 200px; --w: 240px; }
+[data-layout="cover"] [data-actor="mark-a"] { --x: 60px; --y: 50px; --w: 56px; }
+[data-layout="cover"] [data-actor="mark-b"] { --x: 1804px; --y: 974px; --w: 56px; border-color: var(--paper); }
+
+/* ---------- 2. agenda: blue header band, black spine between columns ---------- */
+[data-layout="agenda"] [data-actor="panel"]  { --x: 0px; --y: 0px; --w: 1920px; --h: 230px; }
+[data-layout="agenda"] [data-actor="ink"]    { --x: 958px; --y: 300px; --w: 4px; --h: 660px; }
+[data-layout="agenda"] [data-actor="rule"]   { --x: 120px; --y: 1010px; --w: 1680px; }
+[data-layout="agenda"] [data-actor="bar"]    { --x: 120px; --y: 218px; --w: 200px; --h: 24px; }
+[data-layout="agenda"] [data-actor="qmark"]  { --x: 2000px; --y: -300px; --w: 240px; }
+[data-layout="agenda"] [data-actor="mark-a"] { --x: 40px; --y: 34px; --w: 48px; border-color: var(--paper); }
+[data-layout="agenda"] [data-actor="mark-b"] { --x: 1812px; --y: 1032px; --w: 48px; border-color: var(--blue); }
+
+/* ---------- 3. section: blue right half over a black foot, bar on its edge ---------- */
+[data-layout="section"] [data-actor="panel"]  { --x: 1080px; --y: 0px; --w: 840px; --h: 1080px; }
+[data-layout="section"] [data-actor="ink"]    { --x: 1080px; --y: 820px; --w: 840px; --h: 260px; }
+[data-layout="section"] [data-actor="rule"]   { --x: 1160px; --y: 540px; --w: 680px; background: var(--paper); }
+[data-layout="section"] [data-actor="bar"]    { --x: 1068px; --y: 400px; --w: 24px; --h: 280px; }
+[data-layout="section"] [data-actor="qmark"]  { --x: 2000px; --y: 1200px; --w: 240px; }
+[data-layout="section"] [data-actor="mark-a"] { --x: 60px; --y: 50px; --w: 56px; }
+[data-layout="section"] [data-actor="mark-b"] { --x: 1804px; --y: 974px; --w: 56px; border-color: var(--paper); }
+
+/* ---------- 4. content: blue column frames the highlight ---------- */
+[data-layout="content"] [data-actor="panel"]  { --x: 1220px; --y: 240px; --w: 700px; --h: 840px; }
+[data-layout="content"] [data-actor="ink"]    { --x: 1740px; --y: 98px; --w: 60px; --h: 60px; }
+[data-layout="content"] [data-actor="rule"]   { --x: 120px; --y: 214px; --w: 1040px; }
+[data-layout="content"] [data-actor="bar"]    { --x: 1208px; --y: 300px; --w: 24px; --h: 200px; }
+[data-layout="content"] [data-actor="qmark"]  { --x: 2000px; --y: 400px; --w: 240px; }
+[data-layout="content"] [data-actor="mark-a"] { --x: 50px; --y: 40px; --w: 48px; }
+[data-layout="content"] [data-actor="mark-b"] { --x: 1812px; --y: 992px; --w: 48px; border-color: var(--paper); }
+/* even: panels swap sides and colours, black column left, blue strip right */
+[data-layout="content"][data-parity="even"] [data-actor="panel"]  { --x: 1872px; --y: 0px; --w: 48px; --h: 1080px; }
+[data-layout="content"][data-parity="even"] [data-actor="ink"]    { --x: 0px; --y: 240px; --w: 700px; --h: 840px; }
+[data-layout="content"][data-parity="even"] [data-actor="rule"]   { --x: 780px; --y: 214px; --w: 1020px; }
+[data-layout="content"][data-parity="even"] [data-actor="bar"]    { --x: 688px; --y: 300px; --w: 24px; --h: 200px; background: var(--blue); }
+[data-layout="content"][data-parity="even"] [data-actor="mark-b"] { --x: 1772px; --y: 972px; --w: 48px; border-color: var(--ink); }
+
+/* ---------- 5. two-col: blue card right, black takeaway band ---------- */
+[data-layout="two-col"] [data-actor="panel"]  { --x: 992px; --y: 270px; --w: 808px; --h: 570px; }
+[data-layout="two-col"] [data-actor="ink"]    { --x: 120px; --y: 870px; --w: 1680px; --h: 120px; }
+[data-layout="two-col"] [data-actor="rule"]   { --x: 120px; --y: 214px; --w: 1680px; }
+[data-layout="two-col"] [data-actor="bar"]    { --x: 992px; --y: 258px; --w: 240px; --h: 24px; }
+[data-layout="two-col"] [data-actor="qmark"]  { --x: -400px; --y: 400px; --w: 240px; }
+[data-layout="two-col"] [data-actor="mark-a"] { --x: 50px; --y: 40px; --w: 48px; }
+[data-layout="two-col"] [data-actor="mark-b"] { --x: 1812px; --y: 1000px; --w: 48px; }
+
+/* ---------- 6. stats: black body over a blue foot, blue bar on the edge ---------- */
+[data-layout="stats"] [data-actor="panel"]  { --x: 0px; --y: 1000px; --w: 1920px; --h: 80px; }
+[data-layout="stats"] [data-actor="ink"]    { --x: 0px; --y: 260px; --w: 1920px; --h: 740px; }
+[data-layout="stats"] [data-actor="rule"]   { --x: 120px; --y: 900px; --w: 1680px; background: #3a3d4a; }
+[data-layout="stats"] [data-actor="bar"]    { --x: 120px; --y: 248px; --w: 280px; --h: 24px; background: var(--blue); }
+[data-layout="stats"] [data-actor="qmark"]  { --x: -400px; --y: -300px; --w: 240px; }
+[data-layout="stats"] [data-actor="mark-a"] { --x: 50px; --y: 40px; --w: 48px; }
+[data-layout="stats"] [data-actor="mark-b"] { --x: 1820px; --y: 1012px; --w: 40px; border-color: var(--paper); }
+
+/* ---------- 7. timeline: the blue panel thins into the axis (y=630) ---------- */
+[data-layout="timeline"] [data-actor="panel"]  { --x: 0px; --y: 622px; --w: 1920px; --h: 16px; }
+[data-layout="timeline"] [data-actor="ink"]    { --x: 1800px; --y: 600px; --w: 60px; --h: 60px; }
+[data-layout="timeline"] [data-actor="rule"]   { --x: 120px; --y: 214px; --w: 1680px; }
+[data-layout="timeline"] [data-actor="bar"]    { --x: 88px; --y: 560px; --w: 24px; --h: 140px; }
+[data-layout="timeline"] [data-actor="qmark"]  { --x: 960px; --y: 1200px; --w: 240px; }
+[data-layout="timeline"] [data-actor="mark-a"] { --x: 50px; --y: 40px; --w: 48px; }
+[data-layout="timeline"] [data-actor="mark-b"] { --x: 1812px; --y: 992px; --w: 48px; }
+
+/* ---------- 8. quote: blue takes the stage, quote mark is the hero ---------- */
+.deck-stage[data-layout="quote"] { --fg: #ffffff; --muted: #dfe4ff; --accent: #ffffff; }
+[data-layout="quote"] [data-actor="panel"]  { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="quote"] [data-actor="ink"]    { --x: 0px; --y: 1010px; --w: 1920px; --h: 70px; }
+[data-layout="quote"] [data-actor="rule"]   { --x: 1640px; --y: 960px; --w: 0px; background: var(--paper); }
+[data-layout="quote"] [data-actor="bar"]    { --x: 280px; --y: 790px; --w: 160px; --h: 12px; background: var(--paper); }
+[data-layout="quote"] [data-actor="qmark"]  { --x: 150px; --y: 110px; --w: 240px; --h: 225px; background: var(--paper); }
+[data-layout="quote"] [data-actor="mark-a"] { --x: 1820px; --y: 40px; --w: 48px; --r: 90deg; border-color: var(--paper); }
+[data-layout="quote"] [data-actor="mark-b"] { --x: 1812px; --y: 932px; --w: 48px; border-color: var(--paper); }
+
+/* ---------- 9. closing: black stage, blue panel slides in from the right ---------- */
+.deck-stage[data-layout="closing"] { --fg: #ffffff; --muted: #c4c7d4; --accent: var(--blue-lt); }
+[data-layout="closing"] [data-actor="panel"]  { --x: 1320px; --y: 0px; --w: 600px; --h: 1080px; }
+[data-layout="closing"] [data-actor="ink"]    { --x: 0px; --y: 0px; --w: 1320px; --h: 1080px; }
+[data-layout="closing"] [data-actor="rule"]   { --x: 160px; --y: 780px; --w: 640px; background: var(--paper); }
+[data-layout="closing"] [data-actor="bar"]    { --x: 1308px; --y: 420px; --w: 24px; --h: 240px; background: var(--paper); }
+[data-layout="closing"] [data-actor="qmark"]  { --x: 1500px; --y: 430px; --w: 240px; --h: 225px; background: var(--paper); }
+[data-layout="closing"] [data-actor="mark-a"] { --x: 60px; --y: 50px; --w: 56px; border-color: var(--paper); }
+[data-layout="closing"] [data-actor="mark-b"] { --x: 1804px; --y: 974px; --w: 56px; border-color: var(--paper); }
+
+/* ---------- content tweaks: left aligned, confident spacing ---------- */
+.slide:is([data-layout="cover"], [data-layout="closing"]) { align-items: flex-start; text-align: left; }
+.slide[data-layout="cover"] { justify-content: flex-end; padding: 0 560px 530px 160px; gap: 24px; }
+.slide[data-layout="cover"] .title { font-size: 96px; }
+.slide[data-layout="cover"] .meta { position: absolute; left: 160px; top: 690px; font-size: 28px; font-weight: 600; color: #ffffff; }
+.slide[data-layout="closing"] { padding: 0 720px 0 160px; }
+.slide[data-layout="closing"] .title { font-size: 150px; }
+.slide[data-layout="agenda"] > .title { color: #ffffff; }
+.agenda-list { --agenda-gap: 160px; --tile-line: 2px solid var(--ink); }
+.agenda-list li { align-items: flex-start; padding-top: 36px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.slide[data-layout="section"] .num { font-size: 240px; }
+.slide[data-layout="content"] .highlight { color: #ffffff; --accent: #ffffff; }
+.slide[data-layout="content"][data-parity="even"] { --hl-left: 120px; --hl-right: 1320px; }
+.slide[data-layout="content"][data-parity="even"] .bullets { left: 780px; --bullets-w: 1020px; }
+.slide[data-layout="content"][data-parity="even"] .highlight { --accent: var(--blue-lt); }
+.col { padding: 44px 52px; }
+.col:first-child { border: 3px solid var(--ink); }
+.col:last-child { color: #ffffff; }
+.col:last-child :is(h3, li) { color: #ffffff; }
+.col:last-child li::before { background: #ffffff; }
+.takeaway { color: #ffffff; border-left-color: var(--blue); }
+.slide[data-layout="stats"] { --accent: #ffffff; --muted: #c4c7d4; }
+.slide[data-layout="quote"] .quote { font-weight: 800; }

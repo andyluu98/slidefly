@@ -1,0 +1,180 @@
+/* ===========================================================
+   STYLE: PLAYFUL (adapted from frontend-slides bold template, MIT)
+   Peach-clay canvas, charcoal ink as the only colour. Studio
+   sketchbook: a rough-box card with a double offset outline
+   travels (poster, agenda board, highlight frame, inverted
+   takeaway, timeline axis, closing card); a solid ink blob grows
+   into a section mass and floods the quote page; pebble frame,
+   doodle ring and 2px scribbles (squiggle, star, arrow) roam
+   the corners with small hand-placed rotations.
+   Actors: ghost, frame, blob, pebble, ring, squiggle, star,
+           arrow. DOM order = z-order (ghost first).
+   Font: Syne has no Vietnamese -> Bricolage Grotesque (800).
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+.deck-stage {
+  --actors: "ghost frame blob pebble ring squiggle star arrow";
+  --font-display: 'Bricolage Grotesque', sans-serif;
+  --font-body: 'Space Grotesk', sans-serif;
+  --bg: #f0c8a0; --fg: #1a1a1a; --muted: #4a3a2e;
+  --accent: #1a1a1a; --card-bg: #f7dec6; --card-fg: #1a1a1a; --card-radius: 0px;
+  --title-weight: 800; --title-tracking: -0.025em;
+  --bullet-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  --title-w: 1300px;
+  --ink: #1a1a1a; --peach: #f0c8a0; --light: #f7dec6; --alt: #e8b88e;
+  --organic: 40% 60% 70% 30% / 40% 50% 60% 50%;
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="ghost"]  { background: var(--ink); border-radius: var(--organic); --o: 0.08; --x: -400px; --y: -400px; --w: 900px; --h: 700px; }
+[data-actor="frame"]  { --bw: 3px; background-color: var(--light); border: 3px solid var(--ink); --x: 2000px; --y: 400px; --w: 400px; --h: 300px; }
+[data-actor="frame"]::before { content: ""; position: absolute; inset: -3px; border: 2.5px solid var(--ink); transform: translate(9px, 9px); }
+[data-actor="blob"]   { background-color: var(--ink); border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; --x: 2000px; --y: -400px; --w: 300px; --h: 260px; }
+[data-actor="pebble"] { --bw: 3px; border: 3px solid var(--ink); border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; --x: -500px; --y: 1100px; --w: 380px; --h: 200px; }
+[data-actor="ring"]   { --bw: 3px; border: 3px solid var(--ink); border-radius: 50%; --x: -300px; --y: 500px; --w: 120px; }
+[data-actor="squiggle"], [data-actor="star"], [data-actor="arrow"] {
+  background-color: var(--ink);
+  -webkit-mask: var(--m) center / 100% 100% no-repeat; mask: var(--m) center / 100% 100% no-repeat;
+}
+[data-actor="squiggle"] { --x: 120px; --y: -120px; --w: 280px; --h: 36px; --m: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 24' preserveAspectRatio='none'><path d='M3 12q10-10 20 0t20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' vector-effect='non-scaling-stroke'/></svg>"); }
+[data-actor="star"]     { --x: 2000px; --y: 900px; --w: 120px; --m: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50 7 61 37 93 38 68 58 77 90 50 72 23 90 32 58 7 38 39 37Z' fill='none' stroke='black' stroke-width='3' stroke-linejoin='round' vector-effect='non-scaling-stroke'/><path d='M84 10l6-6M90 18h7M80 4V-2' stroke='black' stroke-width='3' stroke-linecap='round' vector-effect='non-scaling-stroke'/></svg>"); }
+[data-actor="arrow"]    { --x: 2000px; --y: 600px; --w: 180px; --h: 90px; --m: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 60'><path d='M5 44C28 8 70 6 108 30M92 16l17 15-20 9' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' vector-effect='non-scaling-stroke'/></svg>"); }
+
+/* ---------- 1. cover: poster card right holds a blob in a pebble frame ---------- */
+[data-layout="cover"] [data-actor="ghost"]    { --x: -260px; --y: -220px; --w: 1000px; --h: 760px; }
+[data-layout="cover"] [data-actor="frame"]    { --x: 1160px; --y: 170px; --w: 600px; --h: 740px; --r: 2deg; }
+[data-layout="cover"] [data-actor="pebble"]   { --x: 1240px; --y: 250px; --w: 440px; --h: 540px; --r: 6deg; }
+[data-layout="cover"] [data-actor="blob"]     { --x: 1290px; --y: 300px; --w: 340px; --h: 430px; --r: -6deg; }
+[data-layout="cover"] [data-actor="ring"]     { --x: 1060px; --y: 820px; --w: 150px; }
+[data-layout="cover"] [data-actor="star"]     { --x: 1680px; --y: 80px; --w: 160px; --r: 12deg; }
+[data-layout="cover"] [data-actor="squiggle"] { --x: 140px; --y: 900px; --w: 360px; --h: 46px; }
+[data-layout="cover"] [data-actor="arrow"]    { --x: 860px; --y: 870px; --w: 190px; --h: 96px; --r: -6deg; }
+
+/* ---------- 2. agenda: the card becomes a board for the list ---------- */
+[data-layout="agenda"] [data-actor="ghost"]    { --x: 1100px; --y: 380px; --w: 1100px; --h: 900px; }
+[data-layout="agenda"] [data-actor="frame"]    { --x: 120px; --y: 270px; --w: 1680px; --h: 720px; --r: -0.5deg; }
+[data-layout="agenda"] [data-actor="blob"]     { --x: 1640px; --y: 50px; --w: 190px; --h: 160px; --r: 10deg; }
+[data-layout="agenda"] [data-actor="pebble"]   { --x: -160px; --y: 1000px; --w: 380px; --h: 190px; --r: -8deg; }
+[data-layout="agenda"] [data-actor="ring"]     { --x: 1490px; --y: 110px; --w: 90px; }
+[data-layout="agenda"] [data-actor="star"]     { --x: 1760px; --y: 920px; --w: 130px; --r: 15deg; }
+[data-layout="agenda"] [data-actor="squiggle"] { --x: 120px; --y: 34px; --w: 280px; --h: 36px; }
+[data-layout="agenda"] [data-actor="arrow"]    { --x: 1540px; --y: 998px; --w: 170px; --h: 76px; --r: -4deg; }
+
+/* ---------- 3. section: blob grows into a mass inside a pebble frame ---------- */
+[data-layout="section"] [data-actor="ghost"]    { --x: -300px; --y: -250px; --w: 900px; --h: 700px; }
+[data-layout="section"] [data-actor="frame"]    { --x: 1520px; --y: 790px; --w: 340px; --h: 210px; --r: -6deg; }
+[data-layout="section"] [data-actor="pebble"]   { --x: 1040px; --y: 110px; --w: 820px; --h: 860px; --r: 5deg; }
+[data-layout="section"] [data-actor="blob"]     { --x: 1090px; --y: 150px; --w: 730px; --h: 780px; --r: -4deg; }
+[data-layout="section"] [data-actor="ring"]     { --x: 1730px; --y: 60px; --w: 140px; }
+[data-layout="section"] [data-actor="star"]     { --x: 960px; --y: 110px; --w: 130px; --r: -10deg; }
+[data-layout="section"] [data-actor="squiggle"] { --x: 160px; --y: 905px; --w: 340px; --h: 46px; }
+[data-layout="section"] [data-actor="arrow"]    { --x: 820px; --y: 880px; --w: 200px; --h: 100px; --r: -10deg; }
+
+/* ---------- 4. content: card frames the highlight, blob on its corner ---------- */
+[data-layout="content"] [data-actor="ghost"]    { --x: -250px; --y: 520px; --w: 900px; --h: 700px; }
+[data-layout="content"] [data-actor="frame"]    { --x: 1240px; --y: 290px; --w: 580px; --h: 680px; --r: 1.2deg; }
+[data-layout="content"] [data-actor="blob"]     { --x: 1730px; --y: 200px; --w: 170px; --h: 150px; --r: 12deg; }
+[data-layout="content"] [data-actor="pebble"]   { --x: -150px; --y: 950px; --w: 360px; --h: 180px; --r: 8deg; }
+[data-layout="content"] [data-actor="ring"]     { --x: 1150px; --y: 940px; --w: 90px; }
+[data-layout="content"] [data-actor="star"]     { --x: 1520px; --y: 70px; --w: 110px; --r: -12deg; }
+[data-layout="content"] [data-actor="squiggle"] { --x: 120px; --y: 34px; --w: 280px; --h: 36px; }
+[data-layout="content"] [data-actor="arrow"]    { --x: 1980px; --y: 560px; --w: 160px; --h: 80px; }
+/* even: highlight swaps to the left inside an inverted ink card */
+[data-layout="content"][data-parity="even"] [data-actor="ghost"]    { --x: 1100px; --y: -300px; --w: 1100px; --h: 800px; }
+[data-layout="content"][data-parity="even"] [data-actor="frame"]    { --x: 100px; --y: 290px; --w: 580px; --h: 680px; --r: -1.5deg; background-color: var(--ink); }
+[data-layout="content"][data-parity="even"] [data-actor="blob"]     { --x: 1700px; --y: 930px; --w: 280px; --h: 220px; --r: -8deg; }
+[data-layout="content"][data-parity="even"] [data-actor="pebble"]   { --x: 1450px; --y: 70px; --w: 260px; --h: 110px; --r: -5deg; }
+[data-layout="content"][data-parity="even"] [data-actor="ring"]     { --x: 1760px; --y: 40px; --w: 110px; }
+[data-layout="content"][data-parity="even"] [data-actor="star"]     { --x: 610px; --y: 225px; --w: 110px; --r: 10deg; }
+[data-layout="content"][data-parity="even"] [data-actor="squiggle"] { --x: 760px; --y: 1010px; --w: 340px; --h: 40px; }
+[data-layout="content"][data-parity="even"] [data-actor="arrow"]    { --x: 692px; --y: 600px; --w: 64px; --h: 40px; }
+
+/* ---------- 5. two-col: card flattens into an inverted takeaway bar ---------- */
+[data-layout="two-col"] [data-actor="ghost"]    { --x: 1150px; --y: 150px; --w: 1000px; --h: 900px; }
+[data-layout="two-col"] [data-actor="frame"]    { --x: 1980px; --y: 880px; --w: 300px; --h: 110px; background-color: var(--ink); }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="frame"] { --x: 120px; --y: 880px; --w: 1680px; --h: 110px; --r: -0.4deg; }
+[data-layout="two-col"] [data-actor="blob"]     { --x: 1680px; --y: 40px; --w: 190px; --h: 160px; --r: 8deg; }
+[data-layout="two-col"] [data-actor="pebble"]   { --x: 1650px; --y: 1000px; --w: 330px; --h: 170px; --r: -6deg; }
+[data-layout="two-col"] [data-actor="ring"]     { --x: 1500px; --y: 90px; --w: 100px; }
+[data-layout="two-col"] [data-actor="star"]     { --x: 920px; --y: 222px; --w: 84px; --r: 12deg; }
+[data-layout="two-col"] [data-actor="squiggle"] { --x: 120px; --y: 34px; --w: 280px; --h: 36px; }
+[data-layout="two-col"] [data-actor="arrow"]    { --x: 1300px; --y: -200px; --w: 160px; --h: 80px; }
+
+/* ---------- 6. stats: board behind the figures, blob tucked top-right ---------- */
+[data-layout="stats"] [data-actor="ghost"]    { --x: 300px; --y: 100px; --w: 1300px; --h: 1000px; }
+[data-layout="stats"] [data-actor="frame"]    { --x: 120px; --y: 290px; --w: 1680px; --h: 680px; --r: 0.5deg; }
+[data-layout="stats"] [data-actor="blob"]     { --x: 1580px; --y: -110px; --w: 440px; --h: 330px; --r: 15deg; }
+[data-layout="stats"] [data-actor="pebble"]   { --x: 1650px; --y: 870px; --w: 340px; --h: 210px; --r: -12deg; }
+[data-layout="stats"] [data-actor="ring"]     { --x: 1460px; --y: 100px; --w: 90px; }
+[data-layout="stats"] [data-actor="star"]     { --x: 40px; --y: 890px; --w: 150px; --r: -10deg; }
+[data-layout="stats"] [data-actor="squiggle"] { --x: 760px; --y: 1006px; --w: 400px; --h: 44px; }
+[data-layout="stats"] [data-actor="arrow"]    { --x: 220px; --y: 996px; --w: 170px; --h: 72px; --r: -4deg; }
+
+/* ---------- 7. timeline: card collapses into a double-stroke axis ---------- */
+[data-layout="timeline"] [data-actor="ghost"]    { --x: -250px; --y: -250px; --w: 900px; --h: 700px; }
+[data-layout="timeline"] [data-actor="frame"]    { --x: 120px; --y: 627px; --w: 1680px; --h: 3px; background-color: var(--ink); }
+[data-layout="timeline"] [data-actor="blob"]     { --x: 1650px; --y: 40px; --w: 220px; --h: 180px; --r: -10deg; }
+[data-layout="timeline"] [data-actor="pebble"]   { --x: -120px; --y: 950px; --w: 400px; --h: 200px; --r: 6deg; }
+[data-layout="timeline"] [data-actor="ring"]     { --x: 34px; --y: 594px; --w: 72px; }
+[data-layout="timeline"] [data-actor="star"]     { --x: 1808px; --y: 582px; --w: 96px; --r: 12deg; }
+[data-layout="timeline"] [data-actor="squiggle"] { --x: 120px; --y: 34px; --w: 280px; --h: 36px; }
+[data-layout="timeline"] [data-actor="arrow"]    { --x: 1460px; --y: 92px; --w: 150px; --h: 72px; }
+
+/* ---------- 8. quote: ink blob floods the page, scribbles turn peach ---------- */
+.deck-stage[data-layout="quote"] { --fg: #f0c8a0; --muted: #dcb08a; --accent: #f0c8a0; }
+[data-layout="quote"] [data-actor="blob"]     { --x: -220px; --y: -160px; --w: 2360px; --h: 1400px; border-radius: 45% 55% 50% 50% / 50% 45% 55% 50%; }
+[data-layout="quote"] [data-actor="ghost"]    { --x: 500px; --y: 1200px; }
+[data-layout="quote"] [data-actor="frame"]    { --x: 1560px; --y: 1140px; --w: 400px; --h: 300px; --r: -6deg; }
+[data-layout="quote"] [data-actor="pebble"]   { --x: 1700px; --y: -300px; --w: 300px; --h: 160px; }
+[data-layout="quote"] [data-actor="ring"]     { --x: 190px; --y: 820px; --w: 100px; border-color: var(--peach); }
+[data-layout="quote"] [data-actor="star"]     { --x: 1560px; --y: 150px; --w: 140px; --r: 14deg; background-color: var(--peach); }
+[data-layout="quote"] [data-actor="squiggle"] { --x: 320px; --y: 880px; --w: 340px; --h: 44px; background-color: var(--peach); }
+[data-layout="quote"] [data-actor="arrow"]    { --x: -300px; --y: 1100px; }
+
+/* ---------- 9. closing: big tilted card, doodles pinned to its corners ---------- */
+[data-layout="closing"] [data-actor="ghost"]    { --x: 1100px; --y: 300px; --w: 1100px; --h: 900px; }
+[data-layout="closing"] [data-actor="frame"]    { --x: 380px; --y: 230px; --w: 1160px; --h: 620px; --r: -1.5deg; }
+[data-layout="closing"] [data-actor="blob"]     { --x: -180px; --y: -160px; --w: 560px; --h: 460px; --r: 10deg; }
+[data-layout="closing"] [data-actor="pebble"]   { --x: 1620px; --y: 830px; --w: 380px; --h: 220px; --r: -8deg; }
+[data-layout="closing"] [data-actor="ring"]     { --x: 1450px; --y: 150px; --w: 170px; }
+[data-layout="closing"] [data-actor="star"]     { --x: 270px; --y: 760px; --w: 150px; --r: -12deg; }
+[data-layout="closing"] [data-actor="squiggle"] { --x: 760px; --y: 930px; --w: 400px; --h: 50px; }
+[data-layout="closing"] [data-actor="arrow"]    { --x: 1580px; --y: 500px; --w: 200px; --h: 100px; --r: 180deg; }
+
+/* ---------- content tweaks ---------- */
+.slide .kicker { display: inline-block; align-self: flex-start; padding: 8px 18px; background: var(--fg); color: var(--bg); font-size: 20px; font-weight: 600; letter-spacing: 0.15em; }
+.slide p.kicker { width: fit-content; }
+.slide .subtitle { font-weight: 500; }
+.slide[data-layout="cover"] { align-items: flex-start; text-align: left; padding: 0 860px 0 140px; }
+.slide[data-layout="cover"] .title { font-size: 96px; line-height: 1.02; }
+.slide[data-layout="closing"] { padding: 0 460px; }
+.slide[data-layout="closing"] .kicker { align-self: center; }
+.slide[data-layout="closing"] .title { font-size: 140px; line-height: 1.05; }
+.slide[data-layout="section"] .num { font-size: 240px; font-weight: 800; rotate: -2deg; width: fit-content; }
+.agenda-list { --agenda-gap: 200px; --tile-line: 2px solid var(--ink); }
+.slide[data-layout="agenda"] .agenda-list { top: 300px; bottom: 120px; left: 190px; right: 190px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list .num { font-weight: 800; }
+.slide[data-layout="content"][data-parity="even"] { --hl-left: 120px; --hl-right: 1260px; }
+.slide[data-layout="content"][data-parity="even"] .bullets { left: 780px; width: 1020px; }
+.slide[data-layout="content"][data-parity="even"] .highlight { color: var(--peach); --accent: var(--peach); }
+.hl-text { font-size: 38px; font-weight: 800; letter-spacing: -0.015em; }
+.hl-big { rotate: -2deg; }
+/* double-stroke offset outline as hard (no blur) shadows: ink ring 9px down-right */
+.col { border: 3px solid var(--ink); box-shadow: 9px 9px 0 -2.5px var(--peach), 9px 9px 0 0 var(--ink); }
+.col:first-child { rotate: -0.8deg; }
+.col:last-child { rotate: 0.8deg; }
+.takeaway { border-left: 0; padding: 20px 48px; color: var(--peach); }
+.slide[data-layout="stats"] .stats { left: 180px; right: 180px; }
+.stat:nth-child(odd) .stat-num { rotate: -1.5deg; }
+.stat:nth-child(even) .stat-num { rotate: 1.5deg; }
+.timeline::before { opacity: 0; }
+.step::before { width: 36px; height: 36px; border: 3px solid var(--ink); background: var(--ink); }
+.step:nth-child(even)::before { background: var(--bg); }
+.step:nth-child(odd)::before { bottom: -18px; }
+.step:nth-child(even)::before { top: -18px; }
+.slide[data-layout="quote"] { padding: 0 300px; }
+.slide[data-layout="quote"] .quote { font-size: 74px; font-weight: 700; letter-spacing: -0.015em; }
+.slide[data-layout="quote"] .cite { font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; font-size: 22px; }

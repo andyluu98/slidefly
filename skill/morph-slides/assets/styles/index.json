@@ -1,0 +1,607 @@
+[
+ {
+  "slug": "electric-studio",
+  "name": "Electric Studio",
+  "scheme": "mixed",
+  "mood": [
+   "mạnh mẽ",
+   "sạch sẽ",
+   "chuyên nghiệp",
+   "tương phản cao"
+  ],
+  "best_for": "pitch doanh nghiệp, báo cáo chiến lược, ra mắt sản phẩm",
+  "fonts": "Manrope"
+ },
+ {
+  "slug": "creative-voltage",
+  "name": "Creative Voltage",
+  "scheme": "mixed",
+  "mood": [
+   "sôi động",
+   "sáng tạo",
+   "retro hiện đại",
+   "táo bạo"
+  ],
+  "best_for": "pitch sáng tạo, agency, sự kiện, ra mắt sản phẩm trẻ trung",
+  "fonts": "Bricolage Grotesque + Space Mono + Pacifico"
+ },
+ {
+  "slug": "notebook-tabs",
+  "name": "Notebook Tabs",
+  "scheme": "mixed",
+  "mood": [
+   "biên tập",
+   "ngăn nắp",
+   "thanh lịch",
+   "xúc giác"
+  ],
+  "best_for": "đào tạo, báo cáo, tài liệu nhiều chương",
+  "fonts": "Libre Bodoni + Be Vietnam Pro"
+ },
+ {
+  "slug": "pastel-geometry",
+  "name": "Pastel Geometry",
+  "scheme": "light",
+  "mood": [
+   "thân thiện",
+   "gọn gàng",
+   "nhẹ nhàng",
+   "hiện đại"
+  ],
+  "best_for": "đào tạo nội bộ, giới thiệu sản phẩm, onboarding, giáo dục",
+  "fonts": "Plus Jakarta Sans"
+ },
+ {
+  "slug": "split-pastel",
+  "name": "Split Pastel",
+  "scheme": "light",
+  "mood": [
+   "vui tươi",
+   "thân thiện",
+   "hiện đại",
+   "sáng tạo"
+  ],
+  "best_for": "thuyết trình nhẹ nhàng, workshop sáng tạo, sản phẩm cho người trẻ",
+  "fonts": "Plus Jakarta Sans"
+ },
+ {
+  "slug": "vintage-editorial",
+  "name": "Vintage Editorial",
+  "scheme": "mixed",
+  "mood": [
+   "tạp chí cổ điển",
+   "dí dỏm",
+   "tự tin",
+   "có cá tính"
+  ],
+  "best_for": "bài nói có chính kiến, thương hiệu sáng tạo, chia sẻ góc nhìn",
+  "fonts": "Fraunces + Work Sans"
+ },
+ {
+  "slug": "terminal-green",
+  "name": "Terminal Green",
+  "scheme": "dark",
+  "mood": [
+   "kỹ thuật",
+   "hacker",
+   "tối giản",
+   "tập trung"
+  ],
+  "best_for": "bài nói cho dân lập trình, demo sản phẩm, đào tạo công nghệ",
+  "fonts": "JetBrains Mono"
+ },
+ {
+  "slug": "8-bit-orbit",
+  "name": "8-Bit Orbit",
+  "scheme": "dark",
+  "mood": [
+   "hoài cổ arcade",
+   "tinh nghịch",
+   "neon",
+   "năng lượng"
+  ],
+  "best_for": "game, hackathon, công cụ dev, talk công nghệ trẻ trung",
+  "fonts": "Tektur + Chakra Petch + Space Mono"
+ },
+ {
+  "slug": "biennale-yellow",
+  "name": "Biennale Vàng",
+  "scheme": "light",
+  "mood": [
+   "tạp chí nghệ thuật",
+   "ấm áp",
+   "tĩnh lặng",
+   "áp phích triển lãm"
+  ],
+  "best_for": "triển lãm, sự kiện văn hóa, hội thảo thiết kế",
+  "fonts": "Playfair Display + Archivo"
+ },
+ {
+  "slug": "block-frame",
+  "name": "Block Frame",
+  "scheme": "light",
+  "mood": [
+   "táo bạo",
+   "vui nhộn",
+   "pop",
+   "tươi"
+  ],
+  "best_for": "ra mắt sản phẩm, agency, review sáng tạo, đổi thương hiệu",
+  "fonts": "Inter + Space Grotesk"
+ },
+ {
+  "slug": "blue-professional",
+  "name": "Blue Professional",
+  "scheme": "light",
+  "mood": [
+   "chuyên nghiệp",
+   "điềm tĩnh",
+   "đáng tin",
+   "hiện đại"
+  ],
+  "best_for": "báo cáo tư vấn, pitch B2B, báo cáo nhà đầu tư, họp đánh giá",
+  "fonts": "Space Grotesk + Inter"
+ },
+ {
+  "slug": "bold-poster",
+  "name": "Bold Poster",
+  "scheme": "mixed",
+  "mood": [
+   "táo bạo",
+   "kiểu tạp chí",
+   "tự tin",
+   "ấn tượng"
+  ],
+  "best_for": "tuyên ngôn thương hiệu, tầm nhìn nhà sáng lập, pitch sáng tạo",
+  "fonts": "Lobster + Lora + Space Grotesk"
+ },
+ {
+  "slug": "broadside",
+  "name": "Broadside",
+  "scheme": "mixed",
+  "mood": [
+   "báo chí",
+   "áp phích",
+   "dõng dạc",
+   "kịch tính"
+  ],
+  "best_for": "tuyên ngôn, pitch văn hóa, bài nói về thiết kế",
+  "fonts": "Barlow + IBM Plex Mono"
+ },
+ {
+  "slug": "capsule",
+  "name": "Capsule",
+  "scheme": "light",
+  "mood": [
+   "vui tươi",
+   "hiện đại",
+   "ấm áp",
+   "trẻ trung"
+  ],
+  "best_for": "thương hiệu lifestyle, portfolio sáng tạo, ra mắt sản phẩm",
+  "fonts": "Libre Bodoni + Space Grotesk"
+ },
+ {
+  "slug": "cartesian",
+  "name": "Cartesian",
+  "scheme": "light",
+  "mood": [
+   "tĩnh lặng",
+   "chừng mực",
+   "thanh lịch",
+   "tối giản ấm"
+  ],
+  "best_for": "luận điểm đầu tư, sách trắng, tư vấn, nghiên cứu, triển lãm",
+  "fonts": "Playfair Display + Inter"
+ },
+ {
+  "slug": "cobalt-grid",
+  "name": "Cobalt Grid",
+  "scheme": "light",
+  "mood": [
+   "biên tập",
+   "nghiên cứu",
+   "tĩnh lặng",
+   "hiện đại"
+  ],
+  "best_for": "bản tin nghiên cứu, báo cáo xu hướng, hồ sơ năng lực, học thuật",
+  "fonts": "Newsreader + Hanken Grotesk + IBM Plex Mono"
+ },
+ {
+  "slug": "coral",
+  "name": "Coral",
+  "scheme": "mixed",
+  "mood": [
+   "táo bạo",
+   "ấm áp",
+   "hiện đại",
+   "tự tin"
+  ],
+  "best_for": "thời trang, F&B, thể thao, lifestyle, hồ sơ agency",
+  "fonts": "Oswald + Inter"
+ },
+ {
+  "slug": "creative-mode",
+  "name": "Creative Mode",
+  "scheme": "light",
+  "mood": [
+   "sáng tạo",
+   "tự tin",
+   "tinh nghịch",
+   "đậm chất thiết kế"
+  ],
+  "best_for": "pitch agency/studio, review sáng tạo, talk muốn khác thường",
+  "fonts": "Archivo + Space Grotesk + JetBrains Mono"
+ },
+ {
+  "slug": "daisy-days",
+  "name": "Daisy Days",
+  "scheme": "light",
+  "mood": [
+   "vui tươi",
+   "ấm áp",
+   "hồn nhiên",
+   "nhẹ nhàng"
+  ],
+  "best_for": "đào tạo thân thiện, gia đình trẻ em, workshop cộng đồng, kickoff vui",
+  "fonts": "Baloo 2 + Quicksand"
+ },
+ {
+  "slug": "editorial-forest",
+  "name": "Editorial Forest",
+  "scheme": "mixed",
+  "mood": [
+   "trầm lắng",
+   "chỉn chu",
+   "ấm áp",
+   "văn chương"
+  ],
+  "best_for": "báo cáo quý, tổng kết nội bộ, cập nhật studio, ra mắt sách",
+  "fonts": "Source Serif 4 + JetBrains Mono"
+ },
+ {
+  "slug": "editorial-tri-tone",
+  "name": "Editorial Tri-Tone",
+  "scheme": "mixed",
+  "mood": [
+   "biên tập",
+   "ấm áp",
+   "chỉn chu",
+   "sang"
+  ],
+  "best_for": "tạp chí, thời trang, phong cách sống, pitch sáng tạo",
+  "fonts": "Bricolage Grotesque + Playfair Display + JetBrains Mono"
+ },
+ {
+  "slug": "emerald-editorial",
+  "name": "Emerald Editorial",
+  "scheme": "mixed",
+  "mood": [
+   "biên tập",
+   "tự tin",
+   "sang trọng",
+   "bìa tạp chí"
+  ],
+  "best_for": "báo cáo lãnh đạo, họp chiến lược, ra mắt sản phẩm chất tạp chí",
+  "fonts": "Playfair Display + Manrope"
+ },
+ {
+  "slug": "grove",
+  "name": "Grove",
+  "scheme": "mixed",
+  "mood": [
+   "trầm lắng",
+   "văn chương",
+   "hữu cơ",
+   "ấm áp"
+  ],
+  "best_for": "thương hiệu bền vững, nhà hàng, tư vấn, văn hóa nghệ thuật",
+  "fonts": "Playfair Display + Be Vietnam Pro"
+ },
+ {
+  "slug": "long-table",
+  "name": "Long Table",
+  "scheme": "light",
+  "mood": [
+   "ấm áp",
+   "thân mật",
+   "in ấn thủ công",
+   "tạp chí"
+  ],
+  "best_for": "supper club, nhà hàng nhỏ, sự kiện cộng đồng, lifestyle",
+  "fonts": "Bricolage Grotesque + Fraunces"
+ },
+ {
+  "slug": "mat",
+  "name": "Mat",
+  "scheme": "mixed",
+  "mood": [
+   "ấm áp",
+   "mộc",
+   "tinh tế",
+   "mid-century"
+  ],
+  "best_for": "studio thiết kế, nội thất, thủ công, tư vấn",
+  "fonts": "Bricolage Grotesque + Be Vietnam Pro + IBM Plex Mono"
+ },
+ {
+  "slug": "monochrome",
+  "name": "Monochrome",
+  "scheme": "light",
+  "mood": [
+   "tiết chế",
+   "văn chương",
+   "lưu trữ",
+   "sổ cái"
+  ],
+  "best_for": "báo cáo dài, white paper, tổng hợp nghiên cứu, tài liệu tư vấn",
+  "fonts": "Be Vietnam Pro + Lora + JetBrains Mono"
+ },
+ {
+  "slug": "neo-grid-bold",
+  "name": "Neo-Grid Bold",
+  "scheme": "light",
+  "mood": [
+   "tự tin",
+   "mạnh",
+   "biên tập",
+   "hiện đại"
+  ],
+  "best_for": "pitch thiên thiết kế, keynote, slide số liệu và so sánh",
+  "fonts": "Space Grotesk + JetBrains Mono"
+ },
+ {
+  "slug": "peoples-platform",
+  "name": "People's Platform",
+  "scheme": "mixed",
+  "mood": [
+   "cổ động",
+   "mạnh mẽ",
+   "đồ họa",
+   "thẳng thắn"
+  ],
+  "best_for": "tuyên ngôn, dự án cộng đồng, chiến dịch, pitch truyền cảm hứng",
+  "fonts": "Alfa Slab One + Archivo Narrow + Patrick Hand"
+ },
+ {
+  "slug": "pin-and-paper",
+  "name": "Pin & Paper",
+  "scheme": "mixed",
+  "mood": [
+   "thủ công",
+   "ấm áp",
+   "sổ tay",
+   "văn chương"
+  ],
+  "best_for": "chia sẻ trải nghiệm, kết quả phỏng vấn, tổng kết workshop, câu chuyện thương hiệu",
+  "fonts": "Space Grotesk + Patrick Hand + IBM Plex Mono"
+ },
+ {
+  "slug": "pink-script",
+  "name": "Pink Script",
+  "scheme": "dark",
+  "mood": [
+   "đêm muộn",
+   "sang trọng",
+   "quyến rũ",
+   "tạp chí thời trang"
+  ],
+  "best_for": "ra mắt thương hiệu thời trang, sản phẩm cao cấp, sự kiện buổi tối",
+  "fonts": "Playfair Display + Inter + JetBrains Mono"
+ },
+ {
+  "slug": "playful",
+  "name": "Playful",
+  "scheme": "light",
+  "mood": [
+   "ấm áp",
+   "thân thiện",
+   "thủ công",
+   "indie"
+  ],
+  "best_for": "ra mắt sản phẩm nhỏ, cộng đồng, giới thiệu sáng tạo",
+  "fonts": "Bricolage Grotesque + Space Grotesk"
+ },
+ {
+  "slug": "raw-grid",
+  "name": "Raw Grid",
+  "scheme": "light",
+  "mood": [
+   "thô mộc",
+   "dứt khoát",
+   "năng động",
+   "tự tin"
+  ],
+  "best_for": "pitch khởi nghiệp, demo sản phẩm, deck thương hiệu, so sánh số liệu",
+  "fonts": "Be Vietnam Pro"
+ },
+ {
+  "slug": "retro-windows",
+  "name": "Retro Windows",
+  "scheme": "light",
+  "mood": [
+   "hoài cổ",
+   "tinh nghịch",
+   "geek",
+   "vui"
+  ],
+  "best_for": "talk lịch sử công nghệ, game, thương hiệu Y2K, deck tếu có chủ ý",
+  "fonts": "VT323 + Be Vietnam Pro"
+ },
+ {
+  "slug": "retro-zine",
+  "name": "Retro Zine",
+  "scheme": "light",
+  "mood": [
+   "thủ công",
+   "mộc mạc",
+   "hoài cổ",
+   "bụi bặm"
+  ],
+  "best_for": "ấn phẩm độc lập, nghệ thuật, cộng đồng, chất in risograph",
+  "fonts": "Oswald + Space Grotesk + Patrick Hand"
+ },
+ {
+  "slug": "sakura-chroma",
+  "name": "Sakura Chroma",
+  "scheme": "light",
+  "mood": [
+   "hoài cổ",
+   "vui tươi",
+   "ấm áp",
+   "rực màu"
+  ],
+  "best_for": "ra mắt sản phẩm sáng tạo, nhãn nhạc, tạp chí, workshop trẻ trung",
+  "fonts": "Big Shoulders Display + Be Vietnam Pro + JetBrains Mono"
+ },
+ {
+  "slug": "scatterbrain",
+  "name": "Scatterbrain",
+  "scheme": "light",
+  "mood": [
+   "vui tươi",
+   "sáng tạo",
+   "ấm áp",
+   "bừa có chủ ý"
+  ],
+  "best_for": "workshop, brainstorm, đào tạo sáng tạo, buổi ý tưởng",
+  "fonts": "Lobster + Roboto Slab + Patrick Hand"
+ },
+ {
+  "slug": "signal",
+  "name": "Signal",
+  "scheme": "mixed",
+  "mood": [
+   "trang trọng",
+   "điềm tĩnh",
+   "đáng tin",
+   "có chiều sâu"
+  ],
+  "best_for": "báo cáo hội đồng quản trị, gọi vốn, tư vấn, chính sách",
+  "fonts": "Source Serif 4 + Be Vietnam Pro + IBM Plex Mono"
+ },
+ {
+  "slug": "soft-editorial",
+  "name": "Soft Editorial",
+  "scheme": "light",
+  "mood": [
+   "văn chương",
+   "thanh lịch",
+   "tĩnh lặng",
+   "ấm áp"
+  ],
+  "best_for": "tạp chí, câu chuyện thương hiệu, tư vấn, triển lãm",
+  "fonts": "Cormorant Garamond + Work Sans"
+ },
+ {
+  "slug": "stencil-tablet",
+  "name": "Stencil & Tablet",
+  "scheme": "mixed",
+  "mood": [
+   "lưu trữ",
+   "mộc",
+   "dày dặn",
+   "poster"
+  ],
+  "best_for": "bảo tàng, văn hóa, kiến trúc, tuyên ngôn, sổ tay hiện trường",
+  "fonts": "Bricolage Grotesque + Big Shoulders Stencil Display (số) + Inter"
+ },
+ {
+  "slug": "studio",
+  "name": "Studio",
+  "scheme": "mixed",
+  "mood": [
+   "điện năng",
+   "táo bạo",
+   "đồ họa",
+   "chất agency"
+  ],
+  "best_for": "pitch agency sáng tạo, giới thiệu studio, tuyên ngôn thương hiệu",
+  "fonts": "Barlow + IBM Plex Mono"
+ },
+ {
+  "slug": "vellum",
+  "name": "Vellum",
+  "scheme": "dark",
+  "mood": [
+   "trầm tĩnh",
+   "học thuật",
+   "văn chương",
+   "chiêm nghiệm"
+  ],
+  "best_for": "báo cáo nghiên cứu, sách trắng, đề xuất chính sách, bài suy ngẫm",
+  "fonts": "Cormorant Garamond + Be Vietnam Pro + IBM Plex Mono"
+ },
+ {
+  "slug": "swiss-modern",
+  "name": "Swiss Modern",
+  "scheme": "light",
+  "mood": [
+   "rõ ràng",
+   "chuyên nghiệp",
+   "tối giản"
+  ],
+  "best_for": "doanh nghiệp, đào tạo, báo cáo",
+  "fonts": "Archivo + Inter"
+ },
+ {
+  "slug": "xanh-dai-hoc",
+  "name": "Xanh Đại Học",
+  "scheme": "light",
+  "mood": [
+   "trẻ",
+   "học thuật",
+   "thân thiện"
+  ],
+  "best_for": "bảo vệ đề tài, bài giảng, báo cáo nhóm",
+  "fonts": "Montserrat + Open Sans"
+ },
+ {
+  "slug": "bold-signal",
+  "name": "Bold Signal",
+  "scheme": "dark",
+  "mood": [
+   "mạnh",
+   "tự tin",
+   "nổi bật"
+  ],
+  "best_for": "pitch, ra mắt sản phẩm, keynote",
+  "fonts": "Be Vietnam Pro + Space Grotesk"
+ },
+ {
+  "slug": "dark-botanical",
+  "name": "Dark Botanical",
+  "scheme": "dark",
+  "mood": [
+   "sang trọng",
+   "mềm mại",
+   "cao cấp"
+  ],
+  "best_for": "thương hiệu, sự kiện, giới thiệu dịch vụ",
+  "fonts": "Cormorant + IBM Plex Sans"
+ },
+ {
+  "slug": "neon-cyber",
+  "name": "Neon Cyber",
+  "scheme": "dark",
+  "mood": [
+   "công nghệ",
+   "tương lai",
+   "năng động"
+  ],
+  "best_for": "AI, công nghệ, sản phẩm số",
+  "fonts": "Chakra Petch + Space Grotesk"
+ },
+ {
+  "slug": "paper-ink",
+  "name": "Paper & Ink",
+  "scheme": "light",
+  "mood": [
+   "biên tập",
+   "sâu lắng",
+   "kể chuyện"
+  ],
+  "best_for": "bài nói chuyện, nghiên cứu, văn hóa",
+  "fonts": "Cormorant Garamond + Source Serif 4"
+ }
+]

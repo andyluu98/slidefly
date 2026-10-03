@@ -1,0 +1,208 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Thư viện style morph-slides</title><style>
+:root{--bg:#f4f2ee;--fg:#1b1b1b;--muted:#666;--card:#fff;--line:#ddd}
+@media (prefers-color-scheme:dark){:root{--bg:#141414;--fg:#eee;--muted:#999;--card:#1f1f1f;--line:#333}}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,sans-serif}
+header{padding:24px 16px 8px;max-width:1400px;margin:auto}h1{margin:0 0 6px;font-size:26px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.bar button,.bar input{font:inherit;padding:6px 12px;border:1px solid var(--line);border-radius:20px;background:var(--card);color:var(--fg);cursor:pointer}
+.bar button.on{background:var(--fg);color:var(--bg)}.bar input{min-width:220px;cursor:text}
+main{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;padding:16px;max-width:1400px;margin:auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;color:inherit;text-decoration:none;display:block}
+.thumb{position:relative;aspect-ratio:16/9;background:#000}.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .3s}
+.thumb .alt{opacity:0}.card:hover .alt{opacity:1}.meta{padding:10px 12px}.meta p{margin:4px 0;color:var(--muted)}
+code{font-size:12px;color:var(--muted)}.tag{display:inline-block;font-size:12px;padding:1px 8px;margin:2px 4px 2px 0;border-radius:10px;border:1px solid var(--line)}small{color:var(--muted)}
+</style></head><body><header><h1>Thư viện style morph-slides</h1>
+<p>47 style. Rê chuột để xem slide nội dung, bấm để mở deck demo (mũi tên để chuyển slide).</p>
+<div class="bar"><button class="on" data-f="all">Tất cả</button><button data-f="dark">Nền tối</button><button data-f="light">Nền sáng</button><button data-f="mixed">Pha trộn</button>
+<input id="q" placeholder="Tìm: công nghệ, sang trọng, vui..."></div></header><main><a class="card" href="01_demo-electric-studio.html" data-scheme="mixed" data-text="electric studio mạnh mẽ sạch sẽ chuyên nghiệp tương phản cao pitch doanh nghiệp, báo cáo chiến lược, ra mắt sản phẩm">
+  <div class="thumb"><img src="anh/electric-studio-1.jpg" alt=""><img class="alt" src="anh/electric-studio-4.jpg" alt=""></div>
+  <div class="meta"><b>01. Electric Studio</b> <code>electric-studio</code>
+  <p>pitch doanh nghiệp, báo cáo chiến lược, ra mắt sản phẩm</p><div><span class="tag">mạnh mẽ</span> <span class="tag">sạch sẽ</span> <span class="tag">chuyên nghiệp</span> <span class="tag">tương phản cao</span></div><small>Manrope</small></div></a>
+<a class="card" href="02_demo-creative-voltage.html" data-scheme="mixed" data-text="creative voltage sôi động sáng tạo retro hiện đại táo bạo pitch sáng tạo, agency, sự kiện, ra mắt sản phẩm trẻ trung">
+  <div class="thumb"><img src="anh/creative-voltage-1.jpg" alt=""><img class="alt" src="anh/creative-voltage-4.jpg" alt=""></div>
+  <div class="meta"><b>02. Creative Voltage</b> <code>creative-voltage</code>
+  <p>pitch sáng tạo, agency, sự kiện, ra mắt sản phẩm trẻ trung</p><div><span class="tag">sôi động</span> <span class="tag">sáng tạo</span> <span class="tag">retro hiện đại</span> <span class="tag">táo bạo</span></div><small>Bricolage Grotesque + Space Mono + Pacifico</small></div></a>
+<a class="card" href="03_demo-notebook-tabs.html" data-scheme="mixed" data-text="notebook tabs biên tập ngăn nắp thanh lịch xúc giác đào tạo, báo cáo, tài liệu nhiều chương">
+  <div class="thumb"><img src="anh/notebook-tabs-1.jpg" alt=""><img class="alt" src="anh/notebook-tabs-4.jpg" alt=""></div>
+  <div class="meta"><b>03. Notebook Tabs</b> <code>notebook-tabs</code>
+  <p>đào tạo, báo cáo, tài liệu nhiều chương</p><div><span class="tag">biên tập</span> <span class="tag">ngăn nắp</span> <span class="tag">thanh lịch</span> <span class="tag">xúc giác</span></div><small>Libre Bodoni + Be Vietnam Pro</small></div></a>
+<a class="card" href="04_demo-pastel-geometry.html" data-scheme="light" data-text="pastel geometry thân thiện gọn gàng nhẹ nhàng hiện đại đào tạo nội bộ, giới thiệu sản phẩm, onboarding, giáo dục">
+  <div class="thumb"><img src="anh/pastel-geometry-1.jpg" alt=""><img class="alt" src="anh/pastel-geometry-4.jpg" alt=""></div>
+  <div class="meta"><b>04. Pastel Geometry</b> <code>pastel-geometry</code>
+  <p>đào tạo nội bộ, giới thiệu sản phẩm, onboarding, giáo dục</p><div><span class="tag">thân thiện</span> <span class="tag">gọn gàng</span> <span class="tag">nhẹ nhàng</span> <span class="tag">hiện đại</span></div><small>Plus Jakarta Sans</small></div></a>
+<a class="card" href="05_demo-split-pastel.html" data-scheme="light" data-text="split pastel vui tươi thân thiện hiện đại sáng tạo thuyết trình nhẹ nhàng, workshop sáng tạo, sản phẩm cho người trẻ">
+  <div class="thumb"><img src="anh/split-pastel-1.jpg" alt=""><img class="alt" src="anh/split-pastel-4.jpg" alt=""></div>
+  <div class="meta"><b>05. Split Pastel</b> <code>split-pastel</code>
+  <p>thuyết trình nhẹ nhàng, workshop sáng tạo, sản phẩm cho người trẻ</p><div><span class="tag">vui tươi</span> <span class="tag">thân thiện</span> <span class="tag">hiện đại</span> <span class="tag">sáng tạo</span></div><small>Plus Jakarta Sans</small></div></a>
+<a class="card" href="06_demo-vintage-editorial.html" data-scheme="mixed" data-text="vintage editorial tạp chí cổ điển dí dỏm tự tin có cá tính bài nói có chính kiến, thương hiệu sáng tạo, chia sẻ góc nhìn">
+  <div class="thumb"><img src="anh/vintage-editorial-1.jpg" alt=""><img class="alt" src="anh/vintage-editorial-4.jpg" alt=""></div>
+  <div class="meta"><b>06. Vintage Editorial</b> <code>vintage-editorial</code>
+  <p>bài nói có chính kiến, thương hiệu sáng tạo, chia sẻ góc nhìn</p><div><span class="tag">tạp chí cổ điển</span> <span class="tag">dí dỏm</span> <span class="tag">tự tin</span> <span class="tag">có cá tính</span></div><small>Fraunces + Work Sans</small></div></a>
+<a class="card" href="07_demo-terminal-green.html" data-scheme="dark" data-text="terminal green kỹ thuật hacker tối giản tập trung bài nói cho dân lập trình, demo sản phẩm, đào tạo công nghệ">
+  <div class="thumb"><img src="anh/terminal-green-1.jpg" alt=""><img class="alt" src="anh/terminal-green-4.jpg" alt=""></div>
+  <div class="meta"><b>07. Terminal Green</b> <code>terminal-green</code>
+  <p>bài nói cho dân lập trình, demo sản phẩm, đào tạo công nghệ</p><div><span class="tag">kỹ thuật</span> <span class="tag">hacker</span> <span class="tag">tối giản</span> <span class="tag">tập trung</span></div><small>JetBrains Mono</small></div></a>
+<a class="card" href="08_demo-8-bit-orbit.html" data-scheme="dark" data-text="8-bit orbit hoài cổ arcade tinh nghịch neon năng lượng game, hackathon, công cụ dev, talk công nghệ trẻ trung">
+  <div class="thumb"><img src="anh/8-bit-orbit-1.jpg" alt=""><img class="alt" src="anh/8-bit-orbit-4.jpg" alt=""></div>
+  <div class="meta"><b>08. 8-Bit Orbit</b> <code>8-bit-orbit</code>
+  <p>game, hackathon, công cụ dev, talk công nghệ trẻ trung</p><div><span class="tag">hoài cổ arcade</span> <span class="tag">tinh nghịch</span> <span class="tag">neon</span> <span class="tag">năng lượng</span></div><small>Tektur + Chakra Petch + Space Mono</small></div></a>
+<a class="card" href="09_demo-biennale-yellow.html" data-scheme="light" data-text="biennale vàng tạp chí nghệ thuật ấm áp tĩnh lặng áp phích triển lãm triển lãm, sự kiện văn hóa, hội thảo thiết kế">
+  <div class="thumb"><img src="anh/biennale-yellow-1.jpg" alt=""><img class="alt" src="anh/biennale-yellow-4.jpg" alt=""></div>
+  <div class="meta"><b>09. Biennale Vàng</b> <code>biennale-yellow</code>
+  <p>triển lãm, sự kiện văn hóa, hội thảo thiết kế</p><div><span class="tag">tạp chí nghệ thuật</span> <span class="tag">ấm áp</span> <span class="tag">tĩnh lặng</span> <span class="tag">áp phích triển lãm</span></div><small>Playfair Display + Archivo</small></div></a>
+<a class="card" href="10_demo-block-frame.html" data-scheme="light" data-text="block frame táo bạo vui nhộn pop tươi ra mắt sản phẩm, agency, review sáng tạo, đổi thương hiệu">
+  <div class="thumb"><img src="anh/block-frame-1.jpg" alt=""><img class="alt" src="anh/block-frame-4.jpg" alt=""></div>
+  <div class="meta"><b>10. Block Frame</b> <code>block-frame</code>
+  <p>ra mắt sản phẩm, agency, review sáng tạo, đổi thương hiệu</p><div><span class="tag">táo bạo</span> <span class="tag">vui nhộn</span> <span class="tag">pop</span> <span class="tag">tươi</span></div><small>Inter + Space Grotesk</small></div></a>
+<a class="card" href="11_demo-blue-professional.html" data-scheme="light" data-text="blue professional chuyên nghiệp điềm tĩnh đáng tin hiện đại báo cáo tư vấn, pitch b2b, báo cáo nhà đầu tư, họp đánh giá">
+  <div class="thumb"><img src="anh/blue-professional-1.jpg" alt=""><img class="alt" src="anh/blue-professional-4.jpg" alt=""></div>
+  <div class="meta"><b>11. Blue Professional</b> <code>blue-professional</code>
+  <p>báo cáo tư vấn, pitch B2B, báo cáo nhà đầu tư, họp đánh giá</p><div><span class="tag">chuyên nghiệp</span> <span class="tag">điềm tĩnh</span> <span class="tag">đáng tin</span> <span class="tag">hiện đại</span></div><small>Space Grotesk + Inter</small></div></a>
+<a class="card" href="12_demo-bold-poster.html" data-scheme="mixed" data-text="bold poster táo bạo kiểu tạp chí tự tin ấn tượng tuyên ngôn thương hiệu, tầm nhìn nhà sáng lập, pitch sáng tạo">
+  <div class="thumb"><img src="anh/bold-poster-1.jpg" alt=""><img class="alt" src="anh/bold-poster-4.jpg" alt=""></div>
+  <div class="meta"><b>12. Bold Poster</b> <code>bold-poster</code>
+  <p>tuyên ngôn thương hiệu, tầm nhìn nhà sáng lập, pitch sáng tạo</p><div><span class="tag">táo bạo</span> <span class="tag">kiểu tạp chí</span> <span class="tag">tự tin</span> <span class="tag">ấn tượng</span></div><small>Lobster + Lora + Space Grotesk</small></div></a>
+<a class="card" href="13_demo-broadside.html" data-scheme="mixed" data-text="broadside báo chí áp phích dõng dạc kịch tính tuyên ngôn, pitch văn hóa, bài nói về thiết kế">
+  <div class="thumb"><img src="anh/broadside-1.jpg" alt=""><img class="alt" src="anh/broadside-4.jpg" alt=""></div>
+  <div class="meta"><b>13. Broadside</b> <code>broadside</code>
+  <p>tuyên ngôn, pitch văn hóa, bài nói về thiết kế</p><div><span class="tag">báo chí</span> <span class="tag">áp phích</span> <span class="tag">dõng dạc</span> <span class="tag">kịch tính</span></div><small>Barlow + IBM Plex Mono</small></div></a>
+<a class="card" href="14_demo-capsule.html" data-scheme="light" data-text="capsule vui tươi hiện đại ấm áp trẻ trung thương hiệu lifestyle, portfolio sáng tạo, ra mắt sản phẩm">
+  <div class="thumb"><img src="anh/capsule-1.jpg" alt=""><img class="alt" src="anh/capsule-4.jpg" alt=""></div>
+  <div class="meta"><b>14. Capsule</b> <code>capsule</code>
+  <p>thương hiệu lifestyle, portfolio sáng tạo, ra mắt sản phẩm</p><div><span class="tag">vui tươi</span> <span class="tag">hiện đại</span> <span class="tag">ấm áp</span> <span class="tag">trẻ trung</span></div><small>Libre Bodoni + Space Grotesk</small></div></a>
+<a class="card" href="15_demo-cartesian.html" data-scheme="light" data-text="cartesian tĩnh lặng chừng mực thanh lịch tối giản ấm luận điểm đầu tư, sách trắng, tư vấn, nghiên cứu, triển lãm">
+  <div class="thumb"><img src="anh/cartesian-1.jpg" alt=""><img class="alt" src="anh/cartesian-4.jpg" alt=""></div>
+  <div class="meta"><b>15. Cartesian</b> <code>cartesian</code>
+  <p>luận điểm đầu tư, sách trắng, tư vấn, nghiên cứu, triển lãm</p><div><span class="tag">tĩnh lặng</span> <span class="tag">chừng mực</span> <span class="tag">thanh lịch</span> <span class="tag">tối giản ấm</span></div><small>Playfair Display + Inter</small></div></a>
+<a class="card" href="16_demo-cobalt-grid.html" data-scheme="light" data-text="cobalt grid biên tập nghiên cứu tĩnh lặng hiện đại bản tin nghiên cứu, báo cáo xu hướng, hồ sơ năng lực, học thuật">
+  <div class="thumb"><img src="anh/cobalt-grid-1.jpg" alt=""><img class="alt" src="anh/cobalt-grid-4.jpg" alt=""></div>
+  <div class="meta"><b>16. Cobalt Grid</b> <code>cobalt-grid</code>
+  <p>bản tin nghiên cứu, báo cáo xu hướng, hồ sơ năng lực, học thuật</p><div><span class="tag">biên tập</span> <span class="tag">nghiên cứu</span> <span class="tag">tĩnh lặng</span> <span class="tag">hiện đại</span></div><small>Newsreader + Hanken Grotesk + IBM Plex Mono</small></div></a>
+<a class="card" href="17_demo-coral.html" data-scheme="mixed" data-text="coral táo bạo ấm áp hiện đại tự tin thời trang, f&amp;b, thể thao, lifestyle, hồ sơ agency">
+  <div class="thumb"><img src="anh/coral-1.jpg" alt=""><img class="alt" src="anh/coral-4.jpg" alt=""></div>
+  <div class="meta"><b>17. Coral</b> <code>coral</code>
+  <p>thời trang, F&amp;B, thể thao, lifestyle, hồ sơ agency</p><div><span class="tag">táo bạo</span> <span class="tag">ấm áp</span> <span class="tag">hiện đại</span> <span class="tag">tự tin</span></div><small>Oswald + Inter</small></div></a>
+<a class="card" href="18_demo-creative-mode.html" data-scheme="light" data-text="creative mode sáng tạo tự tin tinh nghịch đậm chất thiết kế pitch agency/studio, review sáng tạo, talk muốn khác thường">
+  <div class="thumb"><img src="anh/creative-mode-1.jpg" alt=""><img class="alt" src="anh/creative-mode-4.jpg" alt=""></div>
+  <div class="meta"><b>18. Creative Mode</b> <code>creative-mode</code>
+  <p>pitch agency/studio, review sáng tạo, talk muốn khác thường</p><div><span class="tag">sáng tạo</span> <span class="tag">tự tin</span> <span class="tag">tinh nghịch</span> <span class="tag">đậm chất thiết kế</span></div><small>Archivo + Space Grotesk + JetBrains Mono</small></div></a>
+<a class="card" href="19_demo-daisy-days.html" data-scheme="light" data-text="daisy days vui tươi ấm áp hồn nhiên nhẹ nhàng đào tạo thân thiện, gia đình trẻ em, workshop cộng đồng, kickoff vui">
+  <div class="thumb"><img src="anh/daisy-days-1.jpg" alt=""><img class="alt" src="anh/daisy-days-4.jpg" alt=""></div>
+  <div class="meta"><b>19. Daisy Days</b> <code>daisy-days</code>
+  <p>đào tạo thân thiện, gia đình trẻ em, workshop cộng đồng, kickoff vui</p><div><span class="tag">vui tươi</span> <span class="tag">ấm áp</span> <span class="tag">hồn nhiên</span> <span class="tag">nhẹ nhàng</span></div><small>Baloo 2 + Quicksand</small></div></a>
+<a class="card" href="20_demo-editorial-forest.html" data-scheme="mixed" data-text="editorial forest trầm lắng chỉn chu ấm áp văn chương báo cáo quý, tổng kết nội bộ, cập nhật studio, ra mắt sách">
+  <div class="thumb"><img src="anh/editorial-forest-1.jpg" alt=""><img class="alt" src="anh/editorial-forest-4.jpg" alt=""></div>
+  <div class="meta"><b>20. Editorial Forest</b> <code>editorial-forest</code>
+  <p>báo cáo quý, tổng kết nội bộ, cập nhật studio, ra mắt sách</p><div><span class="tag">trầm lắng</span> <span class="tag">chỉn chu</span> <span class="tag">ấm áp</span> <span class="tag">văn chương</span></div><small>Source Serif 4 + JetBrains Mono</small></div></a>
+<a class="card" href="21_demo-editorial-tri-tone.html" data-scheme="mixed" data-text="editorial tri-tone biên tập ấm áp chỉn chu sang tạp chí, thời trang, phong cách sống, pitch sáng tạo">
+  <div class="thumb"><img src="anh/editorial-tri-tone-1.jpg" alt=""><img class="alt" src="anh/editorial-tri-tone-4.jpg" alt=""></div>
+  <div class="meta"><b>21. Editorial Tri-Tone</b> <code>editorial-tri-tone</code>
+  <p>tạp chí, thời trang, phong cách sống, pitch sáng tạo</p><div><span class="tag">biên tập</span> <span class="tag">ấm áp</span> <span class="tag">chỉn chu</span> <span class="tag">sang</span></div><small>Bricolage Grotesque + Playfair Display + JetBrains Mono</small></div></a>
+<a class="card" href="22_demo-emerald-editorial.html" data-scheme="mixed" data-text="emerald editorial biên tập tự tin sang trọng bìa tạp chí báo cáo lãnh đạo, họp chiến lược, ra mắt sản phẩm chất tạp chí">
+  <div class="thumb"><img src="anh/emerald-editorial-1.jpg" alt=""><img class="alt" src="anh/emerald-editorial-4.jpg" alt=""></div>
+  <div class="meta"><b>22. Emerald Editorial</b> <code>emerald-editorial</code>
+  <p>báo cáo lãnh đạo, họp chiến lược, ra mắt sản phẩm chất tạp chí</p><div><span class="tag">biên tập</span> <span class="tag">tự tin</span> <span class="tag">sang trọng</span> <span class="tag">bìa tạp chí</span></div><small>Playfair Display + Manrope</small></div></a>
+<a class="card" href="23_demo-grove.html" data-scheme="mixed" data-text="grove trầm lắng văn chương hữu cơ ấm áp thương hiệu bền vững, nhà hàng, tư vấn, văn hóa nghệ thuật">
+  <div class="thumb"><img src="anh/grove-1.jpg" alt=""><img class="alt" src="anh/grove-4.jpg" alt=""></div>
+  <div class="meta"><b>23. Grove</b> <code>grove</code>
+  <p>thương hiệu bền vững, nhà hàng, tư vấn, văn hóa nghệ thuật</p><div><span class="tag">trầm lắng</span> <span class="tag">văn chương</span> <span class="tag">hữu cơ</span> <span class="tag">ấm áp</span></div><small>Playfair Display + Be Vietnam Pro</small></div></a>
+<a class="card" href="24_demo-long-table.html" data-scheme="light" data-text="long table ấm áp thân mật in ấn thủ công tạp chí supper club, nhà hàng nhỏ, sự kiện cộng đồng, lifestyle">
+  <div class="thumb"><img src="anh/long-table-1.jpg" alt=""><img class="alt" src="anh/long-table-4.jpg" alt=""></div>
+  <div class="meta"><b>24. Long Table</b> <code>long-table</code>
+  <p>supper club, nhà hàng nhỏ, sự kiện cộng đồng, lifestyle</p><div><span class="tag">ấm áp</span> <span class="tag">thân mật</span> <span class="tag">in ấn thủ công</span> <span class="tag">tạp chí</span></div><small>Bricolage Grotesque + Fraunces</small></div></a>
+<a class="card" href="25_demo-mat.html" data-scheme="mixed" data-text="mat ấm áp mộc tinh tế mid-century studio thiết kế, nội thất, thủ công, tư vấn">
+  <div class="thumb"><img src="anh/mat-1.jpg" alt=""><img class="alt" src="anh/mat-4.jpg" alt=""></div>
+  <div class="meta"><b>25. Mat</b> <code>mat</code>
+  <p>studio thiết kế, nội thất, thủ công, tư vấn</p><div><span class="tag">ấm áp</span> <span class="tag">mộc</span> <span class="tag">tinh tế</span> <span class="tag">mid-century</span></div><small>Bricolage Grotesque + Be Vietnam Pro + IBM Plex Mono</small></div></a>
+<a class="card" href="26_demo-monochrome.html" data-scheme="light" data-text="monochrome tiết chế văn chương lưu trữ sổ cái báo cáo dài, white paper, tổng hợp nghiên cứu, tài liệu tư vấn">
+  <div class="thumb"><img src="anh/monochrome-1.jpg" alt=""><img class="alt" src="anh/monochrome-4.jpg" alt=""></div>
+  <div class="meta"><b>26. Monochrome</b> <code>monochrome</code>
+  <p>báo cáo dài, white paper, tổng hợp nghiên cứu, tài liệu tư vấn</p><div><span class="tag">tiết chế</span> <span class="tag">văn chương</span> <span class="tag">lưu trữ</span> <span class="tag">sổ cái</span></div><small>Be Vietnam Pro + Lora + JetBrains Mono</small></div></a>
+<a class="card" href="27_demo-neo-grid-bold.html" data-scheme="light" data-text="neo-grid bold tự tin mạnh biên tập hiện đại pitch thiên thiết kế, keynote, slide số liệu và so sánh">
+  <div class="thumb"><img src="anh/neo-grid-bold-1.jpg" alt=""><img class="alt" src="anh/neo-grid-bold-4.jpg" alt=""></div>
+  <div class="meta"><b>27. Neo-Grid Bold</b> <code>neo-grid-bold</code>
+  <p>pitch thiên thiết kế, keynote, slide số liệu và so sánh</p><div><span class="tag">tự tin</span> <span class="tag">mạnh</span> <span class="tag">biên tập</span> <span class="tag">hiện đại</span></div><small>Space Grotesk + JetBrains Mono</small></div></a>
+<a class="card" href="28_demo-peoples-platform.html" data-scheme="mixed" data-text="people&#x27;s platform cổ động mạnh mẽ đồ họa thẳng thắn tuyên ngôn, dự án cộng đồng, chiến dịch, pitch truyền cảm hứng">
+  <div class="thumb"><img src="anh/peoples-platform-1.jpg" alt=""><img class="alt" src="anh/peoples-platform-4.jpg" alt=""></div>
+  <div class="meta"><b>28. People&#x27;s Platform</b> <code>peoples-platform</code>
+  <p>tuyên ngôn, dự án cộng đồng, chiến dịch, pitch truyền cảm hứng</p><div><span class="tag">cổ động</span> <span class="tag">mạnh mẽ</span> <span class="tag">đồ họa</span> <span class="tag">thẳng thắn</span></div><small>Alfa Slab One + Archivo Narrow + Patrick Hand</small></div></a>
+<a class="card" href="29_demo-pin-and-paper.html" data-scheme="mixed" data-text="pin &amp; paper thủ công ấm áp sổ tay văn chương chia sẻ trải nghiệm, kết quả phỏng vấn, tổng kết workshop, câu chuyện thương hiệu">
+  <div class="thumb"><img src="anh/pin-and-paper-1.jpg" alt=""><img class="alt" src="anh/pin-and-paper-4.jpg" alt=""></div>
+  <div class="meta"><b>29. Pin &amp; Paper</b> <code>pin-and-paper</code>
+  <p>chia sẻ trải nghiệm, kết quả phỏng vấn, tổng kết workshop, câu chuyện thương hiệu</p><div><span class="tag">thủ công</span> <span class="tag">ấm áp</span> <span class="tag">sổ tay</span> <span class="tag">văn chương</span></div><small>Space Grotesk + Patrick Hand + IBM Plex Mono</small></div></a>
+<a class="card" href="30_demo-pink-script.html" data-scheme="dark" data-text="pink script đêm muộn sang trọng quyến rũ tạp chí thời trang ra mắt thương hiệu thời trang, sản phẩm cao cấp, sự kiện buổi tối">
+  <div class="thumb"><img src="anh/pink-script-1.jpg" alt=""><img class="alt" src="anh/pink-script-4.jpg" alt=""></div>
+  <div class="meta"><b>30. Pink Script</b> <code>pink-script</code>
+  <p>ra mắt thương hiệu thời trang, sản phẩm cao cấp, sự kiện buổi tối</p><div><span class="tag">đêm muộn</span> <span class="tag">sang trọng</span> <span class="tag">quyến rũ</span> <span class="tag">tạp chí thời trang</span></div><small>Playfair Display + Inter + JetBrains Mono</small></div></a>
+<a class="card" href="31_demo-playful.html" data-scheme="light" data-text="playful ấm áp thân thiện thủ công indie ra mắt sản phẩm nhỏ, cộng đồng, giới thiệu sáng tạo">
+  <div class="thumb"><img src="anh/playful-1.jpg" alt=""><img class="alt" src="anh/playful-4.jpg" alt=""></div>
+  <div class="meta"><b>31. Playful</b> <code>playful</code>
+  <p>ra mắt sản phẩm nhỏ, cộng đồng, giới thiệu sáng tạo</p><div><span class="tag">ấm áp</span> <span class="tag">thân thiện</span> <span class="tag">thủ công</span> <span class="tag">indie</span></div><small>Bricolage Grotesque + Space Grotesk</small></div></a>
+<a class="card" href="32_demo-raw-grid.html" data-scheme="light" data-text="raw grid thô mộc dứt khoát năng động tự tin pitch khởi nghiệp, demo sản phẩm, deck thương hiệu, so sánh số liệu">
+  <div class="thumb"><img src="anh/raw-grid-1.jpg" alt=""><img class="alt" src="anh/raw-grid-4.jpg" alt=""></div>
+  <div class="meta"><b>32. Raw Grid</b> <code>raw-grid</code>
+  <p>pitch khởi nghiệp, demo sản phẩm, deck thương hiệu, so sánh số liệu</p><div><span class="tag">thô mộc</span> <span class="tag">dứt khoát</span> <span class="tag">năng động</span> <span class="tag">tự tin</span></div><small>Be Vietnam Pro</small></div></a>
+<a class="card" href="33_demo-retro-windows.html" data-scheme="light" data-text="retro windows hoài cổ tinh nghịch geek vui talk lịch sử công nghệ, game, thương hiệu y2k, deck tếu có chủ ý">
+  <div class="thumb"><img src="anh/retro-windows-1.jpg" alt=""><img class="alt" src="anh/retro-windows-4.jpg" alt=""></div>
+  <div class="meta"><b>33. Retro Windows</b> <code>retro-windows</code>
+  <p>talk lịch sử công nghệ, game, thương hiệu Y2K, deck tếu có chủ ý</p><div><span class="tag">hoài cổ</span> <span class="tag">tinh nghịch</span> <span class="tag">geek</span> <span class="tag">vui</span></div><small>VT323 + Be Vietnam Pro</small></div></a>
+<a class="card" href="34_demo-retro-zine.html" data-scheme="light" data-text="retro zine thủ công mộc mạc hoài cổ bụi bặm ấn phẩm độc lập, nghệ thuật, cộng đồng, chất in risograph">
+  <div class="thumb"><img src="anh/retro-zine-1.jpg" alt=""><img class="alt" src="anh/retro-zine-4.jpg" alt=""></div>
+  <div class="meta"><b>34. Retro Zine</b> <code>retro-zine</code>
+  <p>ấn phẩm độc lập, nghệ thuật, cộng đồng, chất in risograph</p><div><span class="tag">thủ công</span> <span class="tag">mộc mạc</span> <span class="tag">hoài cổ</span> <span class="tag">bụi bặm</span></div><small>Oswald + Space Grotesk + Patrick Hand</small></div></a>
+<a class="card" href="35_demo-sakura-chroma.html" data-scheme="light" data-text="sakura chroma hoài cổ vui tươi ấm áp rực màu ra mắt sản phẩm sáng tạo, nhãn nhạc, tạp chí, workshop trẻ trung">
+  <div class="thumb"><img src="anh/sakura-chroma-1.jpg" alt=""><img class="alt" src="anh/sakura-chroma-4.jpg" alt=""></div>
+  <div class="meta"><b>35. Sakura Chroma</b> <code>sakura-chroma</code>
+  <p>ra mắt sản phẩm sáng tạo, nhãn nhạc, tạp chí, workshop trẻ trung</p><div><span class="tag">hoài cổ</span> <span class="tag">vui tươi</span> <span class="tag">ấm áp</span> <span class="tag">rực màu</span></div><small>Big Shoulders Display + Be Vietnam Pro + JetBrains Mono</small></div></a>
+<a class="card" href="36_demo-scatterbrain.html" data-scheme="light" data-text="scatterbrain vui tươi sáng tạo ấm áp bừa có chủ ý workshop, brainstorm, đào tạo sáng tạo, buổi ý tưởng">
+  <div class="thumb"><img src="anh/scatterbrain-1.jpg" alt=""><img class="alt" src="anh/scatterbrain-4.jpg" alt=""></div>
+  <div class="meta"><b>36. Scatterbrain</b> <code>scatterbrain</code>
+  <p>workshop, brainstorm, đào tạo sáng tạo, buổi ý tưởng</p><div><span class="tag">vui tươi</span> <span class="tag">sáng tạo</span> <span class="tag">ấm áp</span> <span class="tag">bừa có chủ ý</span></div><small>Lobster + Roboto Slab + Patrick Hand</small></div></a>
+<a class="card" href="37_demo-signal.html" data-scheme="mixed" data-text="signal trang trọng điềm tĩnh đáng tin có chiều sâu báo cáo hội đồng quản trị, gọi vốn, tư vấn, chính sách">
+  <div class="thumb"><img src="anh/signal-1.jpg" alt=""><img class="alt" src="anh/signal-4.jpg" alt=""></div>
+  <div class="meta"><b>37. Signal</b> <code>signal</code>
+  <p>báo cáo hội đồng quản trị, gọi vốn, tư vấn, chính sách</p><div><span class="tag">trang trọng</span> <span class="tag">điềm tĩnh</span> <span class="tag">đáng tin</span> <span class="tag">có chiều sâu</span></div><small>Source Serif 4 + Be Vietnam Pro + IBM Plex Mono</small></div></a>
+<a class="card" href="38_demo-soft-editorial.html" data-scheme="light" data-text="soft editorial văn chương thanh lịch tĩnh lặng ấm áp tạp chí, câu chuyện thương hiệu, tư vấn, triển lãm">
+  <div class="thumb"><img src="anh/soft-editorial-1.jpg" alt=""><img class="alt" src="anh/soft-editorial-4.jpg" alt=""></div>
+  <div class="meta"><b>38. Soft Editorial</b> <code>soft-editorial</code>
+  <p>tạp chí, câu chuyện thương hiệu, tư vấn, triển lãm</p><div><span class="tag">văn chương</span> <span class="tag">thanh lịch</span> <span class="tag">tĩnh lặng</span> <span class="tag">ấm áp</span></div><small>Cormorant Garamond + Work Sans</small></div></a>
+<a class="card" href="39_demo-stencil-tablet.html" data-scheme="mixed" data-text="stencil &amp; tablet lưu trữ mộc dày dặn poster bảo tàng, văn hóa, kiến trúc, tuyên ngôn, sổ tay hiện trường">
+  <div class="thumb"><img src="anh/stencil-tablet-1.jpg" alt=""><img class="alt" src="anh/stencil-tablet-4.jpg" alt=""></div>
+  <div class="meta"><b>39. Stencil &amp; Tablet</b> <code>stencil-tablet</code>
+  <p>bảo tàng, văn hóa, kiến trúc, tuyên ngôn, sổ tay hiện trường</p><div><span class="tag">lưu trữ</span> <span class="tag">mộc</span> <span class="tag">dày dặn</span> <span class="tag">poster</span></div><small>Big Shoulders Stencil Display + Inter + Barlow Condensed</small></div></a>
+<a class="card" href="40_demo-studio.html" data-scheme="mixed" data-text="studio điện năng táo bạo đồ họa chất agency pitch agency sáng tạo, giới thiệu studio, tuyên ngôn thương hiệu">
+  <div class="thumb"><img src="anh/studio-1.jpg" alt=""><img class="alt" src="anh/studio-4.jpg" alt=""></div>
+  <div class="meta"><b>40. Studio</b> <code>studio</code>
+  <p>pitch agency sáng tạo, giới thiệu studio, tuyên ngôn thương hiệu</p><div><span class="tag">điện năng</span> <span class="tag">táo bạo</span> <span class="tag">đồ họa</span> <span class="tag">chất agency</span></div><small>Barlow + IBM Plex Mono</small></div></a>
+<a class="card" href="41_demo-vellum.html" data-scheme="dark" data-text="vellum trầm tĩnh học thuật văn chương chiêm nghiệm báo cáo nghiên cứu, sách trắng, đề xuất chính sách, bài suy ngẫm">
+  <div class="thumb"><img src="anh/vellum-1.jpg" alt=""><img class="alt" src="anh/vellum-4.jpg" alt=""></div>
+  <div class="meta"><b>41. Vellum</b> <code>vellum</code>
+  <p>báo cáo nghiên cứu, sách trắng, đề xuất chính sách, bài suy ngẫm</p><div><span class="tag">trầm tĩnh</span> <span class="tag">học thuật</span> <span class="tag">văn chương</span> <span class="tag">chiêm nghiệm</span></div><small>Cormorant Garamond + Be Vietnam Pro + IBM Plex Mono</small></div></a>
+<a class="card" href="42_demo-swiss-modern.html" data-scheme="light" data-text="swiss modern rõ ràng chuyên nghiệp tối giản doanh nghiệp, đào tạo, báo cáo">
+  <div class="thumb"><img src="anh/swiss-modern-1.jpg" alt=""><img class="alt" src="anh/swiss-modern-4.jpg" alt=""></div>
+  <div class="meta"><b>42. Swiss Modern</b> <code>swiss-modern</code>
+  <p>doanh nghiệp, đào tạo, báo cáo</p><div><span class="tag">rõ ràng</span> <span class="tag">chuyên nghiệp</span> <span class="tag">tối giản</span></div><small>Archivo + Inter</small></div></a>
+<a class="card" href="43_demo-xanh-dai-hoc.html" data-scheme="light" data-text="xanh đại học trẻ học thuật thân thiện bảo vệ đề tài, bài giảng, báo cáo nhóm">
+  <div class="thumb"><img src="anh/xanh-dai-hoc-1.jpg" alt=""><img class="alt" src="anh/xanh-dai-hoc-4.jpg" alt=""></div>
+  <div class="meta"><b>43. Xanh Đại Học</b> <code>xanh-dai-hoc</code>
+  <p>bảo vệ đề tài, bài giảng, báo cáo nhóm</p><div><span class="tag">trẻ</span> <span class="tag">học thuật</span> <span class="tag">thân thiện</span></div><small>Montserrat + Open Sans</small></div></a>
+<a class="card" href="44_demo-bold-signal.html" data-scheme="dark" data-text="bold signal mạnh tự tin nổi bật pitch, ra mắt sản phẩm, keynote">
+  <div class="thumb"><img src="anh/bold-signal-1.jpg" alt=""><img class="alt" src="anh/bold-signal-4.jpg" alt=""></div>
+  <div class="meta"><b>44. Bold Signal</b> <code>bold-signal</code>
+  <p>pitch, ra mắt sản phẩm, keynote</p><div><span class="tag">mạnh</span> <span class="tag">tự tin</span> <span class="tag">nổi bật</span></div><small>Be Vietnam Pro + Space Grotesk</small></div></a>
+<a class="card" href="45_demo-dark-botanical.html" data-scheme="dark" data-text="dark botanical sang trọng mềm mại cao cấp thương hiệu, sự kiện, giới thiệu dịch vụ">
+  <div class="thumb"><img src="anh/dark-botanical-1.jpg" alt=""><img class="alt" src="anh/dark-botanical-4.jpg" alt=""></div>
+  <div class="meta"><b>45. Dark Botanical</b> <code>dark-botanical</code>
+  <p>thương hiệu, sự kiện, giới thiệu dịch vụ</p><div><span class="tag">sang trọng</span> <span class="tag">mềm mại</span> <span class="tag">cao cấp</span></div><small>Cormorant + IBM Plex Sans</small></div></a>
+<a class="card" href="46_demo-neon-cyber.html" data-scheme="dark" data-text="neon cyber công nghệ tương lai năng động ai, công nghệ, sản phẩm số">
+  <div class="thumb"><img src="anh/neon-cyber-1.jpg" alt=""><img class="alt" src="anh/neon-cyber-4.jpg" alt=""></div>
+  <div class="meta"><b>46. Neon Cyber</b> <code>neon-cyber</code>
+  <p>AI, công nghệ, sản phẩm số</p><div><span class="tag">công nghệ</span> <span class="tag">tương lai</span> <span class="tag">năng động</span></div><small>Chakra Petch + Space Grotesk</small></div></a>
+<a class="card" href="47_demo-paper-ink.html" data-scheme="light" data-text="paper &amp; ink biên tập sâu lắng kể chuyện bài nói chuyện, nghiên cứu, văn hóa">
+  <div class="thumb"><img src="anh/paper-ink-1.jpg" alt=""><img class="alt" src="anh/paper-ink-4.jpg" alt=""></div>
+  <div class="meta"><b>47. Paper &amp; Ink</b> <code>paper-ink</code>
+  <p>bài nói chuyện, nghiên cứu, văn hóa</p><div><span class="tag">biên tập</span> <span class="tag">sâu lắng</span> <span class="tag">kể chuyện</span></div><small>Cormorant Garamond + Source Serif 4</small></div></a></main>
+<script>let f='all';const cards=[...document.querySelectorAll('.card')],q=document.getElementById('q');
+function apply(){const t=q.value.trim().toLowerCase();cards.forEach(c=>{c.style.display=(f==='all'||c.dataset.scheme===f)&&(!t||c.dataset.text.includes(t))?'':'none'})}
+document.querySelectorAll('.bar button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.bar button').forEach(x=>x.classList.remove('on'));b.classList.add('on');f=b.dataset.f;apply()});q.oninput=apply;</script>
+</body></html>

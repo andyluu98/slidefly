@@ -1,0 +1,159 @@
+/* ===========================================================
+   STYLE: TERMINAL GREEN (adapted from frontend-slides, MIT)
+   GitHub dark, terminal green, monospace only. Developer /
+   hacker mood: a terminal window that docks on the key zone,
+   a code minimap, a blinking block cursor, faint scan lines.
+   Actors: glow (green haze), code (syntax minimap), win
+           (terminal window), bar (green block: status line,
+           divider, axis, inverse screen), rule (dashed line),
+           cursor (blinking block), scan (scan lines).
+           DOM order = z-order (glow first).
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap');
+
+.deck-stage {
+  --actors: "glow code win bar rule cursor scan";
+  --font-display: 'JetBrains Mono', monospace;
+  --font-body: 'JetBrains Mono', monospace;
+  --bg: #0d1117; --fg: #e6edf3; --muted: #8b949e;
+  --accent: #39d353; --accent-2: #79c0ff;
+  --card-bg: #161b22; --card-fg: #e6edf3; --card-radius: 10px;
+  --title-weight: 800; --title-tracking: -0.03em; --bullet-radius: 0;
+  --green: #39d353; --line: #30363d;
+  --dots: radial-gradient(circle at 26px 22px, #ff5f56 7px, transparent 8px),
+          radial-gradient(circle at 50px 22px, #ffbd2e 7px, transparent 8px),
+          radial-gradient(circle at 74px 22px, #27c93f 7px, transparent 8px);
+}
+
+/* ---------- actor looks (geometry comes from poses) ---------- */
+[data-actor="glow"] { --o: 0; background: radial-gradient(closest-side, rgba(57, 211, 83, 0.16), rgba(57, 211, 83, 0.05) 60%, transparent); }
+[data-actor="code"] {
+  --x: 1960px; --y: 300px; --w: 600px; --h: 560px; --o: 0; overflow: hidden;
+  background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='560'><defs><pattern id='n' width='600' height='40' patternUnits='userSpaceOnUse'><rect x='0' y='20' width='18' height='14' rx='3' fill='%23484f58'/></pattern></defs><rect width='600' height='560' fill='url(%23n)'/><g fill='%23ff7b72'><rect x='40' y='20' width='70' height='14' rx='3'/><rect x='40' y='60' width='60' height='14' rx='3'/><rect x='80' y='140' width='60' height='14' rx='3'/><rect x='40' y='340' width='70' height='14' rx='3'/><rect x='80' y='420' width='100' height='14' rx='3'/></g><g fill='%23d2a8ff'><rect x='120' y='20' width='110' height='14' rx='3'/><rect x='110' y='60' width='140' height='14' rx='3'/><rect x='120' y='180' width='180' height='14' rx='3'/><rect x='120' y='340' width='90' height='14' rx='3'/><rect x='190' y='420' width='160' height='14' rx='3'/></g><g fill='%23a5d6ff'><rect x='280' y='20' width='150' height='14' rx='3'/><rect x='190' y='100' width='200' height='14' rx='3'/><rect x='310' y='180' width='140' height='14' rx='3'/><rect x='80' y='380' width='140' height='14' rx='3'/></g><g fill='%2339d353'><rect x='80' y='100' width='100' height='14' rx='3'/><rect x='220' y='340' width='180' height='14' rx='3'/></g><g fill='%23ffa657'><rect x='280' y='140' width='80' height='14' rx='3'/><rect x='230' y='380' width='60' height='14' rx='3'/></g><g fill='%238b949e'><rect x='240' y='20' width='30' height='14' rx='3'/><rect x='260' y='60' width='90' height='14' rx='3'/><rect x='150' y='140' width='120' height='14' rx='3'/><rect x='80' y='220' width='30' height='14' rx='3'/><rect x='40' y='300' width='200' height='14' rx='3' opacity='.6'/><rect x='40' y='460' width='30' height='14' rx='3'/><rect x='40' y='540' width='250' height='14' rx='3' opacity='.6'/></g></svg>") 0 0 / 600px 560px repeat-y;
+}
+[data-actor="win"] {
+  --bw: 2px; overflow: hidden; border: 2px solid var(--line); border-radius: 12px;
+  background: var(--dots), linear-gradient(#161b22, #161b22) top / 100% 44px no-repeat, rgba(22, 27, 34, 0.5);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(57, 211, 83, 0.06);
+}
+[data-actor="win"]::after {
+  content: "bash: ~/deck"; position: absolute; top: 0; right: 22px; height: 44px; line-height: 44px;
+  font: 500 17px/44px 'JetBrains Mono', monospace; color: #6e7681; white-space: nowrap;
+}
+[data-actor="bar"]  { background: var(--green); }
+[data-actor="rule"] { --h: 3px; background: repeating-linear-gradient(90deg, var(--rule-c, rgba(57, 211, 83, 0.55)) 0 14px, transparent 14px 24px); }
+[data-actor="cursor"]::after { content: ""; position: absolute; inset: 0; background: var(--cur, var(--green)); box-shadow: 0 0 14px rgba(57, 211, 83, 0.5); animation: tg-blink 1.06s steps(1) infinite; }
+@keyframes tg-blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { [data-actor="cursor"]::after { animation: none; } }
+[data-actor="scan"] { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; background: repeating-linear-gradient(to bottom, transparent 0 3px, var(--scan-c, rgba(57, 211, 83, 0.045)) 3px 4px); }
+
+/* ---------- 1. cover: terminal window holds the title, minimap on the right ---------- */
+[data-layout="cover"] [data-actor="glow"]   { --x: 300px; --y: 40px; --w: 1200px; --h: 1000px; --o: 0.9; }
+[data-layout="cover"] [data-actor="code"]   { --x: 1470px; --y: 200px; --w: 360px; --h: 640px; --o: 0.85; }
+[data-layout="cover"] [data-actor="win"]    { --x: 160px; --y: 140px; --w: 1240px; --h: 800px; }
+[data-layout="cover"] [data-actor="bar"]    { --x: 184px; --y: 884px; --w: 1192px; --h: 34px; }
+[data-layout="cover"] [data-actor="rule"]   { --x: 1470px; --y: 900px; --w: 360px; }
+[data-layout="cover"] [data-actor="cursor"] { --x: 240px; --y: 800px; --w: 26px; --h: 46px; }
+[data-layout="cover"] [data-actor="scan"]   { --o: 1; }
+
+/* ---------- 2. agenda: the window opens full screen ---------- */
+[data-layout="agenda"] [data-actor="glow"]   { --x: -300px; --y: 420px; --w: 1100px; --h: 900px; --o: 0.7; }
+[data-layout="agenda"] [data-actor="code"]   { --x: 1960px; --y: 200px; --w: 360px; --h: 640px; --o: 0; }
+[data-layout="agenda"] [data-actor="win"]    { --x: 70px; --y: 30px; --w: 1780px; --h: 1010px; }
+[data-layout="agenda"] [data-actor="bar"]    { --x: 120px; --y: 196px; --w: 160px; --h: 8px; }
+[data-layout="agenda"] [data-actor="rule"]   { --x: 300px; --y: 198px; --w: 1500px; }
+[data-layout="agenda"] [data-actor="cursor"] { --x: 1760px; --y: 104px; --w: 28px; --h: 52px; }
+[data-layout="agenda"] [data-actor="scan"]   { --o: 0.7; }
+
+/* ---------- 3. section: window on the right runs the code minimap ---------- */
+[data-layout="section"] [data-actor="glow"]   { --x: 950px; --y: 80px; --w: 1050px; --h: 950px; --o: 0.85; }
+[data-layout="section"] [data-actor="code"]   { --x: 1150px; --y: 260px; --w: 600px; --h: 560px; --o: 0.95; }
+[data-layout="section"] [data-actor="win"]    { --x: 1100px; --y: 190px; --w: 700px; --h: 700px; }
+[data-layout="section"] [data-actor="bar"]    { --x: 100px; --y: 330px; --w: 12px; --h: 420px; }
+[data-layout="section"] [data-actor="rule"]   { --x: 160px; --y: 960px; --w: 860px; }
+[data-layout="section"] [data-actor="cursor"] { --x: 1190px; --y: 836px; --w: 22px; --h: 36px; }
+[data-layout="section"] [data-actor="scan"]   { --o: 1; }
+
+/* ---------- 4. content: window frames the highlight (even: frames the bullets) ---------- */
+[data-layout="content"] [data-actor="glow"]   { --x: 980px; --y: 120px; --w: 1100px; --h: 1000px; --o: 0.8; }
+[data-layout="content"] [data-actor="code"]   { --x: -700px; --y: 300px; --w: 600px; --h: 560px; --o: 0; }
+[data-layout="content"] [data-actor="win"]    { --x: 1230px; --y: 256px; --w: 600px; --h: 750px; }
+[data-layout="content"] [data-actor="bar"]    { --x: 66px; --y: 300px; --w: 8px; --h: 660px; }
+[data-layout="content"] [data-actor="rule"]   { --x: 120px; --y: 212px; --w: 1680px; }
+[data-layout="content"] [data-actor="cursor"] { --x: 1520px; --y: 930px; --w: 24px; --h: 40px; }
+[data-layout="content"] [data-actor="scan"]   { --o: 0.6; }
+[data-layout="content"][data-parity="even"] [data-actor="glow"]   { --x: -380px; --y: 220px; --o: 0.6; }
+[data-layout="content"][data-parity="even"] [data-actor="code"]   { --x: 1960px; --y: 330px; --o: 0; }
+[data-layout="content"][data-parity="even"] [data-actor="win"]    { --x: 80px; --y: 240px; --w: 1120px; --h: 770px; }
+[data-layout="content"][data-parity="even"] [data-actor="bar"]    { --x: 1240px; --y: 360px; --w: 8px; --h: 540px; }
+[data-layout="content"][data-parity="even"] [data-actor="rule"]   { --x: 1260px; --y: 1000px; --w: 540px; }
+[data-layout="content"][data-parity="even"] [data-actor="cursor"] { --x: 1760px; --y: 104px; --w: 28px; --h: 52px; }
+[data-layout="content"][data-parity="even"] [data-actor="scan"]   { --o: 0.9; }
+
+/* ---------- 5. two-col: window minimises, green bar splits the columns ---------- */
+[data-layout="two-col"] [data-actor="glow"]   { --x: 300px; --y: 260px; --w: 1300px; --h: 900px; --o: 0.6; }
+[data-layout="two-col"] [data-actor="code"]   { --x: -700px; --y: 600px; --w: 600px; --h: 560px; --o: 0; }
+[data-layout="two-col"] [data-actor="win"]    { --x: 1560px; --y: 40px; --w: 260px; --h: 44px; }
+[data-layout="two-col"] [data-actor="bar"]    { --x: 956px; --y: 300px; --w: 8px; --h: 510px; }
+[data-layout="two-col"] [data-actor="rule"]   { --x: 120px; --y: 212px; --w: 1680px; }
+[data-layout="two-col"] [data-actor="cursor"] { --x: 1750px; --y: 913px; --w: 24px; --h: 44px; }
+[data-layout="two-col"] [data-actor="scan"]   { --o: 0.6; }
+
+/* ---------- 6. stats: dashboard window, bar = progress line ---------- */
+[data-layout="stats"] [data-actor="glow"]   { --x: 420px; --y: 160px; --w: 1100px; --h: 950px; --o: 0.85; }
+[data-layout="stats"] [data-actor="code"]   { --x: 1960px; --y: 600px; --w: 600px; --h: 560px; --o: 0; }
+[data-layout="stats"] [data-actor="win"]    { --x: 90px; --y: 290px; --w: 1740px; --h: 680px; }
+[data-layout="stats"] [data-actor="bar"]    { --x: 140px; --y: 896px; --w: 1180px; --h: 10px; }
+[data-layout="stats"] [data-actor="rule"]   { --x: 140px; --y: 899px; --w: 1640px; }
+[data-layout="stats"] [data-actor="cursor"] { --x: 1760px; --y: 104px; --w: 28px; --h: 52px; }
+[data-layout="stats"] [data-actor="scan"]   { --o: 1; }
+
+/* ---------- 7. timeline: bar becomes the axis (y=630), cursor blinks at its end ---------- */
+[data-layout="timeline"] [data-actor="glow"]   { --x: 560px; --y: 160px; --w: 900px; --h: 940px; --o: 0.55; }
+[data-layout="timeline"] [data-actor="code"]   { --x: 1960px; --y: 900px; --w: 600px; --h: 560px; --o: 0; }
+[data-layout="timeline"] [data-actor="win"]    { --x: 1560px; --y: 40px; --w: 260px; --h: 44px; }
+[data-layout="timeline"] [data-actor="bar"]    { --x: 120px; --y: 627px; --w: 1670px; --h: 6px; }
+[data-layout="timeline"] [data-actor="rule"]   { --x: 120px; --y: 212px; --w: 1680px; }
+[data-layout="timeline"] [data-actor="cursor"] { --x: 1798px; --y: 608px; --w: 22px; --h: 44px; }
+[data-layout="timeline"] [data-actor="scan"]   { --o: 0.8; }
+
+/* ---------- 8. quote: window frames the quote, green bar on its left ---------- */
+[data-layout="quote"] [data-actor="glow"]   { --x: 460px; --y: 20px; --w: 1000px; --h: 1000px; --o: 0.75; }
+[data-layout="quote"] [data-actor="code"]   { --x: 220px; --y: 916px; --w: 600px; --h: 120px; --o: 0.45; }
+[data-layout="quote"] [data-actor="win"]    { --x: 200px; --y: 170px; --w: 1520px; --h: 720px; }
+[data-layout="quote"] [data-actor="bar"]    { --x: 244px; --y: 300px; --w: 8px; --h: 500px; }
+[data-layout="quote"] [data-actor="rule"]   { --x: 1340px; --y: 936px; --w: 380px; }
+[data-layout="quote"] [data-actor="cursor"] { --x: 1650px; --y: 826px; --w: 24px; --h: 40px; }
+[data-layout="quote"] [data-actor="scan"]   { --o: 1; }
+
+/* ---------- 9. closing: the green bar floods the screen (inverse video) ---------- */
+.deck-stage[data-layout="closing"] { --fg: #0d1117; --muted: #0f3d1c; --accent: #0d1117; }
+[data-layout="closing"] [data-actor="glow"]   { --x: 460px; --y: 40px; --w: 1000px; --h: 1000px; --o: 0; }
+[data-layout="closing"] [data-actor="code"]   { --x: 1960px; --y: 300px; --w: 600px; --h: 560px; --o: 0; }
+[data-layout="closing"] [data-actor="win"]    { --x: 960px; --y: 540px; --w: 0px; --h: 0px; --o: 0; }
+[data-layout="closing"] [data-actor="bar"]    { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="closing"] [data-actor="rule"]   { --x: 760px; --y: 830px; --w: 400px; --rule-c: rgba(13, 17, 23, 0.6); }
+[data-layout="closing"] [data-actor="cursor"] { --x: 947px; --y: 740px; --w: 26px; --h: 50px; --cur: #0d1117; }
+[data-layout="closing"] [data-actor="scan"]   { --o: 1; --scan-c: rgba(13, 17, 23, 0.1); }
+
+/* ---------- content tweaks: monospace terminal type ---------- */
+.slide .kicker { text-transform: none; letter-spacing: 0.04em; }
+.slide .kicker::before { content: "$ "; }
+.slide:is([data-layout="agenda"], [data-layout="content"], [data-layout="two-col"], [data-layout="stats"], [data-layout="timeline"]) > .title:first-child::before { content: "> "; color: var(--accent); }
+.slide[data-layout="cover"] { align-items: flex-start; text-align: left; padding: 0 560px 0 240px; }
+.slide[data-layout="cover"] .title { font-size: 80px; }
+.slide[data-layout="closing"] .title { font-size: 150px; }
+.slide[data-layout="section"] .num { text-shadow: 0 0 30px rgba(57, 211, 83, 0.45); }
+.slide :is(.hl-big, .stat-num, .when, .agenda-list .num) { text-shadow: 0 0 22px rgba(57, 211, 83, 0.4); }
+.bullets li::before, .col li::before { content: ">"; top: 0; width: auto; height: auto; background: none; color: var(--accent); font-weight: 800; }
+.agenda-list { --agenda-gap: 160px; --tile-line: 1px dashed var(--line); }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.col { position: relative; padding-top: 88px; border: 2px solid var(--line); }
+.col::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 44px; border-bottom: 1px solid var(--line); border-radius: 8px 8px 0 0; background: var(--dots), #21262d; }
+.takeaway { background: rgba(57, 211, 83, 0.08); border-left-color: var(--green); }
+.takeaway::before { content: "$"; margin-right: 0.6em; color: var(--accent); }
+.slide[data-layout="content"] .hl-text { font-size: 32px; }
+.slide[data-layout="quote"] { padding: 0 300px 0 300px; }
+.slide[data-layout="quote"] .quote { font-weight: 500; font-size: 60px; }
+.deck-progress { background: var(--green, #39d353); box-shadow: 0 0 10px #39d353; }

@@ -1,0 +1,188 @@
+/* ===========================================================
+   STYLE: SAKURA CHROMA (adapted from frontend-slides, MIT)
+   Vintage Japanese cassette package: cream halftone paper,
+   warm-brown ink, condensed display type, diagonal rainbow
+   ribbons, petal clusters, a 32-point ink seal, red stamp.
+   Actors: slab (paper-dk / ink / blue panel), ribbons (5-band
+           stack: -22 / +22 / vertical divider / axis / stripes),
+           petals (cluster), dot (single petal), frame (paper card
+           with hard ink shadow), stamp (red tab / stamp), seal.
+           DOM order = z-order (slab first).
+   Fonts: Albert Sans has no Vietnamese -> Be Vietnam Pro.
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Be+Vietnam+Pro:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap');
+
+.deck-stage {
+  --actors: "slab ribbons petals dot frame stamp seal";
+  --font-display: 'Big Shoulders Display', sans-serif;
+  --font-body: 'Be Vietnam Pro', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --bg: #F1E6CB; --fg: #3A2516; --muted: #6B5440; --accent: #E5392A;
+  --card-bg: #F1E6CB; --card-fg: #3A2516; --card-radius: 0px;
+  --title-weight: 900; --title-tracking: -0.02em; --bullet-radius: 0;
+  --paper: #F1E6CB; --paper-dk: #E5D6B0; --ink: #3A2516; --red: #E5392A; --pink: #E54489;
+  --orange: #F09131; --yellow: #F0BC2A; --green: #3D9F47; --blue: #3F8BC4;
+  --grain: radial-gradient(circle at 1px 1px, rgba(58, 37, 22, 0.1) 1px, transparent 1.6px) 0 0 / 4px 4px;
+  background-image: radial-gradient(circle at 1px 1px, rgba(58, 37, 22, 0.09) 1px, transparent 1.6px);
+  background-size: 4px 4px;
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="slab"] { background: var(--grain); background-color: var(--paper-dk); --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-actor="ribbons"] {
+  --x: -2000px; --y: 500px; --w: 1800px; --h: 400px; --r: -22deg;
+  background: var(--grain), linear-gradient(to bottom, var(--pink) 0 18%, transparent 18% 20.5%, var(--orange) 20.5% 38.5%,
+    transparent 38.5% 41%, var(--yellow) 41% 59%, transparent 59% 61.5%, var(--green) 61.5% 79.5%, transparent 79.5% 82%, var(--blue) 82% 100%);
+}
+[data-actor="petals"] {
+  --x: 2000px; --y: -400px; --w: 300px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='34' cy='34' r='24' fill='%23E5392A'/%3E%3Ccircle cx='68' cy='32' r='20' fill='%23F09131'/%3E%3Ccircle cx='70' cy='67' r='22' fill='%233F8BC4'/%3E%3Ccircle cx='34' cy='70' r='20' fill='%233D9F47'/%3E%3Ccircle cx='52' cy='50' r='12' fill='%23F0BC2A'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+[data-actor="dot"] { border-radius: 50%; background: var(--grain); background-color: var(--pink); --x: -400px; --y: 1200px; --w: 300px; }
+[data-actor="frame"] {
+  background: var(--grain); background-color: var(--paper); border: 1.5px solid var(--ink); box-shadow: 8px 8px 0 var(--ink);
+  --x: 1250px; --y: 290px; --w: 560px; --h: 680px; --o: 0; --s: 0.6;
+}
+[data-actor="stamp"] { background-color: var(--red); --x: 120px; --y: -100px; --w: 140px; --h: 14px; }
+[data-actor="seal"] {
+  container-type: size; background-color: var(--ink); color: var(--paper); --x: 2000px; --y: 400px; --w: 160px;
+  clip-path: polygon(50% 0%, 54% 9.2%, 59.8% 1%, 61.9% 10.8%, 69.1% 3.8%, 69.3% 13.8%, 77.8% 8.4%, 76% 18.3%, 85.4% 14.6%, 81.7% 24%, 91.6% 22.2%, 86.2% 30.7%, 96.2% 30.9%, 89.2% 38.1%, 99% 40.2%, 90.8% 46%, 100% 50%, 90.8% 54%, 99% 59.8%, 89.2% 61.9%, 96.2% 69.1%, 86.2% 69.3%, 91.6% 77.8%, 81.7% 76%, 85.4% 85.4%, 76% 81.7%, 77.8% 91.6%, 69.3% 86.2%, 69.1% 96.2%, 61.9% 89.2%, 59.8% 99%, 54% 90.8%, 50% 100%, 46% 90.8%, 40.2% 99%, 38.1% 89.2%, 30.9% 96.2%, 30.7% 86.2%, 22.2% 91.6%, 24% 81.7%, 14.6% 85.4%, 18.3% 76%, 8.4% 77.8%, 13.8% 69.3%, 3.8% 69.1%, 10.8% 61.9%, 1% 59.8%, 9.2% 54%, 0% 50%, 9.2% 46%, 1% 40.2%, 10.8% 38.1%, 3.8% 30.9%, 13.8% 30.7%, 8.4% 22.2%, 18.3% 24%, 14.6% 14.6%, 24% 18.3%, 22.2% 8.4%, 30.7% 13.8%, 30.9% 3.8%, 38.1% 10.8%, 40.2% 1%, 46% 9.2%);
+}
+[data-actor="seal"]::before {
+  content: "A"; position: absolute; inset: 0; display: grid; place-items: center;
+  font: 900 46cqw/1 'Big Shoulders Display', sans-serif;
+}
+
+/* ---------- 1. cover: paper-dk panel right, ribbons sweep up from the bottom, seal rides them ---------- */
+[data-layout="cover"] [data-actor="slab"]    { --x: 1100px; --y: 0px; --w: 820px; --h: 1080px; }
+[data-layout="cover"] [data-actor="ribbons"] { --x: 900px; --y: 500px; --w: 1800px; --h: 400px; --r: -22deg; }
+[data-layout="cover"] [data-actor="petals"]  { --x: 1380px; --y: 110px; --w: 400px; --r: 0deg; }
+[data-layout="cover"] [data-actor="dot"]     { --x: -140px; --y: 860px; --w: 340px; background-color: var(--pink); }
+[data-layout="cover"] [data-actor="frame"]   { --o: 0; --s: 0.6; }
+[data-layout="cover"] [data-actor="stamp"]   { --x: 120px; --y: 196px; --w: 180px; --h: 20px; }
+[data-layout="cover"] [data-actor="seal"]    { --x: 1140px; --y: 740px; --w: 200px; --r: -12deg; }
+
+/* ---------- 2. agenda: paper-dk header band, short ribbon in the corner ---------- */
+[data-layout="agenda"] [data-actor="slab"]    { --x: 0px; --y: 0px; --w: 1920px; --h: 236px; }
+[data-layout="agenda"] [data-actor="ribbons"] { --x: 1480px; --y: 0px; --w: 640px; --h: 140px; --r: -22deg; }
+[data-layout="agenda"] [data-actor="petals"]  { --x: -90px; --y: 930px; --w: 230px; --r: 30deg; }
+[data-layout="agenda"] [data-actor="dot"]     { --x: 1790px; --y: 980px; --w: 260px; background-color: var(--blue); }
+[data-layout="agenda"] [data-actor="frame"]   { --x: 120px; --y: 270px; --w: 1680px; --h: 720px; --o: 0; --s: 0.9; }
+[data-layout="agenda"] [data-actor="stamp"]   { --x: 120px; --y: 208px; --w: 140px; --h: 14px; }
+[data-layout="agenda"] [data-actor="seal"]    { --x: 1580px; --y: 90px; --w: 120px; --r: 8deg; }
+
+/* ---------- 3. section: ink panel, ribbons flip to +22 and cross it ---------- */
+[data-layout="section"] [data-actor="slab"]    { --x: 1100px; --y: 0px; --w: 820px; --h: 1080px; background-color: var(--ink); }
+[data-layout="section"] [data-actor="ribbons"] { --x: 1050px; --y: 350px; --w: 1100px; --h: 380px; --r: 22deg; }
+[data-layout="section"] [data-actor="petals"]  { --x: 1600px; --y: 790px; --w: 270px; --r: 45deg; }
+[data-layout="section"] [data-actor="dot"]     { --x: 1660px; --y: -140px; --w: 380px; background-color: var(--yellow); }
+[data-layout="section"] [data-actor="frame"]   { --x: 1150px; --y: 300px; --w: 600px; --h: 480px; --o: 0; --s: 0.6; }
+[data-layout="section"] [data-actor="stamp"]   { --x: 160px; --y: 900px; --w: 220px; --h: 18px; }
+[data-layout="section"] [data-actor="seal"]    { --x: 1000px; --y: 60px; --w: 200px; --r: 10deg; background-color: var(--red); }
+
+/* ---------- 4. content: product card holds the highlight (red topstrip) ---------- */
+[data-layout="content"] [data-actor="slab"]    { --x: 1210px; --y: 0px; --w: 710px; --h: 1080px; }
+[data-layout="content"] [data-actor="ribbons"] { --x: 1430px; --y: 940px; --w: 900px; --h: 160px; --r: -22deg; }
+[data-layout="content"] [data-actor="petals"]  { --x: 1690px; --y: 30px; --w: 180px; --r: 15deg; }
+[data-layout="content"] [data-actor="dot"]     { --x: -110px; --y: 950px; --w: 230px; background-color: var(--orange); }
+[data-layout="content"] [data-actor="frame"]   { --x: 1250px; --y: 290px; --w: 560px; --h: 680px; --o: 1; --s: 1; }
+[data-layout="content"] [data-actor="stamp"]   { --x: 1250px; --y: 290px; --w: 560px; --h: 28px; }
+[data-layout="content"] [data-actor="seal"]    { --x: 1725px; --y: 225px; --w: 150px; --r: -8deg; }
+/* even: blue panel, ribbons become stripes at its foot, card gets a red stamp */
+[data-layout="content"][data-parity="even"] [data-actor="slab"]    { --x: 1220px; --w: 700px; background-color: var(--blue); }
+[data-layout="content"][data-parity="even"] [data-actor="ribbons"] { --x: 1220px; --y: 990px; --w: 700px; --h: 90px; --r: 0deg; }
+[data-layout="content"][data-parity="even"] [data-actor="petals"]  { --x: -90px; --y: 920px; --w: 240px; --r: -20deg; }
+[data-layout="content"][data-parity="even"] [data-actor="dot"]     { --x: 1700px; --y: -120px; --w: 300px; background-color: var(--red); }
+[data-layout="content"][data-parity="even"] [data-actor="frame"]   { --x: 1270px; --y: 300px; --w: 520px; --h: 640px; }
+[data-layout="content"][data-parity="even"] [data-actor="stamp"]   { --x: 1236px; --y: 264px; --w: 200px; --h: 56px; --r: -3deg; }
+[data-layout="content"][data-parity="even"] [data-actor="seal"]    { --x: 1195px; --y: 865px; --w: 150px; --r: 12deg; }
+
+/* ---------- 5. two-col: paper-dk band, ribbons stand up as the column divider ---------- */
+[data-layout="two-col"] [data-actor="slab"]    { --x: 0px; --y: 236px; --w: 1920px; --h: 790px; }
+[data-layout="two-col"] [data-actor="ribbons"] { --x: 585px; --y: 600px; --w: 750px; --h: 60px; --r: 90deg; }
+[data-layout="two-col"] [data-actor="petals"]  { --x: -80px; --y: 930px; --w: 220px; --r: 60deg; }
+[data-layout="two-col"] [data-actor="dot"]     { --x: 1830px; --y: 900px; --w: 300px; background-color: var(--green); }
+[data-layout="two-col"] [data-actor="frame"]   { --x: 120px; --y: 872px; --w: 1680px; --h: 118px; --o: 0; --s: 1; }
+[data-layout="two-col"] [data-actor="stamp"]   { --x: 120px; --y: 208px; --w: 140px; --h: 14px; }
+[data-layout="two-col"] [data-actor="seal"]    { --x: 1690px; --y: 70px; --w: 140px; --r: -6deg; }
+/* with takeaway: band stops above it, the frame becomes the takeaway box, stamp its red spine */
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="slab"]    { --h: 630px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="ribbons"] { --x: 660px; --y: 525px; --w: 600px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="frame"]   { --o: 1; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="stamp"]   { --x: 120px; --y: 872px; --w: 22px; --h: 118px; }
+
+/* ---------- 6. stats: catalogue card with a red topstrip, ribbons as foot stripes ---------- */
+[data-layout="stats"] [data-actor="slab"]    { --x: 0px; --y: 236px; --w: 1920px; --h: 844px; }
+[data-layout="stats"] [data-actor="ribbons"] { --x: 0px; --y: 1000px; --w: 1920px; --h: 80px; --r: 0deg; }
+[data-layout="stats"] [data-actor="petals"]  { --x: 1660px; --y: 36px; --w: 170px; --r: 90deg; }
+[data-layout="stats"] [data-actor="dot"]     { --x: -100px; --y: 820px; --w: 200px; background-color: var(--green); }
+[data-layout="stats"] [data-actor="frame"]   { --x: 120px; --y: 290px; --w: 1680px; --h: 660px; --o: 1; --s: 1; }
+[data-layout="stats"] [data-actor="stamp"]   { --x: 120px; --y: 290px; --w: 1680px; --h: 26px; }
+[data-layout="stats"] [data-actor="seal"]    { --x: 1720px; --y: 220px; --w: 160px; --r: -10deg; }
+
+/* ---------- 7. timeline: the ribbon stack lies down as the axis ---------- */
+[data-layout="timeline"] [data-actor="slab"]    { --x: 0px; --y: 590px; --w: 1920px; --h: 80px; }
+[data-layout="timeline"] [data-actor="ribbons"] { --x: 120px; --y: 615px; --w: 1680px; --h: 30px; --r: 0deg; }
+[data-layout="timeline"] [data-actor="petals"]  { --x: 1740px; --y: 930px; --w: 200px; --r: 0deg; }
+[data-layout="timeline"] [data-actor="dot"]     { --x: 1700px; --y: -140px; --w: 340px; background-color: var(--yellow); }
+[data-layout="timeline"] [data-actor="frame"]   { --x: 120px; --y: 590px; --w: 1680px; --h: 80px; --o: 0; --s: 1; }
+[data-layout="timeline"] [data-actor="stamp"]   { --x: 120px; --y: 208px; --w: 140px; --h: 14px; }
+[data-layout="timeline"] [data-actor="seal"]    { --x: 1805px; --y: 575px; --w: 110px; --r: 0deg; }
+
+/* ---------- 8. quote: paper box with hard shadow over full diagonal ribbons ---------- */
+.deck-stage[data-layout="quote"] { --accent: var(--blue); }
+[data-layout="quote"] [data-actor="slab"]    { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="quote"] [data-actor="ribbons"] { --x: -340px; --y: 280px; --w: 2600px; --h: 520px; --r: -22deg; }
+[data-layout="quote"] [data-actor="petals"]  { --x: 70px; --y: 60px; --w: 280px; --r: 0deg; }
+[data-layout="quote"] [data-actor="dot"]     { --x: 1540px; --y: 700px; --w: 340px; background-color: var(--red); }
+[data-layout="quote"] [data-actor="frame"]   { --x: 220px; --y: 280px; --w: 1480px; --h: 520px; --o: 1; --s: 1; }
+[data-layout="quote"] [data-actor="stamp"]   { --x: 260px; --y: 248px; --w: 200px; --h: 56px; --r: -3deg; }
+[data-layout="quote"] [data-actor="seal"]    { --x: 1610px; --y: 710px; --w: 180px; --r: 12deg; }
+
+/* ---------- 9. closing: ink floods the page, ribbons bleed from the corner ---------- */
+.deck-stage[data-layout="closing"] { --fg: #F1E6CB; --muted: #D9C9A8; --accent: var(--yellow); }
+[data-layout="closing"] [data-actor="slab"]    { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; background-color: var(--ink); }
+[data-layout="closing"] [data-actor="ribbons"] { --x: 1100px; --y: 810px; --w: 1400px; --h: 300px; --r: -22deg; }
+[data-layout="closing"] [data-actor="petals"]  { --x: 130px; --y: 110px; --w: 300px; --r: -30deg; }
+[data-layout="closing"] [data-actor="dot"]     { --x: 1600px; --y: -200px; --w: 480px; background-color: var(--pink); }
+[data-layout="closing"] [data-actor="frame"]   { --x: 460px; --y: 380px; --w: 1000px; --h: 320px; --o: 0; --s: 0.6; }
+[data-layout="closing"] [data-actor="stamp"]   { --x: 160px; --y: 880px; --w: 280px; --h: 72px; --r: -3deg; }
+[data-layout="closing"] [data-actor="seal"]    { --x: 1430px; --y: 220px; --w: 220px; --r: -10deg; background-color: var(--yellow); color: var(--ink); }
+
+/* ---------- content tweaks: catalogue typesetting ---------- */
+.slide .kicker, .slide .meta { font-family: var(--font-mono); letter-spacing: 0.2em; text-transform: uppercase; }
+.slide .meta { font-size: 22px; }
+.slide:is([data-layout="agenda"], [data-layout="content"], [data-layout="two-col"], [data-layout="stats"], [data-layout="timeline"]) > .title:first-child { --title-w: 1440px; font-size: 80px; padding-bottom: 14px; border-bottom: 1.5px solid var(--ink); }
+.slide[data-layout="agenda"] > .title:first-child { --title-w: 1300px; }
+.slide[data-layout="cover"] { align-items: flex-start; text-align: left; padding: 0 920px 0 120px; }
+.slide[data-layout="cover"] .title { font-size: 124px; line-height: 1.02; }
+.slide[data-layout="closing"] { padding: 0 380px; }
+.slide[data-layout="closing"] .title { font-size: 168px; line-height: 1; }
+.slide[data-layout="section"] { padding: 0 940px 0 160px; }
+.slide[data-layout="section"] .title { font-size: 104px; line-height: 1.02; }
+.slide[data-layout="section"] .num { font-size: 260px; }
+.agenda-list { --agenda-gap: 200px; --tile-line: 1.5px solid var(--ink); }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list li:nth-child(4n+2) .num { color: var(--blue); }
+.agenda-list li:nth-child(4n+3) .num { color: var(--green); }
+.agenda-list li:nth-child(4n+4) .num { color: var(--pink); }
+.agenda-list h3 { font-weight: 800; }
+[data-density="lg"] .agenda-list { --n-h: 62px; } [data-density="md"] .agenda-list { --n-h: 50px; } [data-density="sm"] .agenda-list { --n-h: 40px; }
+.slide[data-layout="content"] { --hl-left: 1290px; --hl-right: 150px; }
+.slide[data-layout="content"] .hl-text { font-size: 50px; font-weight: 800; line-height: 1.12; }
+.col { border: 1.5px solid var(--ink); border-top: 24px solid var(--red); padding: 40px 52px; }
+.col + .col { border-top-color: var(--blue); }
+.col + .col h3 { color: var(--blue); }
+.col h3 { font-weight: 900; }
+[data-density="lg"] .cols { --c-h: 62px; } [data-density="md"] .cols { --c-h: 54px; } [data-density="sm"] .cols { --c-h: 46px; }
+.takeaway { border-left: 0; padding: 20px 48px 20px 72px; font-size: 46px; font-weight: 800; line-height: 1.12; }
+.stat:nth-child(2) .stat-num { color: var(--blue); }
+.stat:nth-child(3) .stat-num { color: var(--green); }
+.timeline::before { opacity: 0; }
+.step::before { border: 3px solid var(--ink); }
+.step h3 { font-weight: 800; }
+[data-density="lg"] .timeline { --t-when: 92px; --t-h: 60px; } [data-density="md"] .timeline { --t-when: 80px; --t-h: 52px; --t-fs: 30px; } [data-density="sm"] .timeline { --t-when: 64px; --t-h: 42px; }
+.slide[data-layout="quote"] { padding: 0 330px; }
+.slide[data-layout="quote"] .quote { font-size: 76px; line-height: 1.12; }
+.slide[data-layout="quote"] .cite { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.16em; font-size: 22px; }

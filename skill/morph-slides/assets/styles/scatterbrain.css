@@ -1,0 +1,186 @@
+/* ===========================================================
+   STYLE: SCATTERBRAIN (adapted from frontend-slides bold template, MIT)
+   Workshop wall: cream graph paper with grain, a cork board that
+   floods the cover, section and closing, pastel sticky notes
+   (yellow, blue, pink, green, white) with soft lift shadows,
+   red thumbtacks and masking tape, an ink squiggle doodle and an
+   ink "vs" circle. Notes become the cards, tiles and frames.
+   Actors: cork (cork board), note-w (white bordered note),
+           note-g, note-p, note-b, note-y (sticky notes, each with
+           its own pin ::before and tape ::after), doodle (ink
+           squiggle), vs (ink circle). DOM order = z-order.
+   Fonts: Shrikhand -> Lobster; Caveat -> Patrick Hand;
+          Zilla Slab (no Vietnamese) -> Roboto Slab.
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Patrick+Hand&family=Roboto+Slab:wght@400;500;700&display=swap');
+
+.deck-stage {
+  --actors: "cork note-w note-g note-p note-b note-y doodle vs";
+  --font-display: 'Lobster', cursive;
+  --font-body: 'Roboto Slab', serif;
+  --font-hand: 'Patrick Hand', cursive;
+  --bg: #f7f5f0; --fg: #2d2a26; --muted: #5c5750; --accent: #c92a2a;
+  --card-bg: transparent; --card-fg: #2d2a26; --card-radius: 0px;
+  --title-weight: 400; --title-tracking: 0.01em; --bullet-radius: 50%;
+  --ink: #2d2a26; --paper: #f7f5f0;
+  --lift: 4px 6px 22px rgba(45,42,38,.2), 0 2px 4px rgba(45,42,38,.25);
+  background-image:
+    radial-gradient(60% 50% at 12% 8%, rgba(255,224,102,.22), transparent 70%),
+    radial-gradient(50% 45% at 92% 90%, rgba(165,216,255,.22), transparent 70%),
+    linear-gradient(rgba(45,42,38,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45,42,38,.06) 1px, transparent 1px);
+  background-size: auto, auto, 40px 40px, 40px 40px;
+}
+/* paper grain above everything (decorative, no pointer events) */
+.deck-stage::after {
+  content: ""; position: absolute; inset: 0; z-index: 30; pointer-events: none; opacity: 0.06;
+  background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='256' height='256'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="cork"] {
+  --x: 0px; --y: 1080px; --w: 1920px; --h: 0px;
+  background-color: #c69c6d;
+  background-image:
+    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36'><path d='M18 13v10M13 18h10' stroke='%236b4423' stroke-width='2' opacity='.35'/><circle cx='5' cy='6' r='1.6' fill='%236b4423' opacity='.3'/><circle cx='29' cy='30' r='1.3' fill='%23fff' opacity='.3'/></svg>"),
+    radial-gradient(ellipse at 30% 20%, rgba(255,240,210,.35), transparent 60%),
+    linear-gradient(135deg, #d4ae7f, #b98a5a);
+  box-shadow: inset 0 0 70px rgba(70,40,15,.35);
+}
+[data-actor^="note"] {
+  --pin: 1; --tape: 0; --pin-a: #ff6b6b; --pin-b: #c92a2a;
+  box-shadow: var(--lift);
+}
+[data-actor^="note"]::before {
+  content: ""; position: absolute; left: calc(50% - 15px); top: 12px; width: 30px; height: 30px; border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, var(--pin-a), var(--pin-b));
+  box-shadow: 0 3px 6px rgba(45,42,38,.35), inset -3px -3px 6px rgba(0,0,0,.2);
+  opacity: var(--pin); transition: opacity .6s ease;
+}
+[data-actor^="note"]::after {
+  content: ""; position: absolute; left: -40px; top: 22px; width: 160px; height: 44px;
+  background: rgba(255,255,255,.55); border: 1px solid rgba(255,255,255,.45); transform: rotate(-38deg);
+  opacity: var(--tape); transition: opacity .6s ease;
+}
+[data-actor="note-y"] { background: linear-gradient(135deg, #ffe066, #ffd43b); --x: 760px; --y: 1200px; --w: 400px; --h: 400px; --r: 8deg; }
+[data-actor="note-b"] { background: linear-gradient(135deg, #a5d8ff, #74c0fc); --x: -500px; --y: 300px; --w: 300px; --h: 300px; --r: -12deg; }
+[data-actor="note-p"] { background: linear-gradient(135deg, #ffc9c9, #ff9f9f); --x: 2100px; --y: 600px; --w: 300px; --h: 300px; --r: 12deg; --pin-a: #4dabf7; --pin-b: #1864ab; }
+[data-actor="note-g"] { background: linear-gradient(135deg, #b2f2bb, #8ce99a); --x: 1500px; --y: -420px; --w: 280px; --h: 280px; --r: -8deg; }
+[data-actor="note-w"] { background: #fff; border: 3px solid var(--ink); --bw: 3px; --x: 120px; --y: 1200px; --w: 1680px; --h: 112px; --r: 0deg; --pin-a: #69db7c; --pin-b: #2f9e44; }
+[data-actor="doodle"] {
+  background-color: var(--ink); --o: 0.55; --x: -600px; --y: 182px; --w: 420px; --h: 36px;
+  -webkit-mask: var(--m) center / 100% 100% no-repeat; mask: var(--m) center / 100% 100% no-repeat;
+  --m: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 48' preserveAspectRatio='none'><path d='M4 28Q30 4 56 24T108 24T160 24T212 24T264 24T316 22' fill='none' stroke='black' stroke-width='5' stroke-linecap='round' vector-effect='non-scaling-stroke'/></svg>");
+}
+[data-actor="vs"] {
+  background: var(--ink); border-radius: 50%; box-shadow: 0 3px 10px rgba(45,42,38,.3);
+  display: flex; align-items: center; justify-content: center;
+  --x: 905px; --y: 1200px; --w: 110px; --h: 110px;
+}
+[data-actor="vs"]::before { content: "vs"; font: 400 44px/1 'Lobster', cursive; color: var(--paper); }
+
+/* ---------- 1. cover: cork board, big yellow note pinned and taped ---------- */
+[data-layout="cover"] [data-actor="cork"]   { --y: 0px; --h: 1080px; }
+[data-layout="cover"] [data-actor="note-y"] { --x: 270px; --y: 200px; --w: 1380px; --h: 680px; --r: -1.5deg; --tape: 1; }
+[data-layout="cover"] [data-actor="note-b"] { --x: 70px; --y: 90px; --w: 250px; --h: 230px; --r: -9deg; }
+[data-layout="cover"] [data-actor="note-p"] { --x: 1600px; --y: 760px; --w: 260px; --h: 240px; --r: 8deg; }
+[data-layout="cover"] [data-actor="note-g"] { --x: 1660px; --y: 110px; --w: 200px; --h: 190px; --r: 11deg; }
+[data-layout="cover"] [data-actor="note-w"] { --x: 110px; --y: 880px; --w: 300px; --h: 150px; --r: -5deg; }
+
+/* ---------- 2. agenda: two notes become the two columns ---------- */
+[data-layout="agenda"] [data-actor="note-y"] { --x: 140px; --y: 262px; --w: 770px; --h: 750px; --r: -1deg; }
+[data-layout="agenda"] [data-actor="note-b"] { --x: 1010px; --y: 268px; --w: 770px; --h: 744px; --r: 1.2deg; }
+[data-layout="agenda"] [data-actor="note-p"] { --x: 1620px; --y: 50px; --w: 200px; --h: 170px; --r: 7deg; }
+[data-layout="agenda"] [data-actor="doodle"] { --x: 120px; --y: 182px; --w: 300px; }
+
+/* ---------- 3. section: cork floods, yellow note holds the title, wall of notes ---------- */
+[data-layout="section"] [data-actor="cork"]   { --y: 0px; --h: 1080px; }
+[data-layout="section"] [data-actor="note-y"] { --x: 110px; --y: 190px; --w: 960px; --h: 700px; --r: -2deg; --tape: 1; }
+[data-layout="section"] [data-actor="note-b"] { --x: 1230px; --y: 170px; --w: 300px; --h: 290px; --r: 6deg; }
+[data-layout="section"] [data-actor="note-p"] { --x: 1500px; --y: 400px; --w: 300px; --h: 280px; --r: -7deg; }
+[data-layout="section"] [data-actor="note-g"] { --x: 1250px; --y: 620px; --w: 280px; --h: 260px; --r: -4deg; }
+[data-layout="section"] [data-actor="note-w"] { --x: 1560px; --y: 760px; --w: 250px; --h: 200px; --r: 9deg; }
+
+/* ---------- 4. content: pink note frames the highlight ---------- */
+[data-layout="content"] [data-actor="note-p"] { --x: 1250px; --y: 290px; --w: 560px; --h: 680px; --r: 2deg; --tape: 1; }
+[data-layout="content"] [data-actor="note-y"] { --x: 1640px; --y: 50px; --w: 180px; --h: 160px; --r: -7deg; }
+[data-layout="content"] [data-actor="note-b"] { --x: -90px; --y: 960px; --w: 220px; --h: 220px; --r: 10deg; }
+[data-layout="content"] [data-actor="doodle"] { --x: 120px; --y: 182px; --w: 420px; }
+/* even: bullets go on a yellow note, blue + green stack frames the highlight */
+[data-layout="content"][data-parity="even"] [data-actor="note-y"] { --x: 110px; --y: 250px; --w: 1090px; --h: 760px; --r: -0.8deg; }
+[data-layout="content"][data-parity="even"] [data-actor="note-g"] { --x: 1290px; --y: 280px; --w: 530px; --h: 660px; --r: 3deg; }
+[data-layout="content"][data-parity="even"] [data-actor="note-b"] { --x: 1270px; --y: 300px; --w: 530px; --h: 650px; --r: -2.5deg; }
+[data-layout="content"][data-parity="even"] [data-actor="note-p"] { --x: 1680px; --y: 50px; --w: 180px; --h: 160px; --r: 8deg; --tape: 0; }
+[data-layout="content"][data-parity="even"] [data-actor="doodle"] { --x: 1330px; --y: 1000px; --w: 380px; }
+
+/* ---------- 5. two-col: yellow + blue notes are the cards, ink "vs" between ---------- */
+[data-layout="two-col"] [data-actor="note-y"] { --x: 120px; --y: 270px; --w: 808px; --h: 720px; --r: -1deg; }
+[data-layout="two-col"] [data-actor="note-b"] { --x: 992px; --y: 270px; --w: 808px; --h: 720px; --r: 1deg; }
+[data-layout="two-col"] [data-actor="note-p"] { --x: 1660px; --y: 50px; --w: 190px; --h: 160px; --r: 8deg; }
+[data-layout="two-col"] [data-actor="doodle"] { --x: 120px; --y: 182px; --w: 520px; }
+[data-layout="two-col"] [data-actor="vs"]     { --y: 575px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) :is([data-actor="note-y"], [data-actor="note-b"]) { --h: 570px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="note-w"] { --y: 878px; --r: -0.4deg; --pin: 0; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="vs"] { --y: 500px; }
+
+/* ---------- 6. stats: cork band, one note per figure ---------- */
+[data-layout="stats"] [data-actor="cork"]   { --y: 280px; --h: 700px; }
+[data-layout="stats"] [data-actor="note-y"] { --x: 104px; --y: 330px; --w: 560px; --h: 600px; --r: -2deg; }
+[data-layout="stats"] [data-actor="note-b"] { --x: 680px; --y: 320px; --w: 560px; --h: 610px; --r: 1.5deg; }
+[data-layout="stats"] [data-actor="note-p"] { --x: 1256px; --y: 335px; --w: 560px; --h: 590px; --r: -1deg; }
+[data-layout="stats"] [data-actor="note-g"] { --x: 1660px; --y: 50px; --w: 180px; --h: 160px; --r: 8deg; }
+[data-layout="stats"] [data-actor="doodle"] { --x: 120px; --y: 182px; --w: 380px; }
+
+/* ---------- 7. timeline: cork ribbon is the axis, notes peek at the edges ---------- */
+[data-layout="timeline"] [data-actor="cork"]   { --y: 598px; --h: 64px; }
+[data-layout="timeline"] [data-actor="note-y"] { --x: 1640px; --y: 50px; --w: 190px; --h: 170px; --r: -7deg; }
+[data-layout="timeline"] [data-actor="note-b"] { --x: -80px; --y: 830px; --w: 220px; --h: 220px; --r: 10deg; }
+[data-layout="timeline"] [data-actor="note-p"] { --x: 1700px; --y: 900px; --w: 240px; --h: 220px; --r: -9deg; }
+[data-layout="timeline"] [data-actor="doodle"] { --x: 120px; --y: 182px; --w: 460px; }
+
+/* ---------- 8. quote: statement note pinned + taped, ink quote badge ---------- */
+[data-layout="quote"] [data-actor="note-y"] { --x: 210px; --y: 200px; --w: 1500px; --h: 680px; --r: -1.2deg; --tape: 1; --pin: 0; }
+[data-layout="quote"] [data-actor="note-b"] { --x: 60px; --y: 80px; --w: 230px; --h: 220px; --r: -10deg; }
+[data-layout="quote"] [data-actor="note-p"] { --x: 1640px; --y: 760px; --w: 240px; --h: 230px; --r: 9deg; }
+[data-layout="quote"] [data-actor="doodle"] { --x: 1240px; --y: 930px; --w: 400px; }
+[data-layout="quote"] [data-actor="vs"]     { --x: 900px; --y: 150px; --w: 120px; --h: 120px; }
+[data-layout="quote"] [data-actor="vs"]::before { content: "\201C"; font-size: 110px; transform: translateY(26px); }
+
+/* ---------- 9. closing: cork floods, pink note says thanks, notes around ---------- */
+.deck-stage[data-layout="closing"] { --accent: #2d2a26; }
+[data-layout="closing"] [data-actor="cork"]   { --y: 0px; --h: 1080px; }
+[data-layout="closing"] [data-actor="note-p"] { --x: 380px; --y: 230px; --w: 1160px; --h: 620px; --r: 1.5deg; --tape: 1; }
+[data-layout="closing"] [data-actor="note-y"] { --x: 90px; --y: 120px; --w: 260px; --h: 240px; --r: -8deg; }
+[data-layout="closing"] [data-actor="note-b"] { --x: 1590px; --y: 690px; --w: 260px; --h: 250px; --r: 7deg; }
+[data-layout="closing"] [data-actor="note-g"] { --x: 1600px; --y: 110px; --w: 220px; --h: 200px; --r: 10deg; }
+[data-layout="closing"] [data-actor="note-w"] { --x: 130px; --y: 760px; --w: 260px; --h: 190px; --r: -5deg; }
+
+/* ---------- content tweaks: hand labels, text sits inside the notes ---------- */
+.slide .title { line-height: 1.2; }
+.slide .kicker, .slide .meta, .slide .cite { font-family: var(--font-hand); font-weight: 400; }
+.slide .kicker { font-size: 28px; letter-spacing: 0.15em; }
+.slide .meta { font-size: 30px; }
+.slide[data-layout="cover"] { padding: 0 360px; }
+.slide[data-layout="cover"] .title { font-size: 96px; }
+.slide[data-layout="closing"] { padding: 0 460px; }
+.slide[data-layout="closing"] .title { font-size: 150px; }
+.slide[data-layout="section"] { padding: 0 920px 0 190px; }
+.slide[data-layout="section"] .num { font-size: 200px; }
+.agenda-list { left: 190px; right: 190px; top: 300px; bottom: 110px; --agenda-gap: 200px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list h3 { font-weight: 400; }
+.bullets li::before, .step::before {
+  background: radial-gradient(circle at 30% 30%, #ff6b6b, #c92a2a); box-shadow: 0 2px 4px rgba(45,42,38,.3);
+}
+.slide[data-layout="content"][data-parity="even"] .bullets { left: 180px; width: 960px; }
+.slide[data-layout="content"] .hl-text { font-family: var(--font-hand); font-weight: 400; font-size: 46px; transform: rotate(-2deg); }
+.col h3 { font-weight: 400; color: var(--fg); }
+.takeaway { border-left: 0; padding: 0 60px; font-family: var(--font-hand); font-weight: 400; font-size: 42px; }
+.slide[data-layout="stats"] .stat { padding: 0 44px; }
+.slide[data-layout="stats"] .stat-label { color: var(--fg); }
+.timeline::before { background: repeating-linear-gradient(90deg, var(--ink) 0 16px, transparent 16px 28px); opacity: 0.55; }
+.step h3 { font-weight: 400; }
+.slide[data-layout="quote"] { padding: 0 300px; }
+.slide[data-layout="quote"] .quote { font-weight: 400; font-size: 66px; }
+.slide[data-layout="quote"] .cite { font-size: 34px; color: var(--fg); }

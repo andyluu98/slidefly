@@ -1,0 +1,173 @@
+/* ===========================================================
+   STYLE: EDITORIAL TRI-TONE (adapted from frontend-slides
+   bold template "editorial-tri-tone", MIT)
+   Strict three colours: blush pink, golden butter, deep burgundy.
+   Literary magazine spread: split surfaces, a section sign in
+   serif italic, pills, a soft rounded card, footer dot row.
+   Actors: wine (burgundy slab), blush (pink panel), card
+           (rounded card / circle), rule (whispered hairline),
+           pill (capsule), disc (swatch circle), glyph (serif
+           section sign / quote mark), dots (footer dot row).
+           DOM order = z-order (wine first).
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Playfair+Display:ital,wght@0,400;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap');
+
+.deck-stage {
+  --actors: "wine blush card rule pill disc glyph dots";
+  --pink: #F2B6C6; --butter: #F2D86A; --wine: #7A1F35;
+  --font-display: 'Bricolage Grotesque', sans-serif;
+  --font-body: 'Bricolage Grotesque', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --bg: #F2D86A; --fg: #7A1F35; --muted: rgba(122, 31, 53, 0.78);
+  --accent: #7A1F35; --accent-2: #F2B6C6;
+  --card-bg: transparent; --card-fg: #7A1F35; --card-radius: 28px;
+  --title-weight: 700; --title-tracking: -0.02em; --bullet-radius: 50%;
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="wine"]  { background: var(--wine); --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-actor="blush"] { background: var(--pink); --x: 0px; --y: 0px; --w: 1920px; --h: 0px; }
+[data-actor="card"]  { background: var(--wine); border-radius: 28px; --x: 1530px; --y: 630px; --w: 0px; --h: 0px; }
+[data-actor="rule"]  { background: var(--wine); --x: 120px; --y: 203px; --w: 0px; --h: 2px; --o: 0.25; }
+[data-actor="pill"]  { background: var(--wine); border-radius: 999px; --x: 120px; --y: 196px; --w: 0px; --h: 16px; }
+[data-actor="disc"]  { background: var(--pink); border-radius: 50%; --x: 1760px; --y: 540px; --w: 0px; }
+[data-actor="glyph"] { color: var(--pink); --x: 1700px; --y: -420px; --w: 400px; --h: 400px; --o: 0; --s: 0.4; }
+[data-actor="glyph"]::before {
+  content: "\00A7"; position: absolute; inset: 0; text-align: center;
+  font: italic 400 460px/400px 'Playfair Display', serif;
+}
+[data-actor="dots"] {
+  color: var(--wine); --x: 120px; --y: 1030px; --w: 140px; --h: 12px;
+  background: radial-gradient(circle at 6px 6px, currentColor 5px, transparent 5.5px) 0 0 / 28px 12px no-repeat,
+    radial-gradient(circle at 6px 6px, color-mix(in srgb, currentColor 30%, transparent) 5px, transparent 5.5px) 28px 0 / 28px 12px repeat-x;
+}
+
+/* ---------- 1. cover: burgundy spread right, pink foot, big section sign ---------- */
+[data-layout="cover"] [data-actor="wine"]  { --x: 1260px; --y: 0px; --w: 660px; --h: 1080px; }
+[data-layout="cover"] [data-actor="blush"] { --x: 1260px; --y: 760px; --w: 660px; --h: 320px; }
+[data-layout="cover"] [data-actor="card"]  { --x: 1590px; --y: 380px; --w: 0px; --h: 0px; }
+[data-layout="cover"] [data-actor="rule"]  { --x: 120px; --y: 960px; --w: 1000px; }
+[data-layout="cover"] [data-actor="pill"]  { --x: 120px; --y: 110px; --w: 300px; --h: 56px; }
+[data-layout="cover"] [data-actor="disc"]  { --x: 1680px; --y: 840px; --w: 160px; background: var(--butter); }
+[data-layout="cover"] [data-actor="glyph"] { --x: 1390px; --y: 170px; --o: 1; --s: 1; }
+[data-layout="cover"] [data-actor="dots"]  { --x: 120px; --y: 1010px; }
+
+/* ---------- 2. agenda: pink masthead, burgundy gutter between columns ---------- */
+[data-layout="agenda"] [data-actor="wine"]  { --x: 956px; --y: 290px; --w: 8px; --h: 680px; }
+[data-layout="agenda"] [data-actor="blush"] { --x: 0px; --y: 0px; --w: 1920px; --h: 230px; }
+[data-layout="agenda"] [data-actor="card"]  { --x: 960px; --y: 630px; --w: 0px; --h: 0px; }
+[data-layout="agenda"] [data-actor="rule"]  { --x: 0px; --y: 229px; --w: 1920px; --o: 0.4; }
+[data-layout="agenda"] [data-actor="pill"]  { --x: 1620px; --y: 1012px; --w: 180px; --h: 36px; }
+[data-layout="agenda"] [data-actor="disc"]  { --x: 946px; --y: 262px; --w: 28px; background: var(--wine); }
+[data-layout="agenda"] [data-actor="glyph"] { --x: 1540px; --y: -80px; --o: 1; --s: 0.3; color: var(--wine); }
+[data-layout="agenda"] [data-actor="dots"]  { --x: 120px; --y: 1024px; }
+
+/* ---------- 3. section: burgundy left page, pink right page ---------- */
+.deck-stage[data-layout="section"] { --fg: #F2D86A; --muted: #F2B6C6; --accent: #F2B6C6; }
+[data-layout="section"] [data-actor="wine"]  { --x: 0px; --y: 0px; --w: 1160px; --h: 1080px; }
+[data-layout="section"] [data-actor="blush"] { --x: 1160px; --y: 0px; --w: 760px; --h: 1080px; }
+[data-layout="section"] [data-actor="card"]  { --x: 1540px; --y: 540px; --w: 0px; --h: 0px; }
+[data-layout="section"] [data-actor="rule"]  { --x: 160px; --y: 180px; --w: 860px; background: var(--butter); --o: 0.3; }
+[data-layout="section"] [data-actor="pill"]  { --x: 160px; --y: 900px; --w: 280px; --h: 16px; background: var(--butter); }
+[data-layout="section"] [data-actor="disc"]  { --x: 1640px; --y: 800px; --w: 160px; background: var(--butter); }
+[data-layout="section"] [data-actor="glyph"] { --x: 1340px; --y: 250px; --o: 1; --s: 1; color: var(--wine); }
+[data-layout="section"] [data-actor="dots"]  { --x: 160px; --y: 1010px; color: var(--butter); }
+
+/* ---------- 4. content odd: burgundy card holds the highlight ---------- */
+[data-layout="content"] [data-actor="wine"]  { --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-layout="content"] [data-actor="blush"] { --x: 0px; --y: 0px; --w: 48px; --h: 1080px; }
+[data-layout="content"] [data-actor="card"]  { --x: 1250px; --y: 270px; --w: 550px; --h: 720px; }
+[data-layout="content"] [data-actor="rule"]  { --x: 120px; --y: 203px; --w: 1040px; }
+[data-layout="content"] [data-actor="pill"]  { --x: 120px; --y: 196px; --w: 180px; --h: 16px; }
+[data-layout="content"] [data-actor="disc"]  { --x: 1286px; --y: 306px; --w: 24px; }
+[data-layout="content"] [data-actor="glyph"] { --x: 1520px; --y: 710px; --o: 0.9; --s: 0.3; }
+[data-layout="content"] [data-actor="dots"]  { --x: 120px; --y: 1030px; }
+/* even: pink column on the right, the card rolls into a circle */
+[data-layout="content"][data-parity="even"] [data-actor="blush"] { --x: 1220px; --y: 0px; --w: 700px; --h: 1080px; }
+[data-layout="content"][data-parity="even"] [data-actor="card"]  { --x: 1260px; --y: 360px; --w: 540px; --h: 540px; border-radius: 50%; }
+[data-layout="content"][data-parity="even"] [data-actor="pill"]  { --x: 1420px; --y: 110px; --w: 300px; --h: 56px; }
+[data-layout="content"][data-parity="even"] [data-actor="disc"]  { --x: 1716px; --y: 340px; --w: 96px; background: var(--butter); }
+[data-layout="content"][data-parity="even"] [data-actor="glyph"] { --x: 1560px; --y: 780px; --o: 1; --s: 0.3; color: var(--wine); }
+
+/* ---------- 5. two-col: burgundy card | pink card, ribbon takeaway ---------- */
+[data-layout="two-col"] [data-actor="wine"]  { --x: 120px; --y: 270px; --w: 808px; --h: 570px; border-radius: 28px; }
+[data-layout="two-col"] [data-actor="blush"] { --x: 992px; --y: 270px; --w: 808px; --h: 570px; border-radius: 28px; }
+[data-layout="two-col"] [data-actor="card"]  { --x: 120px; --y: 880px; --w: 1680px; --h: 110px; border-radius: 999px; }
+[data-layout="two-col"] [data-actor="rule"]  { --x: 120px; --y: 203px; --w: 1680px; }
+[data-layout="two-col"] [data-actor="pill"]  { --x: 120px; --y: 196px; --w: 240px; --h: 16px; }
+[data-layout="two-col"] [data-actor="disc"]  { --x: 1752px; --y: 104px; --w: 48px; background: var(--wine); }
+[data-layout="two-col"] [data-actor="glyph"] { --x: 1700px; --y: -420px; --o: 0; --s: 0.3; }
+[data-layout="two-col"] [data-actor="dots"]  { --x: 120px; --y: 1030px; }
+
+/* ---------- 6. stats: burgundy floods, pink figures ---------- */
+.deck-stage[data-layout="stats"] { --fg: #F2D86A; --muted: #F2D86A; --accent: #F2B6C6; }
+[data-layout="stats"] [data-actor="wine"]  { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="stats"] [data-actor="blush"] { --x: 0px; --y: 1050px; --w: 1920px; --h: 30px; }
+[data-layout="stats"] [data-actor="card"]  { --x: 960px; --y: 630px; --w: 0px; --h: 0px; }
+[data-layout="stats"] [data-actor="rule"]  { --x: 120px; --y: 203px; --w: 1680px; background: var(--butter); --o: 0.3; }
+[data-layout="stats"] [data-actor="pill"]  { --x: 120px; --y: 196px; --w: 200px; --h: 16px; background: var(--pink); }
+[data-layout="stats"] [data-actor="disc"]  { --x: 1760px; --y: 1000px; --w: 0px; }
+[data-layout="stats"] [data-actor="glyph"] { --x: 1540px; --y: -80px; --o: 1; --s: 0.3; }
+[data-layout="stats"] [data-actor="dots"]  { --x: 120px; --y: 1010px; color: var(--butter); }
+
+/* ---------- 7. timeline: pink band, burgundy ribbon is the axis (y=630) ---------- */
+[data-layout="timeline"] [data-actor="wine"]  { --x: 0px; --y: 1080px; --w: 1920px; --h: 0px; }
+[data-layout="timeline"] [data-actor="blush"] { --x: 0px; --y: 596px; --w: 1920px; --h: 68px; }
+[data-layout="timeline"] [data-actor="card"]  { --x: 960px; --y: 630px; --w: 0px; --h: 0px; }
+[data-layout="timeline"] [data-actor="rule"]  { --x: 120px; --y: 203px; --w: 1680px; }
+[data-layout="timeline"] [data-actor="pill"]  { --x: 120px; --y: 622px; --w: 1680px; --h: 16px; }
+[data-layout="timeline"] [data-actor="disc"]  { --x: 1792px; --y: 602px; --w: 56px; background: var(--wine); }
+[data-layout="timeline"] [data-actor="glyph"] { --x: 1540px; --y: -80px; --o: 1; --s: 0.3; color: var(--wine); }
+[data-layout="timeline"] [data-actor="dots"]  { --x: 120px; --y: 1030px; }
+
+/* ---------- 8. quote: pink floods, burgundy quote mark ---------- */
+.deck-stage[data-layout="quote"] { --accent: #7A1F35; }
+[data-layout="quote"] [data-actor="wine"]  { --x: 1800px; --y: 0px; --w: 120px; --h: 1080px; }
+[data-layout="quote"] [data-actor="blush"] { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="quote"] [data-actor="card"]  { --x: 960px; --y: 540px; --w: 0px; --h: 0px; }
+[data-layout="quote"] [data-actor="rule"]  { --x: 280px; --y: 900px; --w: 1360px; }
+[data-layout="quote"] [data-actor="pill"]  { --x: 280px; --y: 250px; --w: 160px; --h: 16px; }
+[data-layout="quote"] [data-actor="disc"]  { --x: 1600px; --y: 820px; --w: 120px; background: var(--butter); }
+[data-layout="quote"] [data-actor="glyph"] { --x: 60px; --y: 30px; --o: 1; --s: 1; color: var(--wine); }
+[data-layout="quote"] [data-actor="glyph"]::before { content: "\201C"; }
+[data-layout="quote"] [data-actor="dots"]  { --x: 120px; --y: 1030px; }
+
+/* ---------- 9. closing: burgundy floods, pink moon rising ---------- */
+.deck-stage[data-layout="closing"] { --fg: #F2D86A; --muted: #F2B6C6; --accent: #F2B6C6; }
+[data-layout="closing"] [data-actor="wine"]  { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="closing"] [data-actor="blush"] { --x: 1480px; --y: 680px; --w: 640px; --h: 640px; border-radius: 50%; }
+[data-layout="closing"] [data-actor="card"]  { --x: 960px; --y: 540px; --w: 0px; --h: 0px; }
+[data-layout="closing"] [data-actor="rule"]  { --x: 460px; --y: 230px; --w: 1000px; background: var(--butter); --o: 0.3; }
+[data-layout="closing"] [data-actor="pill"]  { --x: 760px; --y: 860px; --w: 400px; --h: 56px; background: var(--pink); }
+[data-layout="closing"] [data-actor="disc"]  { --x: 260px; --y: 860px; --w: 70px; background: var(--butter); }
+[data-layout="closing"] [data-actor="glyph"] { --x: 40px; --y: -40px; --o: 1; --s: 0.5; }
+[data-layout="closing"] [data-actor="dots"]  { --x: 890px; --y: 1010px; color: var(--butter); }
+
+/* ---------- content tweaks: mono labels, serif italic numerals ---------- */
+.slide :is(.kicker, .meta, .cite) { font-family: var(--font-mono); font-weight: 500; text-transform: uppercase; letter-spacing: 0.15em; }
+.slide .kicker { font-size: 22px; }
+.slide :is(.num, .when, .quote), .title em { font-family: var(--font-serif); font-style: italic; font-weight: 400; letter-spacing: 0; }
+.slide[data-layout="cover"] { align-items: flex-start; text-align: left; padding: 0 800px 0 120px; }
+.slide[data-layout="cover"] .title { font-size: 108px; line-height: 0.98; font-weight: 800; letter-spacing: -0.04em; }
+.slide[data-layout="closing"] .title { font-size: 200px; line-height: 0.9; letter-spacing: -0.05em; }
+.slide[data-layout="section"] .num { font-size: 260px; }
+.agenda-list { --agenda-gap: 160px; --tile-line: 2px solid rgba(122, 31, 53, 0.3); }
+.agenda-list li { align-items: flex-start; padding-top: 28px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.slide[data-layout="content"] :is(.hl-big, .hl-icon) { color: var(--pink); }
+.slide[data-layout="content"] .hl-text { color: var(--butter); }
+.slide[data-layout="content"][data-parity="even"] { --hl-left: 1320px; --hl-right: 180px; --title-w: 1060px; }
+.col { padding: 48px 56px; }
+.col:first-child { color: var(--butter); }
+.col:first-child h3 { color: var(--pink); }
+.col:first-child li::before { background: var(--pink); }
+.takeaway { border-left: 0; padding: 20px 72px; color: var(--butter); font-weight: 600; }
+.timeline::before { opacity: 0; }
+.step::before { width: 34px; height: 34px; border: 5px solid var(--butter); background: var(--wine); }
+.step:nth-child(odd)::before { bottom: -17px; }
+.step:nth-child(even)::before { top: -17px; }
+.slide[data-layout="quote"] .quote { font-size: 84px; line-height: 1.18; }
+[data-density="lg"] .bullets { --b-fs: 46px; --b-gap: 60px; }
+[data-density="md"] .bullets { --b-fs: 42px; --b-gap: 60px; }

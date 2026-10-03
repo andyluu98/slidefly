@@ -1,0 +1,157 @@
+/* ===========================================================
+   STYLE: EMERALD EDITORIAL (adapted from frontend-slides
+   bold-template-pack "emerald-editorial", MIT)
+   Magazine cover: saturated emerald canvas, deep navy ink,
+   oat paper. Heavy didone serif, 4px ink rules, playbill
+   double-rule ornament with a diamond, strict rectangles.
+   Actors: ink (navy slab), paper (oat tile), frame (4px ink
+           border), rule (single 4px rule), dbl-l / dbl-r
+           (double-rule ornament halves), gem (diamond).
+           DOM order = z-order (ink first).
+   Fonts: Bodoni Moda -> Playfair Display 900 (Vietnamese).
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=Manrope:wght@500;700;800&display=swap');
+
+.deck-stage {
+  --actors: "ink paper frame rule dbl-l dbl-r gem";
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'Manrope', sans-serif;
+  --em: #3CD896; --ink: #0F1A5C; --ink-2: #1B2774; --paper: #F1E9D6;
+  --bg: var(--em); --fg: var(--ink); --muted: var(--ink-2);
+  --accent: var(--ink); --accent-2: var(--paper);
+  --card-bg: transparent; --card-fg: var(--ink); --card-radius: 0px;
+  --title-weight: 900; --title-tracking: -0.015em; --bullet-radius: 0;
+  --line: var(--ink);
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="ink"]   { background: var(--ink); --x: 0px; --y: 1080px; --w: 1920px; --h: 0px; }
+[data-actor="paper"] { background: var(--paper); --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-actor="frame"] { border: 4px solid var(--line); --bw: 4px; --x: -60px; --y: -60px; --w: 2040px; --h: 1200px; }
+[data-actor="rule"]  { background: var(--line); --x: 120px; --y: 1010px; --w: 0px; --h: 4px; }
+[data-actor="dbl-l"], [data-actor="dbl-r"] {
+  border-top: 4px solid var(--line); border-bottom: 4px solid var(--line);
+  --x: 960px; --y: 196px; --w: 0px; --h: 11px;
+}
+[data-actor="gem"]   { background: var(--line); --x: 942px; --y: -120px; --w: 36px; --h: 36px; --r: 45deg; }
+
+/* ---------- 1. cover: framed magazine page, navy nameplate, playbill ornament ---------- */
+[data-layout="cover"] [data-actor="frame"] { --x: 60px; --y: 60px; --w: 1800px; --h: 960px; }
+[data-layout="cover"] [data-actor="ink"]   { --x: 60px; --y: 60px; --w: 1800px; --h: 96px; }
+[data-layout="cover"] [data-actor="rule"]  { --x: 60px; --y: 170px; --w: 1800px; }
+[data-layout="cover"] [data-actor="dbl-l"] { --x: 300px; --y: 896px; --w: 590px; }
+[data-layout="cover"] [data-actor="dbl-r"] { --x: 1030px; --y: 896px; --w: 590px; }
+[data-layout="cover"] [data-actor="gem"]   { --x: 942px; --y: 884px; }
+
+/* ---------- 2. agenda: double-rule masthead, centre gutter rule, navy footline ---------- */
+[data-layout="agenda"] [data-actor="dbl-l"] { --x: 120px; --y: 196px; --w: 1680px; }
+[data-layout="agenda"] [data-actor="dbl-r"] { --x: 1800px; --y: 196px; --w: 0px; }
+[data-layout="agenda"] [data-actor="gem"]   { --x: 1764px; --y: 110px; }
+[data-layout="agenda"] [data-actor="rule"]  { --x: 958px; --y: 290px; --w: 4px; --h: 680px; }
+[data-layout="agenda"] [data-actor="ink"]   { --x: 0px; --y: 1036px; --w: 1920px; --h: 44px; }
+[data-layout="agenda"] [data-actor="paper"] { --x: 1920px; --y: 1036px; --w: 0px; --h: 44px; }
+
+/* ---------- 3. section: navy floods, oat page on the right with bracketed diamond ---------- */
+.deck-stage[data-layout="section"] { --fg: var(--em); --muted: var(--paper); --accent: var(--paper); }
+[data-layout="section"] [data-actor="ink"]   { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="section"] [data-actor="paper"] { --x: 1160px; --y: 140px; --w: 620px; --h: 800px; }
+[data-layout="section"] [data-actor="frame"] { --x: 1196px; --y: 176px; --w: 548px; --h: 728px; }
+[data-layout="section"] [data-actor="dbl-l"] { --x: 1250px; --y: 380px; --w: 440px; }
+[data-layout="section"] [data-actor="dbl-r"] { --x: 1250px; --y: 690px; --w: 440px; }
+[data-layout="section"] [data-actor="gem"]   { --x: 1400px; --y: 470px; --w: 140px; --h: 140px; }
+[data-layout="section"] [data-actor="rule"]  { --x: 160px; --y: 930px; --w: 860px; background: var(--em); }
+
+/* ---------- 4. content: navy tile holds the highlight; even = oat tile ---------- */
+[data-layout="content"] [data-actor="ink"]   { --x: 1240px; --y: 270px; --w: 560px; --h: 720px; }
+[data-layout="content"] [data-actor="paper"] { --x: 1240px; --y: 962px; --w: 560px; --h: 28px; }
+[data-layout="content"] [data-actor="frame"] { --x: 1220px; --y: 250px; --w: 600px; --h: 760px; }
+[data-layout="content"] [data-actor="dbl-l"] { --x: 120px; --y: 196px; --w: 1040px; }
+[data-layout="content"] [data-actor="dbl-r"] { --x: 1240px; --y: 196px; --w: 560px; }
+[data-layout="content"] [data-actor="gem"]   { --x: 1182px; --y: 184px; }
+[data-layout="content"] [data-actor="rule"]  { --x: 1198px; --y: 270px; --w: 4px; --h: 720px; }
+[data-layout="content"][data-parity="even"] [data-actor="paper"] { --x: 1240px; --y: 298px; --w: 560px; --h: 692px; }
+[data-layout="content"][data-parity="even"] [data-actor="ink"]   { --x: 1240px; --y: 270px; --w: 560px; --h: 28px; }
+[data-layout="content"][data-parity="even"] [data-actor="frame"] { --o: 0; }
+[data-layout="content"][data-parity="even"] [data-actor="dbl-l"] { --x: 120px; --y: 196px; --w: 1680px; }
+[data-layout="content"][data-parity="even"] [data-actor="dbl-r"] { --x: 1800px; --y: 196px; --w: 0px; }
+[data-layout="content"][data-parity="even"] [data-actor="gem"]   { --x: 1764px; --y: 110px; }
+[data-layout="content"][data-parity="even"] [data-actor="rule"]  { --x: 120px; --y: 1010px; --w: 1040px; --h: 4px; }
+
+/* ---------- 5. two-col: navy card + oat card; ornament above the takeaway ---------- */
+[data-layout="two-col"] [data-actor="ink"]   { --x: 120px; --y: 270px; --w: 808px; --h: 720px; }
+[data-layout="two-col"] [data-actor="paper"] { --x: 992px; --y: 270px; --w: 808px; --h: 720px; }
+[data-layout="two-col"] [data-actor="dbl-l"] { --x: 120px; --y: 196px; --w: 1680px; }
+[data-layout="two-col"] [data-actor="dbl-r"] { --x: 120px; --y: 1016px; --w: 1680px; }
+[data-layout="two-col"] [data-actor="gem"]   { --x: 942px; --y: 110px; --o: 0; }
+[data-layout="two-col"] [data-actor="rule"]  { --x: 958px; --y: 270px; --w: 4px; --h: 0px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="ink"]   { --h: 570px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="paper"] { --h: 570px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="dbl-r"] { --y: 858px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="rule"]  { --x: 120px; --y: 1000px; --w: 1680px; --h: 4px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="gem"]   { --x: 942px; --y: 846px; --o: 1; }
+
+/* ---------- 6. stats: navy band carries the figures, emerald frame inside ---------- */
+[data-layout="stats"] [data-actor="ink"]   { --x: 0px; --y: 300px; --w: 1920px; --h: 660px; }
+[data-layout="stats"] [data-actor="paper"] { --x: 0px; --y: 286px; --w: 1920px; --h: 14px; }
+[data-layout="stats"] [data-actor="frame"] { --x: 60px; --y: 340px; --w: 1800px; --h: 580px; border-color: var(--em); }
+[data-layout="stats"] [data-actor="dbl-l"] { --x: 120px; --y: 196px; --w: 780px; }
+[data-layout="stats"] [data-actor="dbl-r"] { --x: 1020px; --y: 196px; --w: 780px; }
+[data-layout="stats"] [data-actor="gem"]   { --x: 942px; --y: 184px; }
+[data-layout="stats"] [data-actor="rule"]  { --x: 120px; --y: 1004px; --w: 1680px; }
+
+/* ---------- 7. timeline: oat ribbon, ink axis, diamond at the end ---------- */
+[data-layout="timeline"] [data-actor="paper"] { --x: 0px; --y: 606px; --w: 1920px; --h: 48px; }
+[data-layout="timeline"] [data-actor="rule"]  { --x: 120px; --y: 628px; --w: 1680px; }
+[data-layout="timeline"] [data-actor="gem"]   { --x: 1818px; --y: 612px; }
+[data-layout="timeline"] [data-actor="dbl-l"] { --x: 120px; --y: 196px; --w: 1680px; }
+[data-layout="timeline"] [data-actor="dbl-r"] { --x: 120px; --y: 1016px; --w: 1680px; }
+[data-layout="timeline"] [data-actor="ink"]   { --x: 0px; --y: 1080px; --w: 1920px; --h: 0px; }
+
+/* ---------- 8. quote: oat paper floods, framed like a printed page ---------- */
+.deck-stage[data-layout="quote"] { --muted: var(--ink-2); }
+[data-layout="quote"] [data-actor="paper"] { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="quote"] [data-actor="ink"]   { --x: 0px; --y: 1040px; --w: 1920px; --h: 40px; }
+[data-layout="quote"] [data-actor="frame"] { --x: 80px; --y: 80px; --w: 1760px; --h: 920px; }
+[data-layout="quote"] [data-actor="dbl-l"] { --x: 280px; --y: 220px; --w: 610px; }
+[data-layout="quote"] [data-actor="dbl-r"] { --x: 1030px; --y: 220px; --w: 610px; }
+[data-layout="quote"] [data-actor="gem"]   { --x: 942px; --y: 208px; }
+[data-layout="quote"] [data-actor="rule"]  { --x: 280px; --y: 860px; --w: 1360px; }
+
+/* ---------- 9. closing: navy floods, emerald rules bracket the word ---------- */
+.deck-stage[data-layout="closing"] { --fg: var(--em); --muted: var(--paper); --accent: var(--paper); --line: var(--em); }
+[data-layout="closing"] [data-actor="ink"]   { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="closing"] [data-actor="frame"] { --x: 60px; --y: 60px; --w: 1800px; --h: 960px; }
+[data-layout="closing"] [data-actor="dbl-l"] { --x: 200px; --y: 535px; --w: 440px; }
+[data-layout="closing"] [data-actor="dbl-r"] { --x: 1280px; --y: 535px; --w: 440px; }
+[data-layout="closing"] [data-actor="gem"]   { --x: 942px; --y: 860px; }
+[data-layout="closing"] [data-actor="paper"] { --x: 0px; --y: 1080px; --w: 1920px; --h: 0px; }
+
+/* ---------- content tweaks: editorial, centred display, Manrope chrome ---------- */
+.slide .kicker { font-weight: 800; letter-spacing: 0.18em; }
+.slide:is([data-layout="cover"], [data-layout="closing"]) .kicker { font-size: 26px; }
+.slide > .title:first-child { font-size: 68px; }
+.slide[data-layout="cover"] .title { font-size: 112px; line-height: 0.98; }
+.slide[data-layout="cover"] .subtitle { font-family: var(--font-display); font-style: italic; font-weight: 700; }
+.slide:is([data-layout="cover"], [data-layout="closing"]) .meta { text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; font-size: 22px; }
+.slide[data-layout="closing"] .title { font-size: 168px; line-height: 1; }
+.slide[data-layout="section"] .num { font-size: 260px; }
+.slide[data-layout="section"] .title { font-size: 92px; line-height: 1; }
+.agenda-list { --agenda-gap: 140px; --tile-line: 4px solid var(--ink); }
+.agenda-list li { align-items: flex-start; padding-top: 26px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list h3 { font-weight: 800; }
+.bullets li { font-weight: 500; }
+.slide[data-layout="content"] .hl-text { font-size: 40px; font-weight: 800; }
+.slide[data-layout="content"] .highlight { color: var(--em); --accent: var(--paper); }
+.slide[data-layout="content"][data-parity="even"] .highlight { color: var(--ink); --accent: var(--ink); }
+.col { padding: 48px 56px; }
+.col h3 { font-weight: 900; }
+.slide[data-layout="two-col"] .col:first-child { color: var(--em); --accent: var(--paper); }
+.takeaway { border-left: 0; justify-content: center; text-align: center; font-style: italic; font-weight: 700; }
+.slide[data-layout="stats"] .stats { --accent: var(--em); --muted: var(--paper); }
+.step::before { border-radius: 0; transform: rotate(45deg); background: var(--ink); }
+.timeline::before { opacity: 0; }
+.slide[data-layout="quote"] { text-align: center; align-items: center; }
+.slide[data-layout="quote"] .quote { font-size: 76px; font-weight: 800; font-style: italic; }
+.slide[data-layout="quote"] .cite { text-transform: uppercase; letter-spacing: 0.16em; font-weight: 800; font-size: 24px; }
