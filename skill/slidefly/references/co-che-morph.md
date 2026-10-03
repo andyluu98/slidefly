@@ -1,4 +1,4 @@
-# Cơ chế Morph trong morph-slides
+# Cơ chế Morph trong SlideFly
 
 ## 1. Diễn viên và tư thế
 - **Diễn viên** (`.actor[data-actor="ten"]`): hình trang trí nằm trên MỘT sân khấu chung, phía sau nội dung. Engine tạo chúng từ biến `--actors` của style; thứ tự trong danh sách là thứ tự chồng lớp (đầu danh sách nằm dưới cùng).

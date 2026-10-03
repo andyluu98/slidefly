@@ -1,13 +1,13 @@
 ---
-name: morph-slides
-description: Tạo slide HTML có hiệu ứng chuyển cảnh kiểu PowerPoint Morph (hình trang trí trượt, phóng to, đổi màu liền mạch giữa các slide), 47 style, bố cục tự lấp đầy theo lượng chữ và tự đo độ trống của từng slide. Dùng khi người dùng nói "slide morph", "slide animation đẹp", "slide HTML có hiệu ứng chuyển cảnh", "làm deck chuyển động", "/morph-slides", hoặc muốn chuyển một mẫu PowerPoint Morph sang web. Không dùng khi cần file .pptx chỉnh sửa được (dùng office-docs hoặc pptx) hay chỉ cần slide HTML hiệu ứng xuất hiện đơn giản (frontend-slides).
+name: slidefly
+description: Tạo slide HTML có hiệu ứng chuyển cảnh kiểu PowerPoint Morph (hình trang trí trượt, phóng to, đổi màu liền mạch giữa các slide), 47 style, bố cục tự lấp đầy theo lượng chữ và tự đo độ trống của từng slide. Dùng khi người dùng nói "slide morph", "slide animation đẹp", "slide HTML có hiệu ứng chuyển cảnh", "làm deck chuyển động", "/slidefly", "SlideFly", hoặc muốn chuyển một mẫu PowerPoint Morph sang web. Không dùng khi cần file .pptx chỉnh sửa được (dùng office-docs hoặc pptx) hay chỉ cần slide HTML hiệu ứng xuất hiện đơn giản (frontend-slides).
 ---
 
-# morph-slides
+# SlideFly: slide biết bay
 
 Slide HTML một file, trình chiếu bằng Chrome/Edge. Hình trang trí ("diễn viên") sống trên một sân khấu chung; mỗi kiểu slide là một "tư thế". Chuyển slide thì diễn viên trượt sang tư thế mới, đúng tinh thần Morph: cùng tên là cùng một vật.
 
-Skill dir: `~/.claude/skills/morph-slides/` (gọi tắt `$SK`). Python 3.10+ có Playwright + Pillow: `pip install -r requirements.txt` rồi `playwright install chromium`.
+Skill dir: `~/.claude/skills/slidefly/` (gọi tắt `$SK`). Python 3.10+ có Playwright + Pillow: `pip install -r requirements.txt` rồi `playwright install chromium`.
 
 ```
 assets/morph-base.css      khung 1920x1080, diễn viên, reveal, giảm chuyển động

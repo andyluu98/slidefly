@@ -1,4 +1,4 @@
-"""Check a morph-slides deck in headless Chrome (Playwright).
+"""Check a SlideFly deck in headless Chrome (Playwright).
 
 Usage: python check-deck.py <deck.html> [out_dir]
 

@@ -1,10 +1,10 @@
-# morph-slides
+# SlideFly: slide biết bay
 
 Skill cho [Claude Code](https://claude.com/claude-code) tạo **slide HTML có hiệu ứng chuyển cảnh kiểu PowerPoint Morph**: hình trang trí trượt, phóng to, đổi màu liền mạch giữa các slide. Một file HTML, mở bằng Chrome là trình chiếu được. Có **47 style**, bố cục tự lấp đầy theo lượng chữ và tự đo độ trống của từng slide.
 
 *A Claude Code skill that builds single-file HTML decks with PowerPoint-Morph-like transitions: 47 styles, auto-filling layouts and an automatic fill/overflow audit. Docs are in Vietnamese.*
 
-**Xem trực tuyến:** [Thư viện 47 style](https://andyluu98.github.io/morph-slides/gallery/00-gallery.html) · [Deck mẫu 20 slide (Stencil & Tablet)](https://andyluu98.github.io/morph-slides/examples/ai-agent-stencil-tablet-20-slide.html) · [Deck mẫu 15 slide (Swiss Modern)](https://andyluu98.github.io/morph-slides/examples/ai-agent-swiss-15-slide.html)
+**Xem trực tuyến:** [Thư viện 47 style](https://andyluu98.github.io/slidefly/gallery/00-gallery.html) · [Deck mẫu 20 slide (Stencil & Tablet)](https://andyluu98.github.io/slidefly/examples/ai-agent-stencil-tablet-20-slide.html) · [Deck mẫu 15 slide (Swiss Modern)](https://andyluu98.github.io/slidefly/examples/ai-agent-swiss-15-slide.html)
 
 ![Thư viện style](docs/gallery.jpg)
 
@@ -25,9 +25,9 @@ Mỗi style có một nhóm hình cố định gọi là **diễn viên**. Mỗi
 ## Cài đặt
 
 ```bash
-git clone https://github.com/andyluu98/morph-slides.git
-cp -r morph-slides/skill/morph-slides ~/.claude/skills/
-pip install -r morph-slides/requirements.txt
+git clone https://github.com/andyluu98/slidefly.git
+cp -r slidefly/skill/slidefly ~/.claude/skills/
+pip install -r slidefly/requirements.txt
 playwright install chromium
 ```
 
@@ -35,11 +35,11 @@ Python chỉ cần cho các script kiểm tra và đóng gói. Deck tạo ra ch�
 
 ## Cách dùng
 
-Trong Claude Code, gõ `/morph-slides` hoặc nói tự nhiên, ví dụ: *"Làm 20 slide giải thích AI Agent, style stencil-tablet"*. Skill sẽ lập dàn ý, chọn kiểu slide, dựng deck, tự kiểm tra rồi đóng gói thành một file HTML.
+Trong Claude Code, gõ `/slidefly` hoặc nói tự nhiên, ví dụ: *"Làm 20 slide giải thích AI Agent, style stencil-tablet"*. Skill sẽ lập dàn ý, chọn kiểu slide, dựng deck, tự kiểm tra rồi đóng gói thành một file HTML.
 
 Dùng thủ công không qua Claude:
 
-1. Chép `skill/morph-slides/templates/deck-mau.html`, đổi dòng `<link>` sang style muốn dùng (danh sách ở `assets/styles/index.json`).
+1. Chép `skill/slidefly/templates/deck-mau.html`, đổi dòng `<link>` sang style muốn dùng (danh sách ở `assets/styles/index.json`).
 2. Thay nội dung các `<section class="slide" data-layout="...">` (markup mẫu ở `references/layouts.md`).
 3. Đóng gói: `python scripts/inline-assets.py nguon.html deck.html`
 4. Kiểm tra: `python scripts/check-deck.py deck.html thu-muc-anh`
@@ -49,7 +49,7 @@ Dùng thủ công không qua Claude:
 ## Cấu trúc
 
 ```
-skill/morph-slides/
+skill/slidefly/
 ├── SKILL.md                 quy trình cho Claude
 ├── assets/
 │   ├── morph-engine.js      co giãn khung, diễn viên, biến thể, FLIP

@@ -2,7 +2,7 @@
 
 ## frontend-slides (MIT)
 
-The visual styles in `skill/morph-slides/assets/styles/` (except `xanh-dai-hoc`) are adaptations of the style presets and bold template pack in https://github.com/zarazhangrui/frontend-slides. The fixed 1920x1080 stage and the reveal classes in `morph-base.css` follow the same project's approach.
+The visual styles in `skill/slidefly/assets/styles/` (except `xanh-dai-hoc`) are adaptations of the style presets and bold template pack in https://github.com/zarazhangrui/frontend-slides. The fixed 1920x1080 stage and the reveal classes in `morph-base.css` follow the same project's approach.
 
 ```
 MIT License

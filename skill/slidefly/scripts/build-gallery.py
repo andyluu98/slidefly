@@ -10,6 +10,7 @@ For style number N (1-based, index order) the demo deck is <out_dir>/NN_demo-<sl
 """
 import html
 import json
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -31,7 +32,7 @@ def build_demo(slug: str, dest: Path) -> None:
     try:
         subprocess.run([PY, str(SK / "scripts" / "inline-assets.py"), str(tmp), str(dest)], check=True, capture_output=True)
     finally:
-        tmp.replace(Path(tempfile.gettempdir()) / tmp.name)  # move out of the skill, never delete
+        shutil.move(str(tmp), str(Path(tempfile.gettempdir()) / tmp.name))  # works across drives; never delete
 
 
 def card(i: int, st: dict, demo: str) -> str:
@@ -43,7 +44,7 @@ def card(i: int, st: dict, demo: str) -> str:
 
 
 PAGE = """<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Thư viện style morph-slides</title><style>
+<title>Thư viện style SlideFly</title><style>
 :root{--bg:#f4f2ee;--fg:#1b1b1b;--muted:#666;--card:#fff;--line:#ddd}
 @media (prefers-color-scheme:dark){:root{--bg:#141414;--fg:#eee;--muted:#999;--card:#1f1f1f;--line:#333}}
 body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,sans-serif}
@@ -55,7 +56,7 @@ main{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:
 .thumb{position:relative;aspect-ratio:16/9;background:#000}.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .3s}
 .thumb .alt{opacity:0}.card:hover .alt{opacity:1}.meta{padding:10px 12px}.meta p{margin:4px 0;color:var(--muted)}
 code{font-size:12px;color:var(--muted)}.tag{display:inline-block;font-size:12px;padding:1px 8px;margin:2px 4px 2px 0;border-radius:10px;border:1px solid var(--line)}small{color:var(--muted)}
-</style></head><body><header><h1>Thư viện style morph-slides</h1>
+</style></head><body><header><h1>Thư viện style SlideFly</h1>
 <p>__COUNT__ style. Rê chuột để xem slide nội dung, bấm để mở deck demo (mũi tên để chuyển slide).</p>
 <div class="bar"><button class="on" data-f="all">Tất cả</button><button data-f="dark">Nền tối</button><button data-f="light">Nền sáng</button><button data-f="mixed">Pha trộn</button>
 <input id="q" placeholder="Tìm: công nghệ, sang trọng, vui..."></div></header><main>__CARDS__</main>
