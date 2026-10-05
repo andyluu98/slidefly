@@ -1,11 +1,9 @@
 /* ===========================================================
    MORPH-SLIDES AUDIT: measures how well each slide fills space.
    Run in the browser console (or via a test tool): deck.audit()
-   - Collects "ink" (text line boxes + media) per slide.
-   - maxGapY / maxGapX = biggest empty band inside the safe area.
-   - overflow = ink outside the slide or past the safe margins.
-   Display slides (cover, section, quote, closing) are only
-   checked for overflow: their emptiness is intentional.
+   - ink = text line boxes + media; maxGapY / maxGapX = biggest empty band in the
+     safe area; overflow = ink past the safe margins. Display slides (cover,
+     section, quote, closing, photo) are only checked for overflow.
    - a chart with numbers (morph-viz) must carry data-source.
    - icons (morph-icons): at most 6 per slide, none missing.
    - a photo slide (morph-photo) must credit its picture.
@@ -29,16 +27,12 @@
     const s = stage.getBoundingClientRect();
     const k = s.width / 1920;
     const out = [];
-    const push = (r) => {
-      if (r.width < 1 || r.height < 1) return;
-      out.push({ x0: (r.left - s.left) / k, x1: (r.right - s.left) / k, y0: (r.top - s.top) / k, y1: (r.bottom - s.top) / k });
-    };
+    const push = (r) => r.width >= 1 && r.height >= 1 && out.push({ x0: (r.left - s.left) / k, x1: (r.right - s.left) / k, y0: (r.top - s.top) / k, y1: (r.bottom - s.top) / k });
     const walker = document.createTreeWalker(slide, NodeFilter.SHOW_TEXT);
     while (walker.nextNode()) {
       const node = walker.currentNode;
       if (!node.textContent.trim()) continue;
-      const range = document.createRange();
-      range.selectNodeContents(node);
+      const range = document.createRange(); range.selectNodeContents(node);
       [...range.getClientRects()].forEach(push);
     }
     slide.querySelectorAll(':is(img, svg, video, canvas):not(.photo-bg)').forEach((el) => push(el.getBoundingClientRect()));
@@ -53,8 +47,7 @@
     });
     return [...stage.querySelectorAll('.actor')].flatMap((a) => {
       const cs = getComputedStyle(a);
-      // soft glows (radial gradients, blur) and faint shapes do not hurt reading
-      // masked or clipped shapes (pins, scribbles): the box is not the drawn shape, skip
+      // soft glows, faint shapes and masked/clipped drawings (pins: the box is not the shape) are skipped
       const soft = (/radial-gradient/.test(cs.backgroundImage) && clear(cs.backgroundColor)) || /blur/.test(cs.filter) || +cs.opacity < 0.6
         || cs.maskImage !== 'none' || cs.webkitMaskImage !== 'none' || cs.clipPath !== 'none';
       const fill = soft ? null : fillLum(cs);
@@ -85,17 +78,12 @@
   const clear = (c) => c === 'transparent' || /rgba\(.*,\s*0(\.0*[0-2]\d*)?\)$/.test(c);
   /* text on its own box (card, band, window) is shielded from the actors behind */
   const boxed = (e) => { const cs = getComputedStyle(e); return !clear(cs.backgroundColor) || /gradient|url\(/.test(cs.backgroundImage); };
-  const shielded = (el, slide) => {
-    for (let e = el; e && e !== slide; e = e.parentElement) if (boxed(e)) return true;
-    return false;
-  };
+  const shielded = (el, slide) => { for (let e = el; e && e !== slide; e = e.parentElement) if (boxed(e)) return true; return false; };
 
   /* text that ends the slide hidden (pieces gathered away, opacity 0) is not read */
   const faded = (el, slide) => {
-    let o = 1;
-    for (let e = el; e && e !== slide; e = e.parentElement) o *= +getComputedStyle(e).opacity;
-    return o < 0.2 || getComputedStyle(el).visibility === 'hidden';
-  };
+    let o = 1; for (let e = el; e && e !== slide; e = e.parentElement) o *= +getComputedStyle(e).opacity;
+    return o < 0.2 || getComputedStyle(el).visibility === 'hidden'; };
 
   /* text lines lying (even partly) on a solid actor of too similar a brightness */
   function crossings(slide) {
@@ -115,8 +103,7 @@
       if (parseFloat(tcs.webkitTextStrokeWidth) > 0 || tcs.textShadow !== 'none') continue; // outlined text carries its own contrast
       const ink = lum(tcs.color.match(/[\d.]+/g).slice(0, 3).map(Number));
       const need = parseFloat(tcs.fontSize) >= 60 ? 2.4 : 3;   // very large type stays readable at lower contrast
-      const range = document.createRange();
-      range.selectNodeContents(node);
+      const range = document.createRange(); range.selectNodeContents(node);
       [...range.getClientRects()].forEach((r) => {
         const l = { x0: (r.left - s.left) / k, x1: (r.right - s.left) / k, y0: (r.top - s.top) / k, y1: (r.bottom - s.top) / k };
         const area = (l.x1 - l.x0) * (l.y1 - l.y0);
