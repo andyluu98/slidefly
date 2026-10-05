@@ -37,7 +37,7 @@ Khi hệ điều hành bật giảm chuyển động (Windows: tắt Animation e
 - Độ dày viền `<a:ln w>`: EMU / 6350. Bóng `outerShdw`: blur và dist chia 6350, hướng `dir` (đơn vị 1/60000 độ) đổi sang dx, dy.
 - `custGeom` đổi sang SVG path: giữ `w/h` làm viewBox, M/L/C/Z giữ nguyên. Hình đứng yên dùng SVG nền (data URI) trong CSS như diễn viên `flower` của `xanh-dai-hoc.css`.
 - Tên `!!Tên` của PowerPoint ứng với `data-actor`; mỗi slide mẫu thành một `data-pose`. Ví dụ: phần `dh1..dh4` trong `xanh-dai-hoc.css`.
-- `advClick="0" advTm="1000"` của mẫu là tự chuyển slide; skill này mặc định click mới chuyển.
+- `advClick="0" advTm="1000"` của mẫu là tự chuyển slide; skill này mặc định người trình bày bấm (phím hoặc nút rìa) mới chuyển.
 
 ## 7. Nguồn và giấy phép
 - Khung co giãn và lớp reveal lấy ý từ `frontend-slides` (zarazhangrui, MIT). Style Bold Signal, Swiss Modern, Dark Botanical, Neon Cyber, Paper & Ink phỏng theo bộ preset của repo này, font thay bằng font có tiếng Việt.

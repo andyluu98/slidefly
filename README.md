@@ -60,7 +60,7 @@ skill/slidefly/
 ├── SKILL.md                 quy trình cho Claude
 ├── assets/
 │   ├── morph-engine.js      co giãn khung, diễn viên, biến thể, FLIP
-│   ├── morph-nav.js         phím, click, vuốt, cuộn chuột
+│   ├── morph-nav.js         phím, 2 nút rìa, vuốt (bấm thân slide không chuyển)
 │   ├── morph-audit.js       deck.audit(): đo khoảng trống và chữ tràn
 │   ├── morph-base.css       khung 1920x1080, chuyển cảnh, hiệu ứng chữ
 │   ├── morph-layouts.css    9 kiểu slide tự co giãn

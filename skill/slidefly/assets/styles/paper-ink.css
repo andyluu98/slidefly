@@ -112,7 +112,7 @@
 [data-layout="quote"] [data-actor="tint"]   { --x: 0px; --w: 0px; }
 
 /* ---------- 9. closing: crimson floods the page, paper rules ---------- */
-.deck-stage[data-layout="closing"] { --fg: #faf9f7; --muted: #f6d5db; --accent: #1a1a1a; }
+.deck-stage[data-layout="closing"] { --fg: #faf9f7; --muted: #f6d5db; --accent: #f6d5db; }
 [data-layout="closing"] [data-actor="crim"]   { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
 [data-layout="closing"] [data-actor="rule-b"] { --x: 460px; --y: 290px; --w: 1000px; border-color: var(--paper); }
 [data-layout="closing"] [data-actor="rule-a"] { --x: 460px; --y: 800px; --w: 1000px; background: var(--paper); }

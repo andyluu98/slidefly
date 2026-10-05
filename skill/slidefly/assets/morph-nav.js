@@ -2,14 +2,15 @@
    MORPH-SLIDES NAVIGATION (load after morph-engine.js)
    Keys: Right/Down/PageDown/Space/Enter = next,
          Left/Up/PageUp/Backspace = back, Home/End, F = fullscreen.
-   Click: left quarter = back, elsewhere = next. One-finger swipe.
-   Mouse wheel (throttled). Editing the #hash jumps to that slide.
+   Two edge buttons (left = back, right = next). Clicking the slide itself
+   does nothing, so text can be selected and copied while presenting;
+   the mouse wheel does not page either. One-finger swipe. Editing the
+   #hash jumps to that slide.
    =========================================================== */
 (() => {
   const deck = window.deck;
   if (!deck) return;
   const isEditable = (t) => t.closest?.('a, button, input, textarea, select, [contenteditable]');
-  let wheelLock = 0;
 
   addEventListener('keydown', (e) => {
     // leave browser shortcuts alone (Ctrl+F, Alt+Left, ...)
@@ -25,10 +26,17 @@
     }
   });
 
-  addEventListener('click', (e) => {
-    if (isEditable(e.target)) return;
-    (e.clientX < innerWidth * 0.25 ? deck.prev : deck.next)();
-  });
+  // edge buttons live outside the stage; screenshots by automated browsers leave them out
+  if (!navigator.webdriver) {
+    [['prev', '\u2039', 'Slide trước'], ['next', '\u203A', 'Slide sau']].forEach(([dir, mark, label]) => {
+      const b = Object.assign(document.createElement('button'), { className: `deck-edge ${dir}`, type: 'button' });
+      b.setAttribute('aria-label', label);
+      b.innerHTML = `<span aria-hidden="true">${mark}</span>`;
+      b.addEventListener('mousedown', (e) => e.preventDefault()); // keep focus off, so Space/Enter still page
+      b.addEventListener('click', () => deck[dir]());
+      document.body.append(b);
+    });
+  }
 
   let touch = null;
   addEventListener('touchstart', (e) => {
@@ -43,13 +51,6 @@
     const forward = Math.abs(dx) > Math.abs(dy) ? dx < 0 : dy < 0;
     (forward ? deck.next : deck.prev)();
   });
-
-  addEventListener('wheel', (e) => {
-    const now = Date.now();
-    if (e.ctrlKey || now < wheelLock || Math.abs(e.deltaY) < 20) return; // ctrl+wheel = zoom
-    wheelLock = now + 900;
-    (e.deltaY > 0 ? deck.next : deck.prev)();
-  }, { passive: true });
 
   addEventListener('hashchange', () => {
     const n = parseInt(location.hash.slice(1), 10);

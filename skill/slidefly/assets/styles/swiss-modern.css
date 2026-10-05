@@ -88,7 +88,7 @@
 [data-layout="quote"] [data-actor="dot"]    { --x: 1640px; --y: 820px; --w: 120px; }
 
 /* ---------- 9. closing: red takes the stage ---------- */
-.deck-stage[data-layout="closing"] { --fg: #fff; --muted: #ffe0d6; --accent: #0a0a0a; }
+.deck-stage[data-layout="closing"] { --fg: #fff; --muted: #fff3ee; --accent: #0a0a0a; }
 [data-layout="closing"] [data-actor="red"]    { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
 [data-layout="closing"] [data-actor="blk"]    { --x: 1920px; --y: 1080px; --w: 0px; --h: 0px; }
 [data-layout="closing"] [data-actor="dot"]    { --x: 1680px; --y: 120px; --w: 120px; background: #fff; }

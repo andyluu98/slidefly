@@ -13,7 +13,7 @@ Skill dir: `~/.claude/skills/slidefly/` (gọi tắt `$SK`). Python 3.10+ có Pl
 assets/morph-base.css      khung 1920x1080, diễn viên, reveal, giảm chuyển động
 assets/morph-layouts.css   9 kiểu slide, tự co giãn theo data-density
 assets/morph-engine.js     co giãn khung, tạo diễn viên từ --actors, FLIP, mật độ
-assets/morph-nav.js        phím, click, vuốt, cuộn chuột, #số-slide
+assets/morph-nav.js        phím, 2 nút mũi tên ở hai rìa, vuốt, #số-slide (bấm vào thân slide không chuyển)
 assets/morph-audit.js      deck.audit(): đo khoảng trống, tràn chữ, slide lặp kiểu, biểu đồ thiếu nguồn
 assets/morph-motion.css    hiệu ứng theo động từ (vẽ nét, đếm, đóng dấu, rơi, gộp...) + màu --viz-*
 assets/morph-viz.css       giao diện 8 dạng sơ đồ
@@ -65,6 +65,7 @@ scripts/build-gallery.py   dựng demo + trang 00-gallery.html xem/lọc mọi s
   - Tối đa 6 ý mỗi slide; hơn thì tách slide. Engine tự chọn cỡ chữ lg/md/sm theo số ý.
   - Dùng `data-morph-id` cùng giá trị cho tiêu đề mục ở agenda và tiêu đề section ngay sau nó để chữ bay sang.
 - Văn bản: tiếng Việt có dấu, câu ngắn, **không dùng ký tự gạch ngang dài**.
+- Chữ chỉ nằm trong vùng trống của tư thế, hoặc nằm hẳn trên một hình đủ tương phản. Câu dài thì cho xuống dòng hoặc thu hẹp khối chữ, không để chữ kéo qua tấm nền khác màu (nửa dòng trên nền tối, nửa dòng trên nền sáng là mất chữ). Màu nhấn sáng (vàng, xanh lá) đặt trên nền sáng thì đổi sang tông đậm.
 
 ### Bước 4. Gộp thành 1 file
 ```bash
@@ -83,6 +84,7 @@ python "$SK/scripts/check-deck.py" "<file.html>" "<scratchpad>/shots/<ten>"
 |---|---|
 | `trống dọc` | thêm highlight/takeaway, gộp 2 slide thưa thành 1, hoặc đặt `data-density="lg"` |
 | `trống ngang` | slide content thiếu `.highlight`, thêm vào |
+| `chữ khó đọc trên hình X` | chữ nằm trên hình trang trí X có độ tương phản dưới 3:1: thu hẹp hoặc dời khối chữ ra khỏi hình, hoặc đổi màu chữ cho slide/tư thế đó |
 | `tràn khung` / `chữ tràn hộp` | rút gọn câu, tách slide, hoặc `data-density="sm"` |
 | `nhàm: giống hệt 2 slide trước` | đổi dạng hình hoặc hiệu ứng của slide đó (bảng chọn hình theo ý) |
 | `quá nhiều icon` / `icon không tồn tại` | giữ icon cho ý chính; tìm đúng tên bằng `icons.py search` |
@@ -94,7 +96,7 @@ python "$SK/scripts/check-deck.py" "<file.html>" "<scratchpad>/shots/<ten>"
 
 ### Bước 6. Bàn giao
 - Nêu đường dẫn tuyệt đối, số slide, các style đã dùng.
-- Cách trình chiếu: mũi tên/Space/click để sang, mũi tên trái để lùi, `F` toàn màn hình, `Home`/`End`.
+- Cách trình chiếu: mũi tên phải, Space, PageDown hoặc nút `›` ở rìa phải để sang; mũi tên trái hoặc nút `‹` ở rìa trái để lùi; `F` toàn màn hình, `Home`/`End`. Bấm vào thân slide không chuyển, nên bôi đen và chép chữ thoải mái; lăn chuột cũng không chuyển.
 - File cần mạng để tải font Google; không mạng thì chữ dùng font dự phòng.
 - Nếu Windows tắt "Animation effects", trình duyệt bật chế độ giảm chuyển động: Morph vẫn chạy nhưng ngắn (0,7 giây). Bật lại ở Settings, Accessibility, Visual effects để có hiệu ứng đầy đủ.
 

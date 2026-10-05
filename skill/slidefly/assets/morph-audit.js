@@ -9,6 +9,8 @@
    - a chart with numbers (morph-viz) must carry data-source.
    - icons (morph-icons): at most 6 per slide, none missing.
    - a photo slide (morph-photo) must credit its picture.
+   - text lying on a solid actor whose colour gives a contrast ratio
+     under 3:1 with the text (WCAG) = hard to read: "chữ khó đọc trên hình".
    - variety: 3 inner slides in a row with the same look
      (layout, pose, diagram kinds, motion verbs) = monotone.
    Run it outside a live talk: it briefly shows steps not yet clicked.
@@ -41,6 +43,85 @@
     }
     slide.querySelectorAll(':is(img, svg, video, canvas):not(.photo-bg)').forEach((el) => push(el.getBoundingClientRect()));
     return out;
+  }
+
+  /* solid actors in the pose this slide would have (same attributes the engine sets) */
+  function actorRects(slide, k, s) {
+    Object.assign(stage.dataset, {
+      layout: slide.dataset.layout || 'content', pose: slide.dataset.pose || '',
+      parity: slide.dataset.pose ? 'none' : slide.dataset.parity, variant: slide.dataset.variant,
+    });
+    return [...stage.querySelectorAll('.actor')].flatMap((a) => {
+      const cs = getComputedStyle(a);
+      // soft glows (radial gradients, blur) and faint shapes do not hurt reading
+      // masked or clipped shapes (pins, scribbles): the box is not the drawn shape, skip
+      const soft = /radial-gradient/.test(cs.backgroundImage) || /blur/.test(cs.filter) || +cs.opacity < 0.6
+        || cs.maskImage !== 'none' || cs.webkitMaskImage !== 'none' || cs.clipPath !== 'none';
+      const solid = !soft && (cs.backgroundImage !== 'none' || !clear(cs.backgroundColor));
+      const r = a.getBoundingClientRect();
+      if (!solid || r.width / k < 24 || r.height / k < 24) return [];
+      const rgb = cs.backgroundColor.match(/[\d.]+/g)?.slice(0, 3).map(Number);
+      if (!rgb || cs.backgroundImage !== 'none') return [];   // pictures: colour unknown, skip
+      return [{ name: a.dataset.actor, lum: lum(rgb), x0: (r.left - s.left) / k, x1: (r.right - s.left) / k, y0: (r.top - s.top) / k, y1: (r.bottom - s.top) / k }];
+    });
+  }
+
+  /* WCAG relative luminance and contrast ratio */
+  const lum = ([r, g, b]) => [r, g, b].map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; })
+    .reduce((s, v, i) => s + v * [0.2126, 0.7152, 0.0722][i], 0);
+  const ratio = (a, b) => (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+  const clear = (c) => c === 'transparent' || /rgba\(.*,\s*0(\.0*[0-2]\d*)?\)$/.test(c);
+  /* text on its own box (card, band, window) is shielded from the actors behind */
+  const shielded = (el, slide) => {
+    for (let e = el; e && e !== slide; e = e.parentElement) {
+      const cs = getComputedStyle(e);
+      if (!clear(cs.backgroundColor) || /gradient|url\(/.test(cs.backgroundImage)) return true;
+    }
+    return false;
+  };
+
+  /* text that ends the slide hidden (pieces gathered away, opacity 0) is not read */
+  const faded = (el, slide) => {
+    let o = 1;
+    for (let e = el; e && e !== slide; e = e.parentElement) o *= +getComputedStyle(e).opacity;
+    return o < 0.2 || getComputedStyle(el).visibility === 'hidden';
+  };
+
+  /* text lines lying (even partly) on a solid actor of too similar a brightness */
+  function crossings(slide) {
+    const s = stage.getBoundingClientRect();
+    const k = s.width / 1920;
+    // styles may pose actors by what the active slide holds (:has(.slide.active .takeaway))
+    const was = stage.querySelector(':scope > .slide.active');
+    was?.classList.remove('active');
+    slide.classList.add('active');
+    const shapes = actorRects(slide, k, s);
+    const hits = new Map();   // actor -> first text found on it
+    const walker = document.createTreeWalker(slide, NodeFilter.SHOW_TEXT);
+    while (walker.nextNode()) {
+      const node = walker.currentNode;
+      if (!node.textContent.trim() || node.parentElement.closest('.mock, svg') || shielded(node.parentElement, slide) || faded(node.parentElement, slide)) continue;
+      const tcs = getComputedStyle(node.parentElement);
+      if (parseFloat(tcs.webkitTextStrokeWidth) > 0 || tcs.textShadow !== 'none') continue; // outlined text carries its own contrast
+      const ink = lum(tcs.color.match(/[\d.]+/g).slice(0, 3).map(Number));
+      const range = document.createRange();
+      range.selectNodeContents(node);
+      [...range.getClientRects()].forEach((r) => {
+        const l = { x0: (r.left - s.left) / k, x1: (r.right - s.left) / k, y0: (r.top - s.top) / k, y1: (r.bottom - s.top) / k };
+        const area = (l.x1 - l.x0) * (l.y1 - l.y0);
+        if (area < 50) return;
+        // three points along the line; under each, only the topmost actor (DOM order = z-order) counts
+        const y = (l.y0 + l.y1) / 2;
+        [0.1, 0.5, 0.9].forEach((f) => {
+          const x = l.x0 + (l.x1 - l.x0) * f;
+          const top = shapes.findLast((a) => x > a.x0 && x < a.x1 && y > a.y0 && y < a.y1);
+          if (top && ratio(ink, top.lum) < 3 && !hits.has(top.name)) hits.set(top.name, node.textContent.trim().slice(0, 24));
+        });
+      });
+    }
+    slide.classList.remove('active');
+    was?.classList.add('active');
+    return [...hits].map(([name, text]) => `${name} ("${text}")`);
   }
 
   /* biggest uncovered interval of [lo, hi] given covered spans */
@@ -77,6 +158,8 @@
     if (icons.length > 6) issues.push(`quá nhiều icon (${icons.length}, tối đa 6)`);
     const lost = [...slide.querySelectorAll('.ico[data-missing]')].map((e) => e.dataset.icon);
     if (lost.length) issues.push(`icon không tồn tại: ${lost.join(', ')}`);
+    const cut = crossings(slide);
+    if (cut.length) issues.push(`chữ khó đọc trên hình ${cut.join(', ')}`);
     const gapY = maxGap(ink.map((r) => [r.y0, r.y1]), SAFE.y0, SAFE.y1) / (SAFE.y1 - SAFE.y0);
     const gapX = maxGap(ink.map((r) => [r.x0, r.x1]), SAFE.x0, SAFE.x1) / (SAFE.x1 - SAFE.x0);
     const display = DISPLAY.includes(layout);
@@ -100,6 +183,7 @@
 
   window.deck.audit = () => {
     stage.classList.add('auditing');
+    const saved = { ...stage.dataset };
     const slides = [...stage.querySelectorAll(':scope > .slide')];
     const report = slides.map(auditSlide);
     const looks = slides.map(lookOf);
@@ -108,6 +192,7 @@
       r.issues = [r.issues, 'nhàm: giống hệt 2 slide trước'].filter(Boolean).join('; ');
       r.status = 'SỬA';
     });
+    ['layout', 'pose', 'parity', 'variant'].forEach((key) => { stage.dataset[key] = saved[key] ?? ''; });
     stage.classList.remove('auditing');
     console.table(report);
     return report;
