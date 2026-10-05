@@ -1,6 +1,6 @@
 ---
 name: slidefly
-description: Tạo slide HTML có hiệu ứng chuyển cảnh kiểu PowerPoint Morph (hình trang trí trượt, phóng to, đổi màu liền mạch giữa các slide), 47 style, bố cục tự lấp đầy theo lượng chữ và tự đo độ trống của từng slide. Dùng khi người dùng nói "slide morph", "slide animation đẹp", "slide HTML có hiệu ứng chuyển cảnh", "làm deck chuyển động", "/slidefly", "SlideFly", hoặc muốn chuyển một mẫu PowerPoint Morph sang web. Không dùng khi cần file .pptx chỉnh sửa được (dùng office-docs hoặc pptx) hay chỉ cần slide HTML hiệu ứng xuất hiện đơn giản (frontend-slides).
+description: Tạo slide HTML có hiệu ứng chuyển cảnh kiểu PowerPoint Morph (hình trang trí trượt, phóng to, đổi màu liền mạch giữa các slide), 47 style, bố cục tự lấp đầy theo lượng chữ và tự đo độ trống của từng slide, 8 dạng sơ đồ tự vẽ từ số liệu, hiệu ứng theo động từ và bấm từng bước. Dùng khi người dùng nói "slide morph", "slide animation đẹp", "slide HTML có hiệu ứng chuyển cảnh", "làm deck chuyển động", "/slidefly", "SlideFly", hoặc muốn chuyển một mẫu PowerPoint Morph sang web. Không dùng khi cần file .pptx chỉnh sửa được (dùng office-docs hoặc pptx) hay chỉ cần slide HTML hiệu ứng xuất hiện đơn giản (frontend-slides).
 ---
 
 # SlideFly: slide biết bay
@@ -14,22 +14,28 @@ assets/morph-base.css      khung 1920x1080, diễn viên, reveal, giảm chuyể
 assets/morph-layouts.css   9 kiểu slide, tự co giãn theo data-density
 assets/morph-engine.js     co giãn khung, tạo diễn viên từ --actors, FLIP, mật độ
 assets/morph-nav.js        phím, click, vuốt, cuộn chuột, #số-slide
-assets/morph-audit.js      deck.audit(): đo khoảng trống, tràn chữ
+assets/morph-audit.js      deck.audit(): đo khoảng trống, tràn chữ, slide lặp kiểu, biểu đồ thiếu nguồn
+assets/morph-motion.css    hiệu ứng theo động từ (vẽ nét, đếm, đóng dấu, rơi, gộp...) + màu --viz-*
+assets/morph-viz.css       giao diện 8 dạng sơ đồ
+assets/morph-viz.js        vẽ sơ đồ từ data-*: span, donut, plan, gather (nạp sau morph-viz-diagrams.js)
+assets/morph-viz-diagrams.js  matrix, network, funnel, compare
+assets/morph-steps.js      bấm từng bước: data-step, data-at
 assets/styles/*.css        47 style; assets/styles/index.json = tên, nền, nhãn tâm trạng, hợp với, font
 templates/deck-mau.html    deck mẫu 10 slide đủ 9 kiểu: KHUNG ĐỂ COPY
+templates/deck-so-do.html  deck mẫu 16 slide: mỗi slide một dạng hình, có bấm từng bước
 scripts/inline-assets.py   gộp CSS/JS thành 1 file HTML mang đi được
 scripts/check-deck.py      chụp mọi slide + đo + bắt lỗi console, ra sheet.jpg
 scripts/build-gallery.py   dựng demo + trang 00-gallery.html xem/lọc mọi style
 ```
 
-Đọc thêm khi cần: `references/layouts.md` (markup từng kiểu slide), `references/co-che-morph.md` (cơ chế, viết style mới, port PowerPoint), `references/vu-dao-morph.md` (công thức chuyển cảnh), `references/style-presets.md` (chọn style).
+Đọc thêm khi cần: `references/layouts.md` (markup từng kiểu slide), `references/co-che-morph.md` (cơ chế, viết style mới, port PowerPoint), `references/vu-dao-morph.md` (công thức chuyển cảnh), `references/style-presets.md` (chọn style), `references/hieu-ung-va-so-do.md` (chọn hình theo ý, khai báo sơ đồ, hiệu ứng, bấm từng bước).
 
 ## Quy trình
 
 ### Bước 1. Nhận nội dung
 - File `.docx/.pdf/.pptx` thì convert bằng markitdown trước khi đọc.
 - Hỏi gộp một lượt bằng AskUserQuestion (mỗi câu có 2-4 phương án): mục đích và người xem; số slide; mức chữ (ít chữ để thuyết trình / nhiều chữ để đọc). Bỏ câu nào người dùng đã trả lời.
-- Lập dàn ý: mỗi slide một ý, gán sẵn kiểu slide (bảng chọn ở `references/layouts.md`).
+- Lập dàn ý: mỗi slide một ý, gán sẵn kiểu slide (bảng chọn ở `references/layouts.md`) và **dạng hình theo ý**: quy trình, so sánh, tỷ lệ, phân loại, lọc dần... mỗi loại một hình (bảng ở `references/hieu-ung-va-so-do.md` mục 2). Không để quá 2 slide liền cùng một kiểu.
 - **Số liệu phải có nguồn.** Không bịa số cho `.hl-big` hay `.stat-num`. Không có số thật thì dùng icon hoặc câu chốt.
 
 ### Bước 2. Chọn style kiểu "xem rồi chọn"
@@ -42,6 +48,7 @@ scripts/build-gallery.py   dựng demo + trang 00-gallery.html xem/lọc mọi s
 ### Bước 3. Dựng deck
 - Copy cấu trúc `templates/deck-mau.html`: `<link>` tới `morph-base.css`, `morph-layouts.css`, 1 file style; cuối body lần lượt `morph-engine.js`, `morph-nav.js`, `morph-audit.js` (thiếu audit thì `check-deck.py` báo lỗi). Href dùng đường dẫn tuyệt đối tới `$SK/assets/...` khi file nguồn nằm ngoài skill.
 - Không viết khối `.actors`: engine tự tạo diễn viên từ `--actors` của style.
+- Slide có sơ đồ: dùng `data-layout="diagram"` (hình trang trí lui ra, sân khấu trống), nạp thêm `morph-motion.css`, `morph-viz.css`, `morph-viz-diagrams.js`, `morph-viz.js` (trước engine) và `morph-steps.js` (sau engine). Hiệu ứng chọn theo động từ của câu (`fx-growx` cho "tăng", `draw` cho "nối", `slam` cho "chốt", `shake` cho "lệch"...). Ý cần giảng lần lượt thì gắn `data-step`. Chi tiết: `references/hieu-ung-va-so-do.md`.
 - Mỗi `<section class="slide" data-layout="...">`; phần tử nội dung gắn `reveal`, `reveal-left`, `reveal-right`, `reveal-scale` hoặc `reveal-blur`.
 - Quy tắc chống trống (bắt buộc):
   - `content`: luôn có `<aside class="highlight">` (icon, số có nguồn, hoặc câu chốt ngắn) ở vùng bên phải.
@@ -68,6 +75,8 @@ python "$SK/scripts/check-deck.py" "<file.html>" "<scratchpad>/shots/<ten>"
 | `trống dọc` | thêm highlight/takeaway, gộp 2 slide thưa thành 1, hoặc đặt `data-density="lg"` |
 | `trống ngang` | slide content thiếu `.highlight`, thêm vào |
 | `tràn khung` / `chữ tràn hộp` | rút gọn câu, tách slide, hoặc `data-density="sm"` |
+| `nhàm: giống hệt 2 slide trước` | đổi dạng hình hoặc hiệu ứng của slide đó (bảng chọn hình theo ý) |
+| `biểu đồ ... thiếu data-source` | ghi nguồn số liệu vào `data-source`; không có nguồn thì bỏ biểu đồ có số |
 | lỗi console | đọc thông báo, sửa markup/đường dẫn |
 
 - Slide trưng bày (cover, section, quote, closing) cố ý thoáng nên chỉ bị kiểm tra tràn.

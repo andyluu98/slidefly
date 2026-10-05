@@ -6,6 +6,10 @@
    - overflow = ink outside the slide or past the safe margins.
    Display slides (cover, section, quote, closing) are only
    checked for overflow: their emptiness is intentional.
+   - a chart with numbers (morph-viz) must carry data-source.
+   - variety: 3 inner slides in a row with the same look
+     (layout, pose, diagram kinds, motion verbs) = monotone.
+   Run it outside a live talk: it briefly shows steps not yet clicked.
    =========================================================== */
 (() => {
   const stage = document.querySelector('.deck-stage');
@@ -63,6 +67,9 @@
       const past = [...range.getClientRects()].some((r) => r.height && (r.bottom > b.bottom + 2 || r.right > b.right + 2));
       if (past) issues.push(`chữ tràn hộp .${box.className.split(' ')[0]}`);
     });
+    slide.querySelectorAll('.viz[data-viz]').forEach((v) => {
+      if (/\d/.test(['values', 'top', 'bottom', 'left', 'right'].map((k) => v.dataset[k] || '').join('')) && !v.dataset.source) issues.push(`biểu đồ ${v.dataset.viz} thiếu data-source`);
+    });
     const gapY = maxGap(ink.map((r) => [r.y0, r.y1]), SAFE.y0, SAFE.y1) / (SAFE.y1 - SAFE.y0);
     const gapX = maxGap(ink.map((r) => [r.x0, r.x1]), SAFE.x0, SAFE.x1) / (SAFE.x1 - SAFE.x0);
     const display = DISPLAY.includes(layout);
@@ -75,10 +82,24 @@
     };
   }
 
+  /* look of a slide = what the eye recognises: layout, pose, diagram kinds, motion verbs */
+  const VERB = /^(fx-[a-z]+|draw|count|slam|shake|strike|ping|travel|gather)$/;
+  function lookOf(slide) {
+    const kinds = [...slide.querySelectorAll('.viz[data-viz]')].map((v) => v.dataset.viz).sort();
+    const verbs = new Set([...slide.querySelectorAll('[class]')].flatMap((e) => [...e.classList].filter((c) => VERB.test(c))));
+    return [slide.dataset.layout || 'content', slide.dataset.pose || '', kinds.join('+'), [...verbs].sort().join('+')].join('|');
+  }
+
   window.deck.audit = () => {
     stage.classList.add('auditing');
     const slides = [...stage.querySelectorAll(':scope > .slide')];
     const report = slides.map(auditSlide);
+    const looks = slides.map(lookOf);
+    report.forEach((r, i) => {
+      if (i < 2 || DISPLAY.includes(r.layout) || looks[i] !== looks[i - 1] || looks[i] !== looks[i - 2]) return;
+      r.issues = [r.issues, 'nhàm: giống hệt 2 slide trước'].filter(Boolean).join('; ');
+      r.status = 'SỬA';
+    });
     stage.classList.remove('auditing');
     console.table(report);
     return report;

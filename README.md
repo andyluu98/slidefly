@@ -15,11 +15,14 @@ Mỗi style có một nhóm hình cố định gọi là **diễn viên**. Mỗi
 ## Tính năng
 
 - **47 style:** 12 preset và 34 bold template phỏng theo [frontend-slides](https://github.com/zarazhangrui/frontend-slides), cộng 1 style tái tạo mẫu Morph "vòng tròn xanh". Mọi font đều có bộ chữ tiếng Việt.
-- **9 kiểu slide:** cover, agenda, section, content, two-col, stats, timeline, quote, closing.
+- **10 kiểu slide:** cover, agenda, section, content, two-col, stats, timeline, quote, closing, và `diagram` (sân khấu trống cho sơ đồ).
+- **8 dạng sơ đồ tự vẽ từ số liệu:** thanh tỷ lệ, vòng tròn chia phần, mặt bằng có chuỗi kích thước, các ô dồn về tâm, ma trận, mạng lưới nút, phễu lọc, màn quét trước và sau. Khai báo bằng vài thuộc tính `data-*`, biểu đồ có số phải ghi nguồn.
+- **Hiệu ứng theo động từ:** vẽ nét, đếm số, đóng dấu, rơi vào chỗ, bay vào nhóm, gộp về tâm, rung khi lệch, chấm chạy dọc đường ống.
+- **Bấm từng bước:** `data-step` cho phép giảng tới đâu mở tới đó; slide có `data-at` để đổi trạng thái theo từng cú bấm.
 - **Tự lấp đầy:** engine đếm số ý trên slide rồi chọn cỡ chữ lớn, vừa hoặc nhỏ. Slide nội dung có ô điểm nhấn, slide hai cột có câu kết luận.
 - **Không lặp nhàm:** cùng một kiểu slide xuất hiện nhiều lần sẽ đổi dáng (biến thể 1, 2, 3) và đổi hướng chữ vào khung.
 - **Chữ bay giữa hai slide (FLIP):** ví dụ tiêu đề mục ở trang mục lục bay sang thành tiêu đề phần.
-- **Tự kiểm tra:** `check-deck.py` chụp mọi slide, gom thành một ảnh, đo khoảng trống và chữ tràn, bắt lỗi console.
+- **Tự kiểm tra:** `check-deck.py` chụp mọi slide, gom thành một ảnh, đo khoảng trống và chữ tràn, báo 3 slide liền giống hệt nhau, biểu đồ thiếu nguồn, bắt lỗi console.
 - **Không phụ thuộc thư viện:** chỉ HTML, CSS, JavaScript thuần. Có chế độ giảm chuyển động.
 
 ## Cài đặt
@@ -57,10 +60,13 @@ skill/slidefly/
 │   ├── morph-audit.js       deck.audit(): đo khoảng trống và chữ tràn
 │   ├── morph-base.css       khung 1920x1080, chuyển cảnh, hiệu ứng chữ
 │   ├── morph-layouts.css    9 kiểu slide tự co giãn
+│   ├── morph-motion.css     hiệu ứng theo động từ + màu dùng chung
+│   ├── morph-viz*.js/.css   8 dạng sơ đồ tự vẽ
+│   ├── morph-steps.js       bấm từng bước
 │   └── styles/              47 style + index.json
 ├── references/              cơ chế, layout, công thức chuyển cảnh, chọn style, font tiếng Việt
 ├── scripts/                 inline-assets.py, check-deck.py, build-gallery.py
-└── templates/deck-mau.html  deck mẫu 10 slide đủ 9 kiểu
+└── templates/              deck-mau.html (10 slide đủ 9 kiểu), deck-so-do.html (16 slide, mỗi slide một dạng hình)
 examples/                    2 deck mẫu về AI Agent
 gallery/                     00-gallery.html + 47 deck demo
 ```

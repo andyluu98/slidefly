@@ -22,6 +22,7 @@ Ghi đè khi cần: `<section ... data-density="lg">`.
 | Quy trình, mốc thời gian 3-6 bước | `timeline` |
 | Một câu đáng nhớ | `quote` |
 | Kết thúc, cảm ơn, tóm tắt 1 dòng | `closing` |
+| Sơ đồ, biểu đồ chiếm cả vùng thân | `diagram` (sân khấu trống, hình trang trí lui ra; xem `hieu-ung-va-so-do.md`) |
 
 Đổi kiểu liên tục giúp diễn viên chuyển động nhiều hơn. Hai `content` liền nhau vẫn chuyển động nhờ parity chẵn/lẻ.
 
