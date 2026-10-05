@@ -20,6 +20,7 @@ assets/morph-viz.css       giao diện 8 dạng sơ đồ
 assets/morph-viz.js        vẽ sơ đồ từ data-*: span, donut, plan, gather (nạp sau morph-viz-diagrams.js)
 assets/morph-viz-diagrams.js  matrix, network, funnel, compare
 assets/morph-steps.js      bấm từng bước: data-step, data-at
+assets/morph-gsap.js       tùy chọn: biến hình thật bằng GSAP MorphSVG (data-morph-shape)
 assets/morph-icons.css/.js icon Tabler: <i class="ico" data-icon="...">, tự tải khi soạn, nhúng khi gộp
 assets/icons/              danh mục Tabler (tabler-index.json) + từ khóa tiếng Việt (vi-keywords.json)
 assets/styles/*.css        47 style; assets/styles/index.json = tên, nền, nhãn tâm trạng, hợp với, font
@@ -51,7 +52,7 @@ scripts/build-gallery.py   dựng demo + trang 00-gallery.html xem/lọc mọi s
 ### Bước 3. Dựng deck
 - Copy cấu trúc `templates/deck-mau.html`: `<link>` tới `morph-base.css`, `morph-layouts.css`, 1 file style; cuối body lần lượt `morph-engine.js`, `morph-nav.js`, `morph-audit.js` (thiếu audit thì `check-deck.py` báo lỗi). Href dùng đường dẫn tuyệt đối tới `$SK/assets/...` khi file nguồn nằm ngoài skill.
 - Không viết khối `.actors`: engine tự tạo diễn viên từ `--actors` của style.
-- Slide có sơ đồ: dùng `data-layout="diagram"` (hình trang trí lui ra, sân khấu trống), nạp thêm `morph-motion.css`, `morph-viz.css`, `morph-viz-diagrams.js`, `morph-viz.js` (trước engine) và `morph-steps.js` (sau engine). Hiệu ứng chọn theo động từ của câu (`fx-growx` cho "tăng", `draw` cho "nối", `slam` cho "chốt", `shake` cho "lệch"...). Ý cần giảng lần lượt thì gắn `data-step`. Chi tiết: `references/hieu-ung-va-so-do.md`.
+- Slide có sơ đồ: dùng `data-layout="diagram"` (hình trang trí lui ra, sân khấu trống), nạp thêm `morph-motion.css`, `morph-viz.css`, `morph-viz-diagrams.js`, `morph-viz.js` (trước engine) và `morph-steps.js` (sau engine). Hiệu ứng chọn theo động từ của câu (`fx-growx` cho "tăng", `draw` cho "nối", `slam` cho "chốt", `shake` cho "lệch"...). Ý cần giảng lần lượt thì gắn `data-step` (phím lùi gỡ từng bước). Cần một hình biến thành hình khác (vòng tròn thành cột, icon thành icon) thì dùng lớp tùy chọn `morph-gsap` (mục 7 của hướng dẫn). Chi tiết: `references/hieu-ung-va-so-do.md`.
 - Icon: chỉ dùng Tabler qua `<i class="ico" data-icon="...">` (nạp `morph-icons.css` + `morph-icons.js`). Chạy `icons.py suggest nguon.html` để xem gợi ý, rồi tự chọn theo ý chính. Mỗi slide một cách dùng: 1 icon chính, hoặc 1 dải tối đa 6 icon, hoặc icon làm nút sơ đồ; không gắn icon vào từng gạch đầu dòng. Chi tiết: `references/icon-tabler.md`.
 - Mỗi `<section class="slide" data-layout="...">`; phần tử nội dung gắn `reveal`, `reveal-left`, `reveal-right`, `reveal-scale` hoặc `reveal-blur`.
 - Quy tắc chống trống (bắt buộc):

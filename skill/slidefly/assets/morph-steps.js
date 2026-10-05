@@ -1,7 +1,8 @@
 /* MORPH-SLIDES STEPS: click-by-click build. Load after morph-engine.js.
    Elements with data-step="n" wait for the n-th "next" on their slide;
    the slide gets data-at="<steps shown>" so CSS can style each state.
-   Going back into a slide shows it finished. Automated browsers
+   "Back" first takes the last shown step away (its effect plays in reverse),
+   then goes to the previous slide, which arrives finished. Automated browsers
    (check-deck.py screenshots) always see every step. */
 (() => {
   const deck = window.deck;
@@ -25,7 +26,11 @@
     const at = +s.dataset.at || 0;
     if (at < last(s)) show(s, at + 1); else { next(); enter(); }
   };
-  deck.prev = () => { prev(); enter(); };
+  deck.prev = () => {
+    const s = slides[deck.index];
+    const at = +s?.dataset.at || 0;
+    if (s && at > 0) show(s, at - 1); else { prev(); enter(); }
+  };
   deck.go = (n) => { go(n); enter(); };
   slides.forEach((s) => show(s, auto ? last(s) : 0));
   new MutationObserver(enter).observe(stage, { attributes: true, attributeFilter: ['data-slide'] });

@@ -40,6 +40,10 @@ Copyright (c) 2020-2026 Paweł Kuna
 
 The full MIT text is identical to the one above.
 
+## GSAP (Standard "no charge" license)
+
+The optional `morph-gsap` layer uses GSAP 3.15.0 and its MorphSVG plugin by GreenSock (https://gsap.com). GSAP is not bundled in this repository: `inline-assets.py` downloads the pinned files from jsDelivr when a deck uses them and keeps their license header. GSAP is free for commercial use under https://gsap.com/standard-license, which is not an open-source license; it may not be used in no-code visual animation tools that compete with Webflow.
+
 ## Lucide icons (ISC)
 
 Icon paths embedded in the templates and example decks come from Lucide (https://lucide.dev), licensed under the ISC License. Copyright (c) for portions of Lucide are held by Cole Bemis 2013-2022 as part of Feather (MIT). All other copyright (c) for Lucide are held by Lucide Contributors 2022.

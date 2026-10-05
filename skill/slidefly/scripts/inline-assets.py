@@ -4,7 +4,9 @@ Usage: python inline-assets.py <input.html> <output.html>
 
 - <link rel="stylesheet" href="x.css"> -> <style>...</style> (attribute order does not matter)
 - <script src="x.js"></script>          -> <script>...</script>
-- Remote URLs (http/https, e.g. Google Fonts) and anything inside <!-- comments --> are left untouched.
+- Remote URLs (http/https, e.g. Google Fonts) and anything inside <!-- comments --> are left untouched,
+  except pinned GSAP scripts from jsDelivr (morph-gsap layer), which are downloaded once, cached and inlined
+  with their license header kept.
 - Only .css / .js files located under the input file's folder or this skill's folder are inlined
   (protects against embedding arbitrary files from the machine into a deck you share).
 - Refuses to overwrite the input file. Creates the output folder if needed.
@@ -13,6 +15,7 @@ Exit code: 0 ok, 1 error, 2 local references left in the output.
 """
 import re
 import sys
+import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -22,6 +25,8 @@ SKILL_DIR = Path(__file__).resolve().parent.parent
 COMMENT_RE = re.compile(r"<!--.*?-->", re.S)
 LINK_RE = re.compile(r"<link\b[^>]*>", re.I)
 SCRIPT_RE = re.compile(r"<script\b([^>]*)>\s*</script>", re.I)
+GSAP_RE = re.compile(r"^https://cdn\.jsdelivr\.net/npm/gsap@(\d+\.\d+\.\d+)/dist/([A-Za-z]+)\.min\.js$")
+GSAP_CACHE = Path.home() / ".cache" / "slidefly"
 
 
 def attr(tag: str, name: str) -> str | None:
@@ -45,6 +50,20 @@ def read_asset(base: Path, href: str, ext: str) -> str:
     return path.read_text(encoding="utf-8")
 
 
+def gsap_script(src: str) -> str | None:
+    """Pinned GSAP file from jsDelivr, cached on disk; None for any other remote URL."""
+    m = GSAP_RE.match(src)
+    if not m:
+        return None
+    f = GSAP_CACHE / f"gsap-{m.group(1)}" / f"{m.group(2)}.min.js"
+    if not f.is_file():
+        f.parent.mkdir(parents=True, exist_ok=True)
+        req = urllib.request.Request(src, headers={"User-Agent": "slidefly-inline"})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            f.write_bytes(r.read())
+    return f.read_text(encoding="utf-8")
+
+
 def inline_part(html: str, base: Path) -> str:
     def css(m):
         tag = m.group(0)
@@ -56,6 +75,8 @@ def inline_part(html: str, base: Path) -> str:
 
     def js(m):
         src = attr(m.group(0), "src")
+        if src and is_remote(src) and (code := gsap_script(src)) is not None:
+            return "<script>\n" + code.replace("</script", "<\\/script") + "\n</script>"
         if not src or is_remote(src):
             return m.group(0)
         # "</script" inside JS would close the tag early
