@@ -1,0 +1,142 @@
+/* ===========================================================
+   STYLE: AURORA. 2026 night-sky gradient: three huge blurred
+   lights (teal, violet, coral) drift, swell and swap colours on
+   every slide over a near-black stage; one frosted glass panel
+   slides behind the content zone; a hairline and a fine grain.
+   Actors: b1 b2 b3 (aurora lights), glass (frosted panel),
+           line (hairline), grain (noise). DOM order = z-order.
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+.deck-stage {
+  --actors: "b1 b2 b3 glass line grain";
+  --font-display: 'Unbounded', sans-serif;
+  --font-body: 'Manrope', sans-serif;
+  --night: #0B0B14; --teal: #2DD4BF; --violet: #7C3AED; --coral: #F97362; --deep: #1E3A8A;
+  --bg: var(--night); --fg: #F4F4F8; --muted: #A9A9C2; --accent: var(--teal);
+  --card-bg: transparent; --card-fg: var(--fg); --card-radius: 28px;
+  --title-weight: 600; --title-tracking: -0.02em; --bullet-radius: 50%;
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor^="b"] {
+  border-radius: 50%; filter: blur(90px); --o: 0.5;
+  --x: 760px; --y: 1200px; --w: 700px; --s: 0.6;
+}
+[data-actor="b1"] { background-color: var(--teal); }
+[data-actor="b2"] { background-color: var(--violet); }
+[data-actor="b3"] { background-color: var(--coral); }
+[data-actor="glass"] {
+  background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 28px; backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 30px 80px rgba(0, 0, 0, 0.35);
+  --x: 960px; --y: 540px; --w: 0px; --h: 0px; --o: 0;
+}
+[data-actor="line"] { background: rgba(255, 255, 255, 0.22); --x: 120px; --y: 200px; --w: 0px; --h: 1px; }
+[data-actor="grain"] {
+  --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; --o: 0.08;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- 1. cover: lights rise behind the title, coral horizon ---------- */
+[data-layout="cover"] [data-actor="b1"] { --x: 180px; --y: 80px; --w: 900px; --h: 640px; --s: 1; }
+[data-layout="cover"] [data-actor="b2"] { --x: 900px; --y: -120px; --w: 1000px; --h: 760px; --s: 1; }
+[data-layout="cover"] [data-actor="b3"] { --x: 520px; --y: 700px; --w: 1000px; --h: 520px; --s: 1; --o: 0.45; }
+[data-layout="cover"] [data-actor="line"] { --x: 760px; --y: 760px; --w: 400px; }
+
+/* ---------- 2. agenda: glass board, lights pool in the corners ---------- */
+[data-layout="agenda"] [data-actor="b1"] { --x: -200px; --y: 600px; --w: 800px; --s: 1; background-color: var(--violet); }
+[data-layout="agenda"] [data-actor="b2"] { --x: 1300px; --y: -200px; --w: 800px; --s: 1; background-color: var(--teal); }
+[data-layout="agenda"] [data-actor="b3"] { --x: 1400px; --y: 700px; --w: 600px; --s: 1; --o: 0.4; background-color: var(--deep); }
+[data-layout="agenda"] [data-actor="glass"] { --x: 80px; --y: 240px; --w: 1760px; --h: 790px; --o: 1; }
+[data-layout="agenda"] [data-actor="line"] { --w: 1680px; }
+
+/* ---------- 3. section: one giant light on the right, number glows ---------- */
+[data-layout="section"] [data-actor="b1"] { --x: 1100px; --y: 120px; --w: 860px; --s: 1; background-color: var(--coral); --o: 0.55; }
+[data-layout="section"] [data-actor="b2"] { --x: 1300px; --y: 500px; --w: 700px; --s: 1; background-color: var(--violet); }
+[data-layout="section"] [data-actor="b3"] { --x: -300px; --y: -300px; --w: 700px; --s: 1; --o: 0.35; background-color: var(--teal); }
+[data-layout="section"] [data-actor="glass"] { --x: 1180px; --y: 300px; --w: 520px; --h: 480px; --o: 1; border-radius: 50%; }
+[data-layout="section"] [data-actor="line"] { --x: 160px; --y: 880px; --w: 760px; }
+
+/* ---------- 4. content (odd): glass card holds the highlight, teal light behind ---------- */
+[data-layout="content"] [data-actor="b1"] { --x: 1300px; --y: 260px; --w: 640px; --s: 1; }
+[data-layout="content"] [data-actor="b2"] { --x: -260px; --y: 640px; --w: 760px; --s: 1; --o: 0.4; }
+[data-layout="content"] [data-actor="b3"] { --x: 1500px; --y: -260px; --w: 500px; --s: 1; --o: 0.35; background-color: var(--deep); }
+[data-layout="content"] [data-actor="glass"] { --x: 1240px; --y: 240px; --w: 600px; --h: 790px; --o: 1; }
+[data-layout="content"] [data-actor="line"] { --w: 1040px; }
+/* even: glass slides under the bullets, lights trade places and colours */
+[data-layout="content"][data-parity="even"] [data-actor="b1"] { --x: -200px; --y: 300px; --w: 760px; background-color: var(--violet); }
+[data-layout="content"][data-parity="even"] [data-actor="b2"] { --x: 1340px; --y: 380px; --w: 640px; --o: 0.5; background-color: var(--coral); }
+[data-layout="content"][data-parity="even"] [data-actor="b3"] { --x: 700px; --y: 820px; --w: 700px; background-color: var(--teal); }
+[data-layout="content"][data-parity="even"] [data-actor="glass"] { --x: 80px; --y: 240px; --w: 1120px; --h: 790px; }
+[data-layout="content"][data-parity="even"] [data-actor="line"] { --x: 1300px; --w: 500px; }
+
+/* ---------- 5. two-col: twin lights, one behind each column, glass band ---------- */
+[data-layout="two-col"] [data-actor="b1"] { --x: 100px; --y: 300px; --w: 700px; --s: 1; --o: 0.4; background-color: var(--deep); }
+[data-layout="two-col"] [data-actor="b2"] { --x: 1120px; --y: 300px; --w: 700px; --s: 1; --o: 0.45; }
+[data-layout="two-col"] [data-actor="b3"] { --x: 760px; --y: -380px; --w: 500px; --s: 1; --o: 0.4; background-color: var(--teal); }
+[data-layout="two-col"] [data-actor="glass"] { --x: 80px; --y: 240px; --w: 1760px; --h: 790px; --o: 1; }
+[data-layout="two-col"] [data-actor="line"] { --x: 960px; --y: 290px; --w: 1px; --h: 560px; }
+
+/* ---------- 6. stats: three lights line up under the three numbers ---------- */
+[data-layout="stats"] [data-actor="b1"] { --x: 120px; --y: 380px; --w: 520px; --s: 1; --o: 0.4; background-color: var(--coral); }
+[data-layout="stats"] [data-actor="b2"] { --x: 700px; --y: 380px; --w: 520px; --s: 1; --o: 0.45; }
+[data-layout="stats"] [data-actor="b3"] { --x: 1280px; --y: 380px; --w: 520px; --s: 1; --o: 0.4; background-color: var(--teal); }
+[data-layout="stats"] [data-actor="glass"] { --x: 80px; --y: 300px; --w: 1760px; --h: 660px; --o: 1; }
+[data-layout="stats"] [data-actor="line"] { --w: 1680px; }
+
+/* ---------- 7. timeline: hairline glows into the axis, a ribbon of light ---------- */
+[data-layout="timeline"] [data-actor="b1"] { --x: -100px; --y: 420px; --w: 900px; --h: 420px; --s: 1; --o: 0.4; background-color: var(--violet); }
+[data-layout="timeline"] [data-actor="b2"] { --x: 620px; --y: 460px; --w: 800px; --h: 340px; --s: 1; --o: 0.4; background-color: var(--teal); }
+[data-layout="timeline"] [data-actor="b3"] { --x: 1240px; --y: 420px; --w: 800px; --h: 420px; --s: 1; --o: 0.4; }
+[data-layout="timeline"] [data-actor="line"] { --x: 120px; --y: 629px; --w: 1680px; --h: 2px; background: var(--teal); }
+
+/* ---------- 8. quote: glass card, coral and violet halo ---------- */
+[data-layout="quote"] [data-actor="b1"] { --x: 1200px; --y: 500px; --w: 800px; --s: 1; --o: 0.45; background-color: var(--violet); }
+[data-layout="quote"] [data-actor="b2"] { --x: -100px; --y: -200px; --w: 760px; --s: 1; --o: 0.45; background-color: var(--coral); }
+[data-layout="quote"] [data-actor="b3"] { --x: 400px; --y: 820px; --w: 900px; --h: 400px; --s: 1; --o: 0.3; background-color: var(--deep); }
+[data-layout="quote"] [data-actor="glass"] { --x: 200px; --y: 160px; --w: 1520px; --h: 760px; --o: 1; }
+[data-layout="quote"] [data-actor="line"] { --x: 280px; --y: 300px; --w: 120px; --h: 3px; background: var(--teal); }
+
+/* ---------- 9. closing: all three lights meet in the centre ---------- */
+[data-layout="closing"] [data-actor="b1"] { --x: 360px; --y: 220px; --w: 760px; --s: 1; background-color: var(--violet); }
+[data-layout="closing"] [data-actor="b2"] { --x: 820px; --y: 160px; --w: 760px; --s: 1; background-color: var(--teal); --o: 0.45; }
+[data-layout="closing"] [data-actor="b3"] { --x: 600px; --y: 520px; --w: 760px; --s: 1; --o: 0.45; }
+[data-layout="closing"] [data-actor="line"] { --x: 860px; --y: 780px; --w: 200px; }
+
+/* ---------- diagram: lights sink to the corners, stage stays clear ---------- */
+[data-layout="diagram"] [data-actor="b1"] { --x: -340px; --y: -340px; --w: 700px; --s: 1; --o: 0.45; }
+[data-layout="diagram"] [data-actor="b2"] { --x: 1560px; --y: 860px; --w: 760px; --s: 1; --o: 0.45; }
+[data-layout="diagram"] [data-actor="b3"] { --x: 1500px; --y: -520px; --w: 700px; --s: 1; --o: 0.35; background-color: var(--deep); }
+
+/* ---------- content tweaks: wide display titles kept small, airy body ---------- */
+.slide .title { line-height: 1.2; }
+.slide > .title:first-child { font-size: 52px; }
+.slide .kicker { color: var(--teal); letter-spacing: 0.26em; }
+.slide[data-layout="cover"] .title { font-size: 78px; line-height: 1.15; }
+.slide[data-layout="closing"] .title { font-size: 110px; }
+.slide[data-layout="section"] { padding: 0 860px 0 160px; }
+.slide[data-layout="section"] .num { font-size: 190px; color: var(--fg); }
+.slide[data-layout="section"] .title { font-size: 68px; }
+.agenda-list { --agenda-gap: 160px; left: 170px; right: 170px; --tile-line: 1px solid rgba(255, 255, 255, 0.12); }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list h3 { font-weight: 500; }
+.slide[data-layout="content"] { --title-w: 1100px; --hl-left: 1270px; --hl-right: 110px; }
+.slide[data-layout="content"] .bullets { left: 140px; width: 1000px; }
+.slide[data-layout="content"][data-density="md"] .bullets { --b-fs: 38px; --b-gap: 56px; }
+.hl-big { font-size: 120px; }
+.hl-text { font-family: var(--font-body); font-weight: 700; }
+.col { padding: 44px 64px; }
+.col h3 { font-weight: 500; }
+.takeaway { border-left: 0; padding-left: 64px; color: var(--teal); font-family: var(--font-body); font-weight: 700; }
+.stat-num { font-size: calc(var(--s-num) * 0.72); }
+.timeline::before { opacity: 0; }
+.step::before { box-shadow: 0 0 24px var(--teal); }
+.step .when { font-size: calc(var(--t-when) * 0.8); }
+.step h3 { font-family: var(--font-body); font-weight: 700; }
+.slide[data-layout="quote"] { padding: 0 300px; }
+.slide[data-layout="quote"] .quote { font-family: var(--font-body); font-weight: 600; font-size: 60px; letter-spacing: -0.01em; }
+.slide :is(.bento h3, .process h3, .ba-side h3, .countdown h3, .qa-q, .pq .quote, .statement) { font-family: var(--font-body); font-weight: 800; }
+.bignum .fig { font-size: 240px; }
+.ch-num { font-size: 520px; opacity: 0.35; }

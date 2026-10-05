@@ -1,0 +1,137 @@
+/* ===========================================================
+   STYLE: RESTORATIVE (2026 restorative palette, light).
+   Warm sand stage, three soft organic blobs (sage, clay, light
+   sand) whose border-radius changes per layout so they breathe
+   into new shapes, a thin plum arc, and a small teal dot that
+   travels to sit beside the key point. No hard edges.
+   Actors: sand, sage, clay (blobs), arc (plum arc), dot (teal).
+           DOM order = z-order.
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Nunito:wght@400;600;700&display=swap');
+
+.deck-stage {
+  --actors: "sand sage clay arc dot";
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Nunito', sans-serif;
+  --bg: #F3EDE4; --fg: #2F2A28; --muted: #6B5E57; --accent: #0F8B8D;
+  --card-bg: rgba(255, 252, 247, 0.62); --card-fg: #2F2A28; --card-radius: 40px;
+  --title-weight: 600; --title-tracking: -0.015em; --bullet-radius: 50%;
+  --sage: #9BAF94; --clay: #8A5A44; --plum: #4B2C4F; --lsand: #E6D8C3; --teal: #0F8B8D;
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="sand"], [data-actor="sage"], [data-actor="clay"] { border-radius: 50%; }
+[data-actor="sand"] { background-color: var(--lsand); --x: 700px; --y: 1200px; --w: 700px; --h: 600px; }
+[data-actor="sage"] { background-color: var(--sage); --x: -800px; --y: 300px; --w: 600px; --h: 600px; }
+[data-actor="clay"] { background-color: var(--clay); --x: 2100px; --y: -200px; --w: 400px; --h: 380px; }
+[data-actor="arc"]  { border: 3px solid transparent; border-top-color: var(--plum); border-radius: 50%;
+  --x: 2000px; --y: 400px; --w: 600px; --h: 600px; --o: 0; }
+[data-actor="dot"]  { background-color: var(--teal); border-radius: 50%;
+  box-shadow: 0 0 0 10px rgba(15, 139, 141, 0.14); --x: 960px; --y: -80px; --w: 26px; }
+
+/* ---------- 1. cover: sage rises bottom-left, clay pebble top-right, sand cradles the right ---------- */
+[data-layout="cover"] [data-actor="sand"] { --x: 1280px; --y: 520px; --w: 860px; --h: 720px; border-radius: 58% 42% 50% 50% / 45% 55% 45% 55%; }
+[data-layout="cover"] [data-actor="sage"] { --x: -220px; --y: 600px; --w: 760px; --h: 640px; border-radius: 42% 58% 63% 37% / 52% 44% 56% 48%; }
+[data-layout="cover"] [data-actor="clay"] { --x: 1560px; --y: -150px; --w: 440px; --h: 400px; border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%; }
+[data-layout="cover"] [data-actor="arc"]  { --x: 1180px; --y: 100px; --w: 640px; --h: 640px; --r: 30deg; --o: 1; }
+[data-layout="cover"] [data-actor="dot"]  { --x: 420px; --y: 300px; --w: 30px; }
+
+/* ---------- 2. agenda: blobs retreat to the corners, sage tall on the right ---------- */
+[data-layout="agenda"] [data-actor="sand"] { --x: -260px; --y: -260px; --w: 640px; --h: 520px; border-radius: 47% 53% 38% 62% / 58% 40% 60% 42%; }
+[data-layout="agenda"] [data-actor="sage"] { --x: 1700px; --y: 640px; --w: 420px; --h: 560px; border-radius: 60% 40% 45% 55% / 40% 55% 45% 60%; }
+[data-layout="agenda"] [data-actor="clay"] { --x: 1760px; --y: 120px; --w: 110px; --h: 100px; border-radius: 55% 45% 60% 40% / 50% 60% 40% 50%; }
+[data-layout="agenda"] [data-actor="arc"]  { --x: 1760px; --y: 560px; --w: 520px; --h: 520px; --r: -60deg; --o: 1; }
+[data-layout="agenda"] [data-actor="dot"]  { --x: 72px; --y: 118px; --w: 22px; }
+
+/* ---------- 3. section: blobs gather into a soft stone cluster on the right ---------- */
+[data-layout="section"] [data-actor="sand"] { --x: 1140px; --y: 120px; --w: 760px; --h: 820px; border-radius: 40% 60% 55% 45% / 55% 45% 60% 40%; }
+[data-layout="section"] [data-actor="sage"] { --x: 1260px; --y: 360px; --w: 560px; --h: 520px; border-radius: 55% 45% 40% 60% / 45% 60% 40% 55%; }
+[data-layout="section"] [data-actor="clay"] { --x: 1580px; --y: 200px; --w: 220px; --h: 200px; border-radius: 48% 52% 62% 38% / 60% 42% 58% 40%; }
+[data-layout="section"] [data-actor="arc"]  { --x: 1080px; --y: 60px; --w: 900px; --h: 900px; --r: -20deg; --o: 1; }
+[data-layout="section"] [data-actor="dot"]  { --x: 100px; --y: 330px; --w: 30px; }
+
+/* ---------- 4. content (odd): sand cradles the highlight, dot marks it ---------- */
+[data-layout="content"] [data-actor="sand"] { --x: 1220px; --y: 250px; --w: 640px; --h: 740px; border-radius: 52% 48% 44% 56% / 42% 50% 50% 58%; }
+[data-layout="content"] [data-actor="sage"] { --x: 1700px; --y: -140px; --w: 360px; --h: 320px; border-radius: 62% 38% 50% 50% / 50% 56% 44% 50%; }
+[data-layout="content"] [data-actor="clay"] { --x: 1770px; --y: 900px; --w: 240px; --h: 220px; border-radius: 45% 55% 58% 42% / 52% 46% 54% 48%; }
+[data-layout="content"] [data-actor="arc"]  { --x: 1180px; --y: 210px; --w: 720px; --h: 820px; --r: -35deg; --o: 1; }
+[data-layout="content"] [data-actor="dot"]  { --x: 1300px; --y: 320px; --w: 30px; }
+/* even: sage swells behind the highlight, sand sinks to the lower left */
+[data-layout="content"][data-parity="even"] [data-actor="sand"] { --x: -300px; --y: 860px; --w: 760px; --h: 480px; border-radius: 60% 40% 50% 50% / 55% 45% 55% 45%; }
+[data-layout="content"][data-parity="even"] [data-actor="sage"] { --x: 1230px; --y: 260px; --w: 620px; --h: 720px; border-radius: 44% 56% 58% 42% / 56% 44% 52% 48%; }
+[data-layout="content"][data-parity="even"] [data-actor="clay"] { --x: 1700px; --y: -120px; --w: 300px; --h: 280px; border-radius: 58% 42% 46% 54% / 44% 58% 42% 56%; }
+[data-layout="content"][data-parity="even"] [data-actor="arc"]  { --x: 1170px; --y: 200px; --w: 740px; --h: 820px; --r: 150deg; }
+[data-layout="content"][data-parity="even"] [data-actor="dot"]  { --x: 1790px; --y: 940px; --w: 30px; }
+.deck-stage[data-layout="content"][data-parity="even"] .highlight { --accent: var(--plum); }
+
+/* ---------- 5. two-col: sand opens into a wide basin under both cards ---------- */
+[data-layout="two-col"] [data-actor="sand"] { --x: 60px; --y: 230px; --w: 1800px; --h: 800px; border-radius: 46% 54% 50% 50% / 14% 12% 16% 14%; }
+[data-layout="two-col"] [data-actor="sage"] { --x: 1660px; --y: -170px; --w: 420px; --h: 380px; border-radius: 50% 50% 40% 60% / 60% 40% 60% 40%; }
+[data-layout="two-col"] [data-actor="clay"] { --x: 900px; --y: 1010px; --w: 120px; --h: 110px; border-radius: 55% 45% 50% 50% / 60% 60% 40% 40%; }
+[data-layout="two-col"] [data-actor="arc"]  { --x: 1560px; --y: -300px; --w: 640px; --h: 640px; --r: 200deg; --o: 1; }
+[data-layout="two-col"] [data-actor="dot"]  { --x: 946px; --y: 600px; --w: 26px; }
+
+/* ---------- 6. stats: blobs settle along the floor like river stones ---------- */
+[data-layout="stats"] [data-actor="sand"] { --x: 600px; --y: 880px; --w: 760px; --h: 360px; border-radius: 50% 50% 46% 54% / 62% 58% 42% 38%; }
+[data-layout="stats"] [data-actor="sage"] { --x: -200px; --y: 780px; --w: 600px; --h: 480px; border-radius: 58% 42% 52% 48% / 48% 62% 38% 52%; }
+[data-layout="stats"] [data-actor="clay"] { --x: 1620px; --y: 840px; --w: 420px; --h: 360px; border-radius: 40% 60% 50% 50% / 55% 50% 50% 45%; }
+[data-layout="stats"] [data-actor="arc"]  { --x: 360px; --y: 180px; --w: 1200px; --h: 1200px; --r: 0deg; --o: 0.8; }
+[data-layout="stats"] [data-actor="dot"]  { --x: 947px; --y: 220px; --w: 26px; }
+
+/* ---------- 7. timeline: blobs lift to the upper corners, dot waits at the axis end ---------- */
+[data-layout="timeline"] [data-actor="sand"] { --x: -240px; --y: 860px; --w: 620px; --h: 420px; border-radius: 55% 45% 60% 40% / 50% 50% 50% 50%; }
+[data-layout="timeline"] [data-actor="sage"] { --x: 1660px; --y: -200px; --w: 460px; --h: 420px; border-radius: 45% 55% 42% 58% / 60% 44% 56% 40%; }
+[data-layout="timeline"] [data-actor="clay"] { --x: 1800px; --y: 920px; --w: 260px; --h: 240px; border-radius: 60% 40% 55% 45% / 45% 55% 45% 55%; }
+[data-layout="timeline"] [data-actor="arc"]  { --x: 1520px; --y: -260px; --w: 600px; --h: 600px; --r: 200deg; --o: 1; }
+[data-layout="timeline"] [data-actor="dot"]  { --x: 1806px; --y: 617px; --w: 26px; }
+
+/* ---------- 8. quote: sage leans in from the left, the arc holds the words ---------- */
+[data-layout="quote"] [data-actor="sand"] { --x: 1480px; --y: -220px; --w: 640px; --h: 560px; border-radius: 42% 58% 52% 48% / 58% 42% 58% 42%; }
+[data-layout="quote"] [data-actor="sage"] { --x: -420px; --y: 220px; --w: 640px; --h: 700px; border-radius: 52% 48% 60% 40% / 44% 56% 44% 56%; }
+[data-layout="quote"] [data-actor="clay"] { --x: 1660px; --y: 860px; --w: 260px; --h: 240px; border-radius: 50% 50% 40% 60% / 56% 44% 56% 44%; }
+[data-layout="quote"] [data-actor="arc"]  { --x: 200px; --y: 130px; --w: 1520px; --h: 820px; --r: 0deg; --o: 1; }
+[data-layout="quote"] [data-actor="dot"]  { --x: 240px; --y: 180px; --w: 30px; }
+
+/* ---------- 9. closing: the three stones gather around the thanks ---------- */
+.deck-stage[data-layout="closing"] { --accent: #0A5E60; --muted: #5A4D47; }
+[data-layout="closing"] [data-actor="sand"] { --x: 460px; --y: 190px; --w: 1000px; --h: 700px; border-radius: 50% 50% 46% 54% / 52% 48% 52% 48%; }
+[data-layout="closing"] [data-actor="sage"] { --x: 60px; --y: 560px; --w: 420px; --h: 400px; border-radius: 60% 40% 52% 48% / 46% 54% 46% 54%; }
+[data-layout="closing"] [data-actor="clay"] { --x: 1500px; --y: 160px; --w: 280px; --h: 260px; border-radius: 44% 56% 48% 52% / 58% 42% 58% 42%; }
+[data-layout="closing"] [data-actor="arc"]  { --x: 400px; --y: 120px; --w: 1120px; --h: 840px; --r: -150deg; --o: 1; }
+[data-layout="closing"] [data-actor="dot"]  { --x: 947px; --y: 230px; --w: 26px; }
+
+/* ---------- diagram: clear stage, two pebbles stay at the far corners ---------- */
+[data-layout="diagram"] [data-actor="sage"] { --x: 1730px; --y: -150px; --w: 320px; --h: 290px; border-radius: 58% 42% 50% 50% / 45% 55% 45% 55%; }
+[data-layout="diagram"] [data-actor="clay"] { --x: -140px; --y: 1010px; --w: 280px; --h: 220px; border-radius: 50% 50% 60% 40% / 55% 45% 55% 45%; }
+[data-layout="diagram"] [data-actor="dot"]  { --x: 72px; --y: 118px; --w: 22px; }
+
+/* ---------- content tweaks: calm serif voice, rounded body ---------- */
+.slide .title { color: var(--plum); }
+.slide .kicker { font-weight: 700; letter-spacing: 0.2em; }
+.slide .subtitle { line-height: 1.5; }
+.slide[data-layout="cover"] { padding: 0 440px; }
+.slide[data-layout="cover"] .title { font-size: 88px; line-height: 1.1; }
+.slide[data-layout="closing"] { padding: 0 520px; }
+.slide[data-layout="closing"] .title { font-size: 112px; }
+.slide[data-layout="section"] .num { font-weight: 500; }
+.slide[data-layout="section"] .title { line-height: 1.12; }
+[data-density="md"] .bullets { --b-fs: 40px; --b-gap: 56px; }
+.agenda-list { --agenda-gap: 200px; --tile-line: 2px solid rgba(107, 94, 87, 0.16); }
+.agenda-list li { padding-top: 10px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list .num { font-weight: 500; }
+.slide[data-layout="content"] { --title-w: 1100px; --hl-left: 1290px; --hl-right: 150px; }
+.hl-big { font-weight: 600; }
+.hl-text { font-weight: 600; color: var(--fg); }
+.slide[data-layout="two-col"] .col { padding: 44px 60px; }
+.takeaway { border-left: 0; border-radius: 999px; padding: 20px 56px; background: rgba(155, 175, 148, 0.32); font-weight: 600; }
+.stat-num { font-weight: 600; }
+.timeline::before { opacity: 0.3; height: 3px; border-radius: 3px; }
+.step::before { width: 26px; height: 26px; box-shadow: 0 0 0 8px rgba(15, 139, 141, 0.14); }
+.step:nth-child(odd)::before  { bottom: -13px; }
+.step:nth-child(even)::before { top: -13px; }
+.slide[data-layout="quote"] { padding: 0 320px; }
+.slide[data-layout="quote"] .quote { font-weight: 500; color: var(--plum); line-height: 1.3; }
+.slide[data-layout="quote"] .cite { font-weight: 600; letter-spacing: 0.06em; }
+.bento .cell, .ba-side, .pq-face { border-radius: 36px; }

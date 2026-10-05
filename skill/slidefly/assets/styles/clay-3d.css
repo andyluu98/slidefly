@@ -1,0 +1,155 @@
+/* ===========================================================
+   STYLE: CLAY 3D (claymorphism). Soft lavender stage, puffy
+   pastel clay toys lit from the top left (light inset rim, dark
+   inset shade, soft drop shadow). A big lilac clay card holds the
+   content; the toys bounce with a gentle overshoot into new
+   spots and sizes on every slide.
+   Actors: panel (lilac clay card), pill (pink), ball (butter),
+           cube (mint rounded cube), puck (lilac disc), ring
+           (violet donut). DOM order = z-order.
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap');
+
+.deck-stage {
+  --actors: "panel pill ball cube puck ring";
+  --font-display: 'Baloo 2', sans-serif;
+  --font-body: 'Nunito', sans-serif;
+  --bg: #EDE9FE; --fg: #2E2257; --muted: #5B4F86; --accent: #7C3AED;
+  --lilac: #C4B5FD; --pink: #FDA4AF; --mint: #86EFAC; --butter: #FDE68A; --violet: #7C3AED;
+  --card-bg: rgba(255, 255, 255, 0.6); --card-fg: var(--fg); --card-radius: 40px;
+  --title-weight: 700; --title-tracking: -0.01em; --bullet-radius: 50%;
+  --clay: inset -8px -10px 0 rgba(46, 34, 87, 0.16), inset 8px 8px 0 rgba(255, 255, 255, 0.55), 0 22px 40px rgba(46, 34, 87, 0.18);
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+.deck-stage .actor:not([data-actor="panel"]) { transition-timing-function: cubic-bezier(.34, 1.56, .64, 1); }
+[data-actor="panel"] {
+  background-color: #DDD6FE; border-radius: 56px;
+  box-shadow: inset -10px -12px 0 rgba(46, 34, 87, 0.08), inset 10px 10px 0 rgba(255, 255, 255, 0.6), 0 30px 60px rgba(46, 34, 87, 0.12);
+  --x: 960px; --y: 540px; --w: 0px; --h: 0px;
+}
+[data-actor="pill"] { background-color: var(--pink); border-radius: 999px; box-shadow: var(--clay); --x: 2000px; --y: 300px; --w: 220px; --h: 90px; }
+[data-actor="ball"] { background-color: var(--butter); border-radius: 50%; box-shadow: var(--clay); --x: -300px; --y: 500px; --w: 140px; }
+[data-actor="cube"] { background-color: var(--mint); border-radius: 30%; box-shadow: var(--clay); --x: 2000px; --y: 900px; --w: 150px; }
+[data-actor="puck"] { background-color: var(--lilac); border-radius: 50%; box-shadow: var(--clay); --x: -300px; --y: 900px; --w: 180px; --h: 70px; }
+[data-actor="ring"] {
+  background-color: var(--violet); border-radius: 50%;
+  box-shadow: inset -8px -10px 0 rgba(46, 34, 87, 0.28), inset 8px 8px 0 rgba(255, 255, 255, 0.35);
+  -webkit-mask: radial-gradient(circle, transparent 30%, #000 31%); mask: radial-gradient(circle, transparent 30%, #000 31%);
+  --x: 900px; --y: -300px; --w: 160px;
+}
+
+/* ---------- 1. cover: big clay card, toys tumble onto its corners ---------- */
+[data-layout="cover"] [data-actor="panel"] { --x: 200px; --y: 150px; --w: 1520px; --h: 780px; }
+[data-layout="cover"] [data-actor="pill"]  { --x: 1540px; --y: 100px; --w: 250px; --h: 96px; --r: -18deg; }
+[data-layout="cover"] [data-actor="ball"]  { --x: 110px; --y: 800px; --w: 180px; }
+[data-layout="cover"] [data-actor="cube"]  { --x: 1640px; --y: 820px; --w: 150px; --r: 12deg; }
+[data-layout="cover"] [data-actor="puck"]  { --x: 120px; --y: 110px; --w: 210px; --h: 80px; --r: 10deg; }
+[data-layout="cover"] [data-actor="ring"]  { --x: 1000px; --y: 880px; --w: 130px; }
+
+/* ---------- 2. agenda: card holds the list, toys perch on the edges ---------- */
+[data-layout="agenda"] [data-actor="panel"] { --x: 80px; --y: 236px; --w: 1760px; --h: 800px; }
+[data-layout="agenda"] [data-actor="pill"]  { --x: 1600px; --y: 96px; --w: 200px; --h: 76px; }
+[data-layout="agenda"] [data-actor="ball"]  { --x: 1500px; --y: 88px; --w: 84px; }
+[data-layout="agenda"] [data-actor="cube"]  { --x: -30px; --y: -30px; --w: 130px; --r: 20deg; }
+[data-layout="agenda"] [data-actor="puck"]  { --x: 30px; --y: 990px; --w: 200px; --h: 76px; }
+[data-layout="agenda"] [data-actor="ring"]  { --x: 1770px; --y: 950px; --w: 130px; }
+
+/* ---------- 3. section: card becomes a pedestal, toys pile up on it ---------- */
+[data-layout="section"] [data-actor="panel"] { --x: 1060px; --y: 120px; --w: 760px; --h: 840px; }
+[data-layout="section"] [data-actor="pill"]  { --x: 1400px; --y: 760px; --w: 330px; --h: 124px; --r: -14deg; }
+[data-layout="section"] [data-actor="ball"]  { --x: 1160px; --y: 240px; --w: 300px; }
+[data-layout="section"] [data-actor="cube"]  { --x: 1180px; --y: 620px; --w: 220px; --r: -10deg; }
+[data-layout="section"] [data-actor="puck"]  { --x: 1500px; --y: 200px; --w: 240px; --h: 96px; --r: 8deg; background-color: #A78BFA; }
+[data-layout="section"] [data-actor="ring"]  { --x: 1450px; --y: 400px; --w: 280px; }
+
+/* ---------- 4. content (odd): card holds the highlight ---------- */
+[data-layout="content"] [data-actor="panel"] { --x: 1250px; --y: 240px; --w: 590px; --h: 790px; }
+[data-layout="content"] [data-actor="pill"]  { --x: 1600px; --y: 196px; --w: 190px; --h: 72px; --r: 8deg; }
+[data-layout="content"] [data-actor="ball"]  { --x: 1180px; --y: 950px; --w: 110px; }
+[data-layout="content"] [data-actor="cube"]  { --x: 1830px; --y: 40px; --w: 110px; --r: 20deg; }
+[data-layout="content"] [data-actor="puck"]  { --x: -60px; --y: 990px; --w: 200px; --h: 76px; }
+[data-layout="content"] [data-actor="ring"]  { --x: 1780px; --y: 920px; --w: 110px; }
+/* even: card slides under the bullets, toys gather round the highlight */
+[data-layout="content"][data-parity="even"] [data-actor="panel"] { --x: 80px; --y: 236px; --w: 1140px; --h: 800px; }
+[data-layout="content"][data-parity="even"] [data-actor="pill"]  { --x: 1300px; --y: 930px; --w: 230px; --h: 84px; --r: -8deg; }
+[data-layout="content"][data-parity="even"] [data-actor="ball"]  { --x: 1690px; --y: 250px; --w: 130px; }
+[data-layout="content"][data-parity="even"] [data-actor="cube"]  { --x: 1710px; --y: 890px; --w: 120px; --r: -15deg; }
+[data-layout="content"][data-parity="even"] [data-actor="puck"]  { --x: 1240px; --y: 40px; --w: 200px; --h: 70px; }
+[data-layout="content"][data-parity="even"] [data-actor="ring"]  { --x: 1260px; --y: 250px; --w: 100px; }
+
+/* ---------- 5. two-col: pill stands up as the divider, card under the takeaway ---------- */
+[data-layout="two-col"] [data-actor="pill"] { --x: 935px; --y: 420px; --w: 50px; --h: 240px; }
+[data-layout="two-col"] [data-actor="ball"] { --x: 1790px; --y: 170px; --w: 100px; }
+[data-layout="two-col"] [data-actor="cube"] { --x: 1820px; --y: 800px; --w: 90px; --r: 15deg; }
+[data-layout="two-col"] [data-actor="puck"] { --x: 1480px; --y: 10px; --w: 200px; --h: 70px; --r: -6deg; }
+[data-layout="two-col"] [data-actor="ring"] { --x: 30px; --y: 950px; --w: 110px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="panel"] { --x: 100px; --y: 870px; --w: 1720px; --h: 130px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="pill"]  { --y: 360px; --h: 200px; }
+
+/* ---------- 6. stats: card band, toys sit along its rim ---------- */
+[data-layout="stats"] [data-actor="panel"] { --x: 80px; --y: 240px; --w: 1760px; --h: 790px; }
+[data-layout="stats"] [data-actor="pill"]  { --x: 140px; --y: 990px; --w: 260px; --h: 80px; }
+[data-layout="stats"] [data-actor="ball"]  { --x: 1720px; --y: 160px; --w: 140px; }
+[data-layout="stats"] [data-actor="cube"]  { --x: 860px; --y: 980px; --w: 96px; --r: 15deg; }
+[data-layout="stats"] [data-actor="puck"]  { --x: 1000px; --y: 1000px; --w: 200px; --h: 66px; }
+[data-layout="stats"] [data-actor="ring"]  { --x: 1760px; --y: 940px; --w: 120px; }
+
+/* ---------- 7. timeline: the pill stretches into the axis, ball and ring cap it ---------- */
+[data-layout="timeline"] [data-actor="panel"] { --x: 60px; --y: 226px; --w: 1800px; --h: 820px; }
+[data-layout="timeline"] [data-actor="pill"]  { --x: 120px; --y: 616px; --w: 1680px; --h: 28px; }
+[data-layout="timeline"] [data-actor="ball"]  { --x: 1790px; --y: 590px; --w: 80px; }
+[data-layout="timeline"] [data-actor="cube"]  { --x: 1790px; --y: 960px; --w: 100px; --r: -12deg; }
+[data-layout="timeline"] [data-actor="puck"]  { --x: 30px; --y: 990px; --w: 200px; --h: 70px; }
+[data-layout="timeline"] [data-actor="ring"]  { --x: 40px; --y: 590px; --w: 80px; }
+
+/* ---------- 8. quote: soft card, toys hug its corners ---------- */
+[data-layout="quote"] [data-actor="panel"] { --x: 220px; --y: 160px; --w: 1480px; --h: 760px; }
+[data-layout="quote"] [data-actor="pill"]  { --x: 1500px; --y: 100px; --w: 230px; --h: 84px; --r: 15deg; }
+[data-layout="quote"] [data-actor="ball"]  { --x: 150px; --y: 100px; --w: 160px; }
+[data-layout="quote"] [data-actor="cube"]  { --x: 250px; --y: 840px; --w: 120px; --r: -12deg; }
+[data-layout="quote"] [data-actor="puck"]  { --x: 1670px; --y: 420px; --w: 180px; --h: 70px; --r: 80deg; }
+[data-layout="quote"] [data-actor="ring"]  { --x: 1610px; --y: 800px; --w: 170px; }
+
+/* ---------- 9. closing: violet card, toys orbit the thanks ---------- */
+.deck-stage[data-layout="closing"] { --fg: #ffffff; --muted: #EDE9FE; --accent: #FDE68A; }
+[data-layout="closing"] [data-actor="panel"] { --x: 360px; --y: 200px; --w: 1200px; --h: 680px; background-color: var(--violet); }
+[data-layout="closing"] [data-actor="pill"]  { --x: 1440px; --y: 130px; --w: 270px; --h: 100px; --r: 20deg; }
+[data-layout="closing"] [data-actor="ball"]  { --x: 240px; --y: 120px; --w: 210px; }
+[data-layout="closing"] [data-actor="cube"]  { --x: 290px; --y: 770px; --w: 160px; --r: -12deg; }
+[data-layout="closing"] [data-actor="puck"]  { --x: 850px; --y: 900px; --w: 230px; --h: 84px; }
+[data-layout="closing"] [data-actor="ring"]  { --x: 1450px; --y: 760px; --w: 200px; background-color: var(--pink); }
+
+/* ---------- diagram: two toys tucked into the corners ---------- */
+[data-layout="diagram"] [data-actor="ball"] { --x: 1810px; --y: 100px; --w: 70px; }
+[data-layout="diagram"] [data-actor="puck"] { --x: 20px; --y: 1012px; --w: 160px; --h: 56px; }
+
+/* ---------- content tweaks: round, chunky, friendly ---------- */
+.slide .title { line-height: 1.15; }
+.slide .kicker { font-weight: 800; letter-spacing: 0.16em; }
+.slide[data-layout="cover"] { padding: 0 340px; }
+.slide[data-layout="cover"] .title { font-size: 96px; line-height: 1.08; }
+.slide[data-layout="closing"] { padding: 0 460px; }
+.slide[data-layout="agenda"] { --title-w: 1300px; }
+.agenda-list { --agenda-gap: 200px; --tile-line: 3px dashed rgba(124, 58, 237, 0.22); }
+.agenda-list li { padding-top: 10px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list .num { font-weight: 800; }
+.slide[data-layout="section"] { padding: 0 940px 0 160px; }
+.slide[data-layout="section"] .num { font-weight: 800; }
+.slide[data-layout="content"] { --title-w: 1400px; --hl-left: 1290px; --hl-right: 110px; }
+.slide[data-layout="content"][data-parity="even"] { --bullets-w: 1000px; --hl-left: 1300px; --hl-right: 120px; }
+.slide[data-layout="content"][data-parity="even"] .bullets { left: 150px; }
+.col { box-shadow: inset -6px -8px 0 rgba(46, 34, 87, 0.06), inset 6px 6px 0 rgba(255, 255, 255, 0.7); }
+.col h3 { font-weight: 800; }
+.takeaway { border-left: 0; justify-content: center; text-align: center; }
+.stat-num { font-weight: 800; }
+.timeline::before { display: none; }
+.step::before { width: 36px; height: 36px; left: -2px; background: var(--butter); box-shadow: inset -4px -5px 0 rgba(46, 34, 87, 0.16), inset 4px 4px 0 rgba(255, 255, 255, 0.6); }
+.step:nth-child(odd)::before { bottom: -18px; }
+.step:nth-child(even)::before { top: -18px; }
+.slide[data-layout="quote"] { padding: 0 320px; }
+.slide[data-layout="quote"] .quote { font-weight: 700; }
+.slide[data-layout="quote"] .cite { font-weight: 700; }
+.slide[data-kind="chapter"] .ch-num { opacity: 0.18; }

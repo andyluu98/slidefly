@@ -1,0 +1,167 @@
+/* ===========================================================
+   STYLE: ART DECO (gala night). Deep emerald-black stage, ivory
+   type, one gold accent. Gold diamonds nest and spin into new
+   frames, a gold sunburst fan rises behind titles, double gold
+   rules and a double-line frame keep strict symmetry, an emerald
+   ziggurat panel steps up behind content.
+   Actors: zig (emerald stepped panel), fan (sunburst), frame
+           (double gold border), rt, rb (double rules), d1, d2
+           (nested diamonds). DOM order = z-order.
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display+SC:wght@400;700&family=Josefin+Sans:wght@400;600;700&display=swap');
+
+.deck-stage {
+  --actors: "zig fan frame rt rb d1 d2";
+  --font-display: 'Playfair Display SC', Georgia, serif;
+  --font-body: 'Josefin Sans', sans-serif;
+  --bg: #0E1A17; --fg: #F4ECD8; --muted: #BFB59C; --accent: #D4AF37;
+  --gold: #D4AF37; --emerald: #12392F;
+  --card-bg: transparent; --card-fg: var(--fg); --card-radius: 0px;
+  --title-weight: 700; --title-tracking: 0.02em; --bullet-radius: 0;
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="zig"] {
+  --st: min(50px, 12%);
+  background: var(--emerald);
+  clip-path: polygon(0 100%, 0 calc(var(--st) * 3), 12% calc(var(--st) * 3), 12% calc(var(--st) * 2), 24% calc(var(--st) * 2), 24% var(--st), 36% var(--st), 36% 0,
+    64% 0, 64% var(--st), 76% var(--st), 76% calc(var(--st) * 2), 88% calc(var(--st) * 2), 88% calc(var(--st) * 3), 100% calc(var(--st) * 3), 100% 100%);
+  --x: 160px; --y: 1120px; --w: 1600px; --h: 400px;
+}
+[data-actor="fan"] {
+  border: 2px solid var(--gold); border-bottom: 0; border-radius: 9999px 9999px 0 0;
+  background: repeating-conic-gradient(from -90deg at 50% 100%, var(--gold) 0deg 0.8deg, transparent 0.8deg 7.5deg);
+  -webkit-mask: radial-gradient(circle at 50% 100%, transparent 22%, #000 22.5%);
+  mask: radial-gradient(circle at 50% 100%, transparent 22%, #000 22.5%);
+  --x: 560px; --y: 1120px; --w: 800px; --h: 400px; --o: 0;
+}
+[data-actor="frame"] { border: 6px double var(--gold); --x: 40px; --y: 40px; --w: 1840px; --h: 1000px; --o: 0; --s: 1.08; }
+[data-actor="rt"], [data-actor="rb"] { border-top: 2px solid var(--gold); border-bottom: 2px solid var(--gold); --h: 10px; --w: 0px; }
+[data-actor="rt"] { --x: 960px; --y: 60px; }
+[data-actor="rb"] { --x: 960px; --y: 1010px; }
+[data-actor="d1"], [data-actor="d2"] { border: 2px solid var(--gold); --r: 45deg; }
+[data-actor="d1"] { --x: -400px; --y: 440px; --w: 200px; }
+[data-actor="d2"] { --x: 2120px; --y: 460px; --w: 160px; }
+
+/* ---------- 1. cover: framed stage, fan rises from the floor, twin diamonds flank ---------- */
+[data-layout="cover"] [data-actor="frame"] { --o: 1; --s: 1; }
+[data-layout="cover"] [data-actor="fan"]   { --x: 730px; --y: 800px; --w: 460px; --h: 230px; --o: 0.6; }
+[data-layout="cover"] [data-actor="rt"]    { --x: 710px; --y: 150px; --w: 500px; }
+[data-layout="cover"] [data-actor="rb"]    { --x: 610px; --y: 1018px; --w: 700px; }
+[data-layout="cover"] [data-actor="d1"]    { --x: 130px; --y: 470px; --w: 140px; }
+[data-layout="cover"] [data-actor="d2"]    { --x: 1650px; --y: 470px; --w: 140px; }
+
+/* ---------- 2. agenda: double frame holds the list, diamonds nest at the corner ---------- */
+[data-layout="agenda"] [data-actor="frame"] { --x: 80px; --y: 236px; --w: 1760px; --h: 790px; --o: 1; --s: 1; }
+[data-layout="agenda"] [data-actor="rt"]    { --x: 120px; --y: 190px; --w: 360px; }
+[data-layout="agenda"] [data-actor="rb"]    { --x: 840px; --y: 1046px; --w: 240px; }
+[data-layout="agenda"] [data-actor="d1"]    { --x: 1720px; --y: 96px; --w: 70px; --r: 225deg; }
+[data-layout="agenda"] [data-actor="d2"]    { --x: 1735px; --y: 111px; --w: 40px; --r: 225deg; }
+
+/* ---------- 3. section: ziggurat right, fan rises on its summit, diamonds on the face ---------- */
+[data-layout="section"] [data-actor="zig"]   { --x: 1060px; --y: 560px; --w: 760px; --h: 520px; }
+[data-layout="section"] [data-actor="fan"]   { --x: 1190px; --y: 310px; --w: 500px; --h: 250px; --o: 0.85; }
+[data-layout="section"] [data-actor="frame"] { --x: 100px; --y: 100px; --w: 900px; --h: 880px; --o: 1; --s: 1; }
+[data-layout="section"] [data-actor="rt"]    { --x: 1060px; --y: 270px; --w: 760px; }
+[data-layout="section"] [data-actor="rb"]    { --x: 1060px; --y: 1040px; --w: 0px; }
+[data-layout="section"] [data-actor="d1"]    { --x: 1320px; --y: 720px; --w: 240px; --r: 135deg; }
+[data-layout="section"] [data-actor="d2"]    { --x: 1370px; --y: 770px; --w: 140px; --r: 135deg; }
+
+.deck-stage:has(.slide.active[data-kind="chapter"]) [data-actor="d1"] { --x: 1700px; --y: 130px; --w: 90px; }
+.deck-stage:has(.slide.active[data-kind="chapter"]) [data-actor="d2"] { --x: 1720px; --y: 150px; --w: 50px; }
+
+/* ---------- 4. content (odd): ziggurat panel holds the highlight ---------- */
+[data-layout="content"] [data-actor="zig"]   { --x: 1240px; --y: 216px; --w: 600px; --h: 830px; }
+[data-layout="content"] [data-actor="rt"]    { --x: 120px; --y: 190px; --w: 1040px; }
+[data-layout="content"] [data-actor="rb"]    { --x: 120px; --y: 1030px; --w: 1040px; }
+[data-layout="content"] [data-actor="d1"]    { --x: 1500px; --y: 952px; --w: 80px; --r: 225deg; }
+[data-layout="content"] [data-actor="d2"]    { --x: 1515px; --y: 967px; --w: 50px; --r: 225deg; }
+/* even: ziggurat slides left under the bullets, double frame holds the highlight */
+[data-layout="content"][data-parity="even"] [data-actor="zig"]   { --x: 80px; --y: 206px; --w: 1140px; --h: 840px; }
+[data-layout="content"][data-parity="even"] [data-actor="frame"] { --x: 1270px; --y: 250px; --w: 560px; --h: 760px; --o: 1; --s: 1; }
+[data-layout="content"][data-parity="even"] [data-actor="fan"]   { --x: 1400px; --y: 254px; --w: 300px; --h: 150px; --o: 0.7; }
+[data-layout="content"][data-parity="even"] [data-actor="rt"]    { --x: 120px; --y: 190px; --w: 360px; }
+[data-layout="content"][data-parity="even"] [data-actor="rb"]    { --x: 1300px; --y: 1036px; --w: 500px; }
+[data-layout="content"][data-parity="even"] [data-actor="d1"]    { --x: 1515px; --y: 975px; --w: 70px; --r: 405deg; }
+[data-layout="content"][data-parity="even"] [data-actor="d2"]    { --x: 1530px; --y: 990px; --w: 40px; --r: 405deg; }
+
+/* ---------- 5. two-col: frame both columns, rule turns into the divider ---------- */
+[data-layout="two-col"] [data-actor="frame"] { --x: 80px; --y: 236px; --w: 1760px; --h: 790px; --o: 1; --s: 1; }
+[data-layout="two-col"] [data-actor="rt"]    { --x: 120px; --y: 190px; --w: 360px; }
+[data-layout="two-col"] [data-actor="rb"]    { --x: 610px; --y: 625px; --w: 700px; --r: 90deg; }
+[data-layout="two-col"] [data-actor="d1"]    { --x: 930px; --y: 206px; --w: 60px; --r: 135deg; }
+[data-layout="two-col"] [data-actor="d2"]    { --x: 942px; --y: 218px; --w: 36px; --r: 135deg; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="frame"] { --h: 620px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="rb"]    { --x: 690px; --y: 540px; --w: 540px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="zig"]   { --x: 80px; --y: 866px; --w: 1760px; --h: 160px; }
+
+/* ---------- 6. stats: stepped skyline below, diamonds split the figures ---------- */
+[data-layout="stats"] [data-actor="zig"] { --x: 0px; --y: 930px; --w: 1920px; --h: 150px; }
+[data-layout="stats"] [data-actor="rt"]  { --x: 120px; --y: 190px; --w: 360px; }
+[data-layout="stats"] [data-actor="rb"]  { --x: 120px; --y: 900px; --w: 1680px; }
+[data-layout="stats"] [data-actor="d1"]  { --x: 668px; --y: 600px; --w: 36px; --r: 225deg; }
+[data-layout="stats"] [data-actor="d2"]  { --x: 1216px; --y: 600px; --w: 36px; --r: 225deg; }
+
+/* ---------- 7. timeline: double rule becomes the axis, diamonds mark the end ---------- */
+[data-layout="timeline"] [data-actor="frame"] { --x: 60px; --y: 236px; --w: 1800px; --h: 800px; --o: 1; --s: 1; }
+[data-layout="timeline"] [data-actor="rt"]    { --x: 120px; --y: 625px; --w: 1680px; }
+[data-layout="timeline"] [data-actor="rb"]    { --x: 120px; --y: 190px; --w: 360px; }
+[data-layout="timeline"] [data-actor="d1"]    { --x: 1810px; --y: 612px; --w: 36px; --r: 405deg; }
+[data-layout="timeline"] [data-actor="d2"]    { --x: 1818px; --y: 620px; --w: 20px; --r: 405deg; background: var(--gold); }
+
+/* ---------- 8. quote: fan rises over the words, rules bracket them ---------- */
+[data-layout="quote"] [data-actor="frame"] { --x: 180px; --y: 40px; --w: 1560px; --h: 1000px; --o: 1; --s: 1; }
+[data-layout="quote"] [data-actor="fan"]   { --x: 760px; --y: 76px; --w: 400px; --h: 200px; --o: 0.9; }
+[data-layout="quote"] [data-actor="rt"]    { --x: 660px; --y: 276px; --w: 600px; }
+[data-layout="quote"] [data-actor="rb"]    { --x: 660px; --y: 840px; --w: 600px; }
+[data-layout="quote"] [data-actor="d1"]    { --x: 930px; --y: 900px; --w: 60px; --r: 135deg; }
+[data-layout="quote"] [data-actor="d2"]    { --x: 942px; --y: 912px; --w: 36px; --r: 135deg; }
+
+/* ---------- 9. closing: great nested diamonds frame the thanks, skyline below ---------- */
+[data-layout="closing"] [data-actor="zig"] { --x: 0px; --y: 960px; --w: 1920px; --h: 120px; }
+[data-layout="closing"] [data-actor="fan"] { --x: 760px; --y: 24px; --w: 400px; --h: 200px; --o: 0.7; }
+[data-layout="closing"] [data-actor="rt"]  { --x: 120px; --y: 535px; --w: 300px; }
+[data-layout="closing"] [data-actor="rb"]  { --x: 1500px; --y: 535px; --w: 300px; }
+[data-layout="closing"] [data-actor="d1"]  { --x: 600px; --y: 180px; --w: 720px; --r: 225deg; }
+[data-layout="closing"] [data-actor="d2"]  { --x: 640px; --y: 220px; --w: 640px; --r: 225deg; background: transparent; }
+
+/* ---------- diagram: slim frame and corner diamonds only ---------- */
+[data-layout="diagram"] [data-actor="frame"] { --x: 30px; --y: 30px; --w: 1860px; --h: 1020px; --o: 1; --s: 1; }
+[data-layout="diagram"] [data-actor="rt"]    { --x: 120px; --y: 196px; --w: 300px; }
+[data-layout="diagram"] [data-actor="d1"]    { --x: 1770px; --y: 104px; --w: 50px; --r: 225deg; }
+[data-layout="diagram"] [data-actor="d2"]    { --x: 1780px; --y: 114px; --w: 30px; --r: 225deg; }
+
+/* ---------- content tweaks: gala serif caps, geometric sans ---------- */
+.slide :is(.title, .num, .stat-num, .hl-big, .when, .fig, .big, .rk, .ch-num, .n) { font-variant-numeric: lining-nums; }
+.slide .title { line-height: 1.2; }
+.slide .kicker { font-weight: 600; letter-spacing: 0.32em; }
+.slide .subtitle { line-height: 1.4; }
+.slide[data-layout="cover"] { padding: 0 380px; }
+.slide[data-layout="cover"] .title { font-size: 84px; line-height: 1.2; }
+.slide[data-layout="cover"] .meta { letter-spacing: 0.2em; text-transform: uppercase; font-size: 22px; color: var(--accent); }
+.slide[data-layout="closing"] { padding: 0 560px; }
+.slide[data-layout="closing"] .title { font-size: 112px; }
+.slide[data-layout="agenda"] { --title-w: 1500px; }
+.agenda-list { --agenda-gap: 200px; --tile-line: 1px solid rgba(212, 175, 55, 0.35); }
+.agenda-list li { padding-top: 10px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list .num { font-weight: 400; }
+.slide[data-layout="section"] { padding: 0 960px 0 180px; }
+.slide[data-layout="section"] .title { font-size: 76px; }
+.slide[data-kind="chapter"] .ch-num { opacity: 0.22; }
+.slide[data-layout="section"] .num { font-weight: 400; }
+.slide[data-layout="content"] { --title-w: 1500px; --hl-left: 1290px; --hl-right: 110px; }
+.slide[data-layout="content"][data-parity="even"] { --bullets-w: 1000px; --hl-left: 1310px; --hl-right: 130px; }
+.slide[data-layout="content"][data-parity="even"] .bullets { left: 150px; }
+.bullets li::before, .col li::before { transform: rotate(45deg); width: 0.36em; height: 0.36em; top: 0.48em; }
+.col h3 { font-weight: 700; }
+.takeaway { border-left: 0; justify-content: center; text-align: center; font-weight: 700; padding-top: 44px; }
+.stat-num { font-weight: 700; }
+.timeline::before { opacity: 0; }
+.step::before { border-radius: 0; transform: rotate(45deg); width: 24px; height: 24px; left: 4px; }
+.step:nth-child(odd)::before { bottom: -12px; }
+.step:nth-child(even)::before { top: -12px; }
+.slide[data-layout="quote"] { padding: 0 320px; text-align: center; }
+.slide[data-layout="quote"] .quote { font-weight: 400; line-height: 1.3; }
+.slide[data-layout="quote"] .cite { letter-spacing: 0.2em; text-transform: uppercase; font-size: 24px; }

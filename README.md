@@ -1,10 +1,10 @@
 # SlideFly: slide biết bay
 
-Skill cho [Claude Code](https://claude.com/claude-code) tạo **slide HTML có hiệu ứng chuyển cảnh kiểu PowerPoint Morph**: hình trang trí trượt, phóng to, đổi màu liền mạch giữa các slide. Một file HTML, mở bằng Chrome là trình chiếu được. Có **47 style**, bố cục tự lấp đầy theo lượng chữ và tự đo độ trống của từng slide.
+Skill cho [Claude Code](https://claude.com/claude-code) tạo **slide HTML có hiệu ứng chuyển cảnh kiểu PowerPoint Morph**: hình trang trí trượt, phóng to, đổi màu liền mạch giữa các slide. Một file HTML, mở bằng Chrome là trình chiếu được. Có **57 style**, bố cục tự lấp đầy theo lượng chữ và tự đo độ trống của từng slide.
 
-*A Claude Code skill that builds single-file HTML decks with PowerPoint-Morph-like transitions: 47 styles, auto-filling layouts and an automatic fill/overflow audit. Docs are in Vietnamese.*
+*A Claude Code skill that builds single-file HTML decks with PowerPoint-Morph-like transitions: 57 styles, auto-filling layouts and an automatic fill/overflow audit. Docs are in Vietnamese.*
 
-**Xem trực tuyến:** [Thư viện 47 style](https://andyluu98.github.io/slidefly/gallery/00-gallery.html) · [Deck mẫu 20 slide (Stencil & Tablet)](https://andyluu98.github.io/slidefly/examples/ai-agent-stencil-tablet-20-slide.html) · [Deck mẫu 15 slide (Swiss Modern)](https://andyluu98.github.io/slidefly/examples/ai-agent-swiss-15-slide.html)
+**Xem trực tuyến:** [Thư viện 57 style](https://andyluu98.github.io/slidefly/gallery/00-gallery.html) · [Deck mẫu 20 slide (Stencil & Tablet)](https://andyluu98.github.io/slidefly/examples/ai-agent-stencil-tablet-20-slide.html) · [Deck mẫu 15 slide (Swiss Modern)](https://andyluu98.github.io/slidefly/examples/ai-agent-swiss-15-slide.html)
 
 ![Thư viện style](docs/gallery.jpg)
 
@@ -14,12 +14,12 @@ Mỗi style có một nhóm hình cố định gọi là **diễn viên**. Mỗi
 
 ## Tính năng
 
-- **47 style:** 12 preset và 34 bold template phỏng theo [frontend-slides](https://github.com/zarazhangrui/frontend-slides), cộng 1 style tái tạo mẫu Morph "vòng tròn xanh". Mọi font đều có bộ chữ tiếng Việt.
+- **57 style:** 12 preset và 34 bold template phỏng theo [frontend-slides](https://github.com/zarazhangrui/frontend-slides), 1 style tái tạo mẫu Morph "vòng tròn xanh", và 10 style mới: 3 style bản sắc Việt (sơn mài, tranh Đông Hồ, Hội An), 5 style xu hướng 2026 (aurora, bento, bauhaus, restorative, wabi), 2 style cho dịp đặc biệt (art deco, clay 3D). Mọi font đều có bộ chữ tiếng Việt.
 - **10 kiểu slide:** cover, agenda, section, content, two-col, stats, timeline, quote, closing, và `diagram` (sân khấu trống cho sơ đồ).
 - **8 dạng sơ đồ tự vẽ từ số liệu:** thanh tỷ lệ, vòng tròn chia phần, mặt bằng có chuỗi kích thước, các ô dồn về tâm, ma trận, mạng lưới nút, phễu lọc, màn quét trước và sau. Khai báo bằng vài thuộc tính `data-*`, biểu đồ có số phải ghi nguồn.
 - **Hiệu ứng theo động từ:** vẽ nét, đếm số, đóng dấu, rơi vào chỗ, bay vào nhóm, gộp về tâm, rung khi lệch, chấm chạy dọc đường ống.
 - **Icon Tabler:** hơn 5.000 icon MIT (có logo công cụ như Python, GitHub) khai báo bằng một dòng; `icons.py suggest` gợi ý icon theo chữ trên slide, kể cả từ tiếng Việt; audit chặn slide quá 6 icon.
-- **21 dáng slide:** 9 kiểu gốc và 12 kiểu mới (số lớn, bento, ảnh chia đôi, hỏi đáp, trước và sau, quy trình, bảng so sánh, trích dẫn có chân dung, chương, đếm ngược, tuyên bố, kết có lời kêu gọi). Kiểu mới chạy trên cả 47 style mà không phải sửa style.
+- **21 dáng slide:** 9 kiểu gốc và 12 kiểu mới (số lớn, bento, ảnh chia đôi, hỏi đáp, trước và sau, quy trình, bảng so sánh, trích dẫn có chân dung, chương, đếm ngược, tuyên bố, kết có lời kêu gọi). Kiểu mới chạy trên cả 57 style mà không phải sửa style.
 - **Logo xuyên suốt:** một logo (icon Tabler hoặc file ảnh) to ở bìa, thu về góc ở slide nội dung, ẩn ở slide trích dẫn, và tự bay giữa các vị trí đó.
 - **Khung giao diện giả:** cửa sổ chat, terminal, trình duyệt, điện thoại vẽ bằng CSS. Prompt gõ từng chữ, trợ lý "nghĩ" rồi trả lời từng dòng, lệnh cài hiện dần theo cú bấm.
 - **Slide ảnh nền và lưới icon:** ảnh tràn màn hình làm điểm nghỉ giữa các phần (lớp phủ giữ chữ dễ đọc, bắt buộc ghi nguồn ảnh); lưới 3 đến 6 icon cùng màu cho các ý ngắn.
@@ -74,12 +74,12 @@ skill/slidefly/
 │   ├── morph-mock.css/.js   khung chat, terminal, trình duyệt, điện thoại
 │   ├── morph-photo.css      slide ảnh nền
 │   ├── icons/               danh mục Tabler + từ khóa tiếng Việt
-│   └── styles/              47 style + index.json
+│   └── styles/              57 style + index.json
 ├── references/              cơ chế, layout, công thức chuyển cảnh, chọn style, font tiếng Việt
 ├── scripts/                 inline-assets.py, check-deck.py, build-gallery.py, icons.py
 └── templates/              deck-mau.html (10 slide đủ 9 kiểu), deck-so-do.html (16 slide, mỗi slide một dạng hình), deck-giao-dien.html (10 slide, logo, khung giao diện, ảnh nền, lưới icon), deck-bo-cuc.html (13 slide, 12 bố cục mới)
 examples/                    2 deck mẫu về AI Agent
-gallery/                     00-gallery.html + 47 deck demo
+gallery/                     00-gallery.html + 57 deck demo
 ```
 
 ## Ghi nguồn

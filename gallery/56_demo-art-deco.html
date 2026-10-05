@@ -1,0 +1,1573 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mẫu SlideFly</title>
+<!-- Đổi style: thay đúng 1 dòng link styles/*.css bên dưới. -->
+<style>
+/* ===========================================================
+   MORPH-SLIDES BASE
+   Stage 1920x1080 scaled by JS (idea from frontend-slides
+   viewport-base.css, MIT). Actors = persistent shapes that
+   morph between poses; slides = per-slide content layer.
+   =========================================================== */
+
+:root {
+  --morph-dur: 1.2s;
+  --morph-ease: cubic-bezier(0.16, 1, 0.3, 1);   /* ease-out-expo */
+  --fade-dur: 0.35s;
+  --reveal-base: 0.45s;   /* content waits for actors to start moving */
+  --reveal-step: 0.09s;
+  --stage-bg: #000;
+}
+
+html, body {
+  width: 100%; height: 100%; margin: 0;
+  overflow: hidden;
+  background: var(--stage-bg);
+}
+*, *::before, *::after { box-sizing: border-box; }
+
+.deck-viewport { position: fixed; inset: 0; overflow: hidden; background: var(--stage-bg); }
+
+.deck-stage {
+  position: absolute; left: 0; top: 0;
+  width: 1920px; height: 1080px;
+  overflow: hidden;
+  transform-origin: 0 0;
+  background-color: var(--bg, #fff);
+  color: var(--fg, #111);
+  font-family: var(--font-body, system-ui, sans-serif);
+  transition: background-color var(--morph-dur) var(--morph-ease),
+              color var(--morph-dur) var(--morph-ease);
+}
+
+/* ---------- ACTORS ----------
+   Pose = CSS variables set by style files per layout/pose:
+   --x --y --w --h (px, --h defaults to --w), --r (deg), --s (scale),
+   --o (opacity), --bw (outline width, centered on the edge like
+   PowerPoint lines). Width/height animate so borders keep thickness. */
+.actors { position: absolute; inset: 0; pointer-events: none; }
+.actors.back  { z-index: 0; }
+.actors.front { z-index: 20; }
+
+.actor {
+  position: absolute; left: 0; top: 0;
+  width: calc(var(--w, 200px) + var(--bw, 0px));
+  height: calc(var(--h, var(--w, 200px)) + var(--bw, 0px));
+  transform: translate(calc(var(--x, -400px) - var(--bw, 0px) / 2), calc(var(--y, -400px) - var(--bw, 0px) / 2))
+             rotate(var(--r, 0deg)) scale(var(--s, 1));
+  opacity: var(--o, 1);
+  transition-property: transform, width, height, opacity, background-color,
+                       border-color, border-width, border-radius, box-shadow, filter, color;
+  transition-duration: var(--morph-dur);
+  transition-timing-function: var(--morph-ease);
+  /* no will-change: it caused 1px seams on large panels when the stage is scaled down */
+}
+.actor > svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+/* ---------- SLIDES (content layer) ---------- */
+.slide {
+  position: absolute; inset: 0; z-index: 10;
+  width: 1920px; height: 1080px;
+  overflow: hidden;
+  visibility: hidden; opacity: 0; pointer-events: none;
+  transition: opacity var(--fade-dur) ease, visibility 0s linear var(--fade-dur);
+}
+.slide.active {
+  visibility: visible; opacity: 1; pointer-events: auto;
+  transition: opacity var(--fade-dur) ease, visibility 0s;
+}
+
+/* Reveal: hidden until slide is active, staggered by --i (set by engine) */
+.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur {
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease, filter 0.3s ease;
+}
+.reveal       { transform: translateY(40px); }
+.reveal-left  { transform: translateX(-60px); }
+.reveal-right { transform: translateX(60px); }
+.reveal-scale { transform: scale(0.85); }
+.reveal-blur  { filter: blur(12px); }
+/* repeated layouts enter differently: variant 2 slides in from the left, variant 3 zooms in */
+.slide[data-variant="2"] .reveal { transform: translateX(-56px); }
+.slide[data-variant="3"] .reveal { transform: scale(0.92); }
+
+.slide.active :is(.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur) {
+  opacity: 1; transform: none; filter: none;
+  transition-duration: 0.8s;
+  transition-timing-function: var(--morph-ease);
+  transition-delay: calc(var(--reveal-base) + var(--i, 0) * var(--reveal-step));
+}
+
+/* FLIP: element shared between two slides (data-morph-id) */
+.slide .flip-run {
+  opacity: 1 !important; filter: none !important;
+  transform-origin: 0 0;
+  transition: transform var(--morph-dur) var(--morph-ease) !important;
+}
+.slide .flip-src { opacity: 0 !important; transition: none !important; }
+
+/* ---------- UI chrome (outside design) ---------- */
+.deck-progress {
+  position: fixed; left: 0; bottom: 0; height: 4px; width: 0;
+  background: var(--accent, #3b82f6); z-index: 1000;
+  /* dark + light hairline so the bar stays visible on any background colour */
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.35), 0 -2px 0 rgba(255, 255, 255, 0.35);
+  transition: width 0.6s var(--morph-ease);
+}
+/* edge buttons: a thin strip on each side, almost invisible until the mouse comes near */
+.deck-edge {
+  position: fixed; top: 0; bottom: 0; z-index: 1001; width: 64px; padding: 0; border: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; color: #fff; cursor: pointer; opacity: .18;
+  transition: opacity .25s ease, background .25s ease;
+}
+.deck-edge.prev { left: 0; }
+.deck-edge.next { right: 0; }
+.deck-edge span {
+  display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
+  font: 400 34px/1 system-ui, sans-serif; background: rgba(0, 0, 0, .45); padding-bottom: 4px;
+}
+.deck-edge:hover, .deck-edge:focus-visible { opacity: 1; }
+.deck-edge.prev:hover { background: linear-gradient(90deg, rgba(0, 0, 0, .28), transparent); }
+.deck-edge.next:hover { background: linear-gradient(270deg, rgba(0, 0, 0, .28), transparent); }
+.deck-counter {
+  position: fixed; right: 18px; bottom: 12px; z-index: 1000;
+  font: 600 13px/1 system-ui, sans-serif; letter-spacing: 0.08em;
+  color: #fff; mix-blend-mode: difference; opacity: 0.55;
+}
+
+/* Reduced motion (often from Windows "Animation effects" = off):
+   keep a short, gentle morph because motion IS the deck's content. */
+@media (prefers-reduced-motion: reduce) {
+  :root { --morph-dur: 0.7s; --reveal-base: 0.2s; --reveal-step: 0.04s; }
+  .reveal-blur { filter: none; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; }
+}
+
+</style>
+<style>
+/* ===========================================================
+   MORPH-SLIDES LAYOUTS: 9 slide types that FILL their zone.
+   - Inner slides: title row + body zone (--body-top..--body-bottom)
+   - Engine sets data-density="lg|md|sm" from item count,
+     so few items => bigger type, many items => smaller type.
+   Tokens: --fg --muted --accent --card-bg --card-fg --font-display
+           --font-body --title-weight --title-case --title-tracking
+   =========================================================== */
+
+.slide {
+  --body-top: 270px; --body-bottom: 90px; --pad-x: 120px;
+  color: var(--fg); font-family: var(--font-body); font-size: 32px; line-height: 1.45;
+}
+.slide h1, .slide h2, .slide h3, .slide p, .slide ul, .slide ol, .slide blockquote { margin: 0; }
+.slide ul, .slide ol { padding: 0; list-style: none; }
+
+.title, .num, .stat-num, .quote, .hl-big, .when {
+  font-family: var(--font-display); font-weight: var(--title-weight, 800);
+  letter-spacing: var(--title-tracking, -0.01em); font-style: var(--title-style, normal);
+}
+.title { text-transform: var(--title-case, none); line-height: 1.1; }
+.kicker { font-size: 22px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); }
+.subtitle { font-size: 34px; color: var(--muted); }
+.meta { font-size: 24px; color: var(--muted); }
+.accent { color: var(--accent); }
+b, strong { font-weight: 700; }
+
+/* body zone shared by inner layouts */
+.slide > .title:first-child { position: absolute; left: var(--pad-x); top: 90px; width: var(--title-w, 1500px); font-size: 64px; }
+.slide:is([data-layout="cover"], [data-layout="closing"], [data-layout="section"], [data-layout="quote"]) > .title:first-child { position: static; width: auto; }
+.body-zone, .bullets, .cols, .stats, .timeline, .agenda-list, .highlight {
+  position: absolute; top: var(--body-top); bottom: var(--body-bottom);
+}
+
+/* ---------- 1. cover / 9. closing ---------- */
+.slide:is([data-layout="cover"], [data-layout="closing"]) {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 28px; padding: 0 300px; text-align: center;
+}
+.slide:is([data-layout="cover"], [data-layout="closing"]) .title { font-size: 92px; }
+.slide[data-layout="closing"] .title { font-size: 120px; }
+
+/* ---------- 2. agenda: 2 columns of tiles filling the zone ---------- */
+.agenda-list {
+  left: var(--pad-x); right: var(--pad-x);
+  display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--agenda-gap, 640px);
+  grid-template-rows: repeat(var(--rows, 4), 1fr); grid-auto-flow: column;
+}
+.agenda-list li { display: flex; align-items: center; gap: 28px; border-top: var(--tile-line, none); }
+.agenda-list li.is-right { flex-direction: row-reverse; text-align: right; }
+.agenda-list .num { line-height: 1; color: var(--accent); min-width: 1.3em; }
+.agenda-list li.is-right .num { text-align: right; }
+.agenda-list h3 { font-family: var(--font-display); line-height: 1.15; }
+.agenda-list p { color: var(--muted); margin-top: 6px; }
+[data-density="lg"] .agenda-list { --n-num: 120px; --n-h: 52px; --n-p: 30px; }
+[data-density="md"] .agenda-list { --n-num: 88px;  --n-h: 40px; --n-p: 26px; }
+[data-density="sm"] .agenda-list { --n-num: 64px;  --n-h: 32px; --n-p: 22px; }
+.agenda-list .num { font-size: var(--n-num); }
+.agenda-list h3 { font-size: var(--n-h); }
+.agenda-list p { font-size: var(--n-p); }
+
+/* ---------- 3. section ---------- */
+.slide[data-layout="section"] { display: flex; flex-direction: column; justify-content: center; gap: 24px; padding: 0 900px 0 160px; }
+.slide[data-layout="section"] .num { font-size: 220px; line-height: 0.9; color: var(--accent); }
+.slide[data-layout="section"] .title { font-size: 84px; }
+
+/* ---------- 4. content: bullets left + highlight right ---------- */
+.bullets { left: var(--pad-x); width: var(--bullets-w, 1040px); display: flex; flex-direction: column; justify-content: center; gap: var(--b-gap); }
+.bullets li { position: relative; padding-left: 1.4em; font-size: var(--b-fs); line-height: 1.35; }
+.bullets li::before {
+  content: ""; position: absolute; left: 0; top: 0.45em;
+  width: 0.45em; height: 0.45em; border-radius: var(--bullet-radius, 50%); background: var(--accent);
+}
+[data-density="lg"] .bullets { --b-fs: 44px; --b-gap: 52px; }
+[data-density="md"] .bullets { --b-fs: 36px; --b-gap: 40px; }
+[data-density="sm"] .bullets { --b-fs: 30px; --b-gap: 20px; }
+
+/* highlight = the real point of the slide shown big (number, icon, short claim) */
+.highlight {
+  left: var(--hl-left, 1260px); right: var(--hl-right, 120px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; text-align: center;
+}
+.hl-big { font-size: 160px; line-height: 1; color: var(--accent); }
+.hl-icon { width: 200px; height: 200px; color: var(--accent); }
+.hl-icon svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.hl-text { font-family: var(--font-display); font-size: 34px; font-weight: 700; line-height: 1.25; }
+
+/* ---------- 5. two-col: cards stretch full height ---------- */
+.cols { left: var(--pad-x); right: var(--pad-x); display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
+.slide:has(.takeaway) .cols { bottom: 240px; }
+.col { display: flex; flex-direction: column; padding: 48px 56px; border-radius: var(--card-radius, 24px); background: var(--card-bg, transparent); color: var(--card-fg, var(--fg)); }
+.col h3 { font-family: var(--font-display); font-size: var(--c-h); line-height: 1.15; color: var(--accent); }
+.col ul { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; }
+.col p, .col li { font-size: var(--c-fs); line-height: 1.35; }
+.col li { position: relative; padding-left: 1.2em; }
+.col li::before { content: ""; position: absolute; left: 0; top: 0.5em; width: 0.4em; height: 0.4em; border-radius: var(--bullet-radius, 50%); background: var(--accent); }
+[data-density="lg"] .cols { --c-h: 52px; --c-fs: 36px; }
+[data-density="md"] .cols { --c-h: 46px; --c-fs: 32px; }
+[data-density="sm"] .cols { --c-h: 40px; --c-fs: 28px; }
+.takeaway {
+  position: absolute; left: var(--pad-x); right: var(--pad-x); bottom: var(--body-bottom); min-height: 110px;
+  display: flex; align-items: center; padding: 20px 36px; border-left: 10px solid var(--accent);
+  font-family: var(--font-display); font-size: 36px; font-weight: 700; line-height: 1.25;
+}
+
+/* ---------- 6. stats: numbers centred in the zone ---------- */
+.stats { left: var(--pad-x); right: var(--pad-x); display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 48px; align-content: center; }
+.stat { text-align: center; }
+.stat-num { display: block; line-height: 1; color: var(--accent); font-size: var(--s-num); }
+.stat-label { display: block; margin-top: 22px; color: var(--muted); font-size: var(--s-fs); line-height: 1.35; }
+[data-density="lg"] .stats { --s-num: 220px; --s-fs: 36px; }
+[data-density="md"] .stats { --s-num: 150px; --s-fs: 30px; }
+[data-density="sm"] .stats { --s-num: 110px; --s-fs: 26px; }
+/* four figures share the width: big type would break "4-5" over two lines */
+[data-density="lg"] .stats:has(> .stat:nth-child(4)) { --s-num: 160px; }
+
+/* ---------- 7. timeline: zig-zag around a centred axis ---------- */
+.timeline {
+  left: var(--pad-x); right: var(--pad-x);
+  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; grid-template-rows: 1fr 1fr; column-gap: 32px;
+}
+.timeline::before { content: ""; position: absolute; left: 0; right: 0; top: calc(50% - 2px); height: 4px; background: var(--accent); opacity: 0.35; }
+.step { position: relative; }
+/* each step owns a column, odd above / even below the axis */
+.step:nth-child(1) { grid-column: 1; } .step:nth-child(2) { grid-column: 2; } .step:nth-child(3) { grid-column: 3; } .step:nth-child(4) { grid-column: 4; } .step:nth-child(5) { grid-column: 5; } .step:nth-child(6) { grid-column: 6; } .step:nth-child(7) { grid-column: 7; } .step:nth-child(8) { grid-column: 8; }
+.step:nth-child(odd)  { grid-row: 1; align-self: end; padding-bottom: 52px; }
+.step:nth-child(even) { grid-row: 2; align-self: start; padding-top: 52px; }
+.step::before { content: ""; position: absolute; left: 0; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); }
+.step:nth-child(odd)::before  { bottom: -16px; }
+.step:nth-child(even)::before { top: -16px; }
+.step .when { font-size: var(--t-when); line-height: 1; color: var(--accent); }
+.step h3 { font-family: var(--font-display); font-size: var(--t-h); line-height: 1.2; margin: 10px 0 6px; }
+.step p { font-size: var(--t-fs); color: var(--muted); line-height: 1.35; }
+[data-density="lg"] .timeline { --t-when: 76px; --t-h: 50px; --t-fs: 32px; }
+[data-density="md"] .timeline { --t-when: 64px; --t-h: 42px; --t-fs: 29px; }
+[data-density="sm"] .timeline { --t-when: 50px; --t-h: 34px; --t-fs: 25px; }
+
+/* ---------- 8. quote ---------- */
+.slide[data-layout="quote"] { display: flex; flex-direction: column; justify-content: center; padding: 0 280px; gap: 36px; }
+.quote { font-size: 64px; line-height: 1.25; }
+.cite { font-size: 28px; color: var(--muted); }
+
+/* audit mode: measure final positions (no reveal offsets, actors jump straight to each pose) */
+.deck-stage.auditing, .deck-stage.auditing * { transition: none !important; }
+.deck-stage.auditing :is(.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur) {
+  transform: none !important; filter: none !important; transition: none !important;
+}
+
+</style>
+<style>
+/* ===========================================================
+   STYLE: ART DECO (gala night). Deep emerald-black stage, ivory
+   type, one gold accent. Gold diamonds nest and spin into new
+   frames, a gold sunburst fan rises behind titles, double gold
+   rules and a double-line frame keep strict symmetry, an emerald
+   ziggurat panel steps up behind content.
+   Actors: zig (emerald stepped panel), fan (sunburst), frame
+           (double gold border), rt, rb (double rules), d1, d2
+           (nested diamonds). DOM order = z-order.
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display+SC:wght@400;700&family=Josefin+Sans:wght@400;600;700&display=swap');
+
+.deck-stage {
+  --actors: "zig fan frame rt rb d1 d2";
+  --font-display: 'Playfair Display SC', Georgia, serif;
+  --font-body: 'Josefin Sans', sans-serif;
+  --bg: #0E1A17; --fg: #F4ECD8; --muted: #BFB59C; --accent: #D4AF37;
+  --gold: #D4AF37; --emerald: #12392F;
+  --card-bg: transparent; --card-fg: var(--fg); --card-radius: 0px;
+  --title-weight: 700; --title-tracking: 0.02em; --bullet-radius: 0;
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="zig"] {
+  --st: min(50px, 12%);
+  background: var(--emerald);
+  clip-path: polygon(0 100%, 0 calc(var(--st) * 3), 12% calc(var(--st) * 3), 12% calc(var(--st) * 2), 24% calc(var(--st) * 2), 24% var(--st), 36% var(--st), 36% 0,
+    64% 0, 64% var(--st), 76% var(--st), 76% calc(var(--st) * 2), 88% calc(var(--st) * 2), 88% calc(var(--st) * 3), 100% calc(var(--st) * 3), 100% 100%);
+  --x: 160px; --y: 1120px; --w: 1600px; --h: 400px;
+}
+[data-actor="fan"] {
+  border: 2px solid var(--gold); border-bottom: 0; border-radius: 9999px 9999px 0 0;
+  background: repeating-conic-gradient(from -90deg at 50% 100%, var(--gold) 0deg 0.8deg, transparent 0.8deg 7.5deg);
+  -webkit-mask: radial-gradient(circle at 50% 100%, transparent 22%, #000 22.5%);
+  mask: radial-gradient(circle at 50% 100%, transparent 22%, #000 22.5%);
+  --x: 560px; --y: 1120px; --w: 800px; --h: 400px; --o: 0;
+}
+[data-actor="frame"] { border: 6px double var(--gold); --x: 40px; --y: 40px; --w: 1840px; --h: 1000px; --o: 0; --s: 1.08; }
+[data-actor="rt"], [data-actor="rb"] { border-top: 2px solid var(--gold); border-bottom: 2px solid var(--gold); --h: 10px; --w: 0px; }
+[data-actor="rt"] { --x: 960px; --y: 60px; }
+[data-actor="rb"] { --x: 960px; --y: 1010px; }
+[data-actor="d1"], [data-actor="d2"] { border: 2px solid var(--gold); --r: 45deg; }
+[data-actor="d1"] { --x: -400px; --y: 440px; --w: 200px; }
+[data-actor="d2"] { --x: 2120px; --y: 460px; --w: 160px; }
+
+/* ---------- 1. cover: framed stage, fan rises from the floor, twin diamonds flank ---------- */
+[data-layout="cover"] [data-actor="frame"] { --o: 1; --s: 1; }
+[data-layout="cover"] [data-actor="fan"]   { --x: 730px; --y: 800px; --w: 460px; --h: 230px; --o: 0.6; }
+[data-layout="cover"] [data-actor="rt"]    { --x: 710px; --y: 150px; --w: 500px; }
+[data-layout="cover"] [data-actor="rb"]    { --x: 610px; --y: 1018px; --w: 700px; }
+[data-layout="cover"] [data-actor="d1"]    { --x: 130px; --y: 470px; --w: 140px; }
+[data-layout="cover"] [data-actor="d2"]    { --x: 1650px; --y: 470px; --w: 140px; }
+
+/* ---------- 2. agenda: double frame holds the list, diamonds nest at the corner ---------- */
+[data-layout="agenda"] [data-actor="frame"] { --x: 80px; --y: 236px; --w: 1760px; --h: 790px; --o: 1; --s: 1; }
+[data-layout="agenda"] [data-actor="rt"]    { --x: 120px; --y: 190px; --w: 360px; }
+[data-layout="agenda"] [data-actor="rb"]    { --x: 840px; --y: 1046px; --w: 240px; }
+[data-layout="agenda"] [data-actor="d1"]    { --x: 1720px; --y: 96px; --w: 70px; --r: 225deg; }
+[data-layout="agenda"] [data-actor="d2"]    { --x: 1735px; --y: 111px; --w: 40px; --r: 225deg; }
+
+/* ---------- 3. section: ziggurat right, fan rises on its summit, diamonds on the face ---------- */
+[data-layout="section"] [data-actor="zig"]   { --x: 1060px; --y: 560px; --w: 760px; --h: 520px; }
+[data-layout="section"] [data-actor="fan"]   { --x: 1190px; --y: 310px; --w: 500px; --h: 250px; --o: 0.85; }
+[data-layout="section"] [data-actor="frame"] { --x: 100px; --y: 100px; --w: 900px; --h: 880px; --o: 1; --s: 1; }
+[data-layout="section"] [data-actor="rt"]    { --x: 1060px; --y: 270px; --w: 760px; }
+[data-layout="section"] [data-actor="rb"]    { --x: 1060px; --y: 1040px; --w: 0px; }
+[data-layout="section"] [data-actor="d1"]    { --x: 1320px; --y: 720px; --w: 240px; --r: 135deg; }
+[data-layout="section"] [data-actor="d2"]    { --x: 1370px; --y: 770px; --w: 140px; --r: 135deg; }
+
+.deck-stage:has(.slide.active[data-kind="chapter"]) [data-actor="d1"] { --x: 1700px; --y: 130px; --w: 90px; }
+.deck-stage:has(.slide.active[data-kind="chapter"]) [data-actor="d2"] { --x: 1720px; --y: 150px; --w: 50px; }
+
+/* ---------- 4. content (odd): ziggurat panel holds the highlight ---------- */
+[data-layout="content"] [data-actor="zig"]   { --x: 1240px; --y: 216px; --w: 600px; --h: 830px; }
+[data-layout="content"] [data-actor="rt"]    { --x: 120px; --y: 190px; --w: 1040px; }
+[data-layout="content"] [data-actor="rb"]    { --x: 120px; --y: 1030px; --w: 1040px; }
+[data-layout="content"] [data-actor="d1"]    { --x: 1500px; --y: 952px; --w: 80px; --r: 225deg; }
+[data-layout="content"] [data-actor="d2"]    { --x: 1515px; --y: 967px; --w: 50px; --r: 225deg; }
+/* even: ziggurat slides left under the bullets, double frame holds the highlight */
+[data-layout="content"][data-parity="even"] [data-actor="zig"]   { --x: 80px; --y: 206px; --w: 1140px; --h: 840px; }
+[data-layout="content"][data-parity="even"] [data-actor="frame"] { --x: 1270px; --y: 250px; --w: 560px; --h: 760px; --o: 1; --s: 1; }
+[data-layout="content"][data-parity="even"] [data-actor="fan"]   { --x: 1400px; --y: 254px; --w: 300px; --h: 150px; --o: 0.7; }
+[data-layout="content"][data-parity="even"] [data-actor="rt"]    { --x: 120px; --y: 190px; --w: 360px; }
+[data-layout="content"][data-parity="even"] [data-actor="rb"]    { --x: 1300px; --y: 1036px; --w: 500px; }
+[data-layout="content"][data-parity="even"] [data-actor="d1"]    { --x: 1515px; --y: 975px; --w: 70px; --r: 405deg; }
+[data-layout="content"][data-parity="even"] [data-actor="d2"]    { --x: 1530px; --y: 990px; --w: 40px; --r: 405deg; }
+
+/* ---------- 5. two-col: frame both columns, rule turns into the divider ---------- */
+[data-layout="two-col"] [data-actor="frame"] { --x: 80px; --y: 236px; --w: 1760px; --h: 790px; --o: 1; --s: 1; }
+[data-layout="two-col"] [data-actor="rt"]    { --x: 120px; --y: 190px; --w: 360px; }
+[data-layout="two-col"] [data-actor="rb"]    { --x: 610px; --y: 625px; --w: 700px; --r: 90deg; }
+[data-layout="two-col"] [data-actor="d1"]    { --x: 930px; --y: 206px; --w: 60px; --r: 135deg; }
+[data-layout="two-col"] [data-actor="d2"]    { --x: 942px; --y: 218px; --w: 36px; --r: 135deg; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="frame"] { --h: 620px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="rb"]    { --x: 690px; --y: 540px; --w: 540px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="zig"]   { --x: 80px; --y: 866px; --w: 1760px; --h: 160px; }
+
+/* ---------- 6. stats: stepped skyline below, diamonds split the figures ---------- */
+[data-layout="stats"] [data-actor="zig"] { --x: 0px; --y: 930px; --w: 1920px; --h: 150px; }
+[data-layout="stats"] [data-actor="rt"]  { --x: 120px; --y: 190px; --w: 360px; }
+[data-layout="stats"] [data-actor="rb"]  { --x: 120px; --y: 900px; --w: 1680px; }
+[data-layout="stats"] [data-actor="d1"]  { --x: 668px; --y: 600px; --w: 36px; --r: 225deg; }
+[data-layout="stats"] [data-actor="d2"]  { --x: 1216px; --y: 600px; --w: 36px; --r: 225deg; }
+
+/* ---------- 7. timeline: double rule becomes the axis, diamonds mark the end ---------- */
+[data-layout="timeline"] [data-actor="frame"] { --x: 60px; --y: 236px; --w: 1800px; --h: 800px; --o: 1; --s: 1; }
+[data-layout="timeline"] [data-actor="rt"]    { --x: 120px; --y: 625px; --w: 1680px; }
+[data-layout="timeline"] [data-actor="rb"]    { --x: 120px; --y: 190px; --w: 360px; }
+[data-layout="timeline"] [data-actor="d1"]    { --x: 1810px; --y: 612px; --w: 36px; --r: 405deg; }
+[data-layout="timeline"] [data-actor="d2"]    { --x: 1818px; --y: 620px; --w: 20px; --r: 405deg; background: var(--gold); }
+
+/* ---------- 8. quote: fan rises over the words, rules bracket them ---------- */
+[data-layout="quote"] [data-actor="frame"] { --x: 180px; --y: 40px; --w: 1560px; --h: 1000px; --o: 1; --s: 1; }
+[data-layout="quote"] [data-actor="fan"]   { --x: 760px; --y: 76px; --w: 400px; --h: 200px; --o: 0.9; }
+[data-layout="quote"] [data-actor="rt"]    { --x: 660px; --y: 276px; --w: 600px; }
+[data-layout="quote"] [data-actor="rb"]    { --x: 660px; --y: 840px; --w: 600px; }
+[data-layout="quote"] [data-actor="d1"]    { --x: 930px; --y: 900px; --w: 60px; --r: 135deg; }
+[data-layout="quote"] [data-actor="d2"]    { --x: 942px; --y: 912px; --w: 36px; --r: 135deg; }
+
+/* ---------- 9. closing: great nested diamonds frame the thanks, skyline below ---------- */
+[data-layout="closing"] [data-actor="zig"] { --x: 0px; --y: 960px; --w: 1920px; --h: 120px; }
+[data-layout="closing"] [data-actor="fan"] { --x: 760px; --y: 24px; --w: 400px; --h: 200px; --o: 0.7; }
+[data-layout="closing"] [data-actor="rt"]  { --x: 120px; --y: 535px; --w: 300px; }
+[data-layout="closing"] [data-actor="rb"]  { --x: 1500px; --y: 535px; --w: 300px; }
+[data-layout="closing"] [data-actor="d1"]  { --x: 600px; --y: 180px; --w: 720px; --r: 225deg; }
+[data-layout="closing"] [data-actor="d2"]  { --x: 640px; --y: 220px; --w: 640px; --r: 225deg; background: transparent; }
+
+/* ---------- diagram: slim frame and corner diamonds only ---------- */
+[data-layout="diagram"] [data-actor="frame"] { --x: 30px; --y: 30px; --w: 1860px; --h: 1020px; --o: 1; --s: 1; }
+[data-layout="diagram"] [data-actor="rt"]    { --x: 120px; --y: 196px; --w: 300px; }
+[data-layout="diagram"] [data-actor="d1"]    { --x: 1770px; --y: 104px; --w: 50px; --r: 225deg; }
+[data-layout="diagram"] [data-actor="d2"]    { --x: 1780px; --y: 114px; --w: 30px; --r: 225deg; }
+
+/* ---------- content tweaks: gala serif caps, geometric sans ---------- */
+.slide :is(.title, .num, .stat-num, .hl-big, .when, .fig, .big, .rk, .ch-num, .n) { font-variant-numeric: lining-nums; }
+.slide .title { line-height: 1.2; }
+.slide .kicker { font-weight: 600; letter-spacing: 0.32em; }
+.slide .subtitle { line-height: 1.4; }
+.slide[data-layout="cover"] { padding: 0 380px; }
+.slide[data-layout="cover"] .title { font-size: 84px; line-height: 1.2; }
+.slide[data-layout="cover"] .meta { letter-spacing: 0.2em; text-transform: uppercase; font-size: 22px; color: var(--accent); }
+.slide[data-layout="closing"] { padding: 0 560px; }
+.slide[data-layout="closing"] .title { font-size: 112px; }
+.slide[data-layout="agenda"] { --title-w: 1500px; }
+.agenda-list { --agenda-gap: 200px; --tile-line: 1px solid rgba(212, 175, 55, 0.35); }
+.agenda-list li { padding-top: 10px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list .num { font-weight: 400; }
+.slide[data-layout="section"] { padding: 0 960px 0 180px; }
+.slide[data-layout="section"] .title { font-size: 76px; }
+.slide[data-kind="chapter"] .ch-num { opacity: 0.22; }
+.slide[data-layout="section"] .num { font-weight: 400; }
+.slide[data-layout="content"] { --title-w: 1500px; --hl-left: 1290px; --hl-right: 110px; }
+.slide[data-layout="content"][data-parity="even"] { --bullets-w: 1000px; --hl-left: 1310px; --hl-right: 130px; }
+.slide[data-layout="content"][data-parity="even"] .bullets { left: 150px; }
+.bullets li::before, .col li::before { transform: rotate(45deg); width: 0.36em; height: 0.36em; top: 0.48em; }
+.col h3 { font-weight: 700; }
+.takeaway { border-left: 0; justify-content: center; text-align: center; font-weight: 700; padding-top: 44px; }
+.stat-num { font-weight: 700; }
+.timeline::before { opacity: 0; }
+.step::before { border-radius: 0; transform: rotate(45deg); width: 24px; height: 24px; left: 4px; }
+.step:nth-child(odd)::before { bottom: -12px; }
+.step:nth-child(even)::before { top: -12px; }
+.slide[data-layout="quote"] { padding: 0 320px; text-align: center; }
+.slide[data-layout="quote"] .quote { font-weight: 400; line-height: 1.3; }
+.slide[data-layout="quote"] .cite { letter-spacing: 0.2em; text-transform: uppercase; font-size: 24px; }
+
+</style>
+<!-- Hiệu ứng theo động từ + sơ đồ: xem templates/deck-so-do.html -->
+<style>
+/* ===========================================================
+   MORPH-SLIDES MOTION: effects named by the VERB the content
+   says (grow, draw, sort, gather, warn, stamp...). Load after
+   morph-layouts.css. Guide: references/hieu-ung-va-so-do.md
+   Rules:
+   - final look = the element's normal style, so frozen
+     screenshots and deck.audit() see the finished slide;
+   - an effect plays when its slide is active and it is not
+     waiting for a click (.pending, set by morph-steps.js);
+   - --d = extra delay in seconds. Inside a [data-step] block
+     delays count from the click, not from the slide change.
+   =========================================================== */
+/* shared tokens for motion + diagrams; a style may override any of them */
+:where(.deck-stage) {
+  --viz-ink: var(--fg); --viz-paper: var(--bg); --viz-muted: var(--muted);
+  --viz-hot: #E5484D;   /* wrong, missing, about to break */
+  --viz-fill: color-mix(in srgb, var(--fg) 8%, transparent);
+  --viz-faint: color-mix(in srgb, var(--fg) 20%, transparent);
+  --viz-mono: var(--font-mono, ui-monospace, Consolas, monospace);
+}
+[data-step] { --t0: 0s; }
+
+/* ---------- entrances ---------- */
+.fx { opacity: 0; transition: opacity .5s ease, transform .9s var(--morph-ease), clip-path .9s ease, filter .7s ease; }
+.slide.active .fx:not(.pending, .pending .fx) {
+  opacity: 1; transform: rotate(var(--rot, 0deg)); clip-path: inset(-400px); filter: none;
+  transition-delay: calc(var(--t0, var(--reveal-base)) + var(--d, 0) * 1s);
+}
+.fx-up    { transform: translateY(50px); }
+.fx-left  { transform: translateX(-120px); }
+.fx-right { transform: translateX(120px); }
+.fx-pop   { transform: scale(.5); }
+.fx-blur  { filter: blur(16px); transform: scale(1.06); }
+.fx-from  { transform: var(--from); }                       /* fly in from a named spot (sorting) */
+.fx-drop  { transform: translateY(-260px) rotate(-8deg); }    /* falls with a bounce */
+.slide.active :is(.fx-pop, .fx-drop):not(.pending, .pending .fx) { transition-timing-function: ease, cubic-bezier(.34, 1.56, .64, 1), ease, ease; }
+.fx-growx { opacity: 1; clip-path: inset(0 100% 0 0); transition: clip-path .9s var(--morph-ease); }   /* grow / stretch */
+.fx-growy { opacity: 1; clip-path: inset(100% 0 0 0); transition: clip-path 1s var(--morph-ease); }
+.fx-type  { opacity: 1; clip-path: inset(0 100% 0 0); transition: clip-path 1s steps(30, end); }
+
+/* containers that wait for a click (no .fx of their own) */
+[data-step]:not(.fx) { transition: opacity .4s ease; }
+[data-step].pending:not(.fx, .keep) { opacity: 0; }
+
+/* ---------- draw: SVG strokes (give the shape pathLength="1") ---------- */
+.draw { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.3s cubic-bezier(.6, 0, .2, 1); }
+.slide.active .draw:not(.pending, .pending .draw) { stroke-dashoffset: 0; transition-delay: calc(var(--t0, var(--reveal-base)) + var(--d, 0) * 1s); }
+
+/* ---------- count: numbers run up to --to ---------- */
+@property --n { syntax: '<integer>'; inherits: false; initial-value: 0; }
+.count { --n: 0; counter-reset: n var(--n); transition: --n 1.6s cubic-bezier(.2, .7, .2, 1); }
+.count::before { content: counter(n); }
+.slide.active .count:not(.pending, .pending .count) { --n: var(--to); transition-delay: calc(var(--t0, var(--reveal-base)) + var(--d, 0) * 1s); }
+
+/* ---------- stamp: slams down and settles ---------- */
+@keyframes sf-slam {
+  0%   { opacity: 0; transform: rotate(var(--rot, -8deg)) scale(2.6); }
+  65%  { opacity: 1; transform: rotate(var(--rot, -8deg)) scale(.9); }
+  100% { opacity: 1; transform: rotate(var(--rot, -8deg)) scale(1); }
+}
+.slam { transform: rotate(var(--rot, -8deg)); }
+.slide:not(.active) .slam, .slam.pending { opacity: 0; }
+.slide.active .slam:not(.pending, .pending .slam) { animation: sf-slam .7s ease-out both; animation-delay: calc(var(--t0, var(--reveal-base)) + var(--d, 0) * 1s); }
+
+/* ---------- warn: shake twice after appearing ---------- */
+@keyframes sf-shake { 0%, 100% { translate: 0; } 20%, 60% { translate: -9px 0; } 40%, 80% { translate: 9px 0; } }
+.slide.active .shake:not(.pending, .pending .shake) { animation: sf-shake .45s ease 2; animation-delay: calc(var(--t0, var(--reveal-base)) + var(--d, 0) * 1s + .5s); }
+
+/* ---------- strike: a line crosses the element out ---------- */
+.strike { position: relative; }
+.strike::after { content: ""; position: absolute; left: -4%; right: -4%; top: 52%; height: 4px; background: var(--viz-hot); transform: scaleX(0); transform-origin: left; transition: transform .45s ease; }
+.slide.active .strike:not(.pending, .pending .strike)::after { transform: scaleX(1); transition-delay: calc(var(--t0, var(--reveal-base)) + var(--d, 0) * 1s); }
+
+/* ---------- ping: a ring keeps calling attention ---------- */
+@keyframes sf-ping { from { transform: scale(.6); opacity: .9; } to { transform: scale(1.9); opacity: 0; } }
+.ping { position: relative; }
+.ping::after { content: ""; position: absolute; inset: 0; border: 2px solid currentColor; border-radius: inherit; opacity: 0; }
+.slide.active .ping:not(.pending, .pending .ping)::after { animation: sf-ping 1.6s ease-out infinite; animation-delay: calc(var(--t0, var(--reveal-base)) + var(--d, 0) * 1s); }
+
+/* ---------- travel: a dot runs along an offset-path forever ---------- */
+@keyframes sf-travel { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+.travel { offset-rotate: 0deg; opacity: 0; }
+.slide.active .travel:not(.pending, .pending .travel) { opacity: 1; animation: sf-travel var(--dur, 4s) linear infinite; animation-delay: calc(var(--reveal-base) + var(--d, 0) * 1s); transition: opacity .3s ease calc(var(--reveal-base) + var(--d, 0) * 1s); }
+
+/* ---------- gather: pieces fly to one point when their step comes ---------- */
+.gather { transition: transform .9s cubic-bezier(.7, 0, .2, 1), opacity .4s ease; transition-delay: calc(var(--i, 0) * .03s); }
+.slide.active [data-step]:not(.pending) .gather { transform: var(--to); opacity: 0; transition-delay: calc(var(--i, 0) * .03s), calc(.6s + var(--i, 0) * .03s); }
+
+@media (prefers-reduced-motion: reduce) {
+  .fx, .fx-growx, .fx-growy, .fx-type, .draw, .gather { transition-duration: .3s !important; }
+  .travel { animation: none !important; }
+}
+
+/* deck.audit() measures every slide finished, all steps shown */
+.deck-stage.auditing :is(.fx, .pending) { opacity: 1 !important; transform: rotate(var(--rot, 0deg)); clip-path: none; filter: none; transition: none; }
+
+</style>
+<style>
+/* ===========================================================
+   MORPH-SLIDES DIAGRAMS: looks for the 8 kinds drawn by
+   morph-viz.js + morph-viz-diagrams.js. Colours come from the
+   --viz-* tokens in morph-motion.css (they follow the style's
+   --fg/--bg, so light and dark styles both work).
+   Place each .viz with inline left/top/width/height (or right/bottom).
+   Click states use the slide's data-at and reset transition-delay,
+   otherwise they would wait for the entrance delay.
+   =========================================================== */
+.viz { position: absolute; color: var(--viz-ink); }
+.viz svg { overflow: visible; }
+
+/* ---------- span: proportional bar (time, budget) ---------- */
+.viz .bar { position: absolute; left: 0; right: 0; top: calc(50% - var(--bar-h, 180px) / 2); height: var(--bar-h, 180px); }
+.viz .seg { position: absolute; top: 0; bottom: 0; background: var(--viz-ink); color: var(--viz-paper); border-right: 3px solid var(--viz-paper); display: grid; place-items: center; }
+.viz .seg b { position: relative; font: 400 72px/1 var(--font-display); }
+.viz .seg .morph-src { position: absolute; inset: 0; }
+.slide:not([data-at="0"]) .viz .seg.hot { background: var(--viz-hot); transition: background .4s; transition-delay: 0s !important; }
+.viz .note { position: absolute; display: flex; flex-direction: column; gap: 6px; font-size: 31px; line-height: 1.25; padding-left: 16px; border-left: 1.5px solid var(--viz-ink); }
+.viz .note.flip { padding: 0 16px 0 0; border-left: 0; border-right: 1.5px solid var(--viz-ink); text-align: right; }
+.viz .note.above { bottom: calc(50% + var(--bar-h, 180px) / 2); padding-bottom: 24px; }
+.viz .note.below { top: calc(50% + var(--bar-h, 180px) / 2); padding-top: 24px; }
+.viz .note .mono { font: 500 22px/1.2 var(--viz-mono); letter-spacing: .04em; color: var(--viz-muted); }
+
+/* ---------- donut ---------- */
+.viz .arc { fill: none; stroke: var(--viz-ink); stroke-width: 80; stroke-dasharray: 0 100; stroke-dashoffset: var(--off); transform: rotate(-90deg); transform-origin: center; transform-box: fill-box; transition: stroke-dasharray 1s cubic-bezier(.6, 0, .2, 1); }
+.viz .arc:nth-child(4n+3) { stroke: color-mix(in srgb, var(--viz-ink) 65%, var(--viz-paper)); }
+.slide.active .viz .arc { stroke-dasharray: var(--v) 100; transition-delay: calc(var(--reveal-base) + var(--d) * 1s); }
+.viz .arc-n { fill: var(--viz-ink); font: 500 28px/1 var(--viz-mono); text-anchor: middle; dominant-baseline: middle; }
+
+/* ---------- plan: outline + dimension chains ---------- */
+.viz .wall { fill: var(--viz-fill); stroke: var(--viz-ink); stroke-width: 3; }
+.viz .part { fill: var(--viz-ink); }
+.viz .dim { fill: none; stroke: var(--viz-ink); stroke-width: 2; }
+.viz .tick { fill: none; stroke: var(--viz-ink); stroke-width: 2.5; }
+.viz :is(.dim, .tick).hot { stroke: var(--viz-hot); }
+.viz .lens circle { fill: var(--viz-paper); stroke: var(--viz-hot); stroke-width: 3; }
+.viz .lens :is(line, path) { stroke: var(--viz-hot); stroke-width: 3; }
+.viz .lens text { fill: var(--viz-hot); font: 600 24px/1 var(--viz-mono); text-anchor: middle; }
+
+/* ---------- gather: pieces fly to the centre ---------- */
+.viz .piece { position: absolute; width: 64px; height: 64px; border: 2px solid currentColor; display: grid; place-items: center; font: 500 20px/1 var(--viz-mono); }
+
+/* ---------- matrix ---------- */
+.viz[data-viz="matrix"] { display: grid; align-items: stretch; }
+.mx-col, .mx-row { font: 400 50px/1.1 var(--font-display); display: flex; align-items: center; }
+.mx-col { justify-content: center; padding: 0 0 22px; border-bottom: 2.5px solid var(--viz-ink); }
+.mx-row { padding: 0 24px 0 0; border-right: 2.5px solid var(--viz-ink); }
+.mx-row, .mx-cell { min-height: 186px; border-bottom: 1.5px solid var(--viz-faint); }
+.mx-cell { display: grid; place-items: center; text-align: center; padding: 18px 26px; font: 500 31px/1.35 var(--viz-mono); position: relative; transition: background-color .4s, color .4s, opacity .5s, transform .9s var(--morph-ease); }
+.slide:not([data-at="0"]) .viz .mx-cell.hot { background: var(--viz-ink); color: var(--viz-paper); transition-delay: 0s !important; }
+.slide:not([data-at="0"]) .viz .mx-cell:not(.hot) { opacity: .45; transition-delay: 0s !important; }
+
+/* ---------- network ---------- */
+.viz[data-viz="network"] svg, .viz[data-viz="funnel"] svg { position: absolute; inset: 0; }
+.viz .edge { fill: none; stroke: var(--viz-ink); stroke-width: 2; transition: stroke-dashoffset 1.3s cubic-bezier(.6, 0, .2, 1), stroke-width .4s, opacity .4s; }
+.viz .edge.off { stroke-dasharray: 6 8; stroke-dashoffset: 0; opacity: .5; }
+.viz .nd { position: absolute; width: 330px; margin: -55px 0 0 -165px; padding: 14px 20px; background: var(--viz-paper); border: 2px solid var(--viz-ink); display: flex; flex-direction: column; gap: 4px; transition: opacity .5s, background-color .4s, color .4s, transform .9s var(--morph-ease); }
+.viz .nd b { font: 600 28px/1.1 var(--viz-mono); }
+.viz .nd span { font-size: 20px; line-height: 1.3; color: var(--viz-muted); }
+.viz .nd.off { border-style: dashed; color: var(--viz-muted); }
+.viz .hub { position: absolute; width: 190px; height: 190px; margin: -95px 0 0 -95px; border-radius: 50%; background: var(--viz-ink); color: var(--viz-paper); display: grid; place-items: center; text-align: center; font: 400 44px/1 var(--font-display); }
+.slide:not([data-at="0"]) .viz .nd:not(.on) { opacity: .3; transition-delay: 0s !important; }
+.slide:not([data-at="0"]) .viz .nd.on { background: var(--viz-ink); color: var(--viz-paper); transition-delay: 0s !important; }
+.slide:not([data-at="0"]) .viz .nd.on span { color: var(--viz-paper); }
+.slide:not([data-at="0"]) .viz .edge.on { stroke-width: 6; }
+.slide:not([data-at="0"]) .viz .edge:not(.on) { opacity: .25; }
+
+/* ---------- funnel ---------- */
+.viz .ly { fill: var(--viz-fill); stroke: var(--viz-ink); stroke-width: 2.5; }
+.viz .ly:last-child { fill: var(--viz-ink); }
+.viz .ly-t { position: absolute; left: 0; right: 0; transform: translateY(-50%); text-align: center; font: 400 36px/1.1 var(--font-display); }
+.viz .ly-t:nth-last-of-type(1) { color: var(--viz-paper); }
+.viz .dot { position: absolute; width: 36px; height: 36px; margin-left: -18px; border-radius: 50%; background: var(--viz-paper); border: 3px solid var(--viz-ink); }
+.viz .dot.caught { background: var(--viz-hot); border-color: var(--viz-hot); }
+.slide.active .viz .dot { transition-timing-function: ease, cubic-bezier(.55, 0, 1, .45), ease, ease; transition-duration: .3s, .8s; }
+
+/* ---------- compare: the second panel wipes over the first on click ---------- */
+@property --cut { syntax: '<percentage>'; inherits: true; initial-value: 100%; }
+.viz[data-viz="compare"] { --cut: 100%; transition: --cut 1.1s cubic-bezier(.7, 0, .2, 1), opacity .5s ease, transform .9s var(--morph-ease); }
+.slide:not([data-at="0"]) .viz[data-viz="compare"] { --cut: 0%; transition-delay: 0s !important; }
+.viz .cmp-a, .viz .cmp-b { position: absolute; inset: 0; }
+.viz .cmp-b { clip-path: inset(0 0 0 var(--cut)); }
+.viz .cmp-knob { position: absolute; top: -18px; bottom: -18px; left: var(--cut); width: 6px; margin-left: -3px; background: var(--viz-hot); opacity: 0; }
+.viz .cmp-knob::after { content: "⇆"; position: absolute; top: 50%; left: 50%; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; background: var(--viz-hot); color: #fff; display: grid; place-items: center; font: 600 30px/1 var(--font-body); }
+.slide:not([data-at="0"]) .viz .cmp-knob { animation: sf-knob 1.1s cubic-bezier(.7, 0, .2, 1); }
+@keyframes sf-knob { 0%, 100% { opacity: 0; } 10%, 85% { opacity: 1; } }
+.deck-stage.auditing .viz[data-viz="compare"] { --cut: 0%; }
+
+</style>
+<style>
+/* ===========================================================
+   MORPH-SLIDES ICONS: Tabler Icons sized and coloured by the style.
+   An icon is a square box of 1em; size it with font-size or a size
+   class. Colour = currentColor (the text colour), .accent = style accent.
+   Restraint (checked by deck.audit): at most 6 icons on a slide, one
+   hero icon, never an icon on every bullet.
+   =========================================================== */
+.ico { display: inline-block; width: 1em; height: 1em; flex: none; vertical-align: -0.14em; line-height: 0; }
+.ico svg { display: block; width: 100%; height: 100%; stroke-width: var(--ico-stroke, 1.75); }
+.ico.accent { color: var(--accent); }
+.ico.muted { color: var(--muted); }
+/* sizes: thin strokes on big icons so they keep the type's weight */
+.ico-sm  { font-size: 32px; }
+.ico-md  { font-size: 56px; }
+.ico-lg  { font-size: 96px;  --ico-stroke: 1.5; }
+.ico-xl  { font-size: 200px; --ico-stroke: 1.15; }
+/* framed badge: icon inside a circle or square drawn with the style's ink */
+.ico-badge { display: inline-grid; place-items: center; width: 1.9em; height: 1.9em; border: 2px solid currentColor; border-radius: 50%; }
+.ico-badge.square { border-radius: var(--card-radius, 0); }
+.ico-badge > .ico { font-size: 1em; }
+/* a row of labelled icons (tools, steps): same size, evenly spaced */
+.ico-row { display: flex; gap: 40px; align-items: flex-start; }
+.ico-row > * { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; font-size: 24px; line-height: 1.25; }
+.ico-row .ico { font-size: 64px; }
+/* inside the highlight column of a content slide */
+.hl-icon .ico { font-size: 200px; --ico-stroke: 1.15; color: var(--accent); }
+.deck-stage.auditing .ico[data-missing] { outline: 3px dashed #E5484D; }
+
+/* ---------- icon grid: 3 to 6 short points, one icon each, one colour ----------
+   <ul class="ico-grid"><li><i class="ico" data-icon="..."></i><h3>Ý ngắn</h3><p>Một dòng giải thích</p></li>...</ul>
+   Fills the body zone; 4 items = 2 columns, 3/5/6 items = 3 columns.
+   Put it on a data-layout="agenda" slide: styles keep that zone clear of shapes. */
+.ico-grid {
+  position: absolute; top: var(--body-top); bottom: var(--body-bottom); left: var(--pad-x); right: var(--pad-x);
+  display: grid; grid-template-columns: repeat(var(--cols, 3), 1fr); grid-auto-rows: 1fr; gap: 36px 56px;
+  margin: 0; padding: 0; list-style: none;
+}
+.ico-grid:has(> li:nth-child(4):last-child) { --cols: 2; }
+.ico-grid > li { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; text-align: center; }
+/* the icon sits in a soft disc of the accent colour */
+.ico-grid .ico {
+  box-sizing: content-box; padding: calc(var(--g-ico, 80px) * .32); border-radius: 50%;
+  font-size: var(--g-ico, 80px); color: var(--ico-grid-color, var(--accent)); --ico-stroke: 1.5;
+  background: color-mix(in srgb, var(--ico-grid-color, var(--accent)) 14%, transparent);
+}
+.ico-grid h3 { margin: 0; font: var(--title-weight, 800) var(--g-h, 46px)/1.15 var(--font-display); }
+.ico-grid p { margin: 0; max-width: 16em; font-size: var(--g-p, 30px); line-height: 1.35; color: var(--muted); }
+.ico-grid:has(> li:nth-child(5)) { --g-ico: 68px; --g-h: 40px; --g-p: 27px; row-gap: 24px; }
+.ico-grid:has(> li:nth-child(5)) > li { gap: 12px; }
+
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<div class="deck-stage">
+  <!-- Diễn viên (hình trang trí) do engine tự tạo từ --actors của style. -->
+
+  <!-- 1. cover -->
+  <section class="slide" data-layout="cover">
+    <p class="kicker reveal">SlideFly</p>
+    <h1 class="title reveal">Slide chuyển cảnh kiểu Morph trên trình duyệt</h1>
+    <p class="subtitle reveal">Một file HTML, mở bằng Chrome là trình chiếu được</p>
+    <p class="meta reveal">Bộ mẫu 9 kiểu slide</p>
+  </section>
+
+  <!-- 2. agenda -->
+  <section class="slide" data-layout="agenda">
+    <h2 class="title reveal">Nội dung</h2>
+    <ol class="agenda-list">
+      <li><span class="num reveal">01</span><div><h3 class="reveal" data-morph-id="s1">Cơ chế diễn viên</h3><p class="reveal">Hình cố định, chỉ đổi tư thế</p></div></li>
+      <li><span class="num reveal">02</span><div><h3 class="reveal">Chín kiểu slide</h3><p class="reveal">Từ trang bìa đến lời cảm ơn</p></div></li>
+      <li><span class="num reveal">03</span><div><h3 class="reveal">Tự co giãn</h3><p class="reveal">Ít chữ thì chữ to hơn</p></div></li>
+      <li><span class="num reveal">04</span><div><h3 class="reveal">Đo độ lấp đầy</h3><p class="reveal">Máy tự soát slide bị trống</p></div></li>
+    </ol>
+  </section>
+
+  <!-- 3. section -->
+  <section class="slide" data-layout="section">
+    <p class="num reveal">01</p>
+    <h2 class="title reveal" data-morph-id="s1">Cơ chế diễn viên</h2>
+    <p class="subtitle reveal">Morph là cùng một vật đổi vị trí giữa hai slide</p>
+  </section>
+
+  <!-- 4. content (bullets + highlight) -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Hình cố định, chỉ đổi tư thế</h2>
+    <ul class="bullets">
+      <li class="reveal">Mỗi style có một nhóm hình cố định, gọi là <b>diễn viên</b>.</li>
+      <li class="reveal">Mỗi kiểu slide quy định một <b>tư thế</b>: vị trí, kích thước, màu.</li>
+      <li class="reveal">Khi chuyển slide, trình duyệt cho hình <b>trượt dần</b> sang tư thế mới.</li>
+      <li class="reveal">Chữ của slide mới hiện sau, khi hình đã bắt đầu chuyển động.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <div class="hl-icon"><i class="ico" data-icon="arrows-move"><svg
+  xmlns="http://www.w3.org/2000/svg"
+ 
+ 
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true" focusable="false"
+><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 9l3 3l-3 3" /><path d="M15 12h6" /><path d="M6 9l-3 3l3 3" /><path d="M3 12h6" /><path d="M9 18l3 3l3 -3" /><path d="M12 15v6" /><path d="M15 6l-3 -3l-3 3" /><path d="M12 3v6" /></svg></i></div>
+      <p class="hl-text">Cùng tên là cùng một vật</p>
+    </aside>
+  </section>
+
+  <!-- 5. content (second in a row: parity changes the pose) -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Một khung cho mọi màn hình</h2>
+    <ul class="bullets">
+      <li class="reveal">Slide được thiết kế ở một kích thước cố định 1920×1080.</li>
+      <li class="reveal">Màn hình to hay nhỏ, cả khung được phóng to, thu nhỏ theo.</li>
+      <li class="reveal">Không vỡ bố cục trên máy chiếu, laptop hay điện thoại.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-big">16:9</p>
+      <p class="hl-text">Tỷ lệ khung chuẩn</p>
+    </aside>
+  </section>
+
+  <!-- 6. two-col + takeaway -->
+  <section class="slide" data-layout="two-col">
+    <h2 class="title reveal">PowerPoint Morph và SlideFly</h2>
+    <div class="cols">
+      <div class="col reveal-left">
+        <h3>PowerPoint</h3>
+        <ul>
+          <li>Chạy trong PowerPoint</li>
+          <li>Sửa trực tiếp bằng chuột</li>
+          <li>Khớp hình theo tên</li>
+        </ul>
+      </div>
+      <div class="col reveal-right">
+        <h3>SlideFly</h3>
+        <ul>
+          <li>Chạy trên trình duyệt</li>
+          <li>Sửa bằng nội dung chữ</li>
+          <li>Khớp hình theo data-actor</li>
+        </ul>
+      </div>
+    </div>
+    <p class="takeaway reveal">Cùng một ý tưởng: vật trùng tên thì trượt sang vị trí mới.</p>
+  </section>
+
+  <!-- 7. stats -->
+  <section class="slide" data-layout="stats">
+    <h2 class="title reveal">Ba bậc cỡ chữ tự chọn</h2>
+    <div class="stats">
+      <div class="stat reveal"><span class="stat-num">≤3</span><span class="stat-label">ý trên một slide: chữ lớn nhất, dễ đọc từ xa</span></div>
+      <div class="stat reveal"><span class="stat-num">4-5</span><span class="stat-label">ý trên một slide: chữ vừa, vẫn thoáng</span></div>
+      <div class="stat reveal"><span class="stat-num">6+</span><span class="stat-label">ý trên một slide: chữ nhỏ, nên tách slide</span></div>
+    </div>
+  </section>
+
+  <!-- 8. timeline -->
+  <section class="slide" data-layout="timeline">
+    <h2 class="title reveal">Quy trình dựng một deck</h2>
+    <div class="timeline">
+      <div class="step reveal"><div class="when">01</div><h3>Nội dung</h3><p>Gom dàn ý, số liệu có nguồn</p></div>
+      <div class="step reveal"><div class="when">02</div><h3>Chọn style</h3><p>Xem 3 bản thử rồi chọn</p></div>
+      <div class="step reveal"><div class="when">03</div><h3>Dựng</h3><p>Viết HTML theo khung mẫu</p></div>
+      <div class="step reveal"><div class="when">04</div><h3>Đo</h3><p>Chạy deck.audit() từng slide</p></div>
+      <div class="step reveal"><div class="when">05</div><h3>Bàn giao</h3><p>Gộp thành một file HTML</p></div>
+    </div>
+  </section>
+
+  <!-- 9. quote -->
+  <section class="slide" data-layout="quote">
+    <blockquote class="quote reveal-blur">Hình trang trí đứng yên chỉ là nền. Khi nó di chuyển, nó kể chuyện.</blockquote>
+    <p class="cite reveal">Nguyên tắc của bộ mẫu</p>
+  </section>
+
+  <!-- 10. closing -->
+  <section class="slide" data-layout="closing">
+    <p class="kicker reveal">Hết phần mẫu</p>
+    <h2 class="title reveal">Cảm ơn</h2>
+    <p class="subtitle reveal">Đổi style chỉ cần thay một dòng link CSS.</p>
+  </section>
+
+</div>
+</div>
+<script>
+/* MORPH-SLIDES DIAGRAMS, pack 2: matrix, network, funnel, compare.
+   Registers into window.sfVizKinds; load BEFORE morph-viz.js, which renders.
+     <div class="viz" data-viz="matrix"  data-cols data-rows data-cells data-hot>
+     <div class="viz" data-viz="network" data-hub data-nodes data-sub data-on data-off>
+     <div class="viz" data-viz="funnel"  data-stages data-dots="p,0,1,p">
+     <div class="viz" data-viz="compare"><div>before</div><div>after</div></div>   */
+(() => {
+  // data-* text is shown as text, never parsed as HTML ("<tên>" must stay visible)
+  const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const list = (s) => (s || '').split('|').map(esc);
+  const nums = (s) => (s || '').split(',').map((x) => x.trim()).filter(Boolean).map(Number).filter(Number.isFinite);
+  const NS = 'http://www.w3.org/2000/svg';
+  const d = (x) => x.toFixed(2);
+
+  /* matrix: header row + row heads, cells pop in along the diagonal.
+     data-hot = cell index (0-based) that the slide's click spotlights. */
+  function matrix(el) {
+    const cols = list(el.dataset.cols), rows = list(el.dataset.rows), cells = list(el.dataset.cells), hot = el.dataset.hot;
+    el.style.gridTemplateColumns = `var(--mx-head, 280px) repeat(${cols.length}, 1fr)`;
+    let h = '<span></span>' + cols.map((c, j) => `<b class="mx-col fx fx-up" style="--d:${d(0.1 * j)}">${c}</b>`).join('');
+    rows.forEach((r, i) => {
+      h += `<b class="mx-row fx fx-left" style="--d:${d(0.2 + 0.15 * i)}">${r}</b>`;
+      cols.forEach((_, j) => {
+        const k = i * cols.length + j;
+        h += `<span class="mx-cell fx fx-pop${String(k) === hot ? ' hot' : ''}" style="--d:${d(0.45 + 0.15 * (i + j))}">${cells[k] || ''}</span>`;
+      });
+    });
+    el.innerHTML = h;
+  }
+
+  /* network: hub in the middle, nodes on an ellipse, spokes draw out.
+     data-on = nodes (1-based) a click keeps lit; data-off = nodes shown dashed. */
+  function network(el) {
+    const names = list(el.dataset.nodes), sub = list(el.dataset.sub), on = nums(el.dataset.on), off = nums(el.dataset.off);
+    const W = el.clientWidth, H = el.clientHeight, cx = W / 2, cy = H / 2, rx = W / 2 - 190, ry = H / 2 - 70;
+    const pts = names.map((_, i) => {
+      const a = -Math.PI / 2 + (i * 2 * Math.PI) / names.length;
+      return [cx + rx * Math.cos(a), cy + ry * Math.sin(a)];
+    });
+    const cls = (i) => (on.includes(i + 1) ? ' on' : '') + (off.includes(i + 1) ? ' off' : '');
+    const edges = pts.map(([x, y], i) => `<path class="edge ${off.includes(i + 1) ? 'fx' : 'draw'}${cls(i)}"${off.includes(i + 1) ? '' : ' pathLength="1"'} d="M${cx} ${cy}L${d(x)} ${d(y)}" style="--d:${d(0.3 + 0.08 * i)}"/>`).join('');
+    const nodes = pts.map(([x, y], i) => `<div class="nd fx fx-pop${cls(i)}" style="left:${d(x)}px;top:${d(y)}px;--d:${d(0.7 + 0.08 * i)}"><b>${names[i]}</b><span>${sub[i] || ''}</span></div>`).join('');
+    el.innerHTML = `<svg xmlns="${NS}" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${edges}</svg>${nodes}
+      <div class="hub fx fx-pop" style="left:${cx}px;top:${cy}px;--d:.1">${esc(el.dataset.hub)}</div>`;
+  }
+
+  /* funnel: stacked layers narrowing down. Each dot falls from the top and
+     stops where it is caught (layer index) or passes to the bottom ("p").
+     The dots illustrate the idea only: they are not counts. */
+  function funnel(el) {
+    const st = list(el.dataset.stages), dots = (el.dataset.dots || '').split(',').map((x) => x.trim()).filter(Boolean);
+    const W = el.clientWidth, H = el.clientHeight, n = st.length, lh = H / n, gap = 14, bot = W * 0.34;
+    const wAt = (y) => W - ((W - bot) * y) / H;
+    const poly = (i) => {
+      const y0 = i * lh, y1 = (i + 1) * lh - gap, a = wAt(y0), b = wAt(y1);
+      return `${d((W - a) / 2)},${d(y0)} ${d((W + a) / 2)},${d(y0)} ${d((W + b) / 2)},${d(y1)} ${d((W - b) / 2)},${d(y1)}`;
+    };
+    const layers = st.map((s, i) => `<polygon class="ly fx fx-up" points="${poly(i)}" style="--d:${d(0.15 * i)}"/>`).join('');
+    const labels = st.map((s, i) => `<span class="ly-t fx fx-up" style="top:${d(i * lh + (lh - gap) / 2)}px;--d:${d(0.15 * i + 0.2)}">${s}</span>`).join('');
+    const rest = {};
+    const balls = dots.map((t, k) => {
+      const i = t === 'p' ? n - 1 : +t, y = (i + 1) * lh - gap - 22;
+      const slot = (rest[i] = (rest[i] || 0) + 1), w = wAt(y) - 120;
+      const x = W / 2 + ((slot % 2 ? -1 : 1) * Math.ceil(slot / 2) * Math.min(56, w / 6));
+      return `<i class="dot fx fx-from${t === 'p' ? '' : ' caught'}" style="left:${d(x)}px;top:${d(y)}px;--from:translateY(${d(-y - 80)}px);--d:${d(1 + 0.25 * k)}"></i>`;
+    }).join('');
+    el.innerHTML = `<svg xmlns="${NS}" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${layers}</svg>${labels}${balls}`;
+  }
+
+  /* compare: the "after" panel wipes over the "before" panel on the slide's click */
+  function compare(el) {
+    const [a, b] = el.children;
+    a?.classList.add('cmp-a');
+    b?.classList.add('cmp-b');
+    el.insertAdjacentHTML('beforeend', '<i class="cmp-knob"></i>');
+  }
+
+  window.sfVizKinds = Object.assign(window.sfVizKinds || {}, { matrix, network, funnel, compare });
+})();
+
+</script>
+<script>
+/* MORPH-SLIDES DIAGRAMS: turns short data-* markup into geometry,
+   so a slide states WHAT the numbers are and the kit draws them.
+   Load order: morph-viz-diagrams.js, morph-viz.js, then
+   morph-engine.js (the engine measures the finished DOM).
+   Every chart with numbers needs data-source (audit checks it).
+     <div class="viz" data-viz="span"   data-values data-labels data-sub>
+     <div class="viz" data-viz="donut"  data-values>
+     <div class="viz" data-viz="plan"   data-w data-h data-top data-bottom data-left data-right>
+     <div class="viz" data-viz="gather" data-n>                                   */
+(() => {
+  const nums = (s) => (s || '').split(',').map((x) => x.trim()).filter(Boolean).map(Number).filter(Number.isFinite);
+  // data-* text is shown as text, never parsed as HTML
+  const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const list = (s) => (s || '').split('|').map(esc);
+  const sum = (a) => a.reduce((x, y) => x + y, 0);
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = (w, h, inner) => `<svg xmlns="${NS}" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}">${inner}</svg>`;
+
+  /* span: proportional bar (time, budget...). Notes alternate above / below
+     the bar, start at their segment and never run into the next note. */
+  function span(el) {
+    const v = nums(el.dataset.values), lab = list(el.dataset.labels), sub = list(el.dataset.sub);
+    const W = el.clientWidth || 1680, tot = sum(v) || 1, cap = +el.dataset.cap || 420;
+    const morphId = el.dataset.morphId ? esc(el.dataset.morphId) : '';
+    el.removeAttribute('data-morph-id');   // only the segment below carries it
+    let acc = 0;
+    const segs = v.map((n, i) => { const s = { i, n, x: (acc / tot) * W, w: (n / tot) * W }; acc += n; return s; });
+    const bar = segs.map((s) => `<div class="seg fx fx-growx${s.i === +el.dataset.hot ? ' hot' : ''}" style="left:${s.x}px;width:${s.w}px;--d:${(0.15 * s.i).toFixed(2)}">
+      ${s.i === +el.dataset.morphSeg ? `<i class="morph-src" data-morph-id="${morphId}"></i>` : ''}<b>${s.n}</b></div>`).join('');
+    const end = { above: 0, below: 0 };   // right edge of the last note on each side
+    const notes = segs.map((s) => {
+      const side = s.i % 2 ? 'below' : 'above';
+      const nxt = segs.find((o) => o.i > s.i && o.i % 2 === s.i % 2);
+      let x = s.x, w = Math.min(cap, (nxt ? nxt.x : W) - s.x - 24), flip = false;
+      if (!nxt && w < 220) { flip = true; w = Math.min(cap, s.x + s.w - end[side] - 24); x = s.x + s.w - w; }
+      end[side] = x + w;
+      return `<div class="note ${side}${flip ? ' flip' : ''} fx fx-up" style="left:${x}px;width:${w}px;--d:${(0.3 + 0.15 * s.i).toFixed(2)}">
+        <span class="mono">${sub[s.i] || ''}</span><span>${lab[s.i] || ''}</span></div>`;
+    }).join('');
+    el.innerHTML = `<div class="bar">${bar}</div>${notes}`;
+  }
+
+  /* donut: arcs drawn one after another, numbered at their middle */
+  function donut(el) {
+    const v = nums(el.dataset.values), tot = sum(v) || 1, R = 300, r = 220, c = R + 40, gap = 0.5;
+    let acc = 0;
+    const arcs = v.map((n, i) => {
+      const p = (n / tot) * 100, mid = ((acc + n / 2) / tot) * 2 * Math.PI - Math.PI / 2;
+      const out = `<circle class="arc" cx="${c}" cy="${c}" r="${r + 40}" pathLength="100"
+          style="--v:${(p - gap).toFixed(2)};--off:${(-(acc / tot) * 100).toFixed(2)};--d:${(0.25 * i).toFixed(2)};--k:${i}"/>
+        <text class="arc-n fx fx-pop" x="${c + Math.cos(mid) * (R + 34)}" y="${c + Math.sin(mid) * (R + 34)}" style="--d:${(0.25 * i + 0.4).toFixed(2)}">${i + 1}</text>`;
+      acc += n;
+      return out;
+    }).join('');
+    el.innerHTML = svg(2 * c, 2 * c, arcs);
+  }
+
+  /* plan: building outline + four dimension chains, ticks at every
+     cumulative mark. A chain that does not close is drawn hot and
+     gets a lens on the gap. Scale fits the element height. */
+  function plan(el) {
+    const Wmm = +el.dataset.w, Hmm = +el.dataset.h, k = Math.max(10, el.clientHeight - 200) / Hmm;
+    const w = Wmm * k, h = Hmm * k, ox = 110, oy = 100, off = 52, t = 11;
+    const chain = (key, horiz, far, d) => {
+      if (!el.dataset[key]) return '';
+      const seg = nums(el.dataset[key]), full = horiz ? Wmm : Hmm, ok = Math.abs(sum(seg) - full) < 1e-6;
+      const at = (mm) => (horiz ? ox + mm * k : oy + mm * k);
+      const base = horiz ? (far ? oy + h + off : oy - off) : (far ? ox + w + off : ox - off);
+      let marks = [0], a = 0;
+      seg.forEach((s) => { a += s; marks.push(a); });
+      const line = horiz ? `M${at(0)} ${base}H${at(sum(seg))}` : `M${base} ${at(0)}V${at(sum(seg))}`;
+      const ticks = marks.map((m) => (horiz ? `M${at(m) - t} ${base + t}L${at(m) + t} ${base - t}` : `M${base - t} ${at(m) + t}L${base + t} ${at(m) - t}`)).join('');
+      const cls = ok ? '' : ' hot';
+      // lens: magnify the end of a chain that does not close
+      const ex = horiz ? at(full) : base, ey = horiz ? base : at(full), miss = full - sum(seg);
+      const lens = ok ? '' : `<g class="lens fx fx-pop shake" style="--d:${d + 1.6};transform-origin:${ex + 90}px ${ey + 70}px">
+        <line x1="${ex}" y1="${ey}" x2="${ex + 46}" y2="${ey + 30}"/><circle cx="${ex + 90}" cy="${ey + 70}" r="62"/>
+        <path d="M${ex + 52} ${ey + 52}h76M${ex + 52} ${ey + 88}h76"/><text x="${ex + 90}" y="${ey + 78}">${miss} mm</text></g>`;
+      return `<path class="dim draw${cls}" pathLength="1" d="${line}" style="--d:${d}"/><path class="tick fx${cls}" d="${ticks}" style="--d:${d + 0.9}"/>${lens}`;
+    };
+    const vx = ox + (+el.dataset.wall || 0) * k, vw = (+el.dataset.wallW || 0) * k;
+    el.innerHTML = svg(w + 2 * ox, h + 2 * oy, `
+      <rect class="wall draw" pathLength="1" x="${ox}" y="${oy}" width="${w}" height="${h}" style="--d:0"/>
+      ${vw ? `<rect class="part fx fx-growy" x="${vx}" y="${oy}" width="${vw}" height="${h}" style="--d:.8"/>` : ''}
+      ${chain('top', true, false, 0.3)}${chain('bottom', true, true, 0.5)}${chain('left', false, false, 0.7)}${chain('right', false, true, 0.9)}`);
+  }
+
+  /* gather: n small pieces on a grid, each knows the way to the centre */
+  function gather(el) {
+    const n = +el.dataset.n, cols = +el.dataset.cols || 6, s = 64, g = 22;
+    const rows = Math.ceil(n / cols), W = cols * s + (cols - 1) * g, H = rows * s + (rows - 1) * g;
+    el.style.width = `${W}px`; el.style.height = `${H}px`;
+    el.innerHTML = Array.from({ length: n }, (_, i) => {
+      const x = (i % cols) * (s + g), y = Math.floor(i / cols) * (s + g);
+      return `<span class="gather piece" style="left:${x}px;top:${y}px;--i:${i};--to:translate(${W / 2 - s / 2 - x}px, ${H / 2 - s / 2 - y}px) scale(.4)">${i + 1}</span>`;
+    }).join('');
+  }
+
+  // kind packs (morph-viz-diagrams.js) load before this file and register in window.sfVizKinds
+  const kinds = Object.assign({ span, donut, plan, gather }, window.sfVizKinds);
+  document.querySelectorAll('.viz[data-viz]').forEach((el) => {
+    const make = kinds[el.dataset.viz];
+    if (!make) return console.warn('sf-viz: unknown kind', el.dataset.viz);
+    if (/\d/.test(['values', 'top', 'bottom', 'left', 'right'].map((k) => el.dataset[k] || '').join('')) && !el.dataset.source) console.warn('sf-viz: chart without data-source', el);
+    make(el);
+  });
+})();
+
+</script>
+<script>
+/* ===========================================================
+   MORPH-SLIDES ENGINE (no dependencies)
+   - Scales the 1920x1080 stage to the window (letterbox)
+   - Builds actors from the style's --actors list
+   - Sets data-layout / data-pose / data-parity on .deck-stage
+     -> style CSS moves actors, CSS transitions do the "morph"
+   - FLIP for elements sharing data-morph-id across two slides
+   Input (keys, click, swipe, wheel, #hash) lives in morph-nav.js.
+   =========================================================== */
+(() => {
+  const stage = document.querySelector('.deck-stage');
+  const slides = stage ? [...stage.querySelectorAll(':scope > .slide')] : [];
+  if (!slides.length) return;
+  const REVEAL = '.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur';
+  // layouts of morph-layouts-plus.css are variants of a classic layout: the slide keeps its name in
+  // data-kind and takes the classic one in data-layout, so every style poses it and colours it.
+  // Dense ones sit on a clear stage ('diagram' has no pose, so the actors step out).
+  const CLASSIC_OF = {
+    qa: 'quote', 'portrait-quote': 'quote', statement: 'quote', chapter: 'section', cta: 'cover',
+    'big-number': 'diagram', 'split-photo': 'diagram', bento: 'diagram', process: 'diagram', 'before-after': 'diagram',
+    'compare-table': 'diagram', countdown: 'diagram',
+  };
+  let cur = -1;
+  let scale = 1;
+
+  /* ---------- fit stage to window ---------- */
+  function fit() {
+    scale = Math.min(innerWidth / 1920, innerHeight / 1080);
+    const x = (innerWidth - 1920 * scale) / 2;
+    const y = (innerHeight - 1080 * scale) / 2;
+    stage.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+  }
+
+  /* Actors: if the deck has no .actors markup, build them from the style's
+     --actors list (DOM order = z-order), so switching style = swapping one CSS link. */
+  if (!stage.querySelector('.actors')) {
+    const names = getComputedStyle(stage).getPropertyValue('--actors').replace(/["']/g, '').trim().split(/\s+/).filter(Boolean);
+    const layer = Object.assign(document.createElement('div'), { className: 'actors back' });
+    layer.setAttribute('aria-hidden', 'true');
+    names.forEach((name) => {
+      const el = Object.assign(document.createElement('div'), { className: 'actor' });
+      el.dataset.actor = name;
+      layer.append(el);
+    });
+    stage.prepend(layer);
+  }
+
+  /* item count -> type size step. Agenda/timeline/stats tiles are bigger, so they allow more items. */
+  function densityOf(slide) {
+    const cols = [...slide.querySelectorAll('.col')];
+    const n = cols.length
+      ? Math.max(...cols.map((c) => c.querySelectorAll('li, p').length))
+      : slide.querySelectorAll('.bullets > li, .agenda-list > li, .stats > .stat, .timeline > .step').length;
+    const [lg, md] = slide.querySelector('.agenda-list, .timeline, .stats') ? [4, 6] : [3, 5];
+    return n <= lg ? 'lg' : n <= md ? 'md' : 'sm';
+  }
+
+  /* ---------- one-time prep per slide ---------- */
+  const seen = {};
+  slides.forEach((slide, k) => {
+    const own = slide.dataset.layout;
+    if (CLASSIC_OF[own]) { slide.dataset.kind = own; slide.dataset.layout = CLASSIC_OF[own]; }
+    // stagger order for reveal items (author may override with style="--i:n")
+    slide.querySelectorAll(REVEAL).forEach((el, i) => {
+      if (!el.style.getPropertyValue('--i')) el.style.setProperty('--i', i);
+    });
+    if (!slide.dataset.density) slide.dataset.density = densityOf(slide);
+    // parity of the slide itself: content tweaks must not follow the *current* slide
+    slide.dataset.parity = k % 2 ? 'even' : 'odd';
+    // variant 1..3: Nth time this layout appears (styles may give repeats a different pose)
+    const lay = slide.dataset.layout || 'content';
+    seen[lay] = (seen[lay] || 0) + 1;
+    if (!slide.dataset.variant) slide.dataset.variant = String(((seen[lay] - 1) % 3) + 1);
+    slide.querySelectorAll('.agenda-list').forEach((list) => {
+      const items = [...list.children];
+      const rows = Math.ceil(items.length / 2);
+      list.style.setProperty('--rows', rows);
+      items.forEach((li, i) => li.classList.toggle('is-right', i >= rows));
+    });
+  });
+
+  /* ---------- UI chrome ---------- */
+  const progress = Object.assign(document.createElement('div'), { className: 'deck-progress' });
+  const counter = Object.assign(document.createElement('div'), { className: 'deck-counter' });
+  counter.setAttribute('aria-live', 'polite');
+  document.body.append(progress, counter);
+
+  function morphMs() {
+    const v = getComputedStyle(stage).getPropertyValue('--morph-dur').trim();
+    const ms = v.endsWith('ms') ? parseFloat(v) : parseFloat(v) * 1000;
+    return Number.isFinite(ms) ? ms : 1200;
+  }
+
+  /* rect in stage coordinates (only differences are used) */
+  function rectOf(el) {
+    const r = el.getBoundingClientRect();
+    return { x: r.left / scale, y: r.top / scale, w: r.width / scale, h: r.height / scale };
+  }
+
+  /* ---------- FLIP: First, Last, Invert, Play ---------- */
+  function flip(a, b, ra, fontA) {
+    a._flipDone?.();             // finish any flight still running on either element
+    b._flipDone?.();
+    b.classList.remove('flip-src');
+    b.style.transition = 'none';
+    b.style.transformOrigin = '0 0';
+    b.style.transform = 'none';
+    const rb = rectOf(b);
+    if (!rb.w || !rb.h) { b.style.transition = ''; b.style.transform = ''; b.style.transformOrigin = ''; return; }
+    const isText = b.textContent.trim() && !b.querySelector('img, svg, video');
+    const fontB = parseFloat(getComputedStyle(b).fontSize);
+    // text: uniform scale by font-size ratio (avoids squashed letters)
+    const sx = isText ? fontA / fontB : ra.w / rb.w;
+    const sy = isText ? fontA / fontB : ra.h / rb.h;
+    b.style.transform = `translate(${ra.x - rb.x}px, ${ra.y - rb.y}px) scale(${sx}, ${sy})`;
+    a.classList.add('flip-src');
+    void b.offsetWidth; // commit the inverted position
+    b.style.transition = '';
+    b.classList.add('flip-run');
+    b.style.transform = 'none';
+
+    let timer = 0;
+    const onEnd = (e) => { if (e.target === b && e.propertyName === 'transform') done(); };
+    const done = () => {
+      clearTimeout(timer);
+      b.removeEventListener('transitionend', onEnd);
+      b.classList.remove('flip-run');
+      b.style.transform = '';
+      b.style.transformOrigin = '';
+      a.classList.remove('flip-src');
+      a._flipDone = b._flipDone = null;
+    };
+    a._flipDone = b._flipDone = done;
+    b.addEventListener('transitionend', onEnd);
+    timer = setTimeout(done, morphMs() + 150);
+  }
+
+  /* ---------- go to slide n ---------- */
+  function go(n) {
+    n = Math.max(0, Math.min(slides.length - 1, Number(n) || 0));
+    if (n === cur) return;
+    const from = slides[cur];
+    const to = slides[n];
+
+    // FIRST: measure shared elements on the outgoing slide
+    const pairs = [];
+    if (from) {
+      from.querySelectorAll('[data-morph-id]').forEach((a) => {
+        const b = to.querySelector(`[data-morph-id="${CSS.escape(a.dataset.morphId)}"]`);
+        if (b) pairs.push([a, b, rectOf(a), parseFloat(getComputedStyle(a).fontSize)]);
+      });
+    }
+
+    // switch: actors re-pose via CSS, content cross-fades.
+    // A slide with its own data-pose gets parity "none" so the pose is never fought by parity rules.
+    stage.dataset.dir = n > cur ? 'fwd' : 'back';
+    stage.dataset.layout = to.dataset.layout || 'content';
+    stage.dataset.kind = to.dataset.kind || stage.dataset.layout;
+    stage.dataset.pose = to.dataset.pose || '';
+    stage.dataset.parity = to.dataset.pose ? 'none' : to.dataset.parity;
+    stage.dataset.variant = to.dataset.variant;
+    stage.dataset.brand = to.dataset.brand || ''; // morph-brand.css: hero | corner | hide
+    stage.dataset.slide = String(n + 1);
+    from?.classList.remove('active');
+    to.classList.add('active');
+    cur = n;
+
+    pairs.forEach(([a, b, ra, fa]) => flip(a, b, ra, fa));
+
+    progress.style.width = `${((n + 1) / slides.length) * 100}%`;
+    progress.style.background = getComputedStyle(stage).getPropertyValue('--accent'); // bar lives outside the stage
+    counter.textContent = `${n + 1} / ${slides.length}`;
+    history.replaceState(null, '', `#${n + 1}`);
+  }
+
+  addEventListener('resize', fit);
+
+  /* ---------- start: actors fly in from off-stage defaults ---------- */
+  fit();
+  const start = Math.max(0, (parseInt(location.hash.slice(1), 10) || 1) - 1);
+  requestAnimationFrame(() => requestAnimationFrame(() => go(start)));
+
+  window.deck = {
+    go,
+    next: () => go(cur + 1),
+    prev: () => go(cur - 1),
+    get index() { return cur; },
+    get count() { return slides.length; },
+  };
+})();
+
+</script>
+<script>
+/* ===========================================================
+   MORPH-SLIDES NAVIGATION (load after morph-engine.js)
+   Keys: Right/Down/PageDown/Space/Enter = next,
+         Left/Up/PageUp/Backspace = back, Home/End, F = fullscreen.
+   Two edge buttons (left = back, right = next). Clicking the slide itself
+   does nothing, so text can be selected and copied while presenting;
+   the mouse wheel does not page either. One-finger swipe. Editing the
+   #hash jumps to that slide.
+   =========================================================== */
+(() => {
+  const deck = window.deck;
+  if (!deck) return;
+  const isEditable = (t) => t.closest?.('a, button, input, textarea, select, [contenteditable]');
+
+  addEventListener('keydown', (e) => {
+    // leave browser shortcuts alone (Ctrl+F, Alt+Left, ...)
+    if (e.ctrlKey || e.metaKey || e.altKey || isEditable(e.target)) return;
+    const k = e.key;
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(k)) { e.preventDefault(); deck.next(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(k)) { e.preventDefault(); deck.prev(); }
+    else if (k === 'Home') deck.go(0);
+    else if (k === 'End') deck.go(deck.count - 1);
+    else if (k === 'f' || k === 'F') {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen?.();
+    }
+  });
+
+  // edge buttons live outside the stage; screenshots by automated browsers leave them out
+  if (!navigator.webdriver) {
+    [['prev', '\u2039', 'Slide trước'], ['next', '\u203A', 'Slide sau']].forEach(([dir, mark, label]) => {
+      const b = Object.assign(document.createElement('button'), { className: `deck-edge ${dir}`, type: 'button' });
+      b.setAttribute('aria-label', label);
+      b.innerHTML = `<span aria-hidden="true">${mark}</span>`;
+      b.addEventListener('mousedown', (e) => e.preventDefault()); // keep focus off, so Space/Enter still page
+      b.addEventListener('click', () => deck[dir]());
+      document.body.append(b);
+    });
+  }
+
+  let touch = null;
+  addEventListener('touchstart', (e) => {
+    touch = e.touches.length === 1 ? { x: e.touches[0].clientX, y: e.touches[0].clientY } : null;
+  }, { passive: true });
+  addEventListener('touchend', (e) => {
+    if (!touch || e.touches.length) { touch = null; return; } // pinch / multi-finger: ignore
+    const dx = e.changedTouches[0].clientX - touch.x;
+    const dy = e.changedTouches[0].clientY - touch.y;
+    touch = null;
+    if (Math.max(Math.abs(dx), Math.abs(dy)) < 50) return;
+    const forward = Math.abs(dx) > Math.abs(dy) ? dx < 0 : dy < 0;
+    (forward ? deck.next : deck.prev)();
+  });
+
+  addEventListener('hashchange', () => {
+    const n = parseInt(location.hash.slice(1), 10);
+    if (n) deck.go(n - 1);
+  });
+})();
+
+</script>
+<script>
+/* ===========================================================
+   MORPH-SLIDES AUDIT: measures how well each slide fills space.
+   Run in the browser console (or via a test tool): deck.audit()
+   - ink = text line boxes + media; maxGapY / maxGapX = biggest empty band in the
+     safe area; overflow = ink past the safe margins. Display slides (cover,
+     section, quote, closing, photo) are only checked for overflow.
+   - a chart with numbers (morph-viz) must carry data-source.
+   - icons (morph-icons): at most 6 per slide, none missing.
+   - a photo slide (morph-photo) must credit its picture.
+   - text lying on a solid actor whose colour gives a contrast ratio
+     under 3:1 with the text (WCAG) = hard to read: "chữ khó đọc trên hình".
+   - variety: 3 inner slides in a row with the same look
+     (layout, pose, diagram kinds, motion verbs) = monotone.
+   Run it outside a live talk: it briefly shows steps not yet clicked.
+   =========================================================== */
+(() => {
+  const stage = document.querySelector('.deck-stage');
+  if (!stage || !window.deck) return;
+  const SAFE = { x0: 80, x1: 1840, y0: 60, y1: 1020 };
+  const LIMIT = { gapY: 0.28, gapX: 0.3 };
+  // big-number slides are meant to breathe around the figures
+  const LIMIT_Y_BY_LAYOUT = { stats: 0.34, bento: 0.34, process: 0.38, 'before-after': 0.38 };   // airy by design
+  const DISPLAY = ['cover', 'section', 'quote', 'closing', 'photo', 'big-number', 'qa', 'portrait-quote', 'chapter', 'statement', 'cta', 'split-photo'];
+
+  /* text line boxes + images/svg, in stage coordinates */
+  function inkRects(slide) {
+    const s = stage.getBoundingClientRect();
+    const k = s.width / 1920;
+    const out = [];
+    const push = (r) => r.width >= 1 && r.height >= 1 && out.push({ x0: (r.left - s.left) / k, x1: (r.right - s.left) / k, y0: (r.top - s.top) / k, y1: (r.bottom - s.top) / k });
+    const walker = document.createTreeWalker(slide, NodeFilter.SHOW_TEXT);
+    while (walker.nextNode()) {
+      const node = walker.currentNode;
+      if (!node.textContent.trim() || node.parentElement.closest('[aria-hidden="true"]')) continue;   // decoration (chapter numeral)
+      const range = document.createRange(); range.selectNodeContents(node);
+      [...range.getClientRects()].forEach(push);
+    }
+    slide.querySelectorAll(':is(img, svg, video, canvas):not(.photo-bg, .split-img)').forEach((el) => push(el.getBoundingClientRect()));
+    return out;
+  }
+
+  /* solid actors in the pose this slide would have (same attributes the engine sets) */
+  function actorRects(slide, k, s) {
+    Object.assign(stage.dataset, {
+      layout: slide.dataset.layout || 'content', pose: slide.dataset.pose || '',
+      parity: slide.dataset.pose ? 'none' : slide.dataset.parity, variant: slide.dataset.variant,
+    });
+    return [...stage.querySelectorAll('.actor')].flatMap((a) => {
+      const cs = getComputedStyle(a);
+      // soft glows, faint shapes and masked/clipped drawings (pins: the box is not the shape) are skipped
+      const soft = (/radial-gradient/.test(cs.backgroundImage) && clear(cs.backgroundColor)) || /blur/.test(cs.filter) || +cs.opacity < 0.6
+        || cs.maskImage !== 'none' || cs.webkitMaskImage !== 'none' || cs.clipPath !== 'none';
+      const fill = soft ? null : fillLum(cs);
+      const r = a.getBoundingClientRect();
+      if (fill === null || r.width / k < 24 || r.height / k < 24) return [];
+      return [{ name: a.dataset.actor, lum: fill, x0: (r.left - s.left) / k, x1: (r.right - s.left) / k, y0: (r.top - s.top) / k, y1: (r.bottom - s.top) / k }];
+    });
+  }
+
+  /* brightness of what a shape paints: its plain fill (paper with grain counts as paper), or an
+     opaque gradient (sticky notes). Patterns with see-through stops (grid lines) and pictures cover nothing. */
+  function fillLum(cs) {
+    const rgbs = (str) => [...str.matchAll(/rgba?\(([^)]+)\)/g)].map((m) => m[1].split(/[\s,/]+/).map(Number));
+    if (!clear(cs.backgroundColor)) return lum(rgbs(cs.backgroundColor)[0]);
+    const img = cs.backgroundImage;
+    // one gradient layer stretched over the whole shape; tiles, corners and multi-layer drawings are patterns
+    if (!/^linear-gradient/.test(img) || /url\(|transparent/.test(img) || (img.match(/gradient\(/g) || []).length > 1) return null;
+    if (!/^(auto( auto)?|100% 100%|cover)$/.test(cs.backgroundSize)) return null;
+    const stops = rgbs(img);
+    if (!stops.length || stops.some((c) => c.length > 3 && c[3] < 0.9)) return null;
+    return stops.reduce((sum, c) => sum + lum(c), 0) / stops.length;
+  }
+
+  /* WCAG relative luminance and contrast ratio */
+  const lum = ([r, g, b]) => [r, g, b].map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; })
+    .reduce((s, v, i) => s + v * [0.2126, 0.7152, 0.0722][i], 0);
+  const ratio = (a, b) => (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+  const clear = (c) => c === 'transparent' || /rgba\(.*,\s*0(\.0*[0-2]\d*)?\)$/.test(c);
+  /* text on its own box (card, band, window) is shielded from the actors behind */
+  const boxed = (e) => { const cs = getComputedStyle(e); return !clear(cs.backgroundColor) || /gradient|url\(/.test(cs.backgroundImage); };
+  const shielded = (el, slide) => { for (let e = el; e && e !== slide; e = e.parentElement) if (boxed(e)) return true; return false; };
+
+  /* text that ends the slide hidden (pieces gathered away, opacity 0) is not read */
+  const faded = (el, slide) => {
+    let o = 1; for (let e = el; e && e !== slide; e = e.parentElement) o *= +getComputedStyle(e).opacity;
+    return o < 0.2 || getComputedStyle(el).visibility === 'hidden'; };
+
+  /* text lines lying (even partly) on a solid actor of too similar a brightness */
+  function crossings(slide) {
+    const s = stage.getBoundingClientRect();
+    const k = s.width / 1920;
+    // styles may pose actors by what the active slide holds (:has(.slide.active .takeaway))
+    const was = stage.querySelector(':scope > .slide.active');
+    was?.classList.remove('active');
+    slide.classList.add('active');
+    const shapes = actorRects(slide, k, s);
+    const hits = new Map();   // actor -> first text found on it
+    const walker = document.createTreeWalker(slide, NodeFilter.SHOW_TEXT);
+    while (walker.nextNode()) {
+      const node = walker.currentNode;
+      if (!node.textContent.trim() || node.parentElement.closest('.mock, svg') || shielded(node.parentElement, slide) || faded(node.parentElement, slide)) continue;
+      const tcs = getComputedStyle(node.parentElement);
+      if (parseFloat(tcs.webkitTextStrokeWidth) > 0 || tcs.textShadow !== 'none') continue; // outlined text carries its own contrast
+      const ink = lum(tcs.color.match(/[\d.]+/g).slice(0, 3).map(Number));
+      const need = parseFloat(tcs.fontSize) >= 60 ? 2.4 : 3;   // very large type stays readable at lower contrast
+      const range = document.createRange(); range.selectNodeContents(node);
+      [...range.getClientRects()].forEach((r) => {
+        const l = { x0: (r.left - s.left) / k, x1: (r.right - s.left) / k, y0: (r.top - s.top) / k, y1: (r.bottom - s.top) / k };
+        const area = (l.x1 - l.x0) * (l.y1 - l.y0);
+        if (area < 50) return;
+        // three points along the line; under each, only the topmost actor (DOM order = z-order) counts
+        const y = (l.y0 + l.y1) / 2;
+        [0.1, 0.5, 0.9].forEach((f) => {
+          const x = l.x0 + (l.x1 - l.x0) * f;
+          // a box of the slide under the text (pill, band, card drawn in the slide) shields it
+          if (document.elementsFromPoint(s.left + x * k, s.top + y * k).some((e) => e !== slide && slide.contains(e) && boxed(e))) return;
+          const top = shapes.findLast((a) => x > a.x0 && x < a.x1 && y > a.y0 && y < a.y1);
+          if (top && ratio(ink, top.lum) < need && !hits.has(top.name)) hits.set(top.name, node.textContent.trim().slice(0, 24));
+        });
+      });
+    }
+    slide.classList.remove('active');
+    was?.classList.add('active');
+    return [...hits].map(([name, text]) => `${name} ("${text}")`);
+  }
+
+  /* biggest uncovered interval of [lo, hi] given covered spans */
+  function maxGap(spans, lo, hi) {
+    const sorted = spans.map(([a, b]) => [Math.max(a, lo), Math.min(b, hi)]).filter(([a, b]) => b > a).sort((p, q) => p[0] - q[0]);
+    let gap = 0;
+    let cursor = lo;
+    for (const [a, b] of sorted) {
+      gap = Math.max(gap, a - cursor);
+      cursor = Math.max(cursor, b);
+    }
+    return Math.max(gap, hi - cursor);
+  }
+
+  function auditSlide(slide, i) {
+    const layout = slide.dataset.kind || slide.dataset.layout || 'content';   // new layouts report their own name
+    const ink = inkRects(slide);
+    const issues = [];
+    const out = ink.filter((r) => r.x0 < SAFE.x0 - 40 || r.x1 > SAFE.x1 + 40 || r.y0 < SAFE.y0 - 30 || r.y1 > SAFE.y1 + 30);
+    if (out.length) issues.push(`tràn khung (${out.length} dòng)`);
+    // text overflow = a text line box past its container (decorative pseudo-elements are ignored)
+    slide.querySelectorAll('.col, .takeaway, .highlight').forEach((box) => {
+      const b = box.getBoundingClientRect();
+      const range = document.createRange();
+      range.selectNodeContents(box);
+      const past = [...range.getClientRects()].some((r) => r.height && (r.bottom > b.bottom + 2 || r.right > b.right + 2));
+      if (past) issues.push(`chữ tràn hộp .${box.className.split(' ')[0]}`);
+    });
+    slide.querySelectorAll('.viz[data-viz]').forEach((v) => {
+      if (/\d/.test(['values', 'top', 'bottom', 'left', 'right'].map((k) => v.dataset[k] || '').join('')) && !v.dataset.source) issues.push(`biểu đồ ${v.dataset.viz} thiếu data-source`);
+    });
+    if (slide.querySelector('.photo-bg, .split-img') && !slide.querySelector('.photo-credit')) issues.push('ảnh thiếu .photo-credit (tác giả, nguồn, giấy phép)');
+    const icons = slide.querySelectorAll('.ico');
+    if (icons.length > 6) issues.push(`quá nhiều icon (${icons.length}, tối đa 6)`);
+    const lost = [...slide.querySelectorAll('.ico[data-missing]')].map((e) => e.dataset.icon);
+    if (lost.length) issues.push(`icon không tồn tại: ${lost.join(', ')}`);
+    const cut = crossings(slide);
+    if (cut.length) issues.push(`chữ khó đọc trên hình ${cut.join(', ')}`);
+    const gapY = maxGap(ink.map((r) => [r.y0, r.y1]), SAFE.y0, SAFE.y1) / (SAFE.y1 - SAFE.y0);
+    const gapX = maxGap(ink.map((r) => [r.x0, r.x1]), SAFE.x0, SAFE.x1) / (SAFE.x1 - SAFE.x0);
+    const display = DISPLAY.includes(layout);
+    if (!display && gapY > (LIMIT_Y_BY_LAYOUT[layout] || LIMIT.gapY)) issues.push(`trống dọc ${Math.round(gapY * 100)}%`);
+    if (!display && gapX > LIMIT.gapX) issues.push(`trống ngang ${Math.round(gapX * 100)}%`);
+    return {
+      slide: i + 1, layout, density: slide.dataset.density || '',
+      gapY: `${Math.round(gapY * 100)}%`, gapX: `${Math.round(gapX * 100)}%`,
+      status: issues.length ? 'SỬA' : 'OK', issues: issues.join('; '),
+    };
+  }
+
+  /* look of a slide = what the eye recognises: layout, pose, diagram and mock kinds, motion verbs */
+  const VERB = /^(fx-[a-z]+|draw|count|slam|shake|strike|ping|travel|gather)$/;
+  function lookOf(slide) {
+    const kinds = [...slide.querySelectorAll('.viz[data-viz]')].map((v) => v.dataset.viz)
+      .concat([...slide.querySelectorAll('.mock')].map((m) => [...m.classList].find((c) => c.startsWith('mock-')) || 'mock')).sort();
+    const verbs = new Set([...slide.querySelectorAll('[class]')].flatMap((e) => [...e.classList].filter((c) => VERB.test(c))));
+    return [slide.dataset.kind || slide.dataset.layout || 'content', slide.dataset.pose || '', kinds.join('+'), [...verbs].sort().join('+')].join('|');
+  }
+
+  window.deck.audit = () => {
+    stage.classList.add('auditing');
+    const saved = { ...stage.dataset };
+    const slides = [...stage.querySelectorAll(':scope > .slide')];
+    const report = slides.map(auditSlide);
+    const looks = slides.map(lookOf);
+    report.forEach((r, i) => {
+      if (i < 2 || DISPLAY.includes(r.layout) || looks[i] !== looks[i - 1] || looks[i] !== looks[i - 2]) return;
+      r.issues = [r.issues, 'nhàm: giống hệt 2 slide trước'].filter(Boolean).join('; ');
+      r.status = 'SỬA';
+    });
+    ['layout', 'pose', 'parity', 'variant'].forEach((key) => { stage.dataset[key] = saved[key] ?? ''; });
+    stage.classList.remove('auditing');
+    console.table(report);
+    return report;
+  };
+})();
+
+</script>
+<script>
+/* MORPH-SLIDES STEPS: click-by-click build. Load after morph-engine.js.
+   Elements with data-step="n" wait for the n-th "next" on their slide;
+   the slide gets data-at="<steps shown>" so CSS can style each state.
+   "Back" first takes the last shown step away (its effect plays in reverse),
+   then goes to the previous slide, which arrives finished. Automated browsers
+   (check-deck.py screenshots) always see every step. */
+(() => {
+  const deck = window.deck;
+  const stage = document.querySelector('.deck-stage');
+  if (!deck || !stage) return;
+  const slides = [...stage.querySelectorAll(':scope > .slide')];
+  const auto = navigator.webdriver;
+  const last = (s) => Math.max(0, ...[...s.querySelectorAll('[data-step]')].map((e) => +e.dataset.step || 0));
+  const show = (s, n) => {
+    s.dataset.at = n;
+    s.querySelectorAll('[data-step]').forEach((e) => e.classList.toggle('pending', +e.dataset.step > n));
+  };
+  const enter = () => {
+    const s = slides[deck.index];
+    if (s) show(s, auto || stage.dataset.dir === 'back' ? last(s) : 0);
+  };
+  const { next, prev, go } = deck;
+  deck.next = () => {
+    const s = slides[deck.index];
+    if (!s) return next();
+    const at = +s.dataset.at || 0;
+    if (at < last(s)) show(s, at + 1); else { next(); enter(); }
+  };
+  deck.prev = () => {
+    const s = slides[deck.index];
+    const at = +s?.dataset.at || 0;
+    if (s && at > 0) show(s, at - 1); else { prev(); enter(); }
+  };
+  deck.go = (n) => { go(n); enter(); };
+  slides.forEach((s) => show(s, auto ? last(s) : 0));
+  new MutationObserver(enter).observe(stage, { attributes: true, attributeFilter: ['data-slide'] });
+})();
+
+</script>
+<script>
+/* MORPH-SLIDES ICONS: Tabler Icons (MIT, Paweł Kuna) for decks being edited.
+   <i class="ico" data-icon="database"></i>, data-style="filled" for the solid set.
+   While a deck is a source file, empty icons are fetched from jsDelivr (pinned
+   version). inline-assets.py embeds the SVGs, so the final deck needs no network
+   and this script then has nothing to do. A name that does not exist gets
+   data-missing, which deck.audit() reports. Load anywhere after the slides. */
+(() => {
+  const VERSION = '3.48.0';
+  const CDN = `https://cdn.jsdelivr.net/npm/@tabler/icons@${VERSION}/icons`;
+  const cache = new Map();
+  const load = (name, style) => {
+    const key = `${style}/${name}`;
+    if (!cache.has(key)) {
+      cache.set(key, fetch(`${CDN}/${key}.svg`).then((r) => (r.ok ? r.text() : Promise.reject(new Error(r.status)))));
+    }
+    return cache.get(key);
+  };
+  document.querySelectorAll('.ico[data-icon]').forEach(async (el) => {
+    if (el.querySelector('svg')) return;
+    const name = el.dataset.icon;
+    const style = el.dataset.style === 'filled' ? 'filled' : 'outline';
+    if (!/^[a-z0-9-]+$/.test(name)) { el.dataset.missing = ''; return; }
+    try {
+      const svg = (await load(name, style))
+        .replace(/\s(width|height)="24"/g, '')
+        .replace(/\sclass="[^"]*"/, ' aria-hidden="true" focusable="false"');
+      el.innerHTML = svg;
+    } catch {
+      el.dataset.missing = '';
+      console.warn('morph-icons: không tải được icon', name, style);
+    }
+  });
+})();
+
+</script>
+</body>
+</html>

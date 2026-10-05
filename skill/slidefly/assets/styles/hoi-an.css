@@ -1,0 +1,177 @@
+/* ===========================================================
+   STYLE: HOI AN. Old town at dusk: pale lime-wash stage, a warm
+   yellow wall, a jade wooden door, a band of yin-yang roof tiles,
+   a dark wood beam and three red silk lanterns that float to new
+   heights on every slide while the jade door opens and closes.
+   Actors: wall (yellow panel), door (jade door), tiles (roof band),
+           beam (wood line), l1 l2 l3 (lanterns). DOM order = z-order.
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
+
+.deck-stage {
+  --actors: "wall door tiles beam l1 l2 l3";
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Be Vietnam Pro', sans-serif;
+  --pale: #F4E3B0; --yellow: #E8B647; --jade: #3F8B7E; --jade-d: #2E6B60;
+  --red: #C0392B; --red-l: #E2563F; --wood: #5C3A21; --ink: #3A2412;
+  --bg: var(--pale); --fg: var(--ink); --muted: #6A4A2C; --accent: #A5301F;
+  --card-bg: transparent; --card-fg: var(--ink); --card-radius: 6px;
+  --title-weight: 600; --title-tracking: -0.01em; --bullet-radius: 50%;
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="wall"] {
+  background-color: var(--yellow);
+  background-image: radial-gradient(ellipse at 30% 20%, rgba(255, 236, 170, 0.55), transparent 60%),
+    radial-gradient(ellipse at 80% 90%, rgba(176, 120, 40, 0.22), transparent 55%);
+  --x: 0px; --y: 1080px; --w: 1920px; --h: 0px;
+}
+[data-actor="door"] {
+  background-color: var(--jade); border: 10px solid var(--jade-d);
+  background-image: linear-gradient(90deg, transparent calc(50% - 3px), var(--jade-d) calc(50% - 3px) calc(50% + 3px), transparent 0),
+    repeating-linear-gradient(0deg, transparent 0 46px, rgba(20, 60, 52, 0.35) 46px 50px);
+  box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.08);
+  --x: 1920px; --y: 240px; --w: 0px; --h: 840px;
+}
+[data-actor="tiles"] {
+  background-color: var(--wood);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 28'%3E%3Cpath d='M0 28A24 24 0 0 1 48 28' fill='%23714A2C' stroke='%23432714' stroke-width='3'/%3E%3Cpath d='M-24 14A24 24 0 0 1 24 14M24 14A24 24 0 0 1 72 14' fill='none' stroke='%23432714' stroke-width='3'/%3E%3C/svg%3E");
+  background-size: 48px 28px; box-shadow: 0 6px 0 var(--ink);
+  --x: 0px; --y: -90px; --w: 1920px; --h: 64px;
+}
+[data-actor="beam"] { background: var(--wood); border-radius: 2px; --x: 0px; --y: -40px; --w: 1920px; --h: 12px; }
+[data-actor^="l"] {
+  border-radius: 50%; background-color: var(--red);
+  background-image: radial-gradient(ellipse at 50% 45%, rgba(255, 214, 130, 0.7), transparent 62%),
+    repeating-linear-gradient(90deg, transparent 0 16%, rgba(90, 20, 10, 0.25) 16% 17%);
+  box-shadow: 0 0 50px 8px rgba(226, 86, 63, 0.4);
+  --x: 1800px; --y: -400px; --w: 96px; --h: 128px;
+}
+/* caps + string (top) and cap + tassel (bottom) */
+[data-actor^="l"]::before, [data-actor^="l"]::after { content: ""; position: absolute; left: 30%; width: 40%; }
+[data-actor^="l"]::before {
+  bottom: calc(100% - 8px); height: 1200px;
+  background: linear-gradient(var(--wood), var(--wood)) bottom / 100% 14px no-repeat,
+    linear-gradient(90deg, transparent calc(50% - 1px), var(--wood) calc(50% - 1px) calc(50% + 1px), transparent 0) top / 100% 100% no-repeat;
+}
+[data-actor^="l"]::after {
+  top: calc(100% - 8px); height: 44px;
+  background: linear-gradient(var(--wood), var(--wood)) top / 100% 14px no-repeat,
+    linear-gradient(90deg, transparent 38%, var(--red) 38% 62%, transparent 0) bottom / 100% 30px no-repeat;
+}
+
+/* ---------- 1. cover: wall holds the title, door closed, lanterns over the door ---------- */
+[data-layout="cover"] [data-actor="wall"]  { --x: 0px; --y: 82px; --w: 1240px; --h: 998px; }
+[data-layout="cover"] [data-actor="door"]  { --x: 1360px; --y: 330px; --w: 420px; --h: 750px; }
+[data-layout="cover"] [data-actor="tiles"] { --y: 0px; }
+[data-layout="cover"] [data-actor="beam"]  { --y: 70px; }
+[data-layout="cover"] [data-actor="l1"]    { --x: 1330px; --y: 170px; --w: 110px; --h: 146px; }
+[data-layout="cover"] [data-actor="l2"]    { --x: 1520px; --y: 230px; --w: 110px; --h: 146px; }
+[data-layout="cover"] [data-actor="l3"]    { --x: 1710px; --y: 150px; --w: 110px; --h: 146px; }
+
+/* ---------- 2. agenda: wall becomes the board, door half open on the right ---------- */
+[data-layout="agenda"] [data-actor="wall"]  { --x: 80px; --y: 240px; --w: 1680px; --h: 790px; }
+[data-layout="agenda"] [data-actor="door"]  { --x: 1790px; --y: 240px; --w: 130px; --h: 840px; }
+[data-layout="agenda"] [data-actor="tiles"] { --y: 0px; --h: 48px; }
+[data-layout="agenda"] [data-actor="beam"]  { --x: 80px; --y: 200px; --w: 1840px; }
+[data-layout="agenda"] [data-actor="l1"]    { --x: 1430px; --y: 64px; --w: 72px; --h: 96px; }
+[data-layout="agenda"] [data-actor="l2"]    { --x: 1560px; --y: 92px; --w: 72px; --h: 96px; }
+[data-layout="agenda"] [data-actor="l3"]    { --x: 1690px; --y: 58px; --w: 72px; --h: 96px; }
+
+/* ---------- 3. section: yellow house front right, door wide, lanterns low ---------- */
+[data-layout="section"] [data-actor="wall"]  { --x: 1140px; --y: 82px; --w: 780px; --h: 998px; }
+[data-layout="section"] [data-actor="door"]  { --x: 1290px; --y: 420px; --w: 480px; --h: 660px; }
+[data-layout="section"] [data-actor="tiles"] { --x: 1100px; --y: 0px; --w: 820px; --h: 70px; }
+[data-layout="section"] [data-actor="beam"]  { --x: 1140px; --y: 390px; --w: 780px; --h: 16px; }
+[data-layout="section"] [data-actor="l1"]    { --x: 1250px; --y: 200px; --w: 120px; --h: 160px; }
+[data-layout="section"] [data-actor="l2"]    { --x: 1470px; --y: 150px; --w: 120px; --h: 160px; }
+[data-layout="section"] [data-actor="l3"]    { --x: 1690px; --y: 220px; --w: 120px; --h: 160px; }
+
+/* ---------- 4. content (odd): wall panel holds the highlight, door shutter left ---------- */
+[data-layout="content"] [data-actor="wall"]  { --x: 1240px; --y: 240px; --w: 600px; --h: 790px; }
+[data-layout="content"] [data-actor="door"]  { --x: 0px; --y: 240px; --w: 50px; --h: 840px; }
+[data-layout="content"] [data-actor="tiles"] { --y: 0px; --h: 48px; }
+[data-layout="content"] [data-actor="beam"]  { --x: 80px; --y: 200px; --w: 1760px; }
+[data-layout="content"] [data-actor="l1"]    { --x: 1330px; --y: 72px; --w: 72px; --h: 96px; }
+[data-layout="content"] [data-actor="l2"]    { --x: 1500px; --y: 52px; --w: 72px; --h: 96px; }
+[data-layout="content"] [data-actor="l3"]    { --x: 1670px; --y: 84px; --w: 72px; --h: 96px; }
+/* even: wall slides under the bullets, door shutter moves to the right edge */
+[data-layout="content"][data-parity="even"] [data-actor="wall"]  { --x: 80px; --y: 240px; --w: 1120px; --h: 790px; }
+[data-layout="content"][data-parity="even"] [data-actor="door"]  { --x: 1850px; --y: 240px; --w: 70px; }
+[data-layout="content"][data-parity="even"] [data-actor="l1"]    { --x: 1300px; --y: 44px; }
+[data-layout="content"][data-parity="even"] [data-actor="l2"]    { --x: 1480px; --y: 88px; }
+[data-layout="content"][data-parity="even"] [data-actor="l3"]    { --x: 1660px; --y: 60px; }
+
+/* ---------- 5. two-col: wall board, door closes into the column divider ---------- */
+[data-layout="two-col"] [data-actor="wall"]  { --x: 80px; --y: 240px; --w: 1760px; --h: 790px; }
+[data-layout="two-col"] [data-actor="door"]  { --x: 936px; --y: 240px; --w: 48px; --h: 610px; border-width: 6px; }
+[data-layout="two-col"] [data-actor="tiles"] { --y: 0px; --h: 48px; }
+[data-layout="two-col"] [data-actor="beam"]  { --x: 80px; --y: 200px; --w: 1760px; }
+[data-layout="two-col"] [data-actor="l1"]    { --x: 1560px; --y: 90px; --w: 64px; --h: 86px; }
+[data-layout="two-col"] [data-actor="l2"]    { --x: 1660px; --y: 60px; --w: 64px; --h: 86px; }
+[data-layout="two-col"] [data-actor="l3"]    { --x: 1760px; --y: 96px; --w: 64px; --h: 86px; }
+
+/* ---------- 6. stats: wall band across, door opens wide on the left, lanterns rise ---------- */
+[data-layout="stats"] [data-actor="wall"]  { --x: 0px; --y: 240px; --w: 1920px; --h: 840px; }
+[data-layout="stats"] [data-actor="door"]  { --x: -420px; --y: 240px; --w: 400px; }
+[data-layout="stats"] [data-actor="tiles"] { --y: 0px; --h: 48px; }
+[data-layout="stats"] [data-actor="beam"]  { --x: 0px; --y: 228px; --w: 1920px; }
+[data-layout="stats"] [data-actor="l1"]    { --x: 1640px; --y: 40px; --w: 60px; --h: 80px; }
+[data-layout="stats"] [data-actor="l2"]    { --x: 1730px; --y: 76px; --w: 60px; --h: 80px; }
+[data-layout="stats"] [data-actor="l3"]    { --x: 1820px; --y: 48px; --w: 60px; --h: 80px; }
+
+/* ---------- 7. timeline: beam becomes the axis, wall is the street below ---------- */
+[data-layout="timeline"] [data-actor="wall"]  { --x: 0px; --y: 1030px; --w: 1920px; --h: 50px; }
+[data-layout="timeline"] [data-actor="door"]  { --x: 1920px; --w: 0px; }
+[data-layout="timeline"] [data-actor="tiles"] { --y: 0px; --h: 48px; }
+[data-layout="timeline"] [data-actor="beam"]  { --x: 120px; --y: 624px; --w: 1680px; }
+[data-layout="timeline"] [data-actor="l1"]    { --x: 1600px; --y: 70px; --w: 60px; --h: 80px; }
+[data-layout="timeline"] [data-actor="l2"]    { --x: 1700px; --y: 50px; --w: 60px; --h: 80px; }
+[data-layout="timeline"] [data-actor="l3"]    { --x: 1800px; --y: 90px; --w: 60px; --h: 80px; }
+
+/* ---------- 8. quote: door wide open on the left, lanterns hang low in front ---------- */
+[data-layout="quote"] [data-actor="wall"]  { --x: 600px; --y: 150px; --w: 1200px; --h: 780px; }
+[data-layout="quote"] [data-actor="door"]  { --x: 120px; --y: 240px; --w: 380px; --h: 840px; }
+[data-layout="quote"] [data-actor="tiles"] { --x: 0px; --y: 0px; --w: 1920px; --h: 56px; }
+[data-layout="quote"] [data-actor="beam"]  { --x: 80px; --y: 206px; --w: 460px; --h: 20px; }
+[data-layout="quote"] [data-actor="l1"]    { --x: 150px; --y: 380px; --w: 110px; --h: 146px; }
+[data-layout="quote"] [data-actor="l2"]    { --x: 360px; --y: 520px; --w: 110px; --h: 146px; }
+[data-layout="quote"] [data-actor="l3"]    { --x: 250px; --y: 760px; --w: 90px; --h: 120px; }
+
+/* ---------- 9. closing: the whole street lights up, lanterns flank the thanks ---------- */
+[data-layout="closing"] [data-actor="wall"]  { --x: 0px; --y: 82px; --w: 1920px; --h: 998px; }
+[data-layout="closing"] [data-actor="door"]  { --x: 760px; --y: 900px; --w: 400px; --h: 180px; }
+[data-layout="closing"] [data-actor="tiles"] { --y: 0px; }
+[data-layout="closing"] [data-actor="beam"]  { --y: 70px; }
+[data-layout="closing"] [data-actor="l1"]    { --x: 200px; --y: 300px; --w: 150px; --h: 200px; }
+[data-layout="closing"] [data-actor="l2"]    { --x: 1570px; --y: 240px; --w: 150px; --h: 200px; }
+[data-layout="closing"] [data-actor="l3"]    { --x: 1740px; --y: 520px; --w: 110px; --h: 146px; }
+
+/* chapter: door opens to a slim shutter so the outlined number reads */
+.deck-stage:has(.slide.active[data-kind="chapter"]) [data-actor="door"] { --x: 1800px; --w: 80px; }
+
+/* ---------- diagram: clear stage, only the roof band stays ---------- */
+[data-layout="diagram"] [data-actor="tiles"] { --y: 0px; --h: 40px; }
+
+/* ---------- content tweaks: warm serif voice, calm body ---------- */
+.slide .kicker { letter-spacing: 0.24em; }
+.slide .title { font-variation-settings: "opsz" 96; }
+.slide[data-layout="cover"] { align-items: flex-start; text-align: left; padding: 80px 760px 0 140px; }
+.slide[data-layout="cover"] .title { font-size: 96px; line-height: 1.1; }
+.slide[data-layout="closing"] { padding: 80px 420px 0; }
+.slide[data-layout="section"] { padding: 0 860px 0 160px; }
+.slide[data-layout="section"] .num { font-size: 200px; font-weight: 500; }
+.ch-num { -webkit-text-stroke-color: var(--wood); opacity: 0.4; }
+.agenda-list { --agenda-gap: 160px; left: 160px; right: 220px; --tile-line: 2px solid rgba(92, 58, 33, 0.25); }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.slide[data-layout="content"] { --title-w: 1120px; --hl-left: 1260px; --hl-right: 100px; }
+.slide[data-layout="content"] .bullets { left: 140px; }
+.slide[data-layout="content"][data-parity="even"] .bullets { left: 140px; width: 1000px; }
+.slide[data-layout="two-col"] .cols { left: 140px; right: 140px; gap: 120px; }
+.slide[data-layout="two-col"] .col { padding: 44px 40px; }
+.takeaway { border-left-color: var(--red); }
+.slide[data-layout="stats"] .stats { top: 300px; }
+.timeline::before { opacity: 0; }
+.slide[data-layout="quote"] { padding: 0 200px 0 680px; }
+.slide[data-layout="quote"] .quote { font-weight: 500; font-size: 60px; }

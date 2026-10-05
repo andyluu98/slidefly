@@ -1,0 +1,160 @@
+/* ===========================================================
+   STYLE: DONG HO (Dong Ho woodblock folk print on do paper, light).
+   Warm do paper with faint fibres, ink-black woodcut outlines,
+   flat folk colours: scarlet, copper blue, pine amber, cajuput
+   green. A thick woodblock frame resizes per layout; outlined
+   motifs (sun, square, diamond, leaf) roll around it like stamps.
+   Actors: band (ink block), frame (woodblock border), sun, square,
+           diamond, leaf. DOM order = z-order.
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Alegreya:wght@700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
+
+.deck-stage {
+  --actors: "band frame sun square diamond leaf";
+  --font-display: 'Alegreya', Georgia, serif;
+  --font-body: 'Be Vietnam Pro', sans-serif;
+  --paper: #EFE3C8; --ink: #1E1A16; --scarlet: #B23A2A; --copper: #2F6A8A; --amber: #C98A2B; --green: #4F7A3A;
+  --bg: var(--paper); --fg: var(--ink); --muted: #5A4E40; --accent: var(--scarlet);
+  --card-bg: transparent; --card-fg: var(--ink); --card-radius: 0px;
+  --title-weight: 800; --title-tracking: 0; --bullet-radius: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .27 0 0 0 0 .16 0 0 0 .16 0'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23n)'/%3E%3Cg stroke='%238A7553' stroke-width='.8' fill='none' opacity='.22'%3E%3Cpath d='M12 40q40 6 78-4M150 22q30 10 70 2M40 130q50-8 90 6M210 160q40 4 96-8M20 250q36 10 80 0M170 280q44-6 120 6M260 70q20 20 50 18M90 200q16-14 50-10'/%3E%3C/g%3E%3C/svg%3E");
+}
+.deck-stage:is([data-layout="section"], [data-layout="closing"]) { --fg: var(--paper); --muted: #D9CBAD; --accent: #E0A447; }
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="band"]  { background: var(--ink); --x: 0px; --y: -120px; --w: 1920px; --h: 0px; }
+[data-actor="frame"] { border: 8px solid var(--ink); --x: 960px; --y: 540px; --w: 0px; --h: 0px; --o: 0; }
+[data-actor="sun"]     { background: var(--scarlet); border: 5px solid var(--ink); border-radius: 50%; --x: -200px; --y: 120px; --w: 120px; }
+[data-actor="square"]  { background: var(--copper); border: 5px solid var(--ink); --x: 2000px; --y: 140px; --w: 100px; }
+[data-actor="diamond"] { background: var(--amber); border: 5px solid var(--ink); --x: 2000px; --y: 860px; --w: 90px; --r: 45deg; }
+[data-actor="leaf"]    { background: var(--green); border: 5px solid var(--ink); border-radius: 0 100%; --x: -200px; --y: 880px; --w: 110px; }
+/* leaf vein: one carved line */
+[data-actor="leaf"]::after { content: ""; position: absolute; left: 50%; top: 8%; width: 4px; height: 84%; background: var(--ink); transform: rotate(-45deg); }
+
+/* ---------- 1. cover: frame around the page, motifs stamped in the corners ---------- */
+[data-layout="cover"] [data-actor="band"]    { --y: 1032px; --h: 48px; }
+[data-layout="cover"] [data-actor="frame"]   { --x: 60px; --y: 50px; --w: 1800px; --h: 960px; --o: 1; }
+[data-layout="cover"] [data-actor="sun"]     { --x: 120px; --y: 110px; --w: 190px; --r: 0deg; }
+[data-layout="cover"] [data-actor="square"]  { --x: 1660px; --y: 120px; --w: 130px; --r: 0deg; }
+[data-layout="cover"] [data-actor="diamond"] { --x: 1670px; --y: 820px; --w: 110px; --r: 45deg; }
+[data-layout="cover"] [data-actor="leaf"]    { --x: 130px; --y: 810px; --w: 150px; --r: 0deg; }
+
+/* ---------- 2. agenda: ink spine left, motifs roll to the top-right ---------- */
+[data-layout="agenda"] [data-actor="band"]    { --y: 0px; --w: 40px; --h: 1080px; }
+[data-layout="agenda"] [data-actor="frame"]   { --x: 90px; --y: 240px; --w: 1750px; --h: 790px; --o: 1; }
+[data-layout="agenda"] [data-actor="sun"]     { --x: 1720px; --y: 60px; --w: 120px; --r: 180deg; }
+[data-layout="agenda"] [data-actor="square"]  { --x: 1600px; --y: 100px; --w: 80px; --r: 90deg; }
+[data-layout="agenda"] [data-actor="diamond"] { --x: 1500px; --y: 120px; --w: 56px; --r: 135deg; }
+[data-layout="agenda"] [data-actor="leaf"]    { --x: 1400px; --y: 110px; --w: 70px; --r: 90deg; }
+
+/* ---------- 3. section: ink block left holds the text, motifs fill the frame ---------- */
+[data-layout="section"] [data-actor="band"]    { --y: 0px; --w: 1120px; --h: 1080px; }
+[data-layout="section"] [data-actor="frame"]   { --x: 1220px; --y: 120px; --w: 600px; --h: 840px; --o: 1; }
+[data-layout="section"] [data-actor="sun"]     { --x: 1300px; --y: 200px; --w: 290px; --r: 360deg; }
+[data-layout="section"] [data-actor="square"]  { --x: 1300px; --y: 650px; --w: 220px; --r: 180deg; }
+[data-layout="section"] [data-actor="diamond"] { --x: 1590px; --y: 700px; --w: 150px; --r: 225deg; }
+[data-layout="section"] [data-actor="leaf"]    { --x: 1620px; --y: 200px; --w: 140px; --r: 180deg; }
+
+/* chapter: motifs gather in a short frame above the outlined number */
+.deck-stage:has(.slide.active[data-kind="chapter"]) [data-actor="frame"]   { --h: 440px; }
+.deck-stage:has(.slide.active[data-kind="chapter"]) [data-actor="sun"]     { --x: 1290px; --y: 190px; --w: 180px; }
+.deck-stage:has(.slide.active[data-kind="chapter"]) [data-actor="leaf"]    { --x: 1500px; --y: 200px; --w: 110px; }
+.deck-stage:has(.slide.active[data-kind="chapter"]) [data-actor="square"]  { --x: 1640px; --y: 190px; --w: 110px; }
+.deck-stage:has(.slide.active[data-kind="chapter"]) [data-actor="diamond"] { --x: 1520px; --y: 400px; --w: 90px; }
+
+/* ---------- 4. content (odd): frame around the highlight ---------- */
+[data-layout="content"] [data-actor="band"]    { --x: 120px; --y: 196px; --w: 260px; --h: 14px; }
+[data-layout="content"] [data-actor="frame"]   { --x: 1230px; --y: 240px; --w: 600px; --h: 780px; --o: 1; }
+[data-layout="content"] [data-actor="sun"]     { --x: 1770px; --y: 190px; --w: 110px; --r: 90deg; }
+[data-layout="content"] [data-actor="square"]  { --x: 1180px; --y: 960px; --w: 90px; --r: 270deg; }
+[data-layout="content"] [data-actor="diamond"] { --x: 1848px; --y: 580px; --w: 50px; --r: 315deg; }
+[data-layout="content"] [data-actor="leaf"]    { --x: 30px; --y: 900px; --w: 70px; --r: 270deg; }
+/* even: frame jumps left around the bullets, ink block holds the highlight */
+[data-layout="content"][data-parity="even"] [data-actor="band"]    { --x: 1240px; --y: 240px; --w: 600px; --h: 780px; }
+[data-layout="content"][data-parity="even"] [data-actor="frame"]   { --x: 80px; --y: 240px; --w: 1120px; --h: 780px; }
+[data-layout="content"][data-parity="even"] [data-actor="sun"]     { --x: 1150px; --y: 180px; --w: 110px; --r: 270deg; }
+[data-layout="content"][data-parity="even"] [data-actor="square"]  { --x: 1800px; --y: 970px; --w: 90px; --r: 450deg; }
+[data-layout="content"][data-parity="even"] [data-actor="diamond"] { --x: 28px; --y: 560px; --w: 50px; --r: 495deg; }
+[data-layout="content"][data-parity="even"] [data-actor="leaf"]    { --x: 1820px; --y: 110px; --w: 70px; --r: 450deg; }
+
+/* ---------- 5. two-col: ink divider between the columns ---------- */
+[data-layout="two-col"] [data-actor="band"]    { --x: 948px; --y: 270px; --w: 24px; --h: 720px; }
+[data-layout="two-col"] [data-actor="frame"]   { --x: 80px; --y: 240px; --w: 1760px; --h: 780px; --o: 1; }
+[data-layout="two-col"] [data-actor="sun"]     { --x: 1730px; --y: 70px; --w: 110px; --r: 450deg; }
+[data-layout="two-col"] [data-actor="square"]  { --x: 1620px; --y: 100px; --w: 70px; --r: 360deg; }
+[data-layout="two-col"] [data-actor="diamond"] { --x: 920px; --y: 200px; --w: 80px; --r: 405deg; }
+[data-layout="two-col"] [data-actor="leaf"]    { --x: 1850px; --y: 980px; --w: 56px; --r: 360deg; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="band"]  { --h: 560px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="frame"] { --h: 620px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="leaf"]  { --x: 1760px; --y: 900px; --w: 80px; }
+
+/* ---------- 6. stats: ink base band, motifs stamped on it ---------- */
+[data-layout="stats"] [data-actor="band"]    { --y: 1000px; --h: 80px; }
+[data-layout="stats"] [data-actor="frame"]   { --x: 60px; --y: 50px; --w: 1800px; --h: 920px; --o: 1; }
+[data-layout="stats"] [data-actor="sun"]     { --x: 1700px; --y: 90px; --w: 110px; --r: 540deg; }
+[data-layout="stats"] [data-actor="square"]  { --x: 840px; --y: 1012px; --w: 56px; --r: 450deg; }
+[data-layout="stats"] [data-actor="diamond"] { --x: 932px; --y: 1014px; --w: 52px; --r: 495deg; }
+[data-layout="stats"] [data-actor="leaf"]    { --x: 1020px; --y: 1012px; --w: 56px; --r: 450deg; }
+
+/* ---------- 7. timeline: ink band is the axis, sun and leaf at its ends ---------- */
+[data-layout="timeline"] [data-actor="band"]    { --x: 120px; --y: 622px; --w: 1680px; --h: 16px; }
+[data-layout="timeline"] [data-actor="frame"]   { --x: 40px; --y: 240px; --w: 1840px; --h: 780px; --o: 1; }
+[data-layout="timeline"] [data-actor="sun"]     { --x: 1806px; --y: 600px; --w: 60px; --r: 630deg; }
+[data-layout="timeline"] [data-actor="square"]  { --x: 1720px; --y: 80px; --w: 80px; --r: 540deg; }
+[data-layout="timeline"] [data-actor="diamond"] { --x: 1620px; --y: 96px; --w: 56px; --r: 585deg; }
+[data-layout="timeline"] [data-actor="leaf"]    { --x: 54px; --y: 600px; --w: 60px; --r: 540deg; }
+
+/* ---------- 8. quote: frame with an ink spine, sun as the opening stamp ---------- */
+[data-layout="quote"] [data-actor="band"]    { --x: 200px; --y: 140px; --w: 32px; --h: 800px; }
+[data-layout="quote"] [data-actor="frame"]   { --x: 200px; --y: 140px; --w: 1520px; --h: 800px; --o: 1; }
+[data-layout="quote"] [data-actor="sun"]     { --x: 110px; --y: 70px; --w: 180px; --r: 720deg; }
+[data-layout="quote"] [data-actor="square"]  { --x: 1640px; --y: 860px; --w: 130px; --r: 630deg; }
+[data-layout="quote"] [data-actor="diamond"] { --x: 1500px; --y: 890px; --w: 90px; --r: 675deg; }
+[data-layout="quote"] [data-actor="leaf"]    { --x: 1770px; --y: 200px; --w: 100px; --r: 630deg; }
+
+/* ---------- 9. closing: ink plaque in the woodblock frame, motifs flank it ---------- */
+[data-layout="closing"] [data-actor="band"]    { --x: 380px; --y: 200px; --w: 1160px; --h: 680px; }
+[data-layout="closing"] [data-actor="frame"]   { --x: 340px; --y: 160px; --w: 1240px; --h: 760px; --o: 1; }
+[data-layout="closing"] [data-actor="sun"]     { --x: 110px; --y: 360px; --w: 200px; --r: 810deg; }
+[data-layout="closing"] [data-actor="square"]  { --x: 1640px; --y: 220px; --w: 160px; --r: 720deg; }
+[data-layout="closing"] [data-actor="diamond"] { --x: 1650px; --y: 660px; --w: 140px; --r: 765deg; }
+[data-layout="closing"] [data-actor="leaf"]    { --x: 140px; --y: 700px; --w: 150px; --r: 720deg; }
+
+/* ---------- diagram: clear stage, frame at the edges, small corner stamps ---------- */
+[data-layout="diagram"] [data-actor="frame"]   { --x: 24px; --y: 24px; --w: 1872px; --h: 1032px; --o: 1; }
+[data-layout="diagram"] [data-actor="sun"]     { --x: 1814px; --y: 46px; --w: 60px; }
+[data-layout="diagram"] [data-actor="leaf"]    { --x: 1814px; --y: 976px; --w: 60px; }
+[data-layout="diagram"] [data-actor="square"]  { --x: 46px; --y: 976px; --w: 56px; }
+
+/* ---------- content tweaks: carved serif, square stamps ---------- */
+.slide .kicker { letter-spacing: 0.24em; }
+.slide .title { line-height: 1.12; }
+.slide :is(.num, .stat-num, .hl-big, .when, .fig, .rk, .big, .ch-num, .n) { font-variant-numeric: lining-nums; }
+.slide[data-kind="chapter"] .ch-num { -webkit-text-stroke-color: var(--scarlet); opacity: 0.7; }
+.slide b, .slide strong { color: var(--scarlet); }
+.slide[data-layout="cover"] { padding: 0 340px; }
+.slide[data-layout="cover"] .title { font-size: 104px; line-height: 1.08; }
+.slide[data-layout="closing"] { padding: 0 460px; }
+.slide[data-layout="closing"] .title { font-size: 140px; line-height: 1.1; }
+.slide[data-layout="section"] { padding: 0 900px 0 160px; }
+.slide[data-layout="section"] .num { font-size: 240px; }
+.agenda-list { --agenda-gap: 180px; --tile-line: 3px solid var(--ink); }
+.agenda-list li { padding-top: 10px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.bullets li::before, .col li::before { border: 3px solid var(--ink); background: var(--amber); width: 0.42em; height: 0.42em; }
+.slide[data-layout="content"] { --title-w: 1060px; --hl-left: 1280px; --hl-right: 110px; }
+.slide[data-layout="content"] .highlight { --accent: var(--copper); }
+.slide[data-layout="content"][data-parity="even"] .highlight { color: var(--paper); --accent: #E0A447; }
+.slide[data-layout="two-col"] .col { padding: 44px 60px; }
+.slide[data-layout="two-col"] .col + .col { --accent: var(--copper); }
+.takeaway { border-left: 0; padding-left: 40px; color: var(--scarlet); }
+.stat:nth-child(2) { --accent: var(--copper); }
+.stat:nth-child(3) { --accent: var(--green); }
+.timeline::before { opacity: 0; }
+.step::before { width: 26px; height: 26px; border: 4px solid var(--ink); background: var(--amber); }
+.step:nth-child(odd)::before { bottom: -13px; }
+.step:nth-child(even)::before { top: -13px; }
+.slide[data-layout="quote"] { padding: 0 300px; }
+.slide[data-layout="quote"] .quote { font-size: 68px; line-height: 1.24; }
+.slide[data-layout="quote"] .cite { font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; font-size: 24px; }

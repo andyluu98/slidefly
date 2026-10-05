@@ -1,6 +1,6 @@
 ---
 name: slidefly
-description: Tạo slide HTML có hiệu ứng chuyển cảnh kiểu PowerPoint Morph (hình trang trí trượt, phóng to, đổi màu liền mạch giữa các slide), 47 style, bố cục tự lấp đầy theo lượng chữ và tự đo độ trống của từng slide, 8 dạng sơ đồ tự vẽ từ số liệu, hiệu ứng theo động từ và bấm từng bước. Dùng khi người dùng nói "slide morph", "slide animation đẹp", "slide HTML có hiệu ứng chuyển cảnh", "làm deck chuyển động", "/slidefly", "SlideFly", hoặc muốn chuyển một mẫu PowerPoint Morph sang web. Không dùng khi cần file .pptx chỉnh sửa được (dùng office-docs hoặc pptx) hay chỉ cần slide HTML hiệu ứng xuất hiện đơn giản (frontend-slides).
+description: Tạo slide HTML có hiệu ứng chuyển cảnh kiểu PowerPoint Morph (hình trang trí trượt, phóng to, đổi màu liền mạch giữa các slide), 57 style, bố cục tự lấp đầy theo lượng chữ và tự đo độ trống của từng slide, 8 dạng sơ đồ tự vẽ từ số liệu, hiệu ứng theo động từ và bấm từng bước. Dùng khi người dùng nói "slide morph", "slide animation đẹp", "slide HTML có hiệu ứng chuyển cảnh", "làm deck chuyển động", "/slidefly", "SlideFly", hoặc muốn chuyển một mẫu PowerPoint Morph sang web. Không dùng khi cần file .pptx chỉnh sửa được (dùng office-docs hoặc pptx) hay chỉ cần slide HTML hiệu ứng xuất hiện đơn giản (frontend-slides).
 ---
 
 # SlideFly: slide biết bay
@@ -26,7 +26,7 @@ assets/morph-mock.css/.js  khung giao diện giả: chat, terminal, trình duy�
 assets/morph-photo.css     slide ảnh nền tràn màn hình (data-layout="photo"), lớp phủ giữ chữ dễ đọc
 assets/morph-icons.css/.js icon Tabler: <i class="ico" data-icon="...">, tự tải khi soạn, nhúng khi gộp
 assets/icons/              danh mục Tabler (tabler-index.json) + từ khóa tiếng Việt (vi-keywords.json)
-assets/styles/*.css        47 style; assets/styles/index.json = tên, nền, nhãn tâm trạng, hợp với, font
+assets/styles/*.css        57 style; assets/styles/index.json = tên, nền, nhãn tâm trạng, hợp với, font
 templates/deck-mau.html    deck mẫu 10 slide đủ 9 kiểu: KHUNG ĐỂ COPY
 templates/deck-so-do.html  deck mẫu 16 slide: mỗi slide một dạng hình, có bấm từng bước
 templates/deck-bo-cuc.html  deck mẫu 13 slide: đủ 12 bố cục mới

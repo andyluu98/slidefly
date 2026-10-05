@@ -1,0 +1,146 @@
+/* ===========================================================
+   STYLE: WABI (Japanese wabi-sabi minimalism, light).
+   Washi paper, sumi ink, one hanko red used sparingly. Very few
+   actors, lots of empty space, asymmetric placement.
+   Signature: the enso (brush ring left open) rotates and drifts
+   between layouts; the red seal lands next to the key point.
+   Actors: wash (faint ink-wash panel), line (thin ink line),
+           enso (open brush ring), seal (red hanko square).
+           DOM order = z-order.
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500&family=Be+Vietnam+Pro:wght@300;400;500&display=swap');
+
+.deck-stage {
+  --actors: "wash line enso seal";
+  --font-display: 'Noto Serif', Georgia, serif;
+  --font-body: 'Be Vietnam Pro', sans-serif;
+  --bg: #F4F1EA; --fg: #1F1F1F; --muted: #6F6C66; --accent: #C8102E;
+  --card-bg: transparent; --card-fg: #1F1F1F; --card-radius: 2px;
+  --title-weight: 500; --title-tracking: 0.005em; --bullet-radius: 0;
+  --sumi: #1F1F1F; --stone: #8C8A85; --hanko: #C8102E; --ink-wash: rgba(31, 31, 31, 0.05);
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="wash"] { background: var(--ink-wash); --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+[data-actor="line"] { background: var(--sumi); --x: 960px; --y: -20px; --w: 2px; --h: 0px; }
+/* brush ring: uneven side widths taper the stroke, the open side is the gap */
+[data-actor="enso"] {
+  --ew: 24px; border-radius: 50%; border-style: solid;
+  border-color: rgba(31, 31, 31, 0.88) rgba(31, 31, 31, 0.8) rgba(31, 31, 31, 0.7) transparent;
+  border-width: var(--ew) calc(var(--ew) * 0.72) calc(var(--ew) * 0.38) calc(var(--ew) * 0.6);
+  --x: 2100px; --y: 240px; --w: 600px; --r: -60deg;
+}
+[data-actor="seal"] {
+  background-color: var(--hanko); border-radius: 3px;
+  box-shadow: inset 0 0 0 5px var(--hanko), inset 0 0 0 7px rgba(244, 241, 234, 0.9);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='none' stroke='%23F4F1EA' stroke-width='3' stroke-linecap='square'%3E%3Cpath d='M13 11v18M13 20h7M27 11v18M22 11h10'/%3E%3C/svg%3E");
+  background-size: 62%; background-position: center; background-repeat: no-repeat;
+  --x: 1800px; --y: -120px; --w: 56px; --r: 0deg;
+}
+
+/* ---------- 1. cover: text left, enso far right, ink line divides ---------- */
+[data-layout="cover"] [data-actor="wash"] { --x: 1120px; --y: 0px; --w: 800px; --h: 1080px; }
+[data-layout="cover"] [data-actor="line"] { --x: 1120px; --y: 140px; --h: 800px; }
+[data-layout="cover"] [data-actor="enso"] { --x: 1230px; --y: 230px; --w: 580px; --ew: 26px; --r: -30deg; }
+[data-layout="cover"] [data-actor="seal"] { --x: 1700px; --y: 770px; --w: 64px; --r: 4deg; }
+
+/* ---------- 2. agenda: enso shrinks to a mark, line divides the columns ---------- */
+[data-layout="agenda"] [data-actor="wash"] { --x: 0px; --y: 0px; --w: 72px; --h: 1080px; }
+[data-layout="agenda"] [data-actor="line"] { --x: 959px; --y: 300px; --h: 660px; }
+[data-layout="agenda"] [data-actor="enso"] { --x: 1700px; --y: 60px; --w: 130px; --ew: 9px; --r: 80deg; }
+[data-layout="agenda"] [data-actor="seal"] { --x: 1662px; --y: 150px; --w: 32px; --r: -3deg; }
+
+/* ---------- 3. section: wash panel right, the enso grows and turns ---------- */
+[data-layout="section"] [data-actor="wash"] { --x: 1060px; --y: 0px; --w: 860px; --h: 1080px; }
+[data-layout="section"] [data-actor="line"] { --x: 1060px; --y: 0px; --h: 1080px; }
+[data-layout="section"] [data-actor="enso"] { --x: 1160px; --y: 170px; --w: 740px; --ew: 32px; --r: 40deg; }
+[data-layout="section"] [data-actor="seal"] { --x: 1500px; --y: 520px; --w: 72px; --r: -4deg; }
+
+/* ---------- 4. content (odd): enso frames the highlight, seal beside it ---------- */
+[data-layout="content"] [data-actor="wash"] { --x: 0px; --y: 1000px; --w: 1920px; --h: 80px; }
+[data-layout="content"] [data-actor="line"] { --x: 1200px; --y: 260px; --h: 720px; }
+[data-layout="content"] [data-actor="enso"] { --x: 1230px; --y: 320px; --w: 600px; --ew: 16px; --r: -110deg; }
+[data-layout="content"] [data-actor="seal"] { --x: 1772px; --y: 330px; --w: 48px; --r: 3deg; }
+/* even: enso drifts to the corner, a wash panel holds the highlight */
+[data-layout="content"][data-parity="even"] [data-actor="wash"] { --x: 1250px; --y: 260px; --w: 560px; --h: 720px; }
+[data-layout="content"][data-parity="even"] [data-actor="line"] { --x: 1250px; --y: 1000px; --w: 560px; --h: 2px; }
+[data-layout="content"][data-parity="even"] [data-actor="enso"] { --x: 1690px; --y: 40px; --w: 160px; --ew: 10px; --r: 160deg; }
+[data-layout="content"][data-parity="even"] [data-actor="seal"] { --x: 1282px; --y: 292px; --w: 44px; --r: -3deg; }
+
+/* ---------- 5. two-col: ink line divides, wash marks the chosen side ---------- */
+[data-layout="two-col"] [data-actor="wash"] { --x: 990px; --y: 250px; --w: 830px; --h: 760px; }
+[data-layout="two-col"] [data-actor="line"] { --x: 959px; --y: 290px; --h: 640px; }
+[data-layout="two-col"] [data-actor="enso"] { --x: 1700px; --y: 50px; --w: 140px; --ew: 9px; --r: 210deg; }
+[data-layout="two-col"] [data-actor="seal"] { --x: 1758px; --y: 280px; --w: 36px; --r: 2deg; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="wash"] { --h: 590px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="line"] { --h: 500px; }
+
+/* ---------- 6. stats: enso sinks bottom left, hairline under the figures ---------- */
+[data-layout="stats"] [data-actor="wash"] { --x: 0px; --y: 0px; --w: 1920px; --h: 230px; }
+[data-layout="stats"] [data-actor="line"] { --x: 600px; --y: 880px; --w: 1200px; --h: 2px; }
+[data-layout="stats"] [data-actor="enso"] { --x: 1560px; --y: 64px; --w: 150px; --ew: 9px; --r: 120deg; }
+[data-layout="stats"] [data-actor="seal"] { --x: 1756px; --y: 100px; --w: 44px; --r: -2deg; }
+
+/* ---------- 7. timeline: the line lies down as the axis, seal at its end ---------- */
+[data-layout="timeline"] [data-actor="wash"] { --x: 0px; --y: 630px; --w: 1920px; --h: 450px; }
+[data-layout="timeline"] [data-actor="line"] { --x: 120px; --y: 629px; --w: 1680px; --h: 2px; }
+[data-layout="timeline"] [data-actor="enso"] { --x: 1680px; --y: -170px; --w: 380px; --ew: 18px; --r: 200deg; }
+[data-layout="timeline"] [data-actor="seal"] { --x: 1812px; --y: 612px; --w: 36px; --r: 0deg; }
+
+/* ---------- 8. quote: line stands before the words, enso rests low right ---------- */
+[data-layout="quote"] [data-actor="wash"] { --x: 0px; --y: 0px; --w: 200px; --h: 1080px; }
+[data-layout="quote"] [data-actor="line"] { --x: 230px; --y: 360px; --h: 360px; }
+[data-layout="quote"] [data-actor="enso"] { --x: 1460px; --y: 720px; --w: 560px; --ew: 26px; --r: -150deg; }
+[data-layout="quote"] [data-actor="seal"] { --x: 1340px; --y: 120px; --w: 52px; --r: 5deg; }
+
+/* ---------- 9. closing: the enso closes around the thanks ---------- */
+[data-layout="closing"] [data-actor="wash"] { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="closing"] [data-actor="line"] { --x: 959px; --y: -10px; --h: 90px; }
+[data-layout="closing"] [data-actor="enso"] { --x: 500px; --y: 80px; --w: 920px; --ew: 28px; --r: 20deg; }
+[data-layout="closing"] [data-actor="seal"] { --x: 1340px; --y: 830px; --w: 60px; --r: -5deg; }
+
+/* ---------- diagram: clear stage, small enso in the corner, seal by the title ---------- */
+.deck-stage[data-layout="diagram"] { --accent: var(--sumi); }
+[data-layout="diagram"] [data-actor="enso"] { --x: 1720px; --y: 60px; --w: 110px; --ew: 8px; --r: 100deg; }
+[data-layout="diagram"] [data-actor="seal"] { --x: 66px; --y: 112px; --w: 30px; --r: 0deg; }
+
+/* ---------- content tweaks: quiet serif, light body, red only on the point ---------- */
+.slide { font-weight: 300; }
+.slide .kicker { color: var(--muted); font-weight: 500; letter-spacing: 0.32em; }
+.slide .subtitle { font-weight: 300; line-height: 1.55; }
+.slide b, .slide strong { font-weight: 500; }
+.slide[data-layout="cover"] { align-items: flex-start; text-align: left; padding: 0 860px 0 200px; }
+.slide[data-layout="cover"] .title { font-size: 84px; line-height: 1.18; }
+.slide[data-layout="closing"] { padding: 0 560px; }
+.slide[data-layout="closing"] .title { font-size: 108px; }
+.slide[data-layout="section"] { padding: 0 960px 0 180px; }
+.slide[data-layout="section"] .num { font-size: 180px; font-weight: 400; color: var(--stone); }
+.slide[data-layout="section"] .title { line-height: 1.18; }
+.agenda-list { --agenda-gap: 200px; --tile-line: 1px solid rgba(31, 31, 31, 0.14); }
+.agenda-list li { padding-top: 10px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list .num { color: var(--stone); font-weight: 400; }
+.agenda-list h3 { font-weight: 500; }
+.bullets li::before, .col li::before { width: 0.6em; height: 1.5px; top: 0.72em; background: var(--stone); }
+.bullets li { padding-left: 1.5em; }
+[data-density="md"] .bullets { --b-fs: 38px; --b-gap: 50px; }
+.slide[data-layout="content"] { --title-w: 1060px; --hl-left: 1320px; --hl-right: 180px; }
+.hl-big { font-weight: 500; }
+.hl-icon { color: var(--fg); }
+.hl-text { font-weight: 500; line-height: 1.35; }
+.col h3 { color: var(--fg); font-weight: 500; }
+.slide[data-layout="two-col"] .col { padding: 40px 56px; }
+.takeaway { border-left: 2px solid var(--hanko); padding-left: 40px; font-weight: 500; }
+.stat-num { color: var(--fg); font-weight: 400; }
+.stat:first-child .stat-num { color: var(--hanko); }
+.timeline::before { display: none; }
+.step::before { width: 14px; height: 14px; background: var(--sumi); }
+.step:nth-child(odd)::before  { bottom: -7px; }
+.step:nth-child(even)::before { top: -7px; }
+.step .when { color: var(--stone); font-weight: 400; }
+.step h3 { font-weight: 500; }
+.slide[data-layout="quote"] { padding: 0 300px; }
+.slide[data-layout="quote"] .quote { font-weight: 400; line-height: 1.38; }
+.slide[data-layout="quote"] .cite { letter-spacing: 0.12em; }
+.bento .cell, .ba-side { border-radius: 2px; }

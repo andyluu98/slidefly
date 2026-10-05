@@ -1,0 +1,155 @@
+/* ===========================================================
+   STYLE: BENTO LIGHT. Clean product keynote on a light grey
+   stage. Five white rounded cards re-tile into a new bento grid
+   on every layout so each text block lands inside a card; one
+   accent-blue card or dot marks the highlight; a hairline rule.
+   Signature motion: the bento box being re-packed.
+   Actors: c1..c5 (white cards), blue (accent card/dot),
+           line (hairline). DOM order = z-order.
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+.deck-stage {
+  --actors: "c1 c2 c3 c4 c5 blue line";
+  --font-display: 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --bg: #F5F5F7; --fg: #1D1D1F; --muted: #6E6E73; --accent: #0071E3;
+  --soft: #E8F1FD; --hair: #D2D2D7;
+  --card-bg: transparent; --card-fg: #1D1D1F; --card-radius: 32px;
+  --title-weight: 800; --title-tracking: -0.02em; --bullet-radius: 50%;
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor^="c"] {
+  background-color: #FFFFFF; border-radius: 32px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  --x: 760px; --y: 1160px; --w: 400px; --h: 300px;
+}
+[data-actor="blue"] { background-color: var(--accent); border-radius: 32px; --x: 1960px; --y: 520px; --w: 48px; --h: 48px; }
+[data-actor="line"] { background-color: var(--hair); --x: 960px; --y: 198px; --w: 0px; --h: 1px; }
+/* small app-icon tiles parked beside the title row */
+.deck-stage:is([data-layout="agenda"], [data-layout="two-col"], [data-layout="timeline"], [data-layout="diagram"]) [data-actor="c4"],
+[data-layout="content"][data-parity="even"] [data-actor="c4"] { --x: 1664px; --y: 92px; --w: 72px; --h: 72px; border-radius: 22px; }
+.deck-stage:is([data-layout="agenda"], [data-layout="two-col"], [data-layout="diagram"]) [data-actor="blue"],
+[data-layout="content"][data-parity="even"] [data-actor="c5"] { --x: 1752px; --y: 92px; --w: 72px; --h: 72px; border-radius: 22px; }
+
+/* ---------- 1. cover: hero card left, four-cell grid right ---------- */
+[data-layout="cover"] [data-actor="c1"]   { --x: 120px;  --y: 120px; --w: 1140px; --h: 840px; }
+[data-layout="cover"] [data-actor="c2"]   { --x: 1284px; --y: 120px; --w: 516px;  --h: 400px; }
+[data-layout="cover"] [data-actor="c3"]   { --x: 1284px; --y: 544px; --w: 516px;  --h: 190px; }
+[data-layout="cover"] [data-actor="c4"]   { --x: 1284px; --y: 758px; --w: 246px;  --h: 202px; }
+[data-layout="cover"] [data-actor="c5"]   { --x: 1554px; --y: 758px; --w: 246px;  --h: 202px; }
+[data-layout="cover"] [data-actor="blue"] { --x: 1478px; --y: 256px; --w: 128px; --h: 128px; border-radius: 50%; }
+[data-layout="cover"] [data-actor="line"] { --x: 220px;  --y: 880px; --w: 200px; --h: 2px; background-color: var(--accent); }
+
+/* ---------- 2. agenda: two tall cards hold the two columns ---------- */
+[data-layout="agenda"] [data-actor="c1"]   { --x: 100px; --y: 230px; --w: 840px; --h: 790px; }
+[data-layout="agenda"] [data-actor="c2"]   { --x: 980px; --y: 230px; --w: 840px; --h: 790px; }
+[data-layout="agenda"] [data-actor="c3"]   { --x: 1960px; --y: 230px; --w: 400px; --h: 400px; }
+[data-layout="agenda"] [data-actor="line"] { --x: 100px; --w: 1720px; }
+
+/* ---------- 3. section: text card left, bento cluster right ---------- */
+[data-layout="section"] [data-actor="c1"]   { --x: 100px;  --y: 100px; --w: 1020px; --h: 880px; }
+[data-layout="section"] [data-actor="c2"]   { --x: 1144px; --y: 100px; --w: 676px;  --h: 428px; }
+[data-layout="section"] [data-actor="c3"]   { --x: 1144px; --y: 552px; --w: 326px;  --h: 428px; }
+[data-layout="section"] [data-actor="c4"]   { --x: 1494px; --y: 552px; --w: 326px;  --h: 202px; }
+[data-layout="section"] [data-actor="c5"]   { --x: 1494px; --y: 778px; --w: 326px;  --h: 202px; }
+[data-layout="section"] [data-actor="blue"] { --x: 1400px; --y: 232px; --w: 164px; --h: 164px; border-radius: 50%; }
+[data-layout="section"] [data-actor="line"] { --x: 160px;  --y: 900px; --w: 900px; }
+
+/* chapter: one wide card holds the title and the outlined number */
+.deck-stage:has(.slide.active[data-kind="chapter"]) [data-actor="c1"] { --w: 1720px; }
+.deck-stage:has(.slide.active[data-kind="chapter"]) :is([data-actor="c2"], [data-actor="c3"]) { --x: 1960px; }
+.deck-stage:has(.slide.active[data-kind="chapter"]) :is([data-actor="c4"], [data-actor="c5"]) { --y: 1160px; }
+.deck-stage:has(.slide.active[data-kind="chapter"]) [data-actor="blue"] { --x: 1712px; --y: 140px; --w: 64px; --h: 64px; }
+.slide[data-kind="chapter"] .ch-num { right: 140px; bottom: 100px; font-size: 560px; }
+
+/* ---------- 4. content (odd): bullets card, highlight card, two small cells ---------- */
+[data-layout="content"] [data-actor="c1"]   { --x: 80px;   --y: 230px; --w: 1120px; --h: 790px; }
+[data-layout="content"] [data-actor="c2"]   { --x: 1232px; --y: 230px; --w: 608px;  --h: 560px; }
+[data-layout="content"] [data-actor="c3"]   { --x: 1232px; --y: 814px; --w: 292px;  --h: 206px; }
+[data-layout="content"] [data-actor="c4"]   { --x: 1548px; --y: 814px; --w: 292px;  --h: 206px; }
+[data-layout="content"] [data-actor="blue"] { --x: 1772px; --y: 262px; --w: 36px; --h: 36px; border-radius: 50%; }
+[data-layout="content"] [data-actor="line"] { --x: 80px; --w: 1760px; }
+/* even: the blue dot grows into the highlight card, white cells fly to the title row */
+[data-layout="content"][data-parity="even"] [data-actor="c2"]   { --x: 1960px; --y: 230px; }
+[data-layout="content"][data-parity="even"] [data-actor="c3"]   { --x: 1960px; --y: 814px; }
+[data-layout="content"][data-parity="even"] [data-actor="blue"] { --x: 1232px; --y: 230px; --w: 608px; --h: 790px; border-radius: 32px; }
+
+/* ---------- 5. two-col: twin cards, blue takeaway bar ---------- */
+[data-layout="two-col"] [data-actor="c1"]   { --x: 100px; --y: 230px; --w: 848px; --h: 790px; }
+[data-layout="two-col"] [data-actor="c2"]   { --x: 972px; --y: 230px; --w: 848px; --h: 790px; }
+[data-layout="two-col"] [data-actor="line"] { --x: 100px; --w: 1720px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) :is([data-actor="c1"], [data-actor="c2"]) { --h: 620px; }
+.deck-stage[data-layout="two-col"]:has(.slide.active .takeaway) [data-actor="blue"] { --x: 100px; --y: 870px; --w: 1720px; --h: 140px; border-radius: 32px; }
+
+/* ---------- 6. stats: three equal cells ---------- */
+[data-layout="stats"] [data-actor="c1"]   { --x: 96px;   --y: 230px; --w: 544px; --h: 790px; }
+[data-layout="stats"] [data-actor="c2"]   { --x: 688px;  --y: 230px; --w: 544px; --h: 790px; }
+[data-layout="stats"] [data-actor="c3"]   { --x: 1280px; --y: 230px; --w: 544px; --h: 790px; }
+[data-layout="stats"] [data-actor="blue"] { --x: 136px;  --y: 270px; --w: 28px; --h: 28px; border-radius: 50%; }
+[data-layout="stats"] [data-actor="line"] { --x: 96px; --w: 1728px; }
+/* two or four figures: the cards follow the number of cells */
+.deck-stage[data-layout="stats"]:has(.slide.active .stat:nth-child(2):last-child) [data-actor="c1"] { --w: 840px; }
+.deck-stage[data-layout="stats"]:has(.slide.active .stat:nth-child(2):last-child) :is([data-actor="c2"], [data-actor="c3"]) { --x: 984px; --w: 840px; }
+.deck-stage[data-layout="stats"]:has(.slide.active .stat:nth-child(4)) [data-actor="c1"] { --x: 96px;   --w: 414px; }
+.deck-stage[data-layout="stats"]:has(.slide.active .stat:nth-child(4)) [data-actor="c2"] { --x: 534px;  --w: 414px; }
+.deck-stage[data-layout="stats"]:has(.slide.active .stat:nth-child(4)) [data-actor="c3"] { --x: 972px;  --w: 414px; }
+.deck-stage[data-layout="stats"]:has(.slide.active .stat:nth-child(4)) [data-actor="c4"] { --x: 1410px; --y: 230px; --w: 414px; --h: 790px; }
+
+/* ---------- 7. timeline: upper and lower bands, axis in the seam ---------- */
+[data-layout="timeline"] [data-actor="c1"]   { --x: 80px; --y: 230px; --w: 1760px; --h: 380px; }
+[data-layout="timeline"] [data-actor="c2"]   { --x: 80px; --y: 650px; --w: 1760px; --h: 370px; }
+[data-layout="timeline"] [data-actor="blue"] { --x: 1752px; --y: 92px; --w: 72px; --h: 72px; border-radius: 22px; }
+[data-layout="timeline"] [data-actor="line"] { --x: 120px; --y: 629px; --w: 1680px; --h: 2px; background-color: var(--accent); }
+
+/* ---------- 8. quote: wide card, a row of four cells, blue quote dot ---------- */
+[data-layout="quote"] [data-actor="c1"]   { --x: 200px;  --y: 120px; --w: 1520px; --h: 720px; }
+[data-layout="quote"] [data-actor="c2"]   { --x: 200px;  --y: 864px; --w: 362px;  --h: 156px; }
+[data-layout="quote"] [data-actor="c3"]   { --x: 586px;  --y: 864px; --w: 362px;  --h: 156px; }
+[data-layout="quote"] [data-actor="c4"]   { --x: 972px;  --y: 864px; --w: 362px;  --h: 156px; }
+[data-layout="quote"] [data-actor="c5"]   { --x: 1358px; --y: 864px; --w: 362px;  --h: 156px; }
+[data-layout="quote"] [data-actor="blue"] { --x: 248px;  --y: 168px; --w: 96px; --h: 96px; border-radius: 50%; }
+[data-layout="quote"] [data-actor="blue"]::before {
+  content: "\201C"; position: absolute; inset: 0; color: #fff; text-align: center;
+  font: 800 120px/1.05 'Inter', sans-serif;
+}
+
+/* ---------- 9. closing: centre card framed by side columns and a base row ---------- */
+[data-layout="closing"] [data-actor="c1"]   { --x: 360px;  --y: 120px; --w: 1200px; --h: 720px; }
+[data-layout="closing"] [data-actor="c2"]   { --x: 120px;  --y: 120px; --w: 216px;  --h: 720px; }
+[data-layout="closing"] [data-actor="c3"]   { --x: 1584px; --y: 120px; --w: 216px;  --h: 720px; }
+[data-layout="closing"] [data-actor="c4"]   { --x: 120px;  --y: 864px; --w: 828px;  --h: 96px; }
+[data-layout="closing"] [data-actor="c5"]   { --x: 972px;  --y: 864px; --w: 828px;  --h: 96px; }
+[data-layout="closing"] [data-actor="blue"] { --x: 912px;  --y: 176px; --w: 96px; --h: 96px; border-radius: 50%; }
+
+/* ---------- content tweaks: crisp keynote type ---------- */
+.slide .kicker { letter-spacing: 0.08em; font-weight: 600; }
+.slide .title { line-height: 1.08; }
+.slide[data-layout="cover"] { align-items: flex-start; text-align: left; padding: 0 760px 0 220px; }
+.slide[data-layout="cover"] .title { font-size: 84px; }
+.slide[data-layout="closing"] { padding: 0 420px 240px; }
+.slide[data-layout="closing"] .title { font-size: 128px; letter-spacing: -0.04em; }
+.slide[data-layout="agenda"] { --pad-x: 160px; }
+.agenda-list { --agenda-gap: 200px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.slide[data-layout="section"] { padding: 0 900px 0 180px; }
+.slide[data-layout="section"] .title { font-size: 80px; }
+.slide[data-layout="content"] { --title-w: 1500px; }
+.slide[data-layout="content"] .bullets { left: 140px; width: 1000px; }
+.slide[data-layout="content"] .highlight { left: 1260px; right: 108px; bottom: 310px; }
+.slide[data-layout="content"][data-parity="even"] .highlight { bottom: 90px; color: #fff; --accent: #fff; }
+.col { padding: 48px 64px; }
+.slide[data-layout="two-col"] .takeaway { border-left: 0; padding: 20px 56px; color: #fff; bottom: 80px; }
+.slide[data-layout="stats"] .stats { gap: 96px; }
+.stat-num { letter-spacing: -0.04em; }
+.timeline::before { display: none; }
+.slide[data-layout="quote"] { padding: 0 300px 120px; }
+.slide[data-layout="quote"] .quote { font-size: 72px; }
+.slide[data-layout="quote"] .quote { font-weight: 700; letter-spacing: -0.02em; }
+/* plus layouts: cells and panels become white cards too */
+.bento .cell { background: #fff; border: 0; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05); border-radius: 32px; }
+.bento .hot { background: var(--accent); color: #fff; }
+.ba-side.after, .ctable .pick { background: #fff; }
+.pq-face { background: var(--soft); }

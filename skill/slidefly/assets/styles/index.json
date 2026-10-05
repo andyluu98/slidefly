@@ -603,5 +603,132 @@
   ],
   "best_for": "bài nói chuyện, nghiên cứu, văn hóa",
   "fonts": "Cormorant Garamond + Source Serif 4"
+ },
+ {
+  "slug": "son-mai",
+  "name": "Sơn mài",
+  "scheme": "dark",
+  "mood": [
+   "trang trọng",
+   "văn hóa Việt",
+   "cao cấp"
+  ],
+  "best_for": "Tết, sự kiện văn hóa, thương hiệu Việt cao cấp, lễ kỷ niệm",
+  "fonts": "Cormorant Garamond + Be Vietnam Pro"
+ },
+ {
+  "slug": "dong-ho",
+  "name": "Tranh Đông Hồ",
+  "scheme": "light",
+  "mood": [
+   "dân gian",
+   "mộc mạc",
+   "vui",
+   "giáo dục"
+  ],
+  "best_for": "bài giảng, văn hóa dân gian, sự kiện cộng đồng, trẻ em",
+  "fonts": "Alegreya + Be Vietnam Pro"
+ },
+ {
+  "slug": "hoi-an",
+  "name": "Hội An",
+  "scheme": "light",
+  "mood": [
+   "ấm áp",
+   "hoài niệm",
+   "mến khách"
+  ],
+  "best_for": "du lịch, ẩm thực, khách sạn, giới thiệu địa phương",
+  "fonts": "Fraunces + Be Vietnam Pro"
+ },
+ {
+  "slug": "aurora",
+  "name": "Aurora",
+  "scheme": "dark",
+  "mood": [
+   "công nghệ",
+   "tương lai",
+   "mơ màng"
+  ],
+  "best_for": "AI, ra mắt sản phẩm, keynote công nghệ, startup",
+  "fonts": "Unbounded + Manrope"
+ },
+ {
+  "slug": "bento-light",
+  "name": "Bento Light",
+  "scheme": "light",
+  "mood": [
+   "tối giản",
+   "sạch",
+   "hiện đại",
+   "chuyên nghiệp"
+  ],
+  "best_for": "báo cáo sản phẩm, startup, tổng kết quý, demo phần mềm",
+  "fonts": "Inter"
+ },
+ {
+  "slug": "bauhaus",
+  "name": "Bauhaus",
+  "scheme": "light",
+  "mood": [
+   "hình học",
+   "sáng tạo",
+   "rõ ràng",
+   "giáo dục"
+  ],
+  "best_for": "bài giảng thiết kế, workshop sáng tạo, giáo dục, giới thiệu studio",
+  "fonts": "Josefin Sans + Archivo"
+ },
+ {
+  "slug": "restorative",
+  "name": "Restorative",
+  "scheme": "light",
+  "mood": [
+   "dịu",
+   "chữa lành",
+   "ấm áp",
+   "tin cậy"
+  ],
+  "best_for": "sức khỏe, tâm lý, coaching, nhân sự, giáo dục mầm non",
+  "fonts": "Fraunces + Nunito"
+ },
+ {
+  "slug": "wabi",
+  "name": "Wabi",
+  "scheme": "light",
+  "mood": [
+   "tĩnh lặng",
+   "chiêm nghiệm",
+   "tối giản",
+   "sâu sắc"
+  ],
+  "best_for": "nghiên cứu, chiến lược, triết lý, bài nói chiêm nghiệm",
+  "fonts": "Noto Serif + Be Vietnam Pro"
+ },
+ {
+  "slug": "art-deco",
+  "name": "Art Deco",
+  "scheme": "dark",
+  "mood": [
+   "sang trọng",
+   "lễ hội",
+   "cổ điển",
+   "trang trọng"
+  ],
+  "best_for": "gala, lễ trao giải, tất niên, bất động sản cao cấp",
+  "fonts": "Playfair Display SC + Josefin Sans"
+ },
+ {
+  "slug": "clay-3d",
+  "name": "Clay 3D",
+  "scheme": "light",
+  "mood": [
+   "vui tươi",
+   "thân thiện",
+   "trẻ trung",
+   "mềm mại"
+  ],
+  "best_for": "giáo dục trẻ em, edtech, app tiêu dùng, workshop vui",
+  "fonts": "Baloo 2 + Nunito"
  }
 ]

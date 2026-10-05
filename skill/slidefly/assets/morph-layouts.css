@@ -111,6 +111,8 @@ b, strong { font-weight: 700; }
 [data-density="lg"] .stats { --s-num: 220px; --s-fs: 36px; }
 [data-density="md"] .stats { --s-num: 150px; --s-fs: 30px; }
 [data-density="sm"] .stats { --s-num: 110px; --s-fs: 26px; }
+/* four figures share the width: big type would break "4-5" over two lines */
+[data-density="lg"] .stats:has(> .stat:nth-child(4)) { --s-num: 160px; }
 
 /* ---------- 7. timeline: zig-zag around a centred axis ---------- */
 .timeline {
