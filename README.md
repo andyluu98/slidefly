@@ -23,6 +23,7 @@ Mỗi style có một nhóm hình cố định gọi là **diễn viên**. Mỗi
 - **Logo xuyên suốt:** một logo (icon Tabler hoặc file ảnh) to ở bìa, thu về góc ở slide nội dung, ẩn ở slide trích dẫn, và tự bay giữa các vị trí đó.
 - **Khung giao diện giả:** cửa sổ chat, terminal, trình duyệt, điện thoại vẽ bằng CSS. Prompt gõ từng chữ, trợ lý "nghĩ" rồi trả lời từng dòng, lệnh cài hiện dần theo cú bấm.
 - **Slide ảnh nền và lưới icon:** ảnh tràn màn hình làm điểm nghỉ giữa các phần (lớp phủ giữ chữ dễ đọc, bắt buộc ghi nguồn ảnh); lưới 3 đến 6 icon cùng màu cho các ý ngắn.
+- **Không rập khuôn:** `pick-styles.py` gợi ý 3 style (hợp mục đích, khác nền, bất ngờ) và một cách kể chuyện, xáo mỗi lần chạy, nên cả lớp gõ cùng một prompt vẫn ra các bộ slide khác nhau.
 - **Bấm từng bước:** `data-step` cho phép giảng tới đâu mở tới đó, phím lùi gỡ đúng một bước; slide có `data-at` để đổi trạng thái theo từng cú bấm.
 - **Tự lấp đầy:** engine đếm số ý trên slide rồi chọn cỡ chữ lớn, vừa hoặc nhỏ. Slide nội dung có ô điểm nhấn, slide hai cột có câu kết luận.
 - **Không lặp nhàm:** cùng một kiểu slide xuất hiện nhiều lần sẽ đổi dáng (biến thể 1, 2, 3) và đổi hướng chữ vào khung.
@@ -76,7 +77,7 @@ skill/slidefly/
 │   ├── icons/               danh mục Tabler + từ khóa tiếng Việt
 │   └── styles/              57 style + index.json
 ├── references/              cơ chế, layout, công thức chuyển cảnh, chọn style, font tiếng Việt
-├── scripts/                 inline-assets.py, check-deck.py, build-gallery.py, icons.py
+├── scripts/                 inline-assets.py, check-deck.py, build-gallery.py, icons.py, pick-styles.py
 └── templates/              deck-mau.html (10 slide đủ 9 kiểu), deck-so-do.html (16 slide, mỗi slide một dạng hình), deck-giao-dien.html (10 slide, logo, khung giao diện, ảnh nền, lưới icon), deck-bo-cuc.html (13 slide, 12 bố cục mới)
 examples/                    2 deck mẫu về AI Agent
 gallery/                     00-gallery.html + 57 deck demo

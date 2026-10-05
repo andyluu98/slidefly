@@ -35,6 +35,7 @@ scripts/inline-assets.py   gộp CSS/JS thành 1 file HTML mang đi được
 scripts/check-deck.py      chụp mọi slide + đo + bắt lỗi console, ra sheet.jpg
 scripts/icons.py           search <từ> / suggest <deck.html>: tìm và gợi ý icon Tabler
 scripts/build-gallery.py   dựng demo + trang 00-gallery.html xem/lọc mọi style
+scripts/pick-styles.py     gợi ý 3 style (hợp, khác nền, bất ngờ) + 1 cách kể, xáo mỗi lần chạy, không lặp style vừa dùng
 ```
 
 Đọc thêm khi cần: `references/layouts.md` (markup từng kiểu slide), `references/co-che-morph.md` (cơ chế, viết style mới, port PowerPoint), `references/vu-dao-morph.md` (công thức chuyển cảnh), `references/style-presets.md` (chọn style), `references/hieu-ung-va-so-do.md` (chọn hình theo ý, khai báo sơ đồ, hiệu ứng, bấm từng bước), `references/icon-tabler.md` (icon: tìm, khai báo, luật chống rối), `references/logo-va-giao-dien.md` (logo xuyên suốt, khung chat/terminal/trình duyệt/điện thoại, slide ảnh nền, lưới icon).
@@ -43,12 +44,15 @@ scripts/build-gallery.py   dựng demo + trang 00-gallery.html xem/lọc mọi s
 
 ### Bước 1. Nhận nội dung
 - File `.docx/.pdf/.pptx` thì convert bằng markitdown trước khi đọc.
-- Hỏi gộp một lượt bằng AskUserQuestion (mỗi câu có 2-4 phương án): mục đích và người xem; số slide; mức chữ (ít chữ để thuyết trình / nhiều chữ để đọc). Bỏ câu nào người dùng đã trả lời.
-- Lập dàn ý: mỗi slide một ý, gán sẵn kiểu slide (bảng chọn ở `references/layouts.md`, gồm 9 kiểu gốc và 12 kiểu mới; ý có dáng riêng như con số, quy trình, so sánh, câu hỏi thì dùng kiểu mới tương ứng) và **dạng hình theo ý**: quy trình, so sánh, tỷ lệ, phân loại, lọc dần... mỗi loại một hình (bảng ở `references/hieu-ung-va-so-do.md` mục 2). Không để quá 2 slide liền cùng một kiểu.
+- Hỏi gộp một lượt bằng AskUserQuestion (mỗi câu có 2-4 phương án): mục đích và người xem; số slide; mức chữ (ít chữ để thuyết trình / nhiều chữ để đọc); **chất mong muốn** (ví dụ trang trọng, trẻ trung, bản sắc Việt, công nghệ; người dùng gõ chữ khác cũng được). Bỏ câu nào người dùng đã trả lời.
+- **Chống rập khuôn:** nhiều người gõ cùng một prompt vẫn phải ra deck khác nhau. Không mặc định chọn cùng một style hay cùng một thứ tự kiểu slide; luôn chạy `pick-styles.py` ở Bước 2 trừ khi người dùng đã nêu tên style.
+- Lập dàn ý theo **cách kể** mà `pick-styles.py` bốc ra (mở bằng câu hỏi, bằng con số, bằng tình huống, hoặc kết luận trước); nội dung không hợp cách đó thì chọn cách gần nhất. Mỗi slide một ý, gán sẵn kiểu slide (bảng chọn ở `references/layouts.md`, gồm 9 kiểu gốc và 12 kiểu mới; ý có dáng riêng như con số, quy trình, so sánh, câu hỏi thì dùng kiểu mới tương ứng) và **dạng hình theo ý**: quy trình, so sánh, tỷ lệ, phân loại, lọc dần... mỗi loại một hình (bảng ở `references/hieu-ung-va-so-do.md` mục 2). Không để quá 2 slide liền cùng một kiểu.
 - **Số liệu phải có nguồn.** Không bịa số cho `.hl-big` hay `.stat-num`. Không có số thật thì dùng icon hoặc câu chốt.
 
 ### Bước 2. Chọn style kiểu "xem rồi chọn"
-- Lọc `assets/styles/index.json` theo nền (dark/light/mixed), nhãn `mood` và `best_for` khớp với mục đích. Chọn 3 style: 1 an toàn + 2 khác biệt (gợi ý ở `references/style-presets.md`).
+- Người dùng đã nêu tên style thì dùng đúng style đó. Nếu chưa, chạy:
+  `python "$SK/scripts/pick-styles.py" "<mục đích, người xem, chất mong muốn>"`
+  Script trả 3 style (hợp, khác nền, bất ngờ) và 1 cách kể, xáo ngẫu nhiên mỗi lần, bỏ qua style máy này vừa dùng. Dùng đúng 3 style đó, không tự thay bằng style "an toàn" quen tay (nhóm gợi ý chỉ để tham khảo: `references/style-presets.md`).
 - Dựng 1 file nguồn gồm 3 slide của chính nội dung người dùng (cover, agenda, 1 content), rồi sinh 3 bản chỉ khác dòng link style.
 - Người dùng muốn xem hết: chạy `build-gallery.py <thu-muc>` rồi mở `00-gallery.html` (ảnh bìa + slide nội dung của mọi style, lọc theo nền và từ khóa).
 - Gộp từng bản bằng `inline-assets.py`, lưu ở scratchpad, gửi cho người dùng (SendUserFile hoặc mở ở trình duyệt). Không ghi tên nội bộ lên slide.
