@@ -62,7 +62,7 @@
 
 [data-actor="card"] {
   --x: var(--card-x); --y: var(--card-y); --w: var(--card-w); --h: var(--card-h);
-  background: var(--blue); border-radius: var(--card-rad); box-shadow: var(--sh);
+  background: var(--card-blue, #0288D1); border-radius: var(--card-rad); box-shadow: var(--sh);   /* one shade deeper than --blue: white text reaches 3.8:1 */
 }
 [data-actor="tab"] { --x: 612px; --y: var(--tab-y); --w: 696px; --h: 366px; background: rgba(26, 71, 160, 0.41); border-radius: 67px; }
 [data-actor="line"] {

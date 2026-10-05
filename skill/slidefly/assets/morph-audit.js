@@ -57,13 +57,25 @@
       // masked or clipped shapes (pins, scribbles): the box is not the drawn shape, skip
       const soft = (/radial-gradient/.test(cs.backgroundImage) && clear(cs.backgroundColor)) || /blur/.test(cs.filter) || +cs.opacity < 0.6
         || cs.maskImage !== 'none' || cs.webkitMaskImage !== 'none' || cs.clipPath !== 'none';
-      const solid = !soft && (cs.backgroundImage !== 'none' || !clear(cs.backgroundColor));
+      const fill = soft ? null : fillLum(cs);
       const r = a.getBoundingClientRect();
-      if (!solid || r.width / k < 24 || r.height / k < 24) return [];
-      // a textured or pictured shape still hides what is under it; its colour counts only if it has a plain one
-      const rgb = clear(cs.backgroundColor) ? null : cs.backgroundColor.match(/[\d.]+/g).slice(0, 3).map(Number);
-      return [{ name: a.dataset.actor, lum: rgb ? lum(rgb) : null, x0: (r.left - s.left) / k, x1: (r.right - s.left) / k, y0: (r.top - s.top) / k, y1: (r.bottom - s.top) / k }];
+      if (fill === null || r.width / k < 24 || r.height / k < 24) return [];
+      return [{ name: a.dataset.actor, lum: fill, x0: (r.left - s.left) / k, x1: (r.right - s.left) / k, y0: (r.top - s.top) / k, y1: (r.bottom - s.top) / k }];
     });
+  }
+
+  /* brightness of what a shape paints: its plain fill (paper with grain counts as paper), or an
+     opaque gradient (sticky notes). Patterns with see-through stops (grid lines) and pictures cover nothing. */
+  function fillLum(cs) {
+    const rgbs = (str) => [...str.matchAll(/rgba?\(([^)]+)\)/g)].map((m) => m[1].split(/[\s,/]+/).map(Number));
+    if (!clear(cs.backgroundColor)) return lum(rgbs(cs.backgroundColor)[0]);
+    const img = cs.backgroundImage;
+    // one gradient layer stretched over the whole shape; tiles, corners and multi-layer drawings are patterns
+    if (!/^linear-gradient/.test(img) || /url\(|transparent/.test(img) || (img.match(/gradient\(/g) || []).length > 1) return null;
+    if (!/^(auto( auto)?|100% 100%|cover)$/.test(cs.backgroundSize)) return null;
+    const stops = rgbs(img);
+    if (!stops.length || stops.some((c) => c.length > 3 && c[3] < 0.9)) return null;
+    return stops.reduce((sum, c) => sum + lum(c), 0) / stops.length;
   }
 
   /* WCAG relative luminance and contrast ratio */
@@ -72,11 +84,9 @@
   const ratio = (a, b) => (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
   const clear = (c) => c === 'transparent' || /rgba\(.*,\s*0(\.0*[0-2]\d*)?\)$/.test(c);
   /* text on its own box (card, band, window) is shielded from the actors behind */
+  const boxed = (e) => { const cs = getComputedStyle(e); return !clear(cs.backgroundColor) || /gradient|url\(/.test(cs.backgroundImage); };
   const shielded = (el, slide) => {
-    for (let e = el; e && e !== slide; e = e.parentElement) {
-      const cs = getComputedStyle(e);
-      if (!clear(cs.backgroundColor) || /gradient|url\(/.test(cs.backgroundImage)) return true;
-    }
+    for (let e = el; e && e !== slide; e = e.parentElement) if (boxed(e)) return true;
     return false;
   };
 
@@ -115,8 +125,10 @@
         const y = (l.y0 + l.y1) / 2;
         [0.1, 0.5, 0.9].forEach((f) => {
           const x = l.x0 + (l.x1 - l.x0) * f;
+          // a box of the slide under the text (pill, band, card drawn in the slide) shields it
+          if (document.elementsFromPoint(s.left + x * k, s.top + y * k).some((e) => e !== slide && slide.contains(e) && boxed(e))) return;
           const top = shapes.findLast((a) => x > a.x0 && x < a.x1 && y > a.y0 && y < a.y1);
-          if (top && top.lum !== null && ratio(ink, top.lum) < need && !hits.has(top.name)) hits.set(top.name, node.textContent.trim().slice(0, 24));
+          if (top && ratio(ink, top.lum) < need && !hits.has(top.name)) hits.set(top.name, node.textContent.trim().slice(0, 24));
         });
       });
     }
