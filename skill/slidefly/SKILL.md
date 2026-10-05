@@ -22,19 +22,20 @@ assets/morph-viz-diagrams.js  matrix, network, funnel, compare
 assets/morph-steps.js      bấm từng bước: data-step, data-at
 assets/morph-brand.css     logo xuyên suốt: to ở bìa, nhỏ ở góc, ẩn ở trích dẫn, tự bay giữa các slide
 assets/morph-mock.css/.js  khung giao diện giả: chat, terminal, trình duyệt, điện thoại; chữ gõ dần, dòng hiện lần lượt
+assets/morph-photo.css     slide ảnh nền tràn màn hình (data-layout="photo"), lớp phủ giữ chữ dễ đọc
 assets/morph-icons.css/.js icon Tabler: <i class="ico" data-icon="...">, tự tải khi soạn, nhúng khi gộp
 assets/icons/              danh mục Tabler (tabler-index.json) + từ khóa tiếng Việt (vi-keywords.json)
 assets/styles/*.css        47 style; assets/styles/index.json = tên, nền, nhãn tâm trạng, hợp với, font
 templates/deck-mau.html    deck mẫu 10 slide đủ 9 kiểu: KHUNG ĐỂ COPY
 templates/deck-so-do.html  deck mẫu 16 slide: mỗi slide một dạng hình, có bấm từng bước
-templates/deck-giao-dien.html  deck mẫu 8 slide: logo xuyên suốt + 4 khung giao diện
+templates/deck-giao-dien.html  deck mẫu 10 slide: logo xuyên suốt, 4 khung giao diện, lưới icon, ảnh nền
 scripts/inline-assets.py   gộp CSS/JS thành 1 file HTML mang đi được
 scripts/check-deck.py      chụp mọi slide + đo + bắt lỗi console, ra sheet.jpg
 scripts/icons.py           search <từ> / suggest <deck.html>: tìm và gợi ý icon Tabler
 scripts/build-gallery.py   dựng demo + trang 00-gallery.html xem/lọc mọi style
 ```
 
-Đọc thêm khi cần: `references/layouts.md` (markup từng kiểu slide), `references/co-che-morph.md` (cơ chế, viết style mới, port PowerPoint), `references/vu-dao-morph.md` (công thức chuyển cảnh), `references/style-presets.md` (chọn style), `references/hieu-ung-va-so-do.md` (chọn hình theo ý, khai báo sơ đồ, hiệu ứng, bấm từng bước), `references/icon-tabler.md` (icon: tìm, khai báo, luật chống rối), `references/logo-va-giao-dien.md` (logo xuyên suốt, khung chat/terminal/trình duyệt/điện thoại).
+Đọc thêm khi cần: `references/layouts.md` (markup từng kiểu slide), `references/co-che-morph.md` (cơ chế, viết style mới, port PowerPoint), `references/vu-dao-morph.md` (công thức chuyển cảnh), `references/style-presets.md` (chọn style), `references/hieu-ung-va-so-do.md` (chọn hình theo ý, khai báo sơ đồ, hiệu ứng, bấm từng bước), `references/icon-tabler.md` (icon: tìm, khai báo, luật chống rối), `references/logo-va-giao-dien.md` (logo xuyên suốt, khung chat/terminal/trình duyệt/điện thoại, slide ảnh nền, lưới icon).
 
 ## Quy trình
 
@@ -56,7 +57,7 @@ scripts/build-gallery.py   dựng demo + trang 00-gallery.html xem/lọc mọi s
 - Không viết khối `.actors`: engine tự tạo diễn viên từ `--actors` của style.
 - Slide có sơ đồ: dùng `data-layout="diagram"` (hình trang trí lui ra, sân khấu trống), nạp thêm `morph-motion.css`, `morph-viz.css`, `morph-viz-diagrams.js`, `morph-viz.js` (trước engine) và `morph-steps.js` (sau engine). Hiệu ứng chọn theo động từ của câu (`fx-growx` cho "tăng", `draw` cho "nối", `slam` cho "chốt", `shake` cho "lệch"...). Ý cần giảng lần lượt thì gắn `data-step` (phím lùi gỡ từng bước). Chi tiết: `references/hieu-ung-va-so-do.md`.
 - Icon: chỉ dùng Tabler qua `<i class="ico" data-icon="...">` (nạp `morph-icons.css` + `morph-icons.js`). Chạy `icons.py suggest nguon.html` để xem gợi ý, rồi tự chọn theo ý chính. Mỗi slide một cách dùng: 1 icon chính, hoặc 1 dải tối đa 6 icon, hoặc icon làm nút sơ đồ; không gắn icon vào từng gạch đầu dòng. Chi tiết: `references/icon-tabler.md`.
-- Deck có đơn vị, thương hiệu hay tên khóa học: thêm logo xuyên suốt (`morph-brand.css`, một thẻ `.brand` đặt trong `.deck-stage`). Slide cần cho thấy phần mềm đang chạy (prompt AI, lệnh cài, trang web, app): dùng khung giao diện giả (`morph-mock.css` + `morph-mock.js` trước engine) thay cho ảnh chụp màn hình, tối đa một khung mỗi slide. Chi tiết: `references/logo-va-giao-dien.md`.
+- Deck có đơn vị, thương hiệu hay tên khóa học: thêm logo xuyên suốt (`morph-brand.css`, một thẻ `.brand` đặt trong `.deck-stage`). Slide cần cho thấy phần mềm đang chạy (prompt AI, lệnh cài, trang web, app): dùng khung giao diện giả (`morph-mock.css` + `morph-mock.js` trước engine) thay cho ảnh chụp màn hình, tối đa một khung mỗi slide. Cần điểm nghỉ giữa các phần: slide ảnh nền `data-layout="photo"` (ảnh có giấy phép, bắt buộc `.photo-credit`). 3 đến 6 ý ngắn: lưới icon `.ico-grid` trên slide agenda. Chi tiết: `references/logo-va-giao-dien.md`.
 - Mỗi `<section class="slide" data-layout="...">`; phần tử nội dung gắn `reveal`, `reveal-left`, `reveal-right`, `reveal-scale` hoặc `reveal-blur`.
 - Quy tắc chống trống (bắt buộc):
   - `content`: luôn có `<aside class="highlight">` (icon, số có nguồn, hoặc câu chốt ngắn) ở vùng bên phải.

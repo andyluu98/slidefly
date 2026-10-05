@@ -77,6 +77,8 @@ def inline_part(html: str, base: Path) -> str:
         if not src or is_remote(src):
             return tag
         path = asset_path(base, src, tuple(IMG_TYPES))
+        if path.stat().st_size > 1_500_000:
+            print(f"Warning: {path.name} is {path.stat().st_size / 1e6:.1f} MB; resize to 1920 px wide, JPG quality about 80")
         data = base64.b64encode(path.read_bytes()).decode("ascii")
         return tag.replace(src, f"data:{IMG_TYPES[path.suffix.lower()]};base64,{data}", 1)
 

@@ -112,7 +112,9 @@ def inline_icons(html: str) -> tuple[str, list[str]]:
             return m.group(0)
         return f"<i{attrs}>{fetch_svg(name, style)}</i>"
 
-    return ICO_RE.sub(rep, html), missing
+    # only markup: examples inside comments, <style> and <script> are not icons
+    parts = re.split(r"(<!--.*?-->|<style\b.*?</style>|<script\b.*?</script>)", html, flags=re.I | re.S)
+    return "".join(p if i % 2 else ICO_RE.sub(rep, p) for i, p in enumerate(parts)), missing
 
 
 def main() -> int:

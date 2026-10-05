@@ -3,7 +3,7 @@
    slide, and flies between poses like an actor:
    hero (cover, closing) = big and centred at the top,
    corner (inner slides) = small in the top-right corner,
-   hide (quote slides)   = slides up out of the frame.
+   hide (quote, photo)   = slides up out of the frame.
    Markup, inside .deck-stage and before the first slide:
      <div class="brand"><i class="ico" data-icon="leaf"></i><span class="brand-name">Tên</span></div>
    or a logo file: <div class="brand"><img src="logo.svg" alt="Tên"></div>
@@ -39,5 +39,5 @@
 .deck-stage[data-brand="corner"] .brand {
   --bx: var(--brand-corner-x); --by: var(--brand-corner-y); --bs: var(--brand-corner-s); --ba: var(--brand-corner-a);
 }
-.deck-stage[data-layout="quote"]:not([data-brand="hero"], [data-brand="corner"]) .brand,
+.deck-stage:is([data-layout="quote"], [data-layout="photo"]):not([data-brand="hero"], [data-brand="corner"]) .brand,
 .deck-stage[data-brand="hide"] .brand { --by: -200px; --bo: 0; }

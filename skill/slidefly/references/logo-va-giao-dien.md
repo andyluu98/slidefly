@@ -1,10 +1,11 @@
-# Logo xuyên suốt và khung giao diện giả
+# Logo, khung giao diện, ảnh nền, lưới icon
 
-Hai bộ phận tùy chọn. Deck mẫu đầy đủ: `templates/deck-giao-dien.html` (8 slide).
+Bốn bộ phận tùy chọn. Deck mẫu đầy đủ: `templates/deck-giao-dien.html` (10 slide).
 
 ```html
 <link rel="stylesheet" href=".../assets/morph-brand.css">   <!-- logo -->
 <link rel="stylesheet" href=".../assets/morph-mock.css">    <!-- khung giao diện -->
+<link rel="stylesheet" href=".../assets/morph-photo.css">   <!-- slide ảnh nền -->
 ...
 <script src=".../assets/morph-mock.js"></script>            <!-- trước morph-engine.js -->
 ```
@@ -24,7 +25,7 @@ Logo nằm trên sân khấu chứ không nằm trong slide nào. Khi chuyển s
 |---|---|---|
 | `hero` | cover, closing | to, canh giữa phía trên |
 | `corner` | mọi slide còn lại | nhỏ ở góc trên bên phải |
-| `hide` | quote | trượt lên khỏi khung để câu trích đứng một mình |
+| `hide` | quote, photo | trượt lên khỏi khung để câu trích hoặc ảnh đứng một mình |
 
 - Một slide muốn khác thì ghi `data-brand="hero"`, `"corner"` hoặc `"hide"` trên thẻ `<section>`.
 - Đổi vị trí cho hợp style bằng biến, ví dụ đẩy logo xuống trong tấm thẻ của bìa:
@@ -90,3 +91,42 @@ Tên trên thanh tiêu đề là `data-title`. Đặt vị trí bằng `style="l
   `.deck-stage:has(.slide.active .mock.plate) [data-actor="card"] { --x: 972px; --y: 222px; --w: 856px; --h: 796px; }`
   rồi gắn thêm lớp `plate` cho khung (cách làm trong `deck-giao-dien.html`).
 - Audit tính loại khung vào "diện mạo" của slide: chat, terminal, trình duyệt liền nhau không bị báo nhàm.
+
+## 3. Slide ảnh nền (morph-photo)
+
+Một ảnh tràn màn hình làm **điểm nghỉ** giữa các phần: mở chương, một cảnh thật, một câu chốt mạnh. Nạp thêm `morph-photo.css`.
+
+```html
+<section class="slide" data-layout="photo">
+  <img class="photo-bg" src="img/anh.jpg" alt="" style="--focus: 50% 40%">
+  <div class="photo-text">            <!-- thêm lớp center để chữ ra giữa -->
+    <p class="kicker reveal">Phần 2</p>
+    <h2 class="title reveal">Tiêu đề ngắn</h2>
+    <p class="subtitle reveal">Một câu dẫn</p>
+  </div>
+  <p class="photo-credit">Ảnh: tác giả, nguồn, giấy phép</p>
+</section>
+```
+
+- Hình trang trí của style tự lui ra, logo xuyên suốt tự ẩn. Ảnh phóng nhẹ rồi dừng (khoảng 7 giây), lớp phủ tối giữ chữ trắng dễ đọc trên mọi ảnh. Đậm nhạt lớp phủ: `--veil` (mặc định `.72`).
+- `--focus` giữ chủ thể trong khung khi ảnh bị cắt, ví dụ `30% 40%`.
+- **Bắt buộc ghi nguồn ảnh** trong `.photo-credit`. Thiếu thì `deck.audit()` báo lỗi. Chỉ dùng ảnh của chính người dùng, ảnh có giấy phép rõ (ví dụ Unsplash, Pexels, ghi tên tác giả) hoặc ảnh tự tạo.
+- Ảnh nằm trong thư mục deck. `inline-assets.py` nhúng ảnh vào file cuối và cảnh báo khi ảnh nặng hơn 1,5 MB: thu về rộng 1920 px, chất lượng JPG khoảng 80.
+- Tối đa 1 slide ảnh cho mỗi 6 đến 8 slide. Dùng nhiều quá thì mất tác dụng "điểm nghỉ".
+
+## 4. Lưới icon
+
+3 đến 6 ý ngắn, mỗi ý một icon cùng màu. 4 ý chia 2 cột, còn lại 3 cột. Đặt trên slide `data-layout="agenda"`, vì style nào cũng để trống vùng thân của kiểu này.
+
+```html
+<section class="slide" data-layout="agenda">
+  <h2 class="title reveal">Sáu việc trợ lý làm tốt</h2>
+  <ul class="ico-grid">
+    <li class="reveal"><i class="ico" data-icon="file-text"></i><h3>Tóm tắt</h3><p>Rút ý chính từ file dài</p></li>
+    ...
+  </ul>
+</section>
+```
+
+- Tiêu đề ý 1 đến 3 chữ, dòng giải thích dưới 8 chữ. Dài hơn thì dùng slide content.
+- Màu icon theo `--accent`; đổi bằng `--ico-grid-color`.

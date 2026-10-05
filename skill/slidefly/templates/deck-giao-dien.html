@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mẫu giao diện SlideFly</title>
-<!-- Mẫu 8 slide: logo xuyên suốt (morph-brand) và khung giao diện giả (morph-mock):
-     chat, terminal, trình duyệt, điện thoại. Hướng dẫn: references/logo-va-giao-dien.md -->
+<!-- Mẫu 10 slide: logo xuyên suốt (morph-brand), khung giao diện giả (morph-mock):
+     chat, terminal, trình duyệt, điện thoại; lưới icon (morph-icons) và slide ảnh nền (morph-photo). Hướng dẫn: references/logo-va-giao-dien.md -->
 <link rel="stylesheet" href="../assets/morph-base.css">
 <link rel="stylesheet" href="../assets/morph-layouts.css">
 <link rel="stylesheet" href="../assets/styles/pastel-geometry.css">
@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="../assets/morph-icons.css">
 <link rel="stylesheet" href="../assets/morph-brand.css">
 <link rel="stylesheet" href="../assets/morph-mock.css">
+<link rel="stylesheet" href="../assets/morph-photo.css">
 <style>
 /* logo poses tuned for this style: inside the white card on the cover, inside the purple card at the end */
 .deck-stage[data-layout="cover"] { --brand-hero-y: 200px; }
@@ -55,7 +56,20 @@
     </ol>
   </section>
 
-  <!-- 3 chat: câu hỏi gõ từng chữ, bấm thì trợ lý "nghĩ" rồi trả lời từng dòng -->
+  <!-- 3 icon grid: 6 ý ngắn, mỗi ý một icon cùng màu (đặt trên tư thế agenda) -->
+  <section class="slide" data-layout="agenda">
+    <h2 class="title reveal">Sáu việc trợ lý làm tốt</h2>
+    <ul class="ico-grid">
+      <li class="reveal"><i class="ico" data-icon="file-text"></i><h3>Tóm tắt</h3><p>Rút ý chính từ file dài</p></li>
+      <li class="reveal"><i class="ico" data-icon="pencil"></i><h3>Viết lại</h3><p>Đổi giọng văn cho hợp người đọc</p></li>
+      <li class="reveal"><i class="ico" data-icon="language"></i><h3>Dịch</h3><p>Giữ đúng thuật ngữ của nhóm</p></li>
+      <li class="reveal"><i class="ico" data-icon="arrows-diff"></i><h3>So sánh</h3><p>Chỉ ra chỗ khác giữa hai bản</p></li>
+      <li class="reveal"><i class="ico" data-icon="list-tree"></i><h3>Lên dàn ý</h3><p>Xếp ý trước khi viết</p></li>
+      <li class="reveal"><i class="ico" data-icon="text-spellcheck"></i><h3>Soát lỗi</h3><p>Chính tả, câu cú, số thứ tự</p></li>
+    </ul>
+  </section>
+
+  <!-- 4 chat: câu hỏi gõ từng chữ, bấm thì trợ lý "nghĩ" rồi trả lời từng dòng -->
   <section class="slide" data-layout="content">
     <h2 class="title reveal">Hỏi rõ việc thì nhận đúng thứ cần</h2>
     <ul class="bullets">
@@ -73,7 +87,7 @@
     </div>
   </section>
 
-  <!-- 4 terminal: mỗi lần bấm gõ một lệnh, kết quả hiện sau -->
+  <!-- 5 terminal: mỗi lần bấm gõ một lệnh, kết quả hiện sau -->
   <section class="slide" data-layout="content">
     <h2 class="title reveal">Cài công cụ trong ba lệnh</h2>
     <div class="mock mock-term" data-title="Terminal" style="left:120px;top:250px;width:1060px;height:600px">
@@ -94,7 +108,7 @@
     </ul>
   </section>
 
-  <!-- 5 browser: một trang báo cáo giả, các khối hiện lần lượt -->
+  <!-- 6 browser: một trang báo cáo giả, các khối hiện lần lượt -->
   <section class="slide" data-layout="content">
     <h2 class="title reveal">Kết quả mở ngay trên trình duyệt</h2>
     <ul class="bullets">
@@ -115,7 +129,7 @@
     </div>
   </section>
 
-  <!-- 6 phone: chat thu gọn trong điện thoại -->
+  <!-- 7 phone: chat thu gọn trong điện thoại -->
   <section class="slide" data-layout="content">
     <h2 class="title reveal">Hỏi nhanh ngay trong cuộc họp</h2>
     <ul class="bullets" style="width:900px">
@@ -131,13 +145,24 @@
     </div>
   </section>
 
-  <!-- 7 quote: logo ẩn đi để câu trích đứng một mình -->
+  <!-- 8 photo: ảnh tràn màn hình làm điểm nghỉ, logo ẩn đi, chữ trắng trên lớp phủ tối -->
+  <section class="slide" data-layout="photo">
+    <img class="photo-bg" src="img/anh-mau.jpg" alt="">
+    <div class="photo-text">
+      <p class="kicker reveal">Phần cuối</p>
+      <h2 class="title reveal">Trước khi bấm gửi</h2>
+      <p class="subtitle reveal">Đọc lại một lượt, đối chiếu từng con số</p>
+    </div>
+    <p class="photo-credit">Ảnh minh họa SlideFly tạo bằng máy, thay bằng ảnh của anh kèm nguồn</p>
+  </section>
+
+  <!-- 9 quote: logo ẩn đi để câu trích đứng một mình -->
   <section class="slide" data-layout="quote">
     <p class="quote reveal">"Trợ lý viết nháp, người viết chịu trách nhiệm."</p>
     <p class="cite reveal">Nguyên tắc của nhóm</p>
   </section>
 
-  <!-- 8 closing: logo về lại giữa -->
+  <!-- 10 closing: logo về lại giữa -->
   <section class="slide" data-layout="closing" style="padding-top:260px">
     <h2 class="title reveal">Cảm ơn</h2>
     <p class="subtitle reveal">Hỏi rõ việc, kiểm lại, rồi mới gửi</p>

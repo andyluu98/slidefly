@@ -8,6 +8,7 @@
    checked for overflow: their emptiness is intentional.
    - a chart with numbers (morph-viz) must carry data-source.
    - icons (morph-icons): at most 6 per slide, none missing.
+   - a photo slide (morph-photo) must credit its picture.
    - variety: 3 inner slides in a row with the same look
      (layout, pose, diagram kinds, motion verbs) = monotone.
    Run it outside a live talk: it briefly shows steps not yet clicked.
@@ -19,7 +20,7 @@
   const LIMIT = { gapY: 0.28, gapX: 0.3 };
   // big-number slides are meant to breathe around the figures
   const LIMIT_Y_BY_LAYOUT = { stats: 0.34 };
-  const DISPLAY = ['cover', 'section', 'quote', 'closing'];
+  const DISPLAY = ['cover', 'section', 'quote', 'closing', 'photo'];
 
   /* text line boxes + images/svg, in stage coordinates */
   function inkRects(slide) {
@@ -38,7 +39,7 @@
       range.selectNodeContents(node);
       [...range.getClientRects()].forEach(push);
     }
-    slide.querySelectorAll('img, svg, video, canvas').forEach((el) => push(el.getBoundingClientRect()));
+    slide.querySelectorAll(':is(img, svg, video, canvas):not(.photo-bg)').forEach((el) => push(el.getBoundingClientRect()));
     return out;
   }
 
@@ -71,6 +72,7 @@
     slide.querySelectorAll('.viz[data-viz]').forEach((v) => {
       if (/\d/.test(['values', 'top', 'bottom', 'left', 'right'].map((k) => v.dataset[k] || '').join('')) && !v.dataset.source) issues.push(`biểu đồ ${v.dataset.viz} thiếu data-source`);
     });
+    if (slide.querySelector('.photo-bg') && !slide.querySelector('.photo-credit')) issues.push('ảnh thiếu .photo-credit (tác giả, nguồn, giấy phép)');
     const icons = slide.querySelectorAll('.ico');
     if (icons.length > 6) issues.push(`quá nhiều icon (${icons.length}, tối đa 6)`);
     const lost = [...slide.querySelectorAll('.ico[data-missing]')].map((e) => e.dataset.icon);
