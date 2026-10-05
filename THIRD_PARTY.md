@@ -28,6 +28,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
+## Tabler Icons (MIT)
+
+Icons referenced with `<i class="ico" data-icon="...">` come from Tabler Icons (https://tabler.io/icons), version pinned in `skill/slidefly/scripts/icons.py`. `skill/slidefly/assets/icons/tabler-index.json` is derived from its `icons.json` (names, categories, tags). Brand marks remain the property of their owners.
+
+```
+MIT License
+
+Copyright (c) 2020-2026 Paweł Kuna
+```
+
+The full MIT text is identical to the one above.
+
 ## Lucide icons (ISC)
 
 Icon paths embedded in the templates and example decks come from Lucide (https://lucide.dev), licensed under the ISC License. Copyright (c) for portions of Lucide are held by Cole Bemis 2013-2022 as part of Feather (MIT). All other copyright (c) for Lucide are held by Lucide Contributors 2022.

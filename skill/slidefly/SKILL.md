@@ -20,15 +20,18 @@ assets/morph-viz.css       giao diện 8 dạng sơ đồ
 assets/morph-viz.js        vẽ sơ đồ từ data-*: span, donut, plan, gather (nạp sau morph-viz-diagrams.js)
 assets/morph-viz-diagrams.js  matrix, network, funnel, compare
 assets/morph-steps.js      bấm từng bước: data-step, data-at
+assets/morph-icons.css/.js icon Tabler: <i class="ico" data-icon="...">, tự tải khi soạn, nhúng khi gộp
+assets/icons/              danh mục Tabler (tabler-index.json) + từ khóa tiếng Việt (vi-keywords.json)
 assets/styles/*.css        47 style; assets/styles/index.json = tên, nền, nhãn tâm trạng, hợp với, font
 templates/deck-mau.html    deck mẫu 10 slide đủ 9 kiểu: KHUNG ĐỂ COPY
 templates/deck-so-do.html  deck mẫu 16 slide: mỗi slide một dạng hình, có bấm từng bước
 scripts/inline-assets.py   gộp CSS/JS thành 1 file HTML mang đi được
 scripts/check-deck.py      chụp mọi slide + đo + bắt lỗi console, ra sheet.jpg
+scripts/icons.py           search <từ> / suggest <deck.html>: tìm và gợi ý icon Tabler
 scripts/build-gallery.py   dựng demo + trang 00-gallery.html xem/lọc mọi style
 ```
 
-Đọc thêm khi cần: `references/layouts.md` (markup từng kiểu slide), `references/co-che-morph.md` (cơ chế, viết style mới, port PowerPoint), `references/vu-dao-morph.md` (công thức chuyển cảnh), `references/style-presets.md` (chọn style), `references/hieu-ung-va-so-do.md` (chọn hình theo ý, khai báo sơ đồ, hiệu ứng, bấm từng bước).
+Đọc thêm khi cần: `references/layouts.md` (markup từng kiểu slide), `references/co-che-morph.md` (cơ chế, viết style mới, port PowerPoint), `references/vu-dao-morph.md` (công thức chuyển cảnh), `references/style-presets.md` (chọn style), `references/hieu-ung-va-so-do.md` (chọn hình theo ý, khai báo sơ đồ, hiệu ứng, bấm từng bước), `references/icon-tabler.md` (icon: tìm, khai báo, luật chống rối).
 
 ## Quy trình
 
@@ -49,6 +52,7 @@ scripts/build-gallery.py   dựng demo + trang 00-gallery.html xem/lọc mọi s
 - Copy cấu trúc `templates/deck-mau.html`: `<link>` tới `morph-base.css`, `morph-layouts.css`, 1 file style; cuối body lần lượt `morph-engine.js`, `morph-nav.js`, `morph-audit.js` (thiếu audit thì `check-deck.py` báo lỗi). Href dùng đường dẫn tuyệt đối tới `$SK/assets/...` khi file nguồn nằm ngoài skill.
 - Không viết khối `.actors`: engine tự tạo diễn viên từ `--actors` của style.
 - Slide có sơ đồ: dùng `data-layout="diagram"` (hình trang trí lui ra, sân khấu trống), nạp thêm `morph-motion.css`, `morph-viz.css`, `morph-viz-diagrams.js`, `morph-viz.js` (trước engine) và `morph-steps.js` (sau engine). Hiệu ứng chọn theo động từ của câu (`fx-growx` cho "tăng", `draw` cho "nối", `slam` cho "chốt", `shake` cho "lệch"...). Ý cần giảng lần lượt thì gắn `data-step`. Chi tiết: `references/hieu-ung-va-so-do.md`.
+- Icon: chỉ dùng Tabler qua `<i class="ico" data-icon="...">` (nạp `morph-icons.css` + `morph-icons.js`). Chạy `icons.py suggest nguon.html` để xem gợi ý, rồi tự chọn theo ý chính. Mỗi slide một cách dùng: 1 icon chính, hoặc 1 dải tối đa 6 icon, hoặc icon làm nút sơ đồ; không gắn icon vào từng gạch đầu dòng. Chi tiết: `references/icon-tabler.md`.
 - Mỗi `<section class="slide" data-layout="...">`; phần tử nội dung gắn `reveal`, `reveal-left`, `reveal-right`, `reveal-scale` hoặc `reveal-blur`.
 - Quy tắc chống trống (bắt buộc):
   - `content`: luôn có `<aside class="highlight">` (icon, số có nguồn, hoặc câu chốt ngắn) ở vùng bên phải.
@@ -76,6 +80,7 @@ python "$SK/scripts/check-deck.py" "<file.html>" "<scratchpad>/shots/<ten>"
 | `trống ngang` | slide content thiếu `.highlight`, thêm vào |
 | `tràn khung` / `chữ tràn hộp` | rút gọn câu, tách slide, hoặc `data-density="sm"` |
 | `nhàm: giống hệt 2 slide trước` | đổi dạng hình hoặc hiệu ứng của slide đó (bảng chọn hình theo ý) |
+| `quá nhiều icon` / `icon không tồn tại` | giữ icon cho ý chính; tìm đúng tên bằng `icons.py search` |
 | `biểu đồ ... thiếu data-source` | ghi nguồn số liệu vào `data-source`; không có nguồn thì bỏ biểu đồ có số |
 | lỗi console | đọc thông báo, sửa markup/đường dẫn |
 

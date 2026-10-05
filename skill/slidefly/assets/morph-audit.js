@@ -7,6 +7,7 @@
    Display slides (cover, section, quote, closing) are only
    checked for overflow: their emptiness is intentional.
    - a chart with numbers (morph-viz) must carry data-source.
+   - icons (morph-icons): at most 6 per slide, none missing.
    - variety: 3 inner slides in a row with the same look
      (layout, pose, diagram kinds, motion verbs) = monotone.
    Run it outside a live talk: it briefly shows steps not yet clicked.
@@ -70,6 +71,10 @@
     slide.querySelectorAll('.viz[data-viz]').forEach((v) => {
       if (/\d/.test(['values', 'top', 'bottom', 'left', 'right'].map((k) => v.dataset[k] || '').join('')) && !v.dataset.source) issues.push(`biểu đồ ${v.dataset.viz} thiếu data-source`);
     });
+    const icons = slide.querySelectorAll('.ico');
+    if (icons.length > 6) issues.push(`quá nhiều icon (${icons.length}, tối đa 6)`);
+    const lost = [...slide.querySelectorAll('.ico[data-missing]')].map((e) => e.dataset.icon);
+    if (lost.length) issues.push(`icon không tồn tại: ${lost.join(', ')}`);
     const gapY = maxGap(ink.map((r) => [r.y0, r.y1]), SAFE.y0, SAFE.y1) / (SAFE.y1 - SAFE.y0);
     const gapX = maxGap(ink.map((r) => [r.x0, r.x1]), SAFE.x0, SAFE.x1) / (SAFE.x1 - SAFE.x0);
     const display = DISPLAY.includes(layout);

@@ -8,11 +8,15 @@ Usage: python inline-assets.py <input.html> <output.html>
 - Only .css / .js files located under the input file's folder or this skill's folder are inlined
   (protects against embedding arbitrary files from the machine into a deck you share).
 - Refuses to overwrite the input file. Creates the output folder if needed.
+- Empty <i class="ico" data-icon="..."></i> get the Tabler SVG embedded (icons.py, cached download).
 Exit code: 0 ok, 1 error, 2 local references left in the output.
 """
 import re
 import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from icons import inline_icons  # noqa: E402
 
 SKILL_DIR = Path(__file__).resolve().parent.parent
 COMMENT_RE = re.compile(r"<!--.*?-->", re.S)
@@ -88,14 +92,17 @@ def main() -> int:
         return 1
     try:
         out = inline(src.read_text(encoding="utf-8"), src.parent)
+        out, missing_icons = inline_icons(out)
         dst.parent.mkdir(parents=True, exist_ok=True)
         dst.write_text(out, encoding="utf-8")
-    except (OSError, ValueError, UnicodeDecodeError) as err:
+    except (OSError, ValueError, UnicodeDecodeError) as err:  # OSError covers a failed icon download
         print(f"Error: {err}")
         return 1
     left = local_refs_left(out)
     print(f"Wrote {dst} ({len(out):,} chars). Local refs left: {len(left)} {left if left else ''}")
-    return 0 if not left else 2
+    if missing_icons:
+        print(f"Icons not found in Tabler (check the name with icons.py search): {sorted(set(missing_icons))}")
+    return 0 if not (left or missing_icons) else 2
 
 
 if __name__ == "__main__":
