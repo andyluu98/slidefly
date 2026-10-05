@@ -80,7 +80,8 @@ def inline_part(html: str, base: Path) -> str:
         data = base64.b64encode(path.read_bytes()).decode("ascii")
         return tag.replace(src, f"data:{IMG_TYPES[path.suffix.lower()]};base64,{data}", 1)
 
-    return IMG_RE.sub(img, SCRIPT_RE.sub(js, LINK_RE.sub(css, html)))
+    # images first: inlined CSS/JS may mention <img> in their comments
+    return SCRIPT_RE.sub(js, LINK_RE.sub(css, IMG_RE.sub(img, html)))
 
 
 def inline(html: str, base: Path) -> str:
@@ -97,7 +98,8 @@ def local_refs_left(html: str) -> list[str]:
     html = COMMENT_RE.sub("", html)
     refs = [attr(t, "href") for t in LINK_RE.findall(html) if (attr(t, "rel") or "").lower() == "stylesheet"]
     refs += [attr(m.group(0), "src") for m in SCRIPT_RE.finditer(html)]
-    refs += [attr(t, "src") for t in IMG_RE.findall(html)]
+    markup = re.sub(r"<(style|script)\b[^>]*>.*?</\1>", "", html, flags=re.I | re.S)
+    refs += [attr(t, "src") for t in IMG_RE.findall(markup)]
     return [r for r in refs if r and not is_remote(r)]
 
 
