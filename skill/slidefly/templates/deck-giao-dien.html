@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mẫu giao diện SlideFly</title>
+<!-- Mẫu 8 slide: logo xuyên suốt (morph-brand) và khung giao diện giả (morph-mock):
+     chat, terminal, trình duyệt, điện thoại. Hướng dẫn: references/logo-va-giao-dien.md -->
+<link rel="stylesheet" href="../assets/morph-base.css">
+<link rel="stylesheet" href="../assets/morph-layouts.css">
+<link rel="stylesheet" href="../assets/styles/pastel-geometry.css">
+<link rel="stylesheet" href="../assets/morph-motion.css">
+<link rel="stylesheet" href="../assets/morph-icons.css">
+<link rel="stylesheet" href="../assets/morph-brand.css">
+<link rel="stylesheet" href="../assets/morph-mock.css">
+<style>
+/* logo poses tuned for this style: inside the white card on the cover, inside the purple card at the end */
+.deck-stage[data-layout="cover"] { --brand-hero-y: 200px; }
+.deck-stage[data-layout="closing"] { --brand-hero-y: 250px; }
+/* when a wide mock is on screen, the white card of the style becomes the plate behind it */
+.deck-stage:has(.slide.active .mock.plate) [data-actor="card"] { --x: 972px; --y: 222px; --w: 856px; --h: 796px; }
+/* bullets share the slide with a mock on the right */
+.slide:has(.mock) .bullets { width: 780px; }
+.lead-in { position: absolute; left: 120px; top: 210px; width: 780px; font-size: 30px; color: var(--muted); }
+/* a fake report page inside the browser mock */
+.page h3 { margin: 0 0 18px; font: 800 40px/1.15 var(--font-display); }
+.page .bar { height: 22px; border-radius: 11px; background: var(--mock-line); margin: 14px 0; }
+.page .bar.short { width: 62%; }
+.page .chips { display: flex; gap: 14px; margin-top: 26px; }
+.page .chips span { padding: 10px 20px; border-radius: 999px; background: color-mix(in srgb, var(--accent) 18%, var(--bg)); font-size: 22px; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<div class="deck-stage">
+
+  <!-- Logo xuyên suốt: to giữa bìa, thu về góc ở slide nội dung, ẩn ở slide trích dẫn. -->
+  <div class="brand"><i class="ico" data-icon="sparkles"></i><span class="brand-name">Lab Báo Cáo</span></div>
+
+  <!-- 1 cover: logo ở tư thế hero -->
+  <section class="slide" data-layout="cover" style="padding-top:300px">
+    <p class="kicker reveal">Workshop nội bộ</p>
+    <h1 class="title reveal">Viết báo cáo tuần cùng trợ lý AI</h1>
+    <p class="subtitle reveal">Hỏi đúng, kiểm lại, rồi mới gửi đi</p>
+  </section>
+
+  <!-- 2 agenda: logo bay về góc phải -->
+  <section class="slide" data-layout="agenda">
+    <h2 class="title reveal">Nội dung</h2>
+    <ol class="agenda-list">
+      <li><span class="num reveal">01</span><div><h3 class="reveal">Hỏi trợ lý</h3><p class="reveal">Một câu hỏi rõ việc, rõ khuôn</p></div></li>
+      <li><span class="num reveal">02</span><div><h3 class="reveal">Cài công cụ</h3><p class="reveal">Ba lệnh trong terminal</p></div></li>
+      <li><span class="num reveal">03</span><div><h3 class="reveal">Xem kết quả</h3><p class="reveal">Mở ngay trên trình duyệt</p></div></li>
+      <li><span class="num reveal">04</span><div><h3 class="reveal">Hỏi nhanh</h3><p class="reveal">Trên điện thoại, lúc đang họp</p></div></li>
+    </ol>
+  </section>
+
+  <!-- 3 chat: câu hỏi gõ từng chữ, bấm thì trợ lý "nghĩ" rồi trả lời từng dòng -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Hỏi rõ việc thì nhận đúng thứ cần</h2>
+    <ul class="bullets">
+      <li class="reveal"><b>Nêu việc:</b> tóm tắt, viết lại hay so sánh.</li>
+      <li class="reveal"><b>Nêu khuôn:</b> mấy ý, mỗi ý dài bao nhiêu.</li>
+      <li class="reveal"><b>Nêu giới hạn:</b> chỉ dùng tài liệu đã đưa.</li>
+    </ul>
+    <div class="mock mock-chat plate" data-title="Trợ lý AI" style="left:1000px;top:250px;width:800px;height:740px">
+      <div class="msg user type">Tóm tắt báo cáo tuần thành 3 ý, mỗi ý một câu. Chỉ dùng số có trong file.</div>
+      <div class="msg ai lines think" data-who="Trợ lý" data-step="1">
+        <p><b>Tiến độ:</b> hai đầu việc xong, một đầu việc trễ hẹn.</p>
+        <p><b>Vướng mắc:</b> chờ bên mua hàng duyệt báo giá.</p>
+        <p><b>Tuần tới:</b> chốt báo giá trước thứ Tư.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 terminal: mỗi lần bấm gõ một lệnh, kết quả hiện sau -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Cài công cụ trong ba lệnh</h2>
+    <div class="mock mock-term" data-title="Terminal" style="left:120px;top:250px;width:1060px;height:600px">
+      <div class="cmd type">git clone https://github.com/andyluu98/slidefly.git</div>
+      <div class="out lines"><p>Cloning into 'slidefly'...</p></div>
+      <div data-step="1">
+        <div class="cmd type">cp -r slidefly/skill/slidefly ~/.claude/skills/</div>
+      </div>
+      <div data-step="2">
+        <div class="cmd type">pip install -r slidefly/requirements.txt</div>
+        <div class="out lines"><p class="ok">Đã cài xong thư viện cho script kiểm tra.</p></div>
+      </div>
+    </div>
+    <ul class="bullets" style="left:1260px;width:540px">
+      <li class="reveal"><b>Lệnh 1</b> tải bộ skill về máy.</li>
+      <li class="reveal"><b>Lệnh 2</b> chép vào thư mục skill.</li>
+      <li class="reveal"><b>Lệnh 3</b> cài thư viện kiểm tra.</li>
+    </ul>
+  </section>
+
+  <!-- 5 browser: một trang báo cáo giả, các khối hiện lần lượt -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Kết quả mở ngay trên trình duyệt</h2>
+    <ul class="bullets">
+      <li class="reveal"><b>Một file:</b> gửi qua chat là người nhận mở được.</li>
+      <li class="reveal"><b>Không cài gì:</b> Chrome hoặc Edge là đủ.</li>
+      <li class="reveal"><b>Sửa nhanh:</b> đổi chữ rồi mở lại.</li>
+    </ul>
+    <div class="mock mock-browser plate" data-url="bao-cao-tuan.html" style="left:1000px;top:250px;width:800px;height:740px">
+      <div class="page lines">
+        <h3>Báo cáo tuần</h3>
+        <div class="bar"></div>
+        <div class="bar short"></div>
+        <div class="bar"></div>
+        <div class="bar short"></div>
+        <div class="bar"></div>
+        <div class="chips"><span>Tiến độ</span><span>Vướng mắc</span><span>Tuần tới</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 phone: chat thu gọn trong điện thoại -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Hỏi nhanh ngay trong cuộc họp</h2>
+    <ul class="bullets" style="width:900px">
+      <li class="reveal"><b>Câu ngắn:</b> một việc mỗi lần hỏi.</li>
+      <li class="reveal"><b>Kiểm lại:</b> đối chiếu với file gốc trước khi dùng.</li>
+      <li class="reveal"><b>Ghi nguồn:</b> số liệu nào cũng truy được.</li>
+    </ul>
+    <div class="mock mock-phone" style="left:1260px;top:120px;width:420px">
+      <div class="mock mock-chat">
+        <div class="msg user type">Việc nào đang trễ hẹn?</div>
+        <div class="msg ai lines think" data-step="1"><p>Báo giá cho bên mua hàng, đang chờ duyệt.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 quote: logo ẩn đi để câu trích đứng một mình -->
+  <section class="slide" data-layout="quote">
+    <p class="quote reveal">"Trợ lý viết nháp, người viết chịu trách nhiệm."</p>
+    <p class="cite reveal">Nguyên tắc của nhóm</p>
+  </section>
+
+  <!-- 8 closing: logo về lại giữa -->
+  <section class="slide" data-layout="closing" style="padding-top:260px">
+    <h2 class="title reveal">Cảm ơn</h2>
+    <p class="subtitle reveal">Hỏi rõ việc, kiểm lại, rồi mới gửi</p>
+  </section>
+
+</div>
+</div>
+<script src="../assets/morph-mock.js"></script>
+<script src="../assets/morph-engine.js"></script>
+<script src="../assets/morph-nav.js"></script>
+<script src="../assets/morph-audit.js"></script>
+<script src="../assets/morph-steps.js"></script>
+<script src="../assets/morph-icons.js"></script>
+</body>
+</html>

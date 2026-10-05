@@ -87,10 +87,11 @@
     };
   }
 
-  /* look of a slide = what the eye recognises: layout, pose, diagram kinds, motion verbs */
+  /* look of a slide = what the eye recognises: layout, pose, diagram and mock kinds, motion verbs */
   const VERB = /^(fx-[a-z]+|draw|count|slam|shake|strike|ping|travel|gather)$/;
   function lookOf(slide) {
-    const kinds = [...slide.querySelectorAll('.viz[data-viz]')].map((v) => v.dataset.viz).sort();
+    const kinds = [...slide.querySelectorAll('.viz[data-viz]')].map((v) => v.dataset.viz)
+      .concat([...slide.querySelectorAll('.mock')].map((m) => [...m.classList].find((c) => c.startsWith('mock-')) || 'mock')).sort();
     const verbs = new Set([...slide.querySelectorAll('[class]')].flatMap((e) => [...e.classList].filter((c) => VERB.test(c))));
     return [slide.dataset.layout || 'content', slide.dataset.pose || '', kinds.join('+'), [...verbs].sort().join('+')].join('|');
   }

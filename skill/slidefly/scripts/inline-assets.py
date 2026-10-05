@@ -4,13 +4,15 @@ Usage: python inline-assets.py <input.html> <output.html>
 
 - <link rel="stylesheet" href="x.css"> -> <style>...</style> (attribute order does not matter)
 - <script src="x.js"></script>          -> <script>...</script>
+- <img src="logo.png">                  -> <img src="data:image/png;base64,..."> (png, jpg, gif, webp, svg)
 - Remote URLs (http/https, e.g. Google Fonts) and anything inside <!-- comments --> are left untouched.
-- Only .css / .js files located under the input file's folder or this skill's folder are inlined
+- Only .css / .js / image files located under the input file's folder or this skill's folder are inlined
   (protects against embedding arbitrary files from the machine into a deck you share).
 - Refuses to overwrite the input file. Creates the output folder if needed.
 - Empty <i class="ico" data-icon="..."></i> get the Tabler SVG embedded (icons.py, cached download).
 Exit code: 0 ok, 1 error, 2 local references left in the output.
 """
+import base64
 import re
 import sys
 from pathlib import Path
@@ -22,6 +24,9 @@ SKILL_DIR = Path(__file__).resolve().parent.parent
 COMMENT_RE = re.compile(r"<!--.*?-->", re.S)
 LINK_RE = re.compile(r"<link\b[^>]*>", re.I)
 SCRIPT_RE = re.compile(r"<script\b([^>]*)>\s*</script>", re.I)
+IMG_RE = re.compile(r"<img\b[^>]*>", re.I)
+IMG_TYPES = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".gif": "image/gif",
+             ".webp": "image/webp", ".svg": "image/svg+xml"}
 
 
 def attr(tag: str, name: str) -> str | None:
@@ -33,16 +38,20 @@ def is_remote(href: str) -> bool:
     return href.startswith(("http://", "https://", "//", "data:"))
 
 
-def read_asset(base: Path, href: str, ext: str) -> str:
+def asset_path(base: Path, href: str, exts: tuple[str, ...]) -> Path:
     path = Path(href)
     path = (path if path.is_absolute() else base / href).resolve()
-    if path.suffix.lower() != ext:
-        raise ValueError(f"Refusing to inline non-{ext} file: {path}")
+    if path.suffix.lower() not in exts:
+        raise ValueError(f"Refusing to inline non-{'/'.join(exts)} file: {path}")
     if not (path.is_relative_to(base.resolve()) or path.is_relative_to(SKILL_DIR)):
         raise ValueError(f"Refusing to inline file outside the deck folder or skill folder: {path}")
     if not path.is_file():
         raise FileNotFoundError(f"Asset not found: {path}")
-    return path.read_text(encoding="utf-8")
+    return path
+
+
+def read_asset(base: Path, href: str, ext: str) -> str:
+    return asset_path(base, href, (ext,)).read_text(encoding="utf-8")
 
 
 def inline_part(html: str, base: Path) -> str:
@@ -62,7 +71,16 @@ def inline_part(html: str, base: Path) -> str:
         code = read_asset(base, src, ".js").replace("</script", "<\\/script")
         return f"<script>\n{code}\n</script>"
 
-    return SCRIPT_RE.sub(js, LINK_RE.sub(css, html))
+    def img(m):
+        tag = m.group(0)
+        src = attr(tag, "src")
+        if not src or is_remote(src):
+            return tag
+        path = asset_path(base, src, tuple(IMG_TYPES))
+        data = base64.b64encode(path.read_bytes()).decode("ascii")
+        return tag.replace(src, f"data:{IMG_TYPES[path.suffix.lower()]};base64,{data}", 1)
+
+    return IMG_RE.sub(img, SCRIPT_RE.sub(js, LINK_RE.sub(css, html)))
 
 
 def inline(html: str, base: Path) -> str:
@@ -79,6 +97,7 @@ def local_refs_left(html: str) -> list[str]:
     html = COMMENT_RE.sub("", html)
     refs = [attr(t, "href") for t in LINK_RE.findall(html) if (attr(t, "rel") or "").lower() == "stylesheet"]
     refs += [attr(m.group(0), "src") for m in SCRIPT_RE.finditer(html)]
+    refs += [attr(t, "src") for t in IMG_RE.findall(html)]
     return [r for r in refs if r and not is_remote(r)]
 
 

@@ -19,6 +19,8 @@ Mỗi style có một nhóm hình cố định gọi là **diễn viên**. Mỗi
 - **8 dạng sơ đồ tự vẽ từ số liệu:** thanh tỷ lệ, vòng tròn chia phần, mặt bằng có chuỗi kích thước, các ô dồn về tâm, ma trận, mạng lưới nút, phễu lọc, màn quét trước và sau. Khai báo bằng vài thuộc tính `data-*`, biểu đồ có số phải ghi nguồn.
 - **Hiệu ứng theo động từ:** vẽ nét, đếm số, đóng dấu, rơi vào chỗ, bay vào nhóm, gộp về tâm, rung khi lệch, chấm chạy dọc đường ống.
 - **Icon Tabler:** hơn 5.000 icon MIT (có logo công cụ như Python, GitHub) khai báo bằng một dòng; `icons.py suggest` gợi ý icon theo chữ trên slide, kể cả từ tiếng Việt; audit chặn slide quá 6 icon.
+- **Logo xuyên suốt:** một logo (icon Tabler hoặc file ảnh) to ở bìa, thu về góc ở slide nội dung, ẩn ở slide trích dẫn, và tự bay giữa các vị trí đó.
+- **Khung giao diện giả:** cửa sổ chat, terminal, trình duyệt, điện thoại vẽ bằng CSS. Prompt gõ từng chữ, trợ lý "nghĩ" rồi trả lời từng dòng, lệnh cài hiện dần theo cú bấm.
 - **Bấm từng bước:** `data-step` cho phép giảng tới đâu mở tới đó, phím lùi gỡ đúng một bước; slide có `data-at` để đổi trạng thái theo từng cú bấm.
 - **Tự lấp đầy:** engine đếm số ý trên slide rồi chọn cỡ chữ lớn, vừa hoặc nhỏ. Slide nội dung có ô điểm nhấn, slide hai cột có câu kết luận.
 - **Không lặp nhàm:** cùng một kiểu slide xuất hiện nhiều lần sẽ đổi dáng (biến thể 1, 2, 3) và đổi hướng chữ vào khung.
@@ -65,11 +67,13 @@ skill/slidefly/
 │   ├── morph-viz*.js/.css   8 dạng sơ đồ tự vẽ
 │   ├── morph-steps.js       bấm từng bước
 │   ├── morph-icons.css/.js  icon Tabler (tự tải khi soạn, nhúng khi gộp)
+│   ├── morph-brand.css      logo xuyên suốt
+│   ├── morph-mock.css/.js   khung chat, terminal, trình duyệt, điện thoại
 │   ├── icons/               danh mục Tabler + từ khóa tiếng Việt
 │   └── styles/              47 style + index.json
 ├── references/              cơ chế, layout, công thức chuyển cảnh, chọn style, font tiếng Việt
 ├── scripts/                 inline-assets.py, check-deck.py, build-gallery.py, icons.py
-└── templates/              deck-mau.html (10 slide đủ 9 kiểu), deck-so-do.html (16 slide, mỗi slide một dạng hình)
+└── templates/              deck-mau.html (10 slide đủ 9 kiểu), deck-so-do.html (16 slide, mỗi slide một dạng hình), deck-giao-dien.html (8 slide, logo và khung giao diện)
 examples/                    2 deck mẫu về AI Agent
 gallery/                     00-gallery.html + 47 deck demo
 ```

@@ -148,6 +148,7 @@
     stage.dataset.pose = to.dataset.pose || '';
     stage.dataset.parity = to.dataset.pose ? 'none' : to.dataset.parity;
     stage.dataset.variant = to.dataset.variant;
+    stage.dataset.brand = to.dataset.brand || ''; // morph-brand.css: hero | corner | hide
     stage.dataset.slide = String(n + 1);
     from?.classList.remove('active');
     to.classList.add('active');
