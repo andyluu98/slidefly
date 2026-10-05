@@ -15,7 +15,7 @@
     }
     return cache.get(key);
   };
-  const jobs = [...document.querySelectorAll('.ico[data-icon]')].map(async (el) => {
+  document.querySelectorAll('.ico[data-icon]').forEach(async (el) => {
     if (el.querySelector('svg')) return;
     const name = el.dataset.icon;
     const style = el.dataset.style === 'filled' ? 'filled' : 'outline';
@@ -30,6 +30,4 @@
       console.warn('morph-icons: không tải được icon', name, style);
     }
   });
-  // other layers (morph-gsap) wait for real SVGs before measuring shapes
-  Promise.allSettled(jobs).then(() => dispatchEvent(new Event('morph-icons-ready')));
 })();

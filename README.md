@@ -20,7 +20,6 @@ Mỗi style có một nhóm hình cố định gọi là **diễn viên**. Mỗi
 - **Hiệu ứng theo động từ:** vẽ nét, đếm số, đóng dấu, rơi vào chỗ, bay vào nhóm, gộp về tâm, rung khi lệch, chấm chạy dọc đường ống.
 - **Icon Tabler:** hơn 5.000 icon MIT (có logo công cụ như Python, GitHub) khai báo bằng một dòng; `icons.py suggest` gợi ý icon theo chữ trên slide, kể cả từ tiếng Việt; audit chặn slide quá 6 icon.
 - **Bấm từng bước:** `data-step` cho phép giảng tới đâu mở tới đó, phím lùi gỡ đúng một bước; slide có `data-at` để đổi trạng thái theo từng cú bấm.
-- **Biến hình thật (tùy chọn):** lớp `morph-gsap` dùng GSAP MorphSVG cho hình biến thành hình khác, ví dụ vòng tròn thành cột biểu đồ, icon báo cáo thành icon trình chiếu.
 - **Tự lấp đầy:** engine đếm số ý trên slide rồi chọn cỡ chữ lớn, vừa hoặc nhỏ. Slide nội dung có ô điểm nhấn, slide hai cột có câu kết luận.
 - **Không lặp nhàm:** cùng một kiểu slide xuất hiện nhiều lần sẽ đổi dáng (biến thể 1, 2, 3) và đổi hướng chữ vào khung.
 - **Chữ bay giữa hai slide (FLIP):** ví dụ tiêu đề mục ở trang mục lục bay sang thành tiêu đề phần.
@@ -65,7 +64,6 @@ skill/slidefly/
 │   ├── morph-motion.css     hiệu ứng theo động từ + màu dùng chung
 │   ├── morph-viz*.js/.css   8 dạng sơ đồ tự vẽ
 │   ├── morph-steps.js       bấm từng bước
-│   ├── morph-gsap.js        tùy chọn: biến hình bằng GSAP MorphSVG
 │   ├── morph-icons.css/.js  icon Tabler (tự tải khi soạn, nhúng khi gộp)
 │   ├── icons/               danh mục Tabler + từ khóa tiếng Việt
 │   └── styles/              47 style + index.json

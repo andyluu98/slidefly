@@ -118,30 +118,7 @@ Màu dùng chung: `--viz-ink`, `--viz-paper` (theo `--fg`/`--bg` của style), `
 - Khối chứa có `data-step` mà không có class `.fx` sẽ ẩn tới lượt; thêm class `keep` nếu muốn nó vẫn hiện (ví dụ các ô `gather` hiện sẵn, bấm mới dồn).
 - Trình duyệt tự động (`check-deck.py`) luôn thấy mọi bước đã mở.
 
-## 7. Biến hình thật (lớp tùy chọn morph-gsap)
-
-Dùng khi cần **một hình biến thành hình khác**: vòng tròn thành cột, icon báo cáo thành icon trình chiếu. Các chuyển động khác vẫn dùng CSS như trên.
-
-```html
-<!-- cuối body, sau morph-steps.js và morph-icons.js -->
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/MorphSVGPlugin.min.js"></script>
-<script src=".../assets/morph-gsap.js"></script>
-
-<!-- hình: cùng data-morph-shape ở hai slide; thêm data-morph-id ở khối bọc để bay cả vị trí, kích thước -->
-<div class="shp" data-morph-id="c1" style="..."><svg viewBox="0 0 100 100" preserveAspectRatio="none">
-  <path data-morph-shape="c1" d="M50 0A50 50 0 1 1 50 100A50 50 0 1 1 50 0Z"/></svg></div>
-<!-- icon Tabler: cùng khóa, khác tên icon -->
-<i class="ico" data-icon="file-text" data-morph-shape="hero"></i>  ...  <i class="ico" data-icon="presentation" data-morph-shape="hero"></i>
-```
-
-- Hình mới mọc ra từ hình **gần nhất có cùng khóa**, kể cả khi hai slide không liền nhau (icon chương 1 biến thành icon chương 2).
-- Hai hình ghép cặp nên dùng cùng `viewBox`, ví dụ `0 0 100 100`.
-- `inline-assets.py` tải GSAP đúng bản ghim, lưu đệm và nhúng vào file cuối (giữ dòng bản quyền). Không có GSAP thì hình hiện ngay dạng cuối, deck không lỗi.
-- Giấy phép GSAP là "Standard no charge license" (miễn phí cả thương mại), không phải MIT. Không dùng GSAP để làm công cụ kéo thả tạo hiệu ứng không cần code cạnh tranh với Webflow.
-- Khi sửa `morph-gsap.js`, dùng bộ hướng dẫn gsap-skills (greensock/gsap-skills) nếu đã cài.
-
-## 8. Lỗi hay gặp
+## 7. Lỗi hay gặp
 
 | Hiện tượng | Nguyên nhân | Cách sửa |
 |---|---|---|
