@@ -12,6 +12,14 @@
   const slides = stage ? [...stage.querySelectorAll(':scope > .slide')] : [];
   if (!slides.length) return;
   const REVEAL = '.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur';
+  // layouts of morph-layouts-plus.css are variants of a classic layout: the slide keeps its name in
+  // data-kind and takes the classic one in data-layout, so every style poses it and colours it.
+  // Dense ones sit on a clear stage ('diagram' has no pose, so the actors step out).
+  const CLASSIC_OF = {
+    qa: 'quote', 'portrait-quote': 'quote', statement: 'quote', chapter: 'section', cta: 'cover',
+    'big-number': 'diagram', 'split-photo': 'diagram', bento: 'diagram', process: 'diagram', 'before-after': 'diagram',
+    'compare-table': 'diagram', countdown: 'diagram',
+  };
   let cur = -1;
   let scale = 1;
 
@@ -50,6 +58,8 @@
   /* ---------- one-time prep per slide ---------- */
   const seen = {};
   slides.forEach((slide, k) => {
+    const own = slide.dataset.layout;
+    if (CLASSIC_OF[own]) { slide.dataset.kind = own; slide.dataset.layout = CLASSIC_OF[own]; }
     // stagger order for reveal items (author may override with style="--i:n")
     slide.querySelectorAll(REVEAL).forEach((el, i) => {
       if (!el.style.getPropertyValue('--i')) el.style.setProperty('--i', i);
@@ -145,6 +155,7 @@
     // A slide with its own data-pose gets parity "none" so the pose is never fought by parity rules.
     stage.dataset.dir = n > cur ? 'fwd' : 'back';
     stage.dataset.layout = to.dataset.layout || 'content';
+    stage.dataset.kind = to.dataset.kind || stage.dataset.layout;
     stage.dataset.pose = to.dataset.pose || '';
     stage.dataset.parity = to.dataset.pose ? 'none' : to.dataset.parity;
     stage.dataset.variant = to.dataset.variant;

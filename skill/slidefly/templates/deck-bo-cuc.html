@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mẫu bố cục SlideFly</title>
+<!-- Mẫu 13 slide: 12 bố cục mới (morph-layouts-plus.css). Đổi style: thay 1 dòng link styles/*.css.
+     Markup từng bố cục: references/layouts.md, mục "12 bố cục mới". -->
+<link rel="stylesheet" href="../assets/morph-base.css">
+<link rel="stylesheet" href="../assets/morph-layouts.css">
+<link rel="stylesheet" href="../assets/morph-layouts-plus.css">
+<link rel="stylesheet" href="../assets/styles/soft-editorial.css">
+<link rel="stylesheet" href="../assets/morph-motion.css">
+<link rel="stylesheet" href="../assets/morph-icons.css">
+</head>
+<body>
+<div class="deck-viewport">
+<div class="deck-stage">
+
+  <!-- 1 cover -->
+  <section class="slide" data-layout="cover">
+    <p class="kicker reveal">SlideFly</p>
+    <h1 class="title reveal">Mười hai cách dựng một slide</h1>
+    <p class="subtitle reveal">Mỗi ý chọn một dáng, deck không còn rập khuôn</p>
+  </section>
+
+  <!-- 2 chapter: số chương khổng lồ viền rỗng -->
+  <section class="slide" data-layout="chapter">
+    <p class="ch-num reveal-scale" aria-hidden="true">01</p>
+    <h2 class="title reveal">Khi một con số là cả câu chuyện</h2>
+    <p class="subtitle reveal">Bố cục cho số liệu, nhóm ý và quy trình</p>
+  </section>
+
+  <!-- 3 big-number: một con số chiếm nửa slide, luôn kèm nguồn -->
+  <section class="slide" data-layout="big-number">
+    <h2 class="title reveal">Bộ bố cục mới</h2>
+    <div class="bignum">
+      <p class="fig reveal-scale"><span class="count" style="--to:12"></span></p>
+      <div class="say">
+        <p class="lead reveal">kiểu slide mới, chạy được trên cả 47 style mà không phải sửa style nào</p>
+        <p class="src reveal">Nguồn: đếm trong deck này và assets/styles/index.json</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 bento: ô to nhỏ khác nhau, một ô nhấn màu -->
+  <section class="slide" data-layout="bento">
+    <h2 class="title reveal">Một slide, nhiều ô to nhỏ</h2>
+    <div class="bento">
+      <div class="cell hot wide tall reveal"><i class="ico" data-icon="layout-grid"></i><h3>Ô lớn cho ý chính</h3><p>Ý quan trọng nhất chiếm nhiều chỗ nhất</p></div>
+      <div class="cell reveal"><p class="big">2</p><p>cỡ ô: rộng và cao</p></div>
+      <div class="cell reveal"><h3>Một ô nhấn</h3><p>Lớp hot đổi sang màu nhấn</p></div>
+      <div class="cell wide reveal"><h3>Ô ngang cho câu dài</h3><p>Lớp wide chiếm hai cột</p></div>
+    </div>
+  </section>
+
+  <!-- 5 process: dải mũi tên phía trên, chữ phía dưới -->
+  <section class="slide" data-layout="process">
+    <h2 class="title reveal">Dựng một deck trong bốn bước</h2>
+    <ol class="process">
+      <li class="reveal"><span class="n">1</span><h3>Dàn ý</h3><p>Mỗi slide một ý, gán sẵn một bố cục</p></li>
+      <li class="reveal"><span class="n">2</span><h3>Chọn style</h3><p>Xem ba bản thử rồi chọn</p></li>
+      <li class="reveal"><span class="n">3</span><h3>Dựng</h3><p>Chép khung từ deck mẫu</p></li>
+      <li class="reveal"><span class="n">4</span><h3>Kiểm tra</h3><p>check-deck.py tới khi OK</p></li>
+    </ol>
+  </section>
+
+  <!-- 6 before-after: bấm để hiện "sau" -->
+  <section class="slide" data-layout="before-after">
+    <h2 class="title reveal">Trước và sau khi có bộ bố cục</h2>
+    <div class="ba">
+      <div class="ba-side before reveal-left"><span class="ba-tag">Trước</span><h3>9 dáng slide</h3><ul><li>Tiêu đề trái, ý trái, nhấn phải</li><li>Đổi style chỉ đổi màu</li></ul></div>
+      <div class="ba-arrow reveal">&rarr;</div>
+      <div class="ba-side after fx fx-right" data-step="1"><span class="ba-tag">Sau</span><h3>21 dáng slide</h3><ul><li>Chọn dáng theo ý cần nói</li><li>Đổi style vẫn giữ dáng</li></ul></div>
+    </div>
+  </section>
+
+  <!-- 7 compare-table: cột được chọn sáng lên -->
+  <section class="slide" data-layout="compare-table">
+    <h2 class="title reveal">Chọn bố cục theo việc cần làm</h2>
+    <table class="ctable reveal">
+      <thead><tr><th></th><th>Bố cục cũ</th><th class="pick">Bố cục mới</th></tr></thead>
+      <tbody>
+        <tr><th>Một con số lớn</th><td>stats</td><td class="pick"><span class="yes">big-number</span></td></tr>
+        <tr><th>Nhiều ý không đều nhau</th><td>content</td><td class="pick"><span class="yes">bento</span></td></tr>
+        <tr><th>So sánh nhiều tiêu chí</th><td>two-col</td><td class="pick"><span class="yes">compare-table</span></td></tr>
+        <tr><th>Câu hỏi gợi mở</th><td class="no">không có</td><td class="pick"><span class="yes">qa</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 8 countdown: xếp hạng, hạng nhất ở cuối và to nhất -->
+  <section class="slide" data-layout="countdown">
+    <h2 class="title reveal">Bốn lỗi làm slide rập khuôn</h2>
+    <ol class="countdown">
+      <li class="reveal"><span class="rk">4</span><h3>Cùng một màu nhấn</h3><p>Mọi điểm nhấn trông giống nhau</p></li>
+      <li class="reveal"><span class="rk">3</span><h3>Gạch đầu dòng mọi nơi</h3><p>Ý nào cũng thành một dòng chữ</p></li>
+      <li class="reveal"><span class="rk">2</span><h3>Không có nhịp nghỉ</h3><p>Hai mươi slide dày đặc liên tục</p></li>
+      <li class="reveal"><span class="rk">1</span><h3>Một dáng cho mọi ý</h3><p>Số liệu, quy trình, câu hỏi đều chung một khung</p></li>
+    </ol>
+  </section>
+
+  <!-- 9 qa: câu hỏi trước, câu trả lời ở cú bấm sau -->
+  <section class="slide" data-layout="qa">
+    <p class="qa-label reveal">Câu hỏi</p>
+    <h2 class="qa-q reveal">Người xem nhớ gì sau một bài nói dài?</h2>
+    <p class="qa-a fx fx-up" data-step="1">Thường là vài hình ảnh và một hai câu chốt, hiếm khi là gạch đầu dòng.</p>
+  </section>
+
+  <!-- 10 portrait-quote: chân dung (ảnh hoặc icon) cạnh câu trích -->
+  <section class="slide" data-layout="portrait-quote">
+    <div class="pq">
+      <div class="pq-face reveal-scale"><i class="ico" data-icon="user"></i></div>
+      <div>
+        <p class="quote reveal">"Chọn dáng slide theo ý cần nói, rồi mới chọn màu."</p>
+        <p class="pq-who reveal"><b>Nguyên tắc của bộ mẫu</b>Thay icon bằng ảnh chân dung khi trích lời một người</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 split-photo: ảnh nửa bên, chữ nửa bên (thêm class flip để đổi bên) -->
+  <section class="slide" data-layout="split-photo">
+    <img class="split-img" src="img/anh-mau.jpg" alt="">
+    <div class="split-text">
+      <p class="kicker reveal">Nhịp nghỉ</p>
+      <h2 class="title reveal">Ảnh một nửa, chữ một nửa</h2>
+      <ul class="bullets"><li class="reveal">Hợp để giới thiệu một nơi, một người, một sản phẩm.</li><li class="reveal">Ảnh phải có nguồn và giấy phép.</li></ul>
+    </div>
+    <p class="photo-credit">Ảnh minh họa SlideFly tạo bằng máy</p>
+  </section>
+
+  <!-- 12 statement: một câu tuyên bố, một cụm được tô -->
+  <section class="slide" data-layout="statement">
+    <p class="kicker reveal">Điều cần nhớ</p>
+    <h2 class="statement reveal">Đổi màu làm slide <mark>mới</mark>, đổi dáng làm slide <mark>khác</mark>.</h2>
+  </section>
+
+  <!-- 13 cta: dáng slide bìa; câu dẫn ở subtitle, nút ở ô meta, nên style nào cũng tự xếp chỗ -->
+  <section class="slide" data-layout="cta">
+    <p class="kicker reveal">Bước tiếp theo</p>
+    <h2 class="title reveal">Thử một bố cục mới hôm nay</h2>
+    <p class="subtitle reveal">github.com/andyluu98/slidefly</p>
+    <div class="meta cta-actions reveal"><span class="cta-btn primary">Chép khung deck-bo-cuc.html</span><span class="cta-btn">Đọc layouts.md</span></div>
+  </section>
+
+</div>
+</div>
+<script src="../assets/morph-engine.js"></script>
+<script src="../assets/morph-nav.js"></script>
+<script src="../assets/morph-audit.js"></script>
+<script src="../assets/morph-steps.js"></script>
+<script src="../assets/morph-icons.js"></script>
+</body>
+</html>

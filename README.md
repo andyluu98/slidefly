@@ -19,6 +19,7 @@ Mỗi style có một nhóm hình cố định gọi là **diễn viên**. Mỗi
 - **8 dạng sơ đồ tự vẽ từ số liệu:** thanh tỷ lệ, vòng tròn chia phần, mặt bằng có chuỗi kích thước, các ô dồn về tâm, ma trận, mạng lưới nút, phễu lọc, màn quét trước và sau. Khai báo bằng vài thuộc tính `data-*`, biểu đồ có số phải ghi nguồn.
 - **Hiệu ứng theo động từ:** vẽ nét, đếm số, đóng dấu, rơi vào chỗ, bay vào nhóm, gộp về tâm, rung khi lệch, chấm chạy dọc đường ống.
 - **Icon Tabler:** hơn 5.000 icon MIT (có logo công cụ như Python, GitHub) khai báo bằng một dòng; `icons.py suggest` gợi ý icon theo chữ trên slide, kể cả từ tiếng Việt; audit chặn slide quá 6 icon.
+- **21 dáng slide:** 9 kiểu gốc và 12 kiểu mới (số lớn, bento, ảnh chia đôi, hỏi đáp, trước và sau, quy trình, bảng so sánh, trích dẫn có chân dung, chương, đếm ngược, tuyên bố, kết có lời kêu gọi). Kiểu mới chạy trên cả 47 style mà không phải sửa style.
 - **Logo xuyên suốt:** một logo (icon Tabler hoặc file ảnh) to ở bìa, thu về góc ở slide nội dung, ẩn ở slide trích dẫn, và tự bay giữa các vị trí đó.
 - **Khung giao diện giả:** cửa sổ chat, terminal, trình duyệt, điện thoại vẽ bằng CSS. Prompt gõ từng chữ, trợ lý "nghĩ" rồi trả lời từng dòng, lệnh cài hiện dần theo cú bấm.
 - **Slide ảnh nền và lưới icon:** ảnh tràn màn hình làm điểm nghỉ giữa các phần (lớp phủ giữ chữ dễ đọc, bắt buộc ghi nguồn ảnh); lưới 3 đến 6 icon cùng màu cho các ý ngắn.
@@ -64,6 +65,7 @@ skill/slidefly/
 │   ├── morph-audit.js       deck.audit(): đo khoảng trống và chữ tràn
 │   ├── morph-base.css       khung 1920x1080, chuyển cảnh, hiệu ứng chữ
 │   ├── morph-layouts.css    9 kiểu slide tự co giãn
+│   ├── morph-layouts-plus.css  12 kiểu slide mới
 │   ├── morph-motion.css     hiệu ứng theo động từ + màu dùng chung
 │   ├── morph-viz*.js/.css   8 dạng sơ đồ tự vẽ
 │   ├── morph-steps.js       bấm từng bước
@@ -75,7 +77,7 @@ skill/slidefly/
 │   └── styles/              47 style + index.json
 ├── references/              cơ chế, layout, công thức chuyển cảnh, chọn style, font tiếng Việt
 ├── scripts/                 inline-assets.py, check-deck.py, build-gallery.py, icons.py
-└── templates/              deck-mau.html (10 slide đủ 9 kiểu), deck-so-do.html (16 slide, mỗi slide một dạng hình), deck-giao-dien.html (10 slide, logo, khung giao diện, ảnh nền, lưới icon)
+└── templates/              deck-mau.html (10 slide đủ 9 kiểu), deck-so-do.html (16 slide, mỗi slide một dạng hình), deck-giao-dien.html (10 slide, logo, khung giao diện, ảnh nền, lưới icon), deck-bo-cuc.html (13 slide, 12 bố cục mới)
 examples/                    2 deck mẫu về AI Agent
 gallery/                     00-gallery.html + 47 deck demo
 ```

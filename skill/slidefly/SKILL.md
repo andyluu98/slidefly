@@ -12,6 +12,7 @@ Skill dir: `~/.claude/skills/slidefly/` (gọi tắt `$SK`). Python 3.10+ có Pl
 ```
 assets/morph-base.css      khung 1920x1080, diễn viên, reveal, giảm chuyển động
 assets/morph-layouts.css   9 kiểu slide, tự co giãn theo data-density
+assets/morph-layouts-plus.css  12 kiểu mới: big-number, bento, split-photo, qa, before-after, process, compare-table, portrait-quote, chapter, countdown, statement, cta
 assets/morph-engine.js     co giãn khung, tạo diễn viên từ --actors, FLIP, mật độ
 assets/morph-nav.js        phím, 2 nút mũi tên ở hai rìa, vuốt, #số-slide (bấm vào thân slide không chuyển)
 assets/morph-audit.js      deck.audit(): đo khoảng trống, tràn chữ, slide lặp kiểu, biểu đồ thiếu nguồn
@@ -28,6 +29,7 @@ assets/icons/              danh mục Tabler (tabler-index.json) + từ khóa ti
 assets/styles/*.css        47 style; assets/styles/index.json = tên, nền, nhãn tâm trạng, hợp với, font
 templates/deck-mau.html    deck mẫu 10 slide đủ 9 kiểu: KHUNG ĐỂ COPY
 templates/deck-so-do.html  deck mẫu 16 slide: mỗi slide một dạng hình, có bấm từng bước
+templates/deck-bo-cuc.html  deck mẫu 13 slide: đủ 12 bố cục mới
 templates/deck-giao-dien.html  deck mẫu 10 slide: logo xuyên suốt, 4 khung giao diện, lưới icon, ảnh nền
 scripts/inline-assets.py   gộp CSS/JS thành 1 file HTML mang đi được
 scripts/check-deck.py      chụp mọi slide + đo + bắt lỗi console, ra sheet.jpg
@@ -42,7 +44,7 @@ scripts/build-gallery.py   dựng demo + trang 00-gallery.html xem/lọc mọi s
 ### Bước 1. Nhận nội dung
 - File `.docx/.pdf/.pptx` thì convert bằng markitdown trước khi đọc.
 - Hỏi gộp một lượt bằng AskUserQuestion (mỗi câu có 2-4 phương án): mục đích và người xem; số slide; mức chữ (ít chữ để thuyết trình / nhiều chữ để đọc). Bỏ câu nào người dùng đã trả lời.
-- Lập dàn ý: mỗi slide một ý, gán sẵn kiểu slide (bảng chọn ở `references/layouts.md`) và **dạng hình theo ý**: quy trình, so sánh, tỷ lệ, phân loại, lọc dần... mỗi loại một hình (bảng ở `references/hieu-ung-va-so-do.md` mục 2). Không để quá 2 slide liền cùng một kiểu.
+- Lập dàn ý: mỗi slide một ý, gán sẵn kiểu slide (bảng chọn ở `references/layouts.md`, gồm 9 kiểu gốc và 12 kiểu mới; ý có dáng riêng như con số, quy trình, so sánh, câu hỏi thì dùng kiểu mới tương ứng) và **dạng hình theo ý**: quy trình, so sánh, tỷ lệ, phân loại, lọc dần... mỗi loại một hình (bảng ở `references/hieu-ung-va-so-do.md` mục 2). Không để quá 2 slide liền cùng một kiểu.
 - **Số liệu phải có nguồn.** Không bịa số cho `.hl-big` hay `.stat-num`. Không có số thật thì dùng icon hoặc câu chốt.
 
 ### Bước 2. Chọn style kiểu "xem rồi chọn"
@@ -53,7 +55,7 @@ scripts/build-gallery.py   dựng demo + trang 00-gallery.html xem/lọc mọi s
 - Người dùng chọn A/B/C hoặc "trộn" (ví dụ màu của A, diễn viên của B: khi đó viết style mới theo `references/co-che-morph.md`).
 
 ### Bước 3. Dựng deck
-- Copy cấu trúc `templates/deck-mau.html`: `<link>` tới `morph-base.css`, `morph-layouts.css`, 1 file style; cuối body lần lượt `morph-engine.js`, `morph-nav.js`, `morph-audit.js` (thiếu audit thì `check-deck.py` báo lỗi). Href dùng đường dẫn tuyệt đối tới `$SK/assets/...` khi file nguồn nằm ngoài skill.
+- Copy cấu trúc `templates/deck-mau.html`: `<link>` tới `morph-base.css`, `morph-layouts.css` (thêm `morph-layouts-plus.css` khi dùng 12 kiểu mới), 1 file style; cuối body lần lượt `morph-engine.js`, `morph-nav.js`, `morph-audit.js` (thiếu audit thì `check-deck.py` báo lỗi). Href dùng đường dẫn tuyệt đối tới `$SK/assets/...` khi file nguồn nằm ngoài skill.
 - Không viết khối `.actors`: engine tự tạo diễn viên từ `--actors` của style.
 - Slide có sơ đồ: dùng `data-layout="diagram"` (hình trang trí lui ra, sân khấu trống), nạp thêm `morph-motion.css`, `morph-viz.css`, `morph-viz-diagrams.js`, `morph-viz.js` (trước engine) và `morph-steps.js` (sau engine). Hiệu ứng chọn theo động từ của câu (`fx-growx` cho "tăng", `draw` cho "nối", `slam` cho "chốt", `shake` cho "lệch"...). Ý cần giảng lần lượt thì gắn `data-step` (phím lùi gỡ từng bước). Chi tiết: `references/hieu-ung-va-so-do.md`.
 - Icon: chỉ dùng Tabler qua `<i class="ico" data-icon="...">` (nạp `morph-icons.css` + `morph-icons.js`). Chạy `icons.py suggest nguon.html` để xem gợi ý, rồi tự chọn theo ý chính. Mỗi slide một cách dùng: 1 icon chính, hoặc 1 dải tối đa 6 icon, hoặc icon làm nút sơ đồ; không gắn icon vào từng gạch đầu dòng. Chi tiết: `references/icon-tabler.md`.

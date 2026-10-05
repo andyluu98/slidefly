@@ -19,8 +19,8 @@
   const SAFE = { x0: 80, x1: 1840, y0: 60, y1: 1020 };
   const LIMIT = { gapY: 0.28, gapX: 0.3 };
   // big-number slides are meant to breathe around the figures
-  const LIMIT_Y_BY_LAYOUT = { stats: 0.34 };
-  const DISPLAY = ['cover', 'section', 'quote', 'closing', 'photo'];
+  const LIMIT_Y_BY_LAYOUT = { stats: 0.34, bento: 0.34, process: 0.38, 'before-after': 0.38 };   // airy by design
+  const DISPLAY = ['cover', 'section', 'quote', 'closing', 'photo', 'big-number', 'qa', 'portrait-quote', 'chapter', 'statement', 'cta', 'split-photo'];
 
   /* text line boxes + images/svg, in stage coordinates */
   function inkRects(slide) {
@@ -31,11 +31,11 @@
     const walker = document.createTreeWalker(slide, NodeFilter.SHOW_TEXT);
     while (walker.nextNode()) {
       const node = walker.currentNode;
-      if (!node.textContent.trim()) continue;
+      if (!node.textContent.trim() || node.parentElement.closest('[aria-hidden="true"]')) continue;   // decoration (chapter numeral)
       const range = document.createRange(); range.selectNodeContents(node);
       [...range.getClientRects()].forEach(push);
     }
-    slide.querySelectorAll(':is(img, svg, video, canvas):not(.photo-bg)').forEach((el) => push(el.getBoundingClientRect()));
+    slide.querySelectorAll(':is(img, svg, video, canvas):not(.photo-bg, .split-img)').forEach((el) => push(el.getBoundingClientRect()));
     return out;
   }
 
@@ -137,7 +137,7 @@
   }
 
   function auditSlide(slide, i) {
-    const layout = slide.dataset.layout || 'content';
+    const layout = slide.dataset.kind || slide.dataset.layout || 'content';   // new layouts report their own name
     const ink = inkRects(slide);
     const issues = [];
     const out = ink.filter((r) => r.x0 < SAFE.x0 - 40 || r.x1 > SAFE.x1 + 40 || r.y0 < SAFE.y0 - 30 || r.y1 > SAFE.y1 + 30);
@@ -153,7 +153,7 @@
     slide.querySelectorAll('.viz[data-viz]').forEach((v) => {
       if (/\d/.test(['values', 'top', 'bottom', 'left', 'right'].map((k) => v.dataset[k] || '').join('')) && !v.dataset.source) issues.push(`biểu đồ ${v.dataset.viz} thiếu data-source`);
     });
-    if (slide.querySelector('.photo-bg') && !slide.querySelector('.photo-credit')) issues.push('ảnh thiếu .photo-credit (tác giả, nguồn, giấy phép)');
+    if (slide.querySelector('.photo-bg, .split-img') && !slide.querySelector('.photo-credit')) issues.push('ảnh thiếu .photo-credit (tác giả, nguồn, giấy phép)');
     const icons = slide.querySelectorAll('.ico');
     if (icons.length > 6) issues.push(`quá nhiều icon (${icons.length}, tối đa 6)`);
     const lost = [...slide.querySelectorAll('.ico[data-missing]')].map((e) => e.dataset.icon);
@@ -178,7 +178,7 @@
     const kinds = [...slide.querySelectorAll('.viz[data-viz]')].map((v) => v.dataset.viz)
       .concat([...slide.querySelectorAll('.mock')].map((m) => [...m.classList].find((c) => c.startsWith('mock-')) || 'mock')).sort();
     const verbs = new Set([...slide.querySelectorAll('[class]')].flatMap((e) => [...e.classList].filter((c) => VERB.test(c))));
-    return [slide.dataset.layout || 'content', slide.dataset.pose || '', kinds.join('+'), [...verbs].sort().join('+')].join('|');
+    return [slide.dataset.kind || slide.dataset.layout || 'content', slide.dataset.pose || '', kinds.join('+'), [...verbs].sort().join('+')].join('|');
   }
 
   window.deck.audit = () => {

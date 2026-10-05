@@ -33,6 +33,7 @@
 /* ---------- actor looks (geometry comes from poses) ---------- */
 [data-actor="slab"]  { background: #1a1a18; --x: 1920px; --y: 0px; --w: 700px; --h: 1080px; }
 [data-actor="fire"]  { background: var(--fire); --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; }
+[data-layout="diagram"] [data-actor="fire"] { --x: 0px; --y: 1080px; --w: 1920px; --h: 0px; }   /* clear stage: ink canvas */
 [data-actor="rule-t"], [data-actor="rule-b"] { background: var(--line); --h: 2px; --w: 0px; --x: 120px; --y: 210px; }
 [data-actor="slash"], [data-actor="slash2"] {
   background: var(--fire); --x: 1920px; --y: -900px; --w: 400px; --h: 760px;
