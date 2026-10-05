@@ -55,14 +55,14 @@
       const cs = getComputedStyle(a);
       // soft glows (radial gradients, blur) and faint shapes do not hurt reading
       // masked or clipped shapes (pins, scribbles): the box is not the drawn shape, skip
-      const soft = /radial-gradient/.test(cs.backgroundImage) || /blur/.test(cs.filter) || +cs.opacity < 0.6
+      const soft = (/radial-gradient/.test(cs.backgroundImage) && clear(cs.backgroundColor)) || /blur/.test(cs.filter) || +cs.opacity < 0.6
         || cs.maskImage !== 'none' || cs.webkitMaskImage !== 'none' || cs.clipPath !== 'none';
       const solid = !soft && (cs.backgroundImage !== 'none' || !clear(cs.backgroundColor));
       const r = a.getBoundingClientRect();
       if (!solid || r.width / k < 24 || r.height / k < 24) return [];
-      const rgb = cs.backgroundColor.match(/[\d.]+/g)?.slice(0, 3).map(Number);
-      if (!rgb || cs.backgroundImage !== 'none') return [];   // pictures: colour unknown, skip
-      return [{ name: a.dataset.actor, lum: lum(rgb), x0: (r.left - s.left) / k, x1: (r.right - s.left) / k, y0: (r.top - s.top) / k, y1: (r.bottom - s.top) / k }];
+      // a textured or pictured shape still hides what is under it; its colour counts only if it has a plain one
+      const rgb = clear(cs.backgroundColor) ? null : cs.backgroundColor.match(/[\d.]+/g).slice(0, 3).map(Number);
+      return [{ name: a.dataset.actor, lum: rgb ? lum(rgb) : null, x0: (r.left - s.left) / k, x1: (r.right - s.left) / k, y0: (r.top - s.top) / k, y1: (r.bottom - s.top) / k }];
     });
   }
 
@@ -104,6 +104,7 @@
       const tcs = getComputedStyle(node.parentElement);
       if (parseFloat(tcs.webkitTextStrokeWidth) > 0 || tcs.textShadow !== 'none') continue; // outlined text carries its own contrast
       const ink = lum(tcs.color.match(/[\d.]+/g).slice(0, 3).map(Number));
+      const need = parseFloat(tcs.fontSize) >= 60 ? 2.4 : 3;   // very large type stays readable at lower contrast
       const range = document.createRange();
       range.selectNodeContents(node);
       [...range.getClientRects()].forEach((r) => {
@@ -115,7 +116,7 @@
         [0.1, 0.5, 0.9].forEach((f) => {
           const x = l.x0 + (l.x1 - l.x0) * f;
           const top = shapes.findLast((a) => x > a.x0 && x < a.x1 && y > a.y0 && y < a.y1);
-          if (top && ratio(ink, top.lum) < 3 && !hits.has(top.name)) hits.set(top.name, node.textContent.trim().slice(0, 24));
+          if (top && top.lum !== null && ratio(ink, top.lum) < need && !hits.has(top.name)) hits.set(top.name, node.textContent.trim().slice(0, 24));
         });
       });
     }

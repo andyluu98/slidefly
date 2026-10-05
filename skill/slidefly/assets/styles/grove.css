@@ -17,7 +17,7 @@
   --font-body: 'Be Vietnam Pro', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   --bg: #192b1b; --fg: #d4cfbf; --muted: rgba(212, 207, 191, 0.68);
-  --accent: #c8524a; --accent-2: #e8e4d6;
+  --accent: #cf5a50; --accent-2: #e8e4d6;
   --card-bg: transparent; --card-fg: #d4cfbf; --card-radius: 0px;
   --title-weight: 400; --title-tracking: -0.01em; --bullet-radius: 0;
   --forest: #192b1b; --forest-alt: #203624; --parchment: #e8e4d6; --cream: #d4cfbf; --coral: #c8524a;
