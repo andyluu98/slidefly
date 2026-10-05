@@ -17,12 +17,14 @@
     const nodes = [];
     const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
     while (walker.nextNode()) nodes.push(walker.currentNode);
+    // pre / pre-wrap text keeps its line breaks (a prompt someone will copy)
+    const raw = getComputedStyle(el).whiteSpace.startsWith('pre');
     let k = 0;
     nodes.forEach((node) => {
       const text = node.textContent.normalize('NFC');
-      if (!text.trim()) return;
+      if (!raw && !text.trim()) return;
       const frag = document.createDocumentFragment();
-      for (const c of text.replace(/\s+/g, ' ')) {
+      for (const c of raw ? text : text.replace(/\s+/g, ' ')) {
         const s = document.createElement('span');
         s.className = 'ch';
         s.style.setProperty('--k', k++);
