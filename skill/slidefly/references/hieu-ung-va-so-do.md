@@ -44,7 +44,7 @@ Không có số thật thì không dùng biểu đồ có số. Hình minh họa
 
 ## 3. Kiểu slide `diagram`
 
-`<section class="slide" data-layout="diagram">`: không style nào định nghĩa tư thế cho kiểu này, nên hình trang trí lui ra cánh gà, sân khấu trống cho sơ đồ. Tiêu đề vẫn ở góc trên như slide nội dung. Muốn giữ vài hình trang trí thì tự viết `data-pose` riêng (cách viết: `co-che-morph.md`; mẫu: khối `<style>` trong `deck-so-do.html`).
+`<section class="slide" data-layout="diagram">`: hình trang trí mượn tư thế của slide mục lục (dạt ra viền, vùng thân để trống cho sơ đồ); style nào có tư thế `diagram` riêng thì khai báo `--dense-stage: diagram`. Tiêu đề vẫn ở góc trên như slide nội dung. Một slide cần sân khấu trống hẳn: `data-stage="clear"`; mượn tư thế kiểu khác: `data-stage="closing"`... Muốn tư thế riêng thì tự viết `data-pose` (cách viết: `co-che-morph.md`; mẫu: khối `<style>` trong `deck-so-do.html`).
 
 Đặt sơ đồ bằng `style="left:..;top:..;width:..;height:.."` (hoặc `right`/`bottom`). Vùng an toàn: x 120..1800, y 270..990.
 

@@ -10,6 +10,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Alegreya:wght@700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
 
 .deck-stage {
+  --dense-stage: diagram;   /* own diagram pose below */
   --actors: "band frame sun square diamond leaf";
   --font-display: 'Alegreya', Georgia, serif;
   --font-body: 'Be Vietnam Pro', sans-serif;

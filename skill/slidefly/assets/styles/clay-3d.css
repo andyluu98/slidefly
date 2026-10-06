@@ -11,6 +11,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap');
 
 .deck-stage {
+  --dense-stage: diagram;   /* own diagram pose below */
   --actors: "panel pill ball cube puck ring";
   --font-display: 'Baloo 2', sans-serif;
   --font-body: 'Nunito', sans-serif;

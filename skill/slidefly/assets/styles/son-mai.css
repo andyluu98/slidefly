@@ -11,6 +11,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
 
 .deck-stage {
+  --dense-stage: diagram;   /* own diagram pose below */
   --actors: "panel mosaic frame f1 f2 f3 f4 rule";
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'Be Vietnam Pro', sans-serif;

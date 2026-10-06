@@ -12,6 +12,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;600;700&display=swap');
 
 .deck-stage {
+  --dense-stage: diagram;   /* own diagram pose below */
   --actors: "ink coral paper glyph zig rule bar dot";
   --font-display: 'Oswald', sans-serif;
   --font-body: 'Inter', sans-serif;

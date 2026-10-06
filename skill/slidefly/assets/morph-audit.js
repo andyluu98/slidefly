@@ -42,7 +42,7 @@
   /* solid actors in the pose this slide would have (same attributes the engine sets) */
   function actorRects(slide, k, s) {
     Object.assign(stage.dataset, {
-      layout: slide.dataset.layout || 'content', pose: slide.dataset.pose || '',
+      layout: slide.dataset.stage || slide.dataset.layout || 'content', pose: slide.dataset.pose || '',
       parity: slide.dataset.pose ? 'none' : slide.dataset.parity, variant: slide.dataset.variant,
     });
     return [...stage.querySelectorAll('.actor')].flatMap((a) => {

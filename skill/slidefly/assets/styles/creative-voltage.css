@@ -13,6 +13,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Space+Mono:wght@400;700&family=Pacifico&display=swap');
 
 .deck-stage {
+  --dense-stage: diagram;   /* own diagram pose below */
   --actors: "chip panel halftone ring squiggle bar burst";
   --font-display: 'Bricolage Grotesque', sans-serif;
   --font-body: 'Space Mono', monospace;

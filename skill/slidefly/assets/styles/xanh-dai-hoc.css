@@ -8,6 +8,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600;700&display=swap');
 
 .deck-stage {
+  --dense-stage: diagram;   /* own diagram pose below */
   --actors: "bg-radial bg-linear card line flower ring-soft ring-main disc-grad ring-mid ring-white disc dia-r dia-l tab";
   --font-display: 'Montserrat', sans-serif;
   --font-body: 'Open Sans', sans-serif;

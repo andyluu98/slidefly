@@ -9,6 +9,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
 
 .deck-stage {
+  --dense-stage: diagram;   /* own diagram pose below */
   --actors: "wall door tiles beam l1 l2 l3";
   --font-display: 'Fraunces', Georgia, serif;
   --font-body: 'Be Vietnam Pro', sans-serif;

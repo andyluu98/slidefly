@@ -11,6 +11,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500&family=Be+Vietnam+Pro:wght@300;400;500&display=swap');
 
 .deck-stage {
+  --dense-stage: diagram;   /* own diagram pose below */
   --actors: "wash line enso seal";
   --font-display: 'Noto Serif', Georgia, serif;
   --font-body: 'Be Vietnam Pro', sans-serif;

@@ -11,6 +11,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display+SC:wght@400;700&family=Josefin+Sans:wght@400;600;700&display=swap');
 
 .deck-stage {
+  --dense-stage: diagram;   /* own diagram pose below */
   --actors: "zig fan frame rt rb d1 d2";
   --font-display: 'Playfair Display SC', Georgia, serif;
   --font-body: 'Josefin Sans', sans-serif;

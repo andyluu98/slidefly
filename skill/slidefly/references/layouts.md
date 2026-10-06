@@ -22,7 +22,7 @@ Ghi đè khi cần: `<section ... data-density="lg">`.
 | Quy trình, mốc thời gian 3-6 bước | `timeline` |
 | Một câu đáng nhớ | `quote` |
 | Kết thúc, cảm ơn, tóm tắt 1 dòng | `closing` |
-| Sơ đồ, biểu đồ chiếm cả vùng thân | `diagram` (sân khấu trống, hình trang trí lui ra; xem `hieu-ung-va-so-do.md`) |
+| Sơ đồ, biểu đồ chiếm cả vùng thân | `diagram` (hình trang trí dạt ra viền; xem `hieu-ung-va-so-do.md`) |
 
 Đổi kiểu liên tục giúp diễn viên chuyển động nhiều hơn. Hai `content` liền nhau vẫn chuyển động nhờ parity chẵn/lẻ.
 
@@ -110,20 +110,20 @@ Ghi đè khi cần: `<section ... data-density="lg">`.
 
 Nạp thêm `<link rel="stylesheet" href=".../assets/morph-layouts-plus.css">` ngay sau `morph-layouts.css`. Deck mẫu đủ 12 kiểu: `templates/deck-bo-cuc.html`.
 
-Mỗi bố cục mới là **biến thể của một kiểu cũ**: engine giữ tên mới ở `data-kind`, đặt kiểu cũ vào `data-layout`. Nhờ vậy style nào cũng tự đặt hình trang trí và tô màu, không phải sửa style. Kiểu nhiều nội dung dùng sân khấu trống (`diagram`: hình trang trí lui ra, giữ màu nền và font).
+Mỗi bố cục mới là **biến thể của một kiểu cũ**: engine giữ tên mới ở `data-kind`, đặt kiểu cũ vào `data-layout`. Nhờ vậy style nào cũng tự đặt hình trang trí và tô màu, không phải sửa style. Kiểu nhiều nội dung dùng nội dung của `diagram`, hình trang trí mượn tư thế slide mục lục (dạt ra viền). `data-stage="clear"` cho sân khấu trống hẳn.
 
 | Nội dung | Kiểu mới | Mượn dáng của |
 |---|---|---|
-| Một con số là cả câu chuyện (bắt buộc ghi nguồn) | `big-number` | sân khấu trống |
-| Nhiều ý không ngang nhau, một ý nổi bật | `bento` | sân khấu trống |
-| Ảnh một nửa, chữ một nửa (thêm class `flip` để đổi bên) | `split-photo` | sân khấu trống |
+| Một con số là cả câu chuyện (bắt buộc ghi nguồn) | `big-number` | hình dạt ra viền |
+| Nhiều ý không ngang nhau, một ý nổi bật | `bento` | hình dạt ra viền |
+| Ảnh một nửa, chữ một nửa (thêm class `flip` để đổi bên) | `split-photo` | hình dạt ra viền |
 | Câu hỏi gợi mở, lời đáp ở cú bấm sau | `qa` | quote |
-| Hai trạng thái trước và sau | `before-after` | sân khấu trống |
-| Quy trình 3-5 bước nối nhau | `process` | sân khấu trống |
-| So sánh nhiều tiêu chí, một lựa chọn được khuyên | `compare-table` | sân khấu trống |
+| Hai trạng thái trước và sau | `before-after` | hình dạt ra viền |
+| Quy trình 3-5 bước nối nhau | `process` | hình dạt ra viền |
+| So sánh nhiều tiêu chí, một lựa chọn được khuyên | `compare-table` | hình dạt ra viền |
 | Trích lời một người cụ thể | `portrait-quote` | quote |
 | Mở chương, số chương khổng lồ phía sau | `chapter` | section |
-| Xếp hạng, quan trọng nhất ở cuối | `countdown` | sân khấu trống |
+| Xếp hạng, quan trọng nhất ở cuối | `countdown` | hình dạt ra viền |
 | Một câu tuyên bố, một cụm được tô | `statement` | quote |
 | Kết bài kèm việc cần làm tiếp | `cta` | cover |
 

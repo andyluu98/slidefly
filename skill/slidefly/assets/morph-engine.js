@@ -14,12 +14,16 @@
   const REVEAL = '.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur';
   // layouts of morph-layouts-plus.css are variants of a classic layout: the slide keeps its name in
   // data-kind and takes the classic one in data-layout, so every style poses it and colours it.
-  // Dense ones sit on a clear stage ('diagram' has no pose, so the actors step out).
+  // Dense ones take 'diagram' for their content rules.
   const CLASSIC_OF = {
     qa: 'quote', 'portrait-quote': 'quote', statement: 'quote', chapter: 'section', cta: 'cover',
     'big-number': 'diagram', 'split-photo': 'diagram', bento: 'diagram', process: 'diagram', 'before-after': 'diagram',
     'compare-table': 'diagram', countdown: 'diagram',
   };
+  // Actor pose of a diagram slide: most styles have no 'diagram' pose, so the actors would step out and
+  // every dense slide looks alike. They borrow the agenda pose instead (it keeps the body zone free).
+  // A style with its own diagram pose sets --dense-stage: diagram; one slide opts out with data-stage="clear".
+  const DENSE = getComputedStyle(stage).getPropertyValue('--dense-stage').replace(/["']/g, '').trim() || 'agenda';
   let cur = -1;
   let scale = 1;
 
@@ -60,6 +64,8 @@
   slides.forEach((slide, k) => {
     const own = slide.dataset.layout;
     if (CLASSIC_OF[own]) { slide.dataset.kind = own; slide.dataset.layout = CLASSIC_OF[own]; }
+    const st = slide.dataset.stage;   // pose the actors take on this slide (any layout name, or "clear")
+    slide.dataset.stage = st === 'clear' ? 'diagram' : st || (slide.dataset.layout === 'diagram' ? DENSE : slide.dataset.layout || 'content');
     // stagger order for reveal items (author may override with style="--i:n")
     slide.querySelectorAll(REVEAL).forEach((el, i) => {
       if (!el.style.getPropertyValue('--i')) el.style.setProperty('--i', i);
@@ -154,8 +160,8 @@
     // switch: actors re-pose via CSS, content cross-fades.
     // A slide with its own data-pose gets parity "none" so the pose is never fought by parity rules.
     stage.dataset.dir = n > cur ? 'fwd' : 'back';
-    stage.dataset.layout = to.dataset.layout || 'content';
-    stage.dataset.kind = to.dataset.kind || stage.dataset.layout;
+    stage.dataset.layout = to.dataset.stage;
+    stage.dataset.kind = to.dataset.kind || to.dataset.layout || 'content';
     stage.dataset.pose = to.dataset.pose || '';
     stage.dataset.parity = to.dataset.pose ? 'none' : to.dataset.parity;
     stage.dataset.variant = to.dataset.variant;

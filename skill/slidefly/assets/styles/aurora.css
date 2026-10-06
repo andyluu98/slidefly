@@ -9,6 +9,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600&family=Manrope:wght@400;500;600;700;800&display=swap');
 
 .deck-stage {
+  --dense-stage: diagram;   /* own diagram pose below */
   --actors: "b1 b2 b3 glass line grain";
   --font-display: 'Unbounded', sans-serif;
   --font-body: 'Manrope', sans-serif;

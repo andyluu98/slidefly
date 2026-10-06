@@ -10,6 +10,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600;700&family=Archivo:wght@400;500;600;700&display=swap');
 
 .deck-stage {
+  --dense-stage: diagram;   /* own diagram pose below */
   --actors: "half square circle ring bar tri";
   --font-display: 'Josefin Sans', sans-serif;
   --font-body: 'Archivo', sans-serif;

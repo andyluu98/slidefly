@@ -15,7 +15,7 @@ Mỗi style có một nhóm hình cố định gọi là **diễn viên**. Mỗi
 ## Tính năng
 
 - **57 style:** 12 preset và 34 bold template phỏng theo [frontend-slides](https://github.com/zarazhangrui/frontend-slides), 1 style tái tạo mẫu Morph "vòng tròn xanh", và 10 style mới: 3 style bản sắc Việt (sơn mài, tranh Đông Hồ, Hội An), 5 style xu hướng 2026 (aurora, bento, bauhaus, restorative, wabi), 2 style cho dịp đặc biệt (art deco, clay 3D). Mọi font đều có bộ chữ tiếng Việt.
-- **10 kiểu slide:** cover, agenda, section, content, two-col, stats, timeline, quote, closing, và `diagram` (sân khấu trống cho sơ đồ).
+- **10 kiểu slide:** cover, agenda, section, content, two-col, stats, timeline, quote, closing, và `diagram` (sơ đồ chiếm cả vùng thân, hình trang trí dạt ra viền).
 - **8 dạng sơ đồ tự vẽ từ số liệu:** thanh tỷ lệ, vòng tròn chia phần, mặt bằng có chuỗi kích thước, các ô dồn về tâm, ma trận, mạng lưới nút, phễu lọc, màn quét trước và sau. Khai báo bằng vài thuộc tính `data-*`, biểu đồ có số phải ghi nguồn.
 - **Hiệu ứng theo động từ:** vẽ nét, đếm số, đóng dấu, rơi vào chỗ, bay vào nhóm, gộp về tâm, rung khi lệch, chấm chạy dọc đường ống.
 - **Icon Tabler:** hơn 5.000 icon MIT (có logo công cụ như Python, GitHub) khai báo bằng một dòng; `icons.py suggest` gợi ý icon theo chữ trên slide, kể cả từ tiếng Việt; audit chặn slide quá 6 icon.

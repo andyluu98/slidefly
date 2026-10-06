@@ -11,6 +11,7 @@
 
 :root { --stage-bg: #1a1a1a; }
 .deck-stage {
+  --dense-stage: diagram;   /* own diagram pose below */
   --actors: "paper slab ink lemon grid qr mark";
   --font-display: 'Space Grotesk', sans-serif;
   --font-body: 'Space Grotesk', sans-serif;

@@ -5,6 +5,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Big+Shoulders+Stencil+Display:wght@800;900&family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600&family=Dela+Gothic+One&display=swap');
 
 .deck-stage {
+  --dense-stage: diagram;   /* own diagram pose below */
   --actors: "blk blob orange teal mustard magenta paper mark";
   --font-display: 'Bricolage Grotesque', sans-serif;
   --font-num: 'Big Shoulders Stencil Display', sans-serif;
