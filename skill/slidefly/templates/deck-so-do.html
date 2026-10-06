@@ -65,6 +65,8 @@
 /* ---------- cover ---------- */
 .slide[data-layout="cover"] .title { font-size: 104px; }
 .cover-plan { position: absolute; left: 1180px; top: 110px; width: 700px; height: 860px; }
+/* the plan is drawn for Cobalt Grid's blue plate; other styles keep their own cover shapes there */
+.deck-stage:not(:has(> .actors > [data-actor="glitch"])) .cover-plan { visibility: hidden; }   /* keeps its size: morph-viz draws before the actors exist */
 .deck-stage:has(> .actors > [data-actor="glitch"]) .on-plate .viz :is(.wall, .dim, .tick) { stroke: var(--viz-paper); }
 .deck-stage:has(> .actors > [data-actor="glitch"]) .on-plate .viz .wall { fill: rgba(240, 235, 222, .08); }
 .deck-stage:has(> .actors > [data-actor="glitch"]) .on-plate .viz .part { fill: var(--viz-paper); }
