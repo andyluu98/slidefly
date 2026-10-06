@@ -1,8 +1,8 @@
 # 57 style: chọn theo mục đích
 
-Dữ liệu đầy đủ (tên, nền, nhãn tâm trạng, hợp với, font) nằm ở `assets/styles/index.json`. Xem trực quan: chạy `scripts/build-gallery.py <thu-muc>` rồi mở `00-gallery.html`.
+Dữ liệu đầy đủ (tên, nền, nhãn tâm trạng, hợp với, font) nằm ở `assets/styles/index.json`. Xem trực quan: trang thư viện style trên GitHub Pages của SlideFly.
 
-Đổi style = thay 1 dòng `<link href=".../styles/<slug>.css">`. Mọi style dùng font có tiếng Việt và đã qua `check-deck.py` (RESULT: OK) trên deck mẫu 10 slide.
+Đổi style = thay 1 dòng `<link href=".../styles/<slug>.css">`. Mọi style dùng font có tiếng Việt và đã qua `deck.audit()` trên các deck mẫu.
 
 ## Nhóm theo mục đích
 

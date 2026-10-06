@@ -1,2 +1,1 @@
-playwright>=1.40
-pillow>=10.0
+# SlideFly không cần thư viện ngoài: các script chỉ dùng thư viện chuẩn của Python 3.10+.

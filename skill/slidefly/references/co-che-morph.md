@@ -29,7 +29,7 @@ Khi hệ điều hành bật giảm chuyển động (Windows: tắt Animation e
    - Hình phức tạp (hoa, ghim, sticker) vẽ bằng SVG data URI trong `background` hoặc `mask` (đổi màu bằng `background-color`).
    - Chữ in hoa tiếng Việt cần `line-height` từ 1.2; Playfair cần `lining-nums` cho số lớn; tránh chữ nghiêng có nét lạ (Fraunces italic) cho đoạn văn.
    - Agenda mặc định (gap 640px, cột phải căn phải) dễ bị "trống ngang": đặt `--agenda-gap` 140-360px nếu không cần khoảng giữa.
-6. Dựng `templates/deck-mau.html` với style mới, chạy `check-deck.py`, đọc `sheet.jpg`, sửa tới khi `RESULT: OK` và nhìn đẹp.
+6. Dựng `templates/deck-mau.html` với style mới, mở bằng trình duyệt, gõ `deck.audit()` và đi qua từng slide, sửa tới khi audit không báo lỗi và nhìn đẹp.
 7. Thêm style vào `assets/styles/index.json` và nhóm phù hợp trong `references/style-presets.md`.
 
 ## 6. Port một mẫu PowerPoint Morph
@@ -38,6 +38,7 @@ Khi hệ điều hành bật giảm chuyển động (Windows: tắt Animation e
 - `custGeom` đổi sang SVG path: giữ `w/h` làm viewBox, M/L/C/Z giữ nguyên. Hình đứng yên dùng SVG nền (data URI) trong CSS như diễn viên `flower` của `xanh-dai-hoc.css`.
 - Tên `!!Tên` của PowerPoint ứng với `data-actor`; mỗi slide mẫu thành một `data-pose`. Ví dụ: phần `dh1..dh4` trong `xanh-dai-hoc.css`.
 - `advClick="0" advTm="1000"` của mẫu là tự chuyển slide; skill này mặc định người trình bày bấm (phím hoặc nút rìa) mới chuyển.
+- Chiều ngược lại (deck SlideFly ra file .pptx có Morph): `scripts/export-pptx.py`, xem `references/xuat-pptx.md`.
 
 ## 7. Nguồn và giấy phép
 - Khung co giãn và lớp reveal lấy ý từ `frontend-slides` (zarazhangrui, MIT). Style Bold Signal, Swiss Modern, Dark Botanical, Neon Cyber, Paper & Ink phỏng theo bộ preset của repo này, font thay bằng font có tiếng Việt.

@@ -28,8 +28,10 @@ Mỗi style có một nhóm hình cố định gọi là **diễn viên**. Mỗi
 - **Bấm từng bước:** `data-step` cho phép giảng tới đâu mở tới đó, phím lùi gỡ đúng một bước; slide có `data-at` để đổi trạng thái theo từng cú bấm.
 - **Tự lấp đầy:** engine đếm số ý trên slide rồi chọn cỡ chữ lớn, vừa hoặc nhỏ. Slide nội dung có ô điểm nhấn, slide hai cột có câu kết luận.
 - **Không lặp nhàm:** cùng một kiểu slide xuất hiện nhiều lần sẽ đổi dáng (biến thể 1, 2, 3) và đổi hướng chữ vào khung. Slide sơ đồ, bento, bảng so sánh vẫn giữ hình trang trí của style ở viền thay vì để sân khấu trống. Tiêu đề có hai biến thể: đặt giữa (`data-title="center"`) và chạy dọc mép trái (`data-title="side"`); slide nào cũng có thể mượn tư thế của kiểu khác bằng `data-stage`.
+- **Slide tự thiết kế:** `data-layout="free"` cho sân khấu trống để AI tự dựng bố cục riêng bằng CSS của deck (chữ khổng lồ cắt mép, lưới bất đối xứng, timeline uốn lượn...). Skill coi đồ nghề có sẵn là gợi ý, không phải khuôn, nên mỗi deck có vài slide mang dáng riêng (`references/tu-thiet-ke.md`).
 - **Chữ bay giữa hai slide (FLIP):** ví dụ tiêu đề mục ở trang mục lục bay sang thành tiêu đề phần.
-- **Tự kiểm tra:** `check-deck.py` chụp mọi slide, gom thành một ảnh, đo khoảng trống và chữ tràn, đo độ tương phản của chữ với hình phía sau và với chính khung chứa nó, bắt chữ đè chữ (lớp cố ý chồng thì gắn `data-layer`), nhắc khi 3 slide liền dựng cùng một kiểu hoặc khi một khung chiếm hơn một phần ba deck, biểu đồ thiếu nguồn, lỗi console.
+- **Tự kiểm tra ngay trong trang:** mở deck rồi gõ `deck.audit()` trong console (hoặc để Claude gõ qua trình duyệt của app): đo khoảng trống và chữ tràn, độ tương phản của chữ với hình phía sau và với khung chứa nó, slide lặp dáng, biểu đồ thiếu nguồn. Không cần cài gì thêm.
+- **Xuất PowerPoint có Morph:** `scripts/export-pptx.py` ghi file .pptx sửa được, hình trang trí cùng tên qua các slide nên PowerPoint Morph cho chúng bay như bản HTML.
 - **Không phụ thuộc thư viện:** chỉ HTML, CSS, JavaScript thuần. Có chế độ giảm chuyển động.
 
 ## Cài đặt
@@ -38,7 +40,6 @@ Mỗi style có một nhóm hình cố định gọi là **diễn viên**. Mỗi
 git clone https://github.com/andyluu98/slidefly.git
 cp -r slidefly/skill/slidefly ~/.claude/skills/
 pip install -r slidefly/requirements.txt
-playwright install chromium
 ```
 
 Python chỉ cần cho các script kiểm tra và đóng gói. Deck tạo ra chạy được trên mọi trình duyệt hiện đại mà không cần Python.
@@ -52,7 +53,7 @@ Dùng thủ công không qua Claude:
 1. Chép `skill/slidefly/templates/deck-mau.html`, đổi dòng `<link>` sang style muốn dùng (danh sách ở `assets/styles/index.json`).
 2. Thay nội dung các `<section class="slide" data-layout="...">` (markup mẫu ở `references/layouts.md`).
 3. Đóng gói: `python scripts/inline-assets.py nguon.html deck.html`
-4. Kiểm tra: `python scripts/check-deck.py deck.html thu-muc-anh`
+4. Kiểm tra: mở deck trong trình duyệt, gõ `deck.audit()` trong console.
 
 **Trình chiếu:** mũi tên hoặc Space để sang slide, mũi tên trái để lùi, `F` toàn màn hình, `Home`/`End` về đầu/cuối.
 
@@ -78,7 +79,7 @@ skill/slidefly/
 │   ├── icons/               danh mục Tabler + từ khóa tiếng Việt
 │   └── styles/              57 style + index.json
 ├── references/              cơ chế, layout, công thức chuyển cảnh, chọn style, font tiếng Việt
-├── scripts/                 inline-assets.py, check-deck.py, build-gallery.py, icons.py, pick-styles.py
+├── scripts/                 inline-assets.py, export-pptx.py, icons.py, pick-styles.py
 └── templates/              deck-mau.html (10 slide đủ 9 kiểu), deck-so-do.html (16 slide, mỗi slide một dạng hình), deck-giao-dien.html (10 slide, logo, khung giao diện, ảnh nền, lưới icon), deck-bo-cuc.html (13 slide, 12 bố cục mới)
 examples/                    2 deck mẫu về AI Agent
 gallery/                     00-gallery.html + 57 deck demo

@@ -62,7 +62,7 @@ Tên trên thanh tiêu đề là `data-title`. Đặt vị trí bằng `style="l
 
 - Trong cùng một khung, các phần chạy **nối tiếp nhau**: câu hỏi gõ xong mới tới câu trả lời. Không cần tự tính thời gian.
 - Gắn `data-step` thì phần đó chờ cú bấm, và chuỗi tính lại từ cú bấm. Phím lùi gỡ đúng bước đó (cần `morph-steps.js`).
-- Ảnh chụp của `check-deck.py` và `deck.audit()` luôn thấy trạng thái cuối, chữ đầy đủ.
+- `deck.audit()` luôn thấy trạng thái cuối, chữ đầy đủ.
 
 ```html
 <div class="mock mock-chat" data-title="Trợ lý AI" style="left:1000px;top:250px;width:800px;height:740px">

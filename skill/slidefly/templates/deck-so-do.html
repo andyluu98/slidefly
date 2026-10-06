@@ -227,7 +227,7 @@
     <i class="lab-whole" data-morph-id="lab"></i>
     <div class="viz" style="left:120px;right:120px;top:290px;bottom:110px;--bar-h:220px" data-viz="span" data-values="5,5,5,5,5" data-source="Lịch ví dụ"
       data-sub="Bước 1|Bước 2|Bước 3|Bước 4|Bước 5"
-      data-labels="Chép khung deck-mau.html|Gán dạng hình cho từng ý|Khai báo sơ đồ bằng data-*|Gắn data-step cho ý giảng lần lượt|Chạy check-deck, sửa tới khi OK"></div>
+      data-labels="Chép khung deck-mau.html|Gán dạng hình cho từng ý|Khai báo sơ đồ bằng data-*|Gắn data-step cho ý giảng lần lượt|Chạy deck.audit(), sửa tới khi sạch"></div>
     <div data-step="1">
       <i class="gate fx fx-growy" style="left:790px;top:520px;height:440px"></i>
       <p class="gate-note fx fx-left" style="left:816px;top:870px;--d:.3">Chưa gán hình cho từng ý thì chưa sang Bước 3.</p>
@@ -397,9 +397,9 @@
     <h2 class="title reveal" style="width:1060px">Máy tự soát, người xem lại</h2>
     <span class="tag abs fx" style="left:120px;top:262px;width:900px;text-align:center">Deck vừa dựng đổ vào từ trên</span>
     <div class="viz" data-viz="funnel" style="left:120px;top:310px;width:900px;height:660px" data-dots="p,0,p,1,0,p,p"
-      data-stages="Lớp 1: check-deck tự đo|Lớp 2: Người xem sheet.jpg|Deck được bàn giao"></div>
+      data-stages="Lớp 1: deck.audit() tự đo|Lớp 2: Người xem từng slide|Deck được bàn giao"></div>
     <div class="plate-txt fx fx-right" style="top:300px;--d:.5">
-      <p class="tag" style="opacity:.75">Lớp 1 · check-deck.py chụp mọi slide</p>
+      <p class="tag" style="opacity:.75">Lớp 1 · deck.audit() đo mọi slide</p>
       <p style="font-size:27px;line-height:1.4;margin-top:10px">Đo khoảng trống, chữ tràn, slide lặp kiểu, biểu đồ thiếu nguồn, lỗi console.</p>
     </div>
     <div class="plate-txt fx fx-right" style="top:600px;--d:.8">
@@ -432,7 +432,7 @@
       <span class="n fx" style="--d:.4">1</span><span class="fx fx-left" style="--d:.4">Mỗi ý chọn đúng dạng hình</span><span class="p fx" style="--d:.4">30</span>
       <span class="n fx" style="--d:.65">2</span><span class="fx fx-left" style="--d:.65">Số liệu có nguồn</span><span class="p fx" style="--d:.65">25</span>
       <span class="n fx" style="--d:.9">3</span><span class="fx fx-left" style="--d:.9">Bấm từng bước hợp lý</span><span class="p fx" style="--d:.9">20</span>
-      <span class="n fx" style="--d:1.15">4</span><span class="fx fx-left" style="--d:1.15">check-deck ra OK</span><span class="p fx" style="--d:1.15">15</span>
+      <span class="n fx" style="--d:1.15">4</span><span class="fx fx-left" style="--d:1.15">audit không báo lỗi</span><span class="p fx" style="--d:1.15">15</span>
       <span class="n fx" style="--d:1.4">5</span><span class="fx fx-left" style="--d:1.4">Bàn giao đủ đường dẫn</span><span class="p fx" style="--d:1.4">10</span>
       <span class="tot"></span><span class="tot fx" style="--d:1.6">Tổng</span><span class="p tot fx" style="--d:1.6">100</span>
     </div>
@@ -441,7 +441,7 @@
       <p class="fx fx-up" style="--d:1.8"><svg viewBox="0 0 30 30"><path class="draw" pathLength="1" d="M4 16l7 7L26 6" style="--d:2"/></svg>File HTML đã gộp</p>
       <p class="fx fx-up" style="--d:1.9"><svg viewBox="0 0 30 30"><path class="draw" pathLength="1" d="M4 16l7 7L26 6" style="--d:2.1"/></svg>Ảnh tổng hợp sheet.jpg</p>
       <p class="fx fx-up" style="--d:2"><svg viewBox="0 0 30 30"><path class="draw" pathLength="1" d="M4 16l7 7L26 6" style="--d:2.2"/></svg>Bảng nguồn số liệu</p>
-      <p class="fx fx-up" style="--d:2.1"><svg viewBox="0 0 30 30"><path class="draw" pathLength="1" d="M4 16l7 7L26 6" style="--d:2.3"/></svg>Kết quả check-deck</p>
+      <p class="fx fx-up" style="--d:2.1"><svg viewBox="0 0 30 30"><path class="draw" pathLength="1" d="M4 16l7 7L26 6" style="--d:2.3"/></svg>Kết quả deck.audit()</p>
     </div>
   </section>
 

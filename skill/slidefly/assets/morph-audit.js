@@ -13,7 +13,7 @@
   const LIMIT = { gapY: 0.28, gapX: 0.3 };
   // big-number slides are meant to breathe around the figures
   const LIMIT_Y_BY_LAYOUT = { stats: 0.34, bento: 0.34, process: 0.38, 'before-after': 0.38 };   // airy by design
-  const DISPLAY = ['cover', 'section', 'quote', 'closing', 'photo', 'big-number', 'qa', 'portrait-quote', 'chapter', 'statement', 'cta', 'split-photo'];
+  const DISPLAY = ['cover', 'section', 'quote', 'closing', 'photo', 'big-number', 'qa', 'portrait-quote', 'chapter', 'statement', 'cta', 'split-photo', 'free'];
 
   /* text line boxes + images/svg, in stage coordinates */
   function inkRects(slide) {

@@ -184,12 +184,12 @@
     <div class="wrap">
       <div class="head">
         <span class="eyebrow">Cài đặt</span>
-        <h2>Bốn bước, vài phút.</h2>
+        <h2>Ba bước, vài phút.</h2>
         <p>Skill là một thư mục. Cài đặt nghĩa là chép thư mục đó vào chỗ Claude Code tìm skill.</p>
       </div>
       <ul class="need">
         <li><b>Cần có:</b> <a href="https://claude.com/claude-code">Claude Code</a>, Git</li>
-        <li><b>Tùy chọn:</b> Python 3.10 trở lên, để chạy script tự kiểm tra</li>
+        <li><b>Tùy chọn:</b> Python 3.10 trở lên (chỉ thư viện chuẩn, không cài thêm gì), để gộp file và xuất PowerPoint</li>
       </ul>
       <div class="os" role="tablist" aria-label="Hệ điều hành">
         <button type="button" role="tab" data-os="unix" aria-selected="true">macOS / Linux</button>
@@ -211,14 +211,6 @@ cp -r slidefly/skill/slidefly ~/.claude/skills/</pre></div>
             <div class="code only-win"><pre>New-Item -ItemType Directory -Force "$HOME\.claude\skills" | Out-Null
 Copy-Item -Recurse slidefly\skill\slidefly "$HOME\.claude\skills\"</pre></div>
             <p>Skill nằm ở <code>~/.claude/skills/slidefly</code> nên dùng được trong mọi dự án.</p>
-          </div>
-        </li>
-        <li>
-          <div>
-            <h3>Cài công cụ tự kiểm tra <span class="opt">Tùy chọn</span></h3>
-            <div class="code"><pre>pip install -r slidefly/requirements.txt
-python -m playwright install chromium</pre></div>
-            <p>Bước này giúp Claude chụp và soát từng slide trước khi giao. Bỏ qua thì deck vẫn tạo được, chỉ thiếu bước soát tự động.</p>
           </div>
         </li>
         <li>
@@ -362,7 +354,7 @@ python -m playwright install chromium</pre></div>
         </details>
         <details>
           <summary>Xuất ra file PowerPoint hoặc PDF được không?</summary>
-          <p>Hiện chưa. SlideFly chỉ tạo file HTML. Hiệu ứng chạy bằng trình duyệt nên không chép sang được file .pptx hay PDF.</p>
+          <p>PowerPoint thì được: <code>scripts/export-pptx.py</code> ghi file .pptx sửa được, hình trang trí giữ cùng tên qua các slide nên hiệu ứng Morph của PowerPoint 2019/365 cho chúng bay như bản HTML, chữ hiện dần theo thứ tự. Sơ đồ tự vẽ và khung giao diện được đơn giản hóa thành hộp chữ. PDF thì in trang HTML từ trình duyệt, khi đó mất hiệu ứng.</p>
         </details>
         <details>
           <summary>Không có mạng thì slide có chạy không?</summary>

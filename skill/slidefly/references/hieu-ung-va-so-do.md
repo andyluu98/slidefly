@@ -116,7 +116,7 @@ Màu dùng chung: `--viz-ink`, `--viz-paper` (theo `--fg`/`--bg` của style), `
 - Slide có `data-at="<số bước đã hiện>"`, dùng để đổi trạng thái: `.slide[data-at="1"] .node.weak { ... }`. Matrix, network, compare đổi trạng thái từ cú bấm đầu tiên (`data-at` khác 0) và giữ nguyên ở các bước sau.
 - Nút lùi gỡ bước vừa mở (hiệu ứng chạy ngược); hết bước mới về slide trước, slide đó hiện đầy đủ.
 - Khối chứa có `data-step` mà không có class `.fx` sẽ ẩn tới lượt; thêm class `keep` nếu muốn nó vẫn hiện (ví dụ các ô `gather` hiện sẵn, bấm mới dồn).
-- Trình duyệt tự động (`check-deck.py`) luôn thấy mọi bước đã mở.
+- `deck.audit()` luôn thấy mọi bước đã mở.
 
 ## 7. Lỗi hay gặp
 

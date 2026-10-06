@@ -126,6 +126,7 @@ Mỗi bố cục mới là **biến thể của một kiểu cũ**: engine giữ
 | Xếp hạng, quan trọng nhất ở cuối | `countdown` | hình dạt ra viền |
 | Một câu tuyên bố, một cụm được tô | `statement` | quote |
 | Kết bài kèm việc cần làm tiếp | `cta` | cover |
+| Ý cần một dáng riêng không kiểu nào có | `free` (tự thiết kế, xem `tu-thiet-ke.md`) | sân khấu trống |
 
 Quy tắc chọn: ý nào có dáng riêng thì dùng dáng đó, đừng nhét mọi thứ vào `content`. Không để 3 slide liền nhau cùng một kiểu (audit báo "nhàm").
 

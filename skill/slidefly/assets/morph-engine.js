@@ -11,7 +11,7 @@
   const CLASSIC_OF = {
     qa: 'quote', 'portrait-quote': 'quote', statement: 'quote', chapter: 'section', cta: 'cover',
     'big-number': 'diagram', 'split-photo': 'diagram', bento: 'diagram', process: 'diagram', 'before-after': 'diagram',
-    'compare-table': 'diagram', countdown: 'diagram',
+    'compare-table': 'diagram', countdown: 'diagram', free: 'diagram',   // free: the deck's own CSS lays it out
   };
   // Diagram slides borrow the agenda pose (body zone free) so dense slides keep the style's look; a style with
   // its own diagram pose sets --dense-stage: diagram; one slide opts out with data-stage="clear".
@@ -55,7 +55,7 @@
     const own = slide.dataset.layout;
     if (CLASSIC_OF[own]) { slide.dataset.kind = own; slide.dataset.layout = CLASSIC_OF[own]; }
     const st = slide.dataset.stage;   // pose the actors take on this slide (any layout name, or "clear")
-    slide.dataset.stage = st === 'clear' ? 'diagram' : st || (slide.dataset.layout === 'diagram' ? DENSE : slide.dataset.layout || 'content');
+    slide.dataset.stage = st === 'clear' || (!st && own === 'free') ? 'diagram' : st || (slide.dataset.layout === 'diagram' ? DENSE : slide.dataset.layout || 'content');
     // stagger order for reveal items (author may override with style="--i:n")
     slide.querySelectorAll(REVEAL).forEach((el, i) => {
       if (!el.style.getPropertyValue('--i')) el.style.setProperty('--i', i);

@@ -3,7 +3,7 @@
    the slide gets data-at="<steps shown>" so CSS can style each state.
    "Back" first takes the last shown step away (its effect plays in reverse),
    then goes to the previous slide, which arrives finished. Automated browsers
-   (check-deck.py screenshots) always see every step. */
+   (deck.audit()) always see every step. */
 (() => {
   const deck = window.deck;
   const stage = document.querySelector('.deck-stage');
