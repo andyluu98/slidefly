@@ -51,7 +51,7 @@ scripts/pick-styles.py     gợi ý 3 style (hợp, khác nền, bất ngờ) + 
 
 ### Bước 2. Chọn style kiểu "xem rồi chọn"
 - Người dùng đã nêu tên style thì dùng đúng style đó. Nếu chưa, chạy:
-  `python "$SK/scripts/pick-styles.py" "<mục đích, người xem, chất mong muốn>"`
+  `python "$SK/scripts/pick-styles.py" "<mục đích, người xem, chất mong muốn>"` (deck từ 15 slide chia phần thì thêm `--parts N`: mỗi phần một nhịp kể riêng, slide chương xen kẽ nền)
   Script trả 3 style (hợp, khác nền, bất ngờ) và 1 cách kể, xáo ngẫu nhiên mỗi lần, bỏ qua style máy này vừa dùng. Dùng đúng 3 style đó, không tự thay bằng style "an toàn" quen tay (nhóm gợi ý chỉ để tham khảo: `references/style-presets.md`).
 - Dựng 1 file nguồn gồm 3 slide của chính nội dung người dùng (cover, agenda, 1 content), rồi sinh 3 bản chỉ khác dòng link style.
 - Người dùng muốn xem hết: chạy `build-gallery.py <thu-muc>` rồi mở `00-gallery.html` (ảnh bìa + slide nội dung của mọi style, lọc theo nền và từ khóa).
