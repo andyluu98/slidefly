@@ -44,3 +44,5 @@ Giữ chữ đọc được: con số chỉ nằm trên nền trơn; câu giải
 ## Xuất PowerPoint
 
 Slide tự thiết kế vẫn xuất được bằng `export-pptx.py`. Phần chữ vào hộp chữ sửa được, đặt theo `left/top/width/height` ghi trong thuộc tính `style` của phần tử (CSS ở khối `<style>` riêng không được đọc). Nên ghi vị trí của các khối chữ chính ngay trong `style="..."` nếu deck cần xuất PPTX.
+
+Script đọc thêm trong `style`: `font-size` (px), `color` và `background` dạng `var(--accent|fg|muted|bg|on-accent|tint)`, `font-weight` từ 600 trở lên (đậm), `text-align: center|right`, `var(--font-display)`. Mỗi khối thành một đoạn: chữ đậm làm tiêu đề khối (`<b>` hiển thị kiểu block) thì thêm `<br class="pp">` ngay sau nó và ẩn bằng CSS (`br.pp { display: none }`) để bản PPTX xuống dòng. Hình SVG tự vẽ (đường, mũi tên) không sang PPTX.

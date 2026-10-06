@@ -120,10 +120,12 @@ def bullets(ctx, node, x, y, w, h, size_key='bullets', frame=''):
 
 def highlight(ctx, node, x, y, w, h, on_panel=False):
     role = 'on_accent' if on_panel else 'accent'
-    ps = []
+    ps, keep = [], ctx.over
+    ctx.over = {} if on_panel else keep   # the style's hl-big colour is usually the accent: invisible on an accent panel
     for n in node.find_all(lambda n: set(n.cls) & {'hl-big', 'hl-text'}):
         big = 'hl-big' in n.cls
         ps.append(para(runs(ctx, n, fit(n, 160, w) if big else 34, role if big else ('on_accent' if on_panel else 'fg'), 'display', True), 'ctr', 14 if ps else 0))
+    ctx.over = keep
     ico = node.find(lambda n: 'ico' in n.cls)
     if ico:   # icon centred above the words
         size = min(200, w * 0.6)
@@ -156,8 +158,7 @@ def takeaway(ctx, node, x0, x1, bottom):
 def stats(ctx, node, x0, x1, y0, y1):
     ss = node.all_class('stat')
     num, lab = SIZES['stats'][ctx.density]
-    if len(ss) >= 4 and ctx.density == 'lg':
-        num = 160
+    num = 160 if len(ss) >= 4 and ctx.density == 'lg' else num
     w = (x1 - x0 - 48 * (len(ss) - 1)) / max(len(ss), 1)
     for i, s in enumerate(ss):
         ps = [para(runs(ctx, n, fit(n, num, w) if 'stat-num' in n.cls else lab, 'accent' if 'stat-num' in n.cls else 'muted',
@@ -177,8 +178,7 @@ def timeline(ctx, node, x0, x1, y0, y1):
         ctx.rect(f'Dot {i + 1}', x, mid - 16, 32, 32, (ctx.t['accent'][0], 1), 'ellipse')
         ps = []
         for n in s.find_all(lambda n: n.tag in ('h3', 'p') or 'when' in n.cls):
-            key = 'when' if 'when' in n.cls else n.tag
-            size, role, font = {'when': (when, 'accent', 'display'), 'h3': (h3s, 'fg', 'display'), 'p': (fs, 'muted', 'body')}[key]
+            size, role, font = {'when': (when, 'accent', 'display'), 'h3': (h3s, 'fg', 'display'), 'p': (fs, 'muted', 'body')}[key := 'when' if 'when' in n.cls else n.tag]
             ps.append(para(runs(ctx, n, size, role, font, key != 'p'), 'l', 8 if ps else 0))
         above = i % 2 == 0
         ctx.box(f'Step {i + 1}', x, y0 if above else mid + 52, w, mid - 52 - y0 if above else y1 - mid - 52, ps, 'b' if above else 't')
@@ -192,8 +192,7 @@ def agenda(ctx, node, x0, x1, y0, y1):
     for i, li in enumerate(items):
         c, r = (0, i) if i < rows else (1, i - rows)
         x, y = x0 + c * (cw + 80), y0 + r * rh
-        n = li.by_class('num')
-        if n:
+        if n := li.by_class('num'):
             ctx.box(f'Num {i + 1}', x, y, num * 1.4, rh, [para(runs(ctx, n, num, 'accent', 'display', True))], 'ctr')
         ps = [para(runs(ctx, k, h3s if k.tag == 'h3' else ps_, 'fg' if k.tag == 'h3' else 'muted', 'display' if k.tag == 'h3' else 'body', k.tag == 'h3'), 'l', 6)
               for k in li.find_all(lambda k: k.tag in ('h3', 'p'))]

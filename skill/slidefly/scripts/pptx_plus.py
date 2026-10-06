@@ -170,12 +170,17 @@ def leftover_text(ctx, node, used, box):
     inline left/top keeps that spot; the rest (source lines, notes) goes in a small strip at the foot."""
     rest = [k for k in node.children() if k not in used and k.text() and 'photo-credit' not in k.cls
             and k.tag not in ('img', 'script', 'style') and 'frame-panel' not in k.cls]
-    notes, body = [], []
+    notes, body, tok = [], [], r'var\(--(accent|muted|bg|fg|tint|card|on-accent)\)'
     for k in rest:
-        spot = style_box(k)
-        if spot:
+        spot, st = style_box(k), k.attrs.get('style', '')
+        if spot:   # free slides: inline background, font-size, colour token, weight and alignment carry over
             x, y, w, h = spot
-            ctx.box('Text', x, y, w, max(h, 40) if h < 1000 else 120, [para(runs(ctx, k, 26))], 't')
+            fs, col, bg, al = (re.search(p, st) for p in (r'font-size:\s*(\d+)px', r'(?<![-\w])color:\s*' + tok,
+                                                          r'background:\s*' + tok, r'text-align:\s*(center|right)'))
+            rs = runs(ctx, k, int(fs.group(1)) if fs else 26, col.group(1).replace('-', '_') if col else 'fg',
+                      'display' if 'font-display' in st else 'body', bool(re.search(r'font-weight:\s*[6-9]00', st)))
+            ctx.box('Text', x, y, w, max(h, 40) if h < 1000 else 120, [para(rs, {'center': 'ctr', 'right': 'r'}.get(al and al.group(1), 'l'))],
+                    't', fill=ctx.t[bg.group(1).replace('-', '_')] if bg else None, inset=28 if bg else 0)
         elif len(k.text()) < 220 and not k.find(lambda n: n.tag == 'li'):
             notes.append(para(runs(ctx, k, 18, 'muted')))
         else:   # a real block (a source list, a paragraph): one paragraph per line or item in the body zone
