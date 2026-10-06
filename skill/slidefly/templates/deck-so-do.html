@@ -18,7 +18,7 @@
    Two inks only: cobalt for facts, fluoro red (--hot) for
    anything that is wrong, missing or about to break.
    =========================================================== */
-.deck-stage { --viz-hot: #F2384A; --hot: var(--viz-hot); --fill: var(--viz-fill); }
+.deck-stage { --viz-hot: #F2384A; --hot: var(--viz-hot); --hot-ink: color-mix(in srgb, var(--hot) 70%, var(--fg)); --fill: var(--viz-fill); }
 
 /* ---------- poses (reset first, at layout-rule weight); only for Cobalt Grid, whose actor names
    (slab, rule, frame) other styles reuse: with another style the slides keep its diagram pose ---------- */
@@ -47,7 +47,7 @@
 .deck-stage[data-pose="p-split"]:where(:has(> .actors > [data-actor="glitch"])) [data-actor="rule-v"] { --x: 900px; --y: 270px; --h: 720px; }
 .deck-stage[data-pose="p-split"]:where(:has(> .actors > [data-actor="glitch"])) [data-actor="glitch"] { --x: 1836px; --y: 270px; --w: 64px; --h: 720px; }
 /* ring: frame boxes the score */
-.deck-stage[data-pose="p-ring"]:where(:has(> .actors > [data-actor="glitch"])) [data-actor="frame"]   { --x: 120px; --y: 260px; --w: 760px; --h: 740px; --o: 1; border-color: var(--ink); }
+.deck-stage[data-pose="p-ring"]:where(:has(> .actors > [data-actor="glitch"])) [data-actor="frame"]   { --x: 120px; --y: 260px; --w: 760px; --h: 740px; --o: 1; border-color: var(--fg); }
 .deck-stage[data-pose="p-ring"]:where(:has(> .actors > [data-actor="glitch"])) [data-actor="glitch-b"] { --x: 940px; --y: 960px; --w: 860px; --h: 30px; }
 
 /* ---------- shared parts ---------- */
@@ -55,95 +55,97 @@
 .slide > .title:first-child { font-size: 64px; }
 .mono { font-family: var(--font-mono); }
 .abs { position: absolute; }
-.hot { color: var(--hot); }
+.hot { color: var(--hot-ink); }
 .lead { position: absolute; font-size: 32px; line-height: 1.35; font-style: italic; font-family: var(--font-display); }
 .slide svg { overflow: visible; }
-.stamp { position: absolute; padding: 10px 24px; border: 4px double currentColor; font: 700 34px/1.05 var(--font-body); letter-spacing: .04em; text-transform: uppercase; background: var(--paper); z-index: 5; }
-.stamp.hot { color: var(--hot); }
+.stamp { position: absolute; padding: 10px 24px; border: 4px double currentColor; font: 700 34px/1.05 var(--font-body); letter-spacing: .04em; text-transform: uppercase; background: var(--viz-paper); z-index: 5; }
+.stamp.hot { color: var(--hot-ink); }
 .tag { font: 500 20px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
 
 /* ---------- cover ---------- */
 .slide[data-layout="cover"] .title { font-size: 104px; }
 .cover-plan { position: absolute; left: 1180px; top: 110px; width: 700px; height: 860px; }
-.on-plate .viz :is(.wall, .dim, .tick) { stroke: var(--paper); }
-.on-plate .viz .wall { fill: rgba(240, 235, 222, .08); }
-.on-plate .viz .part { fill: var(--paper); }
-.cover-plan .cap { position: absolute; left: 110px; bottom: 26px; color: var(--paper); }
+.deck-stage:has(> .actors > [data-actor="glitch"]) .on-plate .viz :is(.wall, .dim, .tick) { stroke: var(--viz-paper); }
+.deck-stage:has(> .actors > [data-actor="glitch"]) .on-plate .viz .wall { fill: rgba(240, 235, 222, .08); }
+.deck-stage:has(> .actors > [data-actor="glitch"]) .on-plate .viz .part { fill: var(--viz-paper); }
+.cover-plan .cap { position: absolute; left: 110px; bottom: 26px; }
+.deck-stage:has(> .actors > [data-actor="glitch"]) .cover-plan .cap { color: var(--viz-paper); }
 
-.lab-whole { position: absolute; left: 120px; right: 120px; top: calc(290px + (1080px - 290px - 110px) / 2 - 110px); height: 220px; background: var(--ink); }
+.lab-whole { position: absolute; left: 120px; right: 120px; top: calc(290px + (1080px - 290px - 110px) / 2 - 110px); height: 220px; background: var(--fg); }
 .gate { position: absolute; width: 5px; background: var(--hot); top: 400px; height: 560px; }
-.gate-note { position: absolute; font-size: 26px; line-height: 1.3; color: var(--hot); padding: 12px 20px; border: 2px solid var(--hot); background: var(--paper); }
+.gate-note { position: absolute; font-size: 26px; line-height: 1.3; color: color-mix(in srgb, var(--hot) 70%, var(--fg)); padding: 12px 20px; border: 2px solid var(--hot); background: var(--viz-paper); }
 
 
 /* ---------- venn (two levels) ---------- */
 .venn { position: absolute; pointer-events: none; }
-.venn circle { fill: var(--fill); stroke: var(--ink); stroke-width: 2.5; }
+.venn circle { fill: var(--fill); stroke: var(--fg); stroke-width: 2.5; }
 .lvl { position: absolute; text-align: center; width: 300px; }
 .lvl h3 { font: 400 46px/1 var(--font-display); }
 .lvl .mono { font-size: 21px; color: var(--muted); }
-.chip { position: absolute; width: 340px; padding: 14px 20px; border: 2px solid var(--ink); background: var(--paper); font-size: 28px; line-height: 1.25; text-align: center; }
-.chip.solid { background: var(--ink); color: var(--paper); }
+.chip { position: absolute; width: 340px; padding: 14px 20px; border: 2px solid var(--fg); background: var(--viz-paper); font-size: 28px; line-height: 1.25; text-align: center; }
+.chip.solid { background: var(--fg); color: var(--viz-paper); }
 .rule-side { position: absolute; width: 290px; font: italic 400 34px/1.25 var(--font-display); }
 .both { position: absolute; left: 850px; width: 220px; top: 520px; text-align: center; font-size: 25px; line-height: 1.25; font-weight: 600; }
 
 /* ---------- spectrum ---------- */
-.axis path { fill: none; stroke: var(--ink); stroke-width: 3; }
+.axis path { fill: none; stroke: var(--fg); stroke-width: 3; }
 .axis .arc { stroke-dasharray: 10 10; stroke-width: 2.5; stroke-dashoffset: 0; }
-.mk { position: absolute; width: 44px; height: 44px; border-radius: 50%; background: var(--ink); border: 6px solid var(--paper); box-shadow: 0 0 0 2px var(--ink); margin: -22px 0 0 -22px; color: var(--ink); }
-.way { position: absolute; top: 570px; padding: 26px 30px; border-top: 3px solid var(--ink); display: flex; flex-direction: column; gap: 12px; }
+.mk { position: absolute; width: 44px; height: 44px; border-radius: 50%; background: var(--fg); border: 6px solid var(--viz-paper); box-shadow: 0 0 0 2px var(--fg); margin: -22px 0 0 -22px; color: var(--fg); }
+.way { position: absolute; top: 570px; padding: 26px 30px; border-top: 3px solid var(--fg); display: flex; flex-direction: column; gap: 12px; }
 .way h3 { font: 400 52px/1 var(--font-display); }
 .way p { font-size: 26px; line-height: 1.32; }
 .way p b { font: 500 19px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; display: block; margin-bottom: 4px; }
-.way.solid { background: var(--ink); color: var(--paper); border-top-color: var(--ink); }
+.way.solid { background: var(--fg); color: var(--viz-paper); border-top-color: var(--fg); }
 .end { position: absolute; top: 400px; font: italic 400 34px/1.2 var(--font-display); }
 
 /* ---------- chain ---------- */
-.node { position: absolute; width: 420px; height: 120px; margin: -60px 0 0 -210px; border: 2.5px solid var(--ink); background: var(--paper); display: flex; flex-direction: column; justify-content: center; padding: 0 26px; z-index: 2; transition: border-color .4s, color .4s, background-color .4s, opacity .5s, transform .9s var(--morph-ease); }
+.node { position: absolute; width: 420px; height: 120px; margin: -60px 0 0 -210px; border: 2.5px solid var(--fg); background: var(--viz-paper); display: flex; flex-direction: column; justify-content: center; padding: 0 26px; z-index: 2; transition: border-color .4s, color .4s, background-color .4s, opacity .5s, transform .9s var(--morph-ease); }
 .node b { font-size: 29px; line-height: 1.2; }
 .node span { font-size: 22px; color: var(--muted); }
 .node .no { position: absolute; left: -2px; top: -34px; font: 500 20px/1 var(--font-mono); }
-.slide[data-at="1"] .node.weak { border-color: var(--hot); color: var(--hot); background: #fdf0ec; transition-delay: 0s !important; }
-.slide[data-at="1"] .node.weak span { color: var(--hot); }
-.pipe path { fill: none; stroke: var(--ink); stroke-width: 3; }
+.slide[data-at="1"] .node.weak { border-color: var(--hot-ink); color: var(--hot-ink); background: color-mix(in srgb, var(--hot) 10%, var(--viz-paper)); transition-delay: 0s !important; }
+.slide[data-at="1"] .node.weak span { color: var(--hot-ink); }
+.pipe path { fill: none; stroke: var(--fg); stroke-width: 3; }
 .packet { position: absolute; left: 0; top: 0; width: 24px; height: 24px; border-radius: 50%; background: var(--hot); z-index: 1; }
-.mode { position: absolute; top: 830px; width: 820px; font-size: 28px; line-height: 1.3; padding-left: 24px; border-left: 6px solid var(--ink); }
+.mode { position: absolute; top: 830px; width: 820px; font-size: 28px; line-height: 1.3; padding-left: 24px; border-left: 6px solid var(--fg); }
 .mode b { font-family: var(--font-mono); font-weight: 500; }
-.weak-tag { position: absolute; z-index: 3; padding: 8px 16px; background: var(--hot); color: var(--paper); font: 600 22px/1.2 var(--font-body); }
+.weak-tag { position: absolute; z-index: 3; padding: 8px 16px; background: var(--hot); color: #fff; font: 600 22px/1.2 var(--font-body); }
 
 /* ---------- triangle graph + gather ---------- */
-.tri path { fill: none; stroke: var(--ink); stroke-width: 2.5; }
+.tri path { fill: none; stroke: var(--fg); stroke-width: 2.5; }
 .tri .spoke { stroke-dasharray: 8 9; stroke-width: 2; }
-.vtx { position: absolute; width: 230px; height: 230px; margin: -115px 0 0 -115px; border-radius: 50%; border: 2.5px solid var(--ink); background: var(--paper); display: grid; place-content: center; text-align: center; z-index: 2; }
+.vtx { position: absolute; width: 230px; height: 230px; margin: -115px 0 0 -115px; border-radius: 50%; border: 2.5px solid var(--fg); background: var(--viz-paper); display: grid; place-content: center; text-align: center; z-index: 2; }
 .vtx b { font: 400 40px/1.05 var(--font-display); }
 .vtx span { font: 500 19px/1.3 var(--font-mono); color: var(--muted); }
-.vtx.core { width: 190px; height: 190px; margin: -95px 0 0 -95px; background: var(--ink); color: var(--paper); }
+.vtx.core { width: 190px; height: 190px; margin: -95px 0 0 -95px; background: var(--fg); color: var(--viz-paper); }
 .vtx.core b { font-size: 34px; }
-.plate-txt { position: absolute; left: 1310px; width: 540px; color: var(--paper); }
-.batch { position: absolute; left: 1430px; top: 580px; width: 300px; height: 200px; background: var(--paper); color: var(--ink); display: grid; place-content: center; text-align: center; }
+.plate-txt { position: absolute; left: 1310px; width: 540px; }
+.deck-stage:has(> .actors > [data-actor="glitch"]) .plate-txt { color: var(--viz-paper); }   /* on the blue plate */
+.batch { position: absolute; left: 1430px; top: 580px; width: 300px; height: 200px; background: var(--viz-paper); color: var(--fg); display: grid; place-content: center; text-align: center; }
 .batch b { font: 400 92px/1 var(--font-display); }
 .batch span { font: 500 22px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
 
 /* ---------- bins (sorting) ---------- */
-.bin { position: absolute; top: 620px; width: 480px; height: 320px; border: 3px solid var(--ink); border-top: 0; display: flex; flex-direction: column-reverse; gap: 14px; padding: 20px; }
-.bin.hot { border-color: var(--hot); }
+.bin { position: absolute; top: 620px; width: 480px; height: 320px; border: 3px solid var(--fg); border-top: 0; display: flex; flex-direction: column-reverse; gap: 14px; padding: 20px; }
+.bin.hot { border-color: var(--hot-ink); }
 .bin-head { position: absolute; top: 445px; width: 480px; }
 .bin-head h3 { font: 400 42px/1.05 var(--font-display); }
 .bin-head p { font-size: 23px; line-height: 1.3; color: var(--muted); margin-top: 6px; }
 .bin .chip { position: relative; width: auto; text-align: left; }
-.bin.hot .chip { border-color: var(--hot); color: var(--hot); }
+.bin.hot .chip { border-color: var(--hot-ink); color: var(--hot-ink); }
 
 /* ---------- plan + check table ---------- */
 .chk { position: absolute; left: 960px; right: 140px; top: 290px; display: grid; grid-template-columns: 1.1fr 1fr 1fr 1.2fr; }
-.chk > * { padding: 18px 0; border-top: 1.5px solid var(--ink-faint); font-size: 30px; display: flex; align-items: center; }
+.chk > * { padding: 18px 0; border-top: 1.5px solid color-mix(in srgb, var(--fg) 18%, transparent); font-size: 30px; display: flex; align-items: center; }
 .chk .h { font: 500 19px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; border-top: 0; color: var(--muted); }
 .chk .v { font: 400 46px/1 var(--font-display); }
-.ok { font: 600 22px/1 var(--font-body); letter-spacing: .06em; text-transform: uppercase; padding: 8px 14px; border: 2px solid var(--ink); }
-.ok.bad { color: var(--paper); background: var(--hot); border-color: var(--hot); }
+.ok { font: 600 22px/1 var(--font-body); letter-spacing: .06em; text-transform: uppercase; padding: 8px 14px; border: 2px solid var(--fg); }
+.ok.bad { color: #fff; background: var(--hot); border-color: var(--hot-ink); }
 .answer { position: absolute; left: 960px; right: 140px; top: 790px; padding: 22px 28px; border: 2.5px solid var(--hot); font-size: 28px; line-height: 1.35; }
-.answer b { color: var(--hot); }
+.answer b { color: var(--hot-ink); }
 
 /* ---------- stairs ---------- */
-.stairs path { fill: none; stroke: var(--ink); stroke-width: 4; }
+.stairs path { fill: none; stroke: var(--fg); stroke-width: 4; }
 .tread { position: absolute; width: 540px; }
 .tread .mono { font-size: 20px; color: var(--muted); line-height: 1.3; display: block; margin-bottom: 8px; }
 .tread b { font: 400 40px/1.1 var(--font-display); }
@@ -152,30 +154,30 @@
 .slide[data-at="1"] .ball-pos { left: 1180px; top: 552px; }
 .slide[data-at="2"] .ball-pos { left: 1700px; top: 752px; }
 .ball { position: absolute; inset: 0; border-radius: 50%; background: var(--hot); }
-.fail { position: absolute; font: 600 21px/1.25 var(--font-mono); color: var(--hot); text-align: right; width: 260px; }
-.band { position: absolute; left: 120px; width: 1000px; top: 840px; padding: 22px 0 0; border-top: 3px solid var(--ink); font-size: 32px; line-height: 1.35; }
+.fail { position: absolute; font: 600 21px/1.25 var(--font-mono); color: var(--hot-ink); text-align: right; width: 260px; }
+.band { position: absolute; left: 120px; width: 1000px; top: 840px; padding: 22px 0 0; border-top: 3px solid var(--fg); font-size: 32px; line-height: 1.35; }
 
 /* ---------- donut ---------- */
 .score { position: absolute; left: 160px; top: 290px; width: 680px; height: 680px; display: grid; place-content: center; text-align: center; }
 .score b { font: 400 150px/1 var(--font-display); }
 .score span { font: 500 22px/1 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; }
 .crit { position: absolute; left: 960px; right: 120px; top: 290px; display: grid; grid-template-columns: 50px 1fr 90px; }
-.crit > * { padding: 11px 0; border-top: 1.5px solid var(--ink-faint); font-size: 29px; }
+.crit > * { padding: 11px 0; border-top: 1.5px solid color-mix(in srgb, var(--fg) 18%, transparent); font-size: 29px; }
 .crit .n, .crit .p { font-family: var(--font-mono); font-size: 24px; }
 .crit .p { text-align: right; }
-.crit .tot { border-top: 2.5px solid var(--ink); font-weight: 700; }
+.crit .tot { border-top: 2.5px solid var(--fg); font-weight: 700; }
 .files { position: absolute; left: 960px; right: 120px; top: 712px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px 40px; }
 .files h3 { grid-column: 1 / -1; font: 500 19px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .files p { display: flex; gap: 14px; align-items: flex-start; font-size: 25px; line-height: 1.3; }
 .files svg { flex: none; width: 30px; height: 30px; margin-top: 2px; }
-.files svg path { fill: none; stroke: var(--ink); stroke-width: 4; }
+.files svg path { fill: none; stroke: var(--fg); stroke-width: 4; }
 
 /* ---------- compare panels ---------- */
-.cmp-panel { justify-content: space-between; padding: 44px 56px; background: var(--paper); border: 2.5px solid var(--hot); display: flex; flex-direction: column; gap: 26px; }
-.cmp-panel.solid { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-.cmp-big { font: 400 120px/1 var(--font-display); color: var(--hot); margin: 40px 0 30px; }
+.cmp-panel { justify-content: space-between; padding: 44px 56px; background: var(--viz-paper); border: 2.5px solid var(--hot); display: flex; flex-direction: column; gap: 26px; }
+.cmp-panel.solid { background: var(--fg); color: var(--viz-paper); border-color: var(--fg); }
+.cmp-big { font: 400 120px/1 var(--font-display); color: var(--hot-ink); margin: 40px 0 30px; }
 .cmp-prompt { font: 500 31px/1.55 var(--font-mono); }
-.cmp-prompt u { text-decoration: none; background: rgba(240, 235, 222, .2); box-shadow: inset 0 -3px 0 var(--paper); }
+.cmp-prompt u { text-decoration: none; background: rgba(240, 235, 222, .2); box-shadow: inset 0 -3px 0 var(--viz-paper); }
 .cmp-list { display: grid; gap: 12px; }
 .cmp-list li { font-size: 34px; line-height: 1.3; }
 .cmp-list.hot li { text-decoration: line-through; text-decoration-thickness: 2px; }
@@ -185,6 +187,9 @@
 .take { display: grid; gap: 14px; text-align: right; margin-top: 20px; }
 .take p { font-size: 28px; line-height: 1.3; }
 .take p b { font-family: var(--font-mono); font-weight: 500; margin-left: 12px; }
+
+/* filled parts: bold/emphasis follow the part's own text colour (styles colour <b> for body text) */
+.slide :is(.way, .vtx, .chip, .node, .batch, .cmp-panel, .weak-tag, .gate-note, .ok) :is(b, strong, em, i, code) { color: inherit; }
 </style>
 </head>
 <body>
@@ -315,7 +320,7 @@
     <div class="vtx fx fx-pop" style="left:950px;top:800px;--d:.9"><b>Hiệu ứng</b><span>theo động từ</span></div>
     <div class="vtx core fx fx-pop" style="left:640px;top:660px;--d:1.4"><b>Dễ hiểu</b></div>
     <p class="plate-txt fx fx-right" style="top:290px;font-size:29px;line-height:1.35;--d:.6">Mỗi slide có nhiều phần tử chuyển động. Viết tay hiệu ứng cho từng phần tử thì rất lâu.</p>
-    <div class="fx abs" style="left:1330px;top:560px;width:500px;height:240px;color:var(--paper);--d:.9"><div data-step="1" class="keep"><div class="viz" data-viz="gather" data-n="17" style="left:0;top:0"></div></div></div>
+    <div class="fx abs" style="left:1330px;top:560px;width:500px;height:240px;color:var(--bg);--d:.9"><div data-step="1" class="keep"><div class="viz" data-viz="gather" data-n="17" style="left:0;top:0"></div></div></div>
     <div class="batch fx fx-pop" data-step="1" style="--d:.9"><b>1</b><span>dòng khai báo</span></div>
     <p class="plate-txt fx fx-up" style="top:850px;font-size:27px;line-height:1.35;--d:1.1">17 ô bên trên sinh ra từ một dòng data-n="17".</p>
   </section>
@@ -398,7 +403,7 @@
       <p class="tag" style="opacity:.75">Lớp 2 · Người</p>
       <p style="font-size:27px;line-height:1.4;margin-top:10px">Nhìn ảnh tổng hợp: chữ đè hình, tương phản, lệch.</p>
     </div>
-    <p class="plate-txt slam" data-step="1" style="top:820px;font:700 30px/1.25 var(--font-body);text-transform:uppercase;border:4px double var(--paper);padding:14px 20px;--rot:-3deg">Không có lớp thứ hai thì không bàn giao</p>
+    <p class="plate-txt slam" data-step="1" style="top:820px;font:700 30px/1.25 var(--font-body);text-transform:uppercase;border:4px double var(--bg);padding:14px 20px;--rot:-3deg">Không có lớp thứ hai thì không bàn giao</p>
     <span class="tag abs" style="left:120px;top:990px;color:var(--muted)">Chấm tròn chỉ để minh họa, không phải số liệu</span>
   </section>
 

@@ -28,8 +28,9 @@
 /* bone surfaces: ink text, deeper gold so small figures stay legible */
 .deck-stage:is([data-layout="agenda"], [data-layout="content"], [data-layout="two-col"], [data-layout="timeline"], [data-layout="closing"]) {
   --fg: #1A2030; --muted: #5A6270; --accent: #93733A; --rule: #CAC4B4;
+  --viz-paper: var(--cream);   /* the page seen here is the paper actor, not --bg */
 }
-.deck-stage[data-layout="content"][data-parity="even"] { --fg: #E2DCD0; --muted: #8E9AAC; --accent: var(--gold); --rule: #34446A; }
+.deck-stage[data-layout="content"][data-parity="even"] { --fg: #E2DCD0; --muted: #8E9AAC; --accent: var(--gold); --rule: #34446A; --viz-paper: var(--navy); }
 
 /* ---------- actor looks + off-stage defaults ---------- */
 [data-actor="paper"] { background: var(--cream); --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }

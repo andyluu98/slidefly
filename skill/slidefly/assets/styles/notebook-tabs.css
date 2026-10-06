@@ -13,6 +13,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Libre+Bodoni:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
 
 .deck-stage {
+  --viz-paper: #f8f6f1;   /* the page is the sheet actor; --bg is the backdrop behind it */
   --actors: "paper holes rule tab1 tab2 tab3 tab4 tab5";
   --font-display: 'Libre Bodoni', serif;
   --font-body: 'Be Vietnam Pro', sans-serif;

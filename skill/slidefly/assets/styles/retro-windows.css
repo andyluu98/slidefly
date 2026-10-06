@@ -12,6 +12,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&family=VT323&display=swap');
 
 .deck-stage {
+  --viz-paper: #ffffff;   /* the page is the sheet actor; --bg is the backdrop behind it */
   --actors: "ico-a ico-b win dlg pane bar task cursor";
   --font-display: 'Be Vietnam Pro', sans-serif;
   --font-body: 'Be Vietnam Pro', sans-serif;

@@ -86,3 +86,7 @@
 .slide:not([data-at="0"]) .viz .cmp-knob { animation: sf-knob 1.1s cubic-bezier(.7, 0, .2, 1); }
 @keyframes sf-knob { 0%, 100% { opacity: 0; } 10%, 85% { opacity: 1; } }
 .deck-stage.auditing .viz[data-viz="compare"] { --cut: 0%; }
+
+/* filled parts: bold/emphasis inside follow the part's own text colour (styles colour <b> for body text,
+   which turned a segment's number dark on dark) */
+.slide .viz :is(.seg, .mx-cell.hot, .nd.on, .cmp-panel.solid) :is(b, strong, em, i, code) { color: inherit; }
