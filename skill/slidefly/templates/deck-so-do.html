@@ -20,34 +20,35 @@
    =========================================================== */
 .deck-stage { --viz-hot: #F2384A; --hot: var(--viz-hot); --fill: var(--viz-fill); }
 
-/* ---------- poses (reset first, at layout-rule weight) ---------- */
-.deck-stage:where([data-pose]:not([data-pose=""])) [data-actor="slab"]     { --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
-.deck-stage:where([data-pose]:not([data-pose=""])) [data-actor="glitch"]   { --x: 1920px; --y: 60px; --w: 0px; --h: 960px; --r: 0deg; }
-.deck-stage:where([data-pose]:not([data-pose=""])) [data-actor="glitch-b"] { --x: -700px; --y: 930px; --w: 560px; --h: 40px; }
-.deck-stage:where([data-pose]:not([data-pose=""])) [data-actor="qr"]       { --x: 1704px; --y: 80px; --w: 96px; }
-.deck-stage:where([data-pose]:not([data-pose=""])) [data-actor="frame"]    { --x: 960px; --y: 600px; --w: 0px; --h: 0px; --o: 0; }
-.deck-stage:where([data-pose]:not([data-pose=""])) [data-actor="rule"]     { --x: 120px; --y: 205px; --w: 1680px; --h: 1.5px; }
-.deck-stage:where([data-pose]:not([data-pose=""])) [data-actor="rule-v"]   { --x: 960px; --y: 600px; --w: 1.5px; --h: 0px; }
+/* ---------- poses (reset first, at layout-rule weight); only for Cobalt Grid, whose actor names
+   (slab, rule, frame) other styles reuse: with another style the slides keep its diagram pose ---------- */
+.deck-stage:where([data-pose]:not([data-pose=""])):where(:has(> .actors > [data-actor="glitch"])) [data-actor="slab"]     { --x: 1920px; --y: 0px; --w: 0px; --h: 1080px; }
+.deck-stage:where([data-pose]:not([data-pose=""])):where(:has(> .actors > [data-actor="glitch"])) [data-actor="glitch"]   { --x: 1920px; --y: 60px; --w: 0px; --h: 960px; --r: 0deg; }
+.deck-stage:where([data-pose]:not([data-pose=""])):where(:has(> .actors > [data-actor="glitch"])) [data-actor="glitch-b"] { --x: -700px; --y: 930px; --w: 560px; --h: 40px; }
+.deck-stage:where([data-pose]:not([data-pose=""])):where(:has(> .actors > [data-actor="glitch"])) [data-actor="qr"]       { --x: 1704px; --y: 80px; --w: 96px; }
+.deck-stage:where([data-pose]:not([data-pose=""])):where(:has(> .actors > [data-actor="glitch"])) [data-actor="frame"]    { --x: 960px; --y: 600px; --w: 0px; --h: 0px; --o: 0; }
+.deck-stage:where([data-pose]:not([data-pose=""])):where(:has(> .actors > [data-actor="glitch"])) [data-actor="rule"]     { --x: 120px; --y: 205px; --w: 1680px; --h: 1.5px; }
+.deck-stage:where([data-pose]:not([data-pose=""])):where(:has(> .actors > [data-actor="glitch"])) [data-actor="rule-v"]   { --x: 960px; --y: 600px; --w: 1.5px; --h: 0px; }
 
 /* cover: the cobalt plate is the drafting sheet */
-.deck-stage[data-pose="p-cover"] [data-actor="slab"]     { --x: 1140px; --y: 0px; --w: 780px; --h: 1080px; }
-.deck-stage[data-pose="p-cover"] [data-actor="glitch"]   { --x: 1060px; --y: 60px; --w: 80px; --h: 960px; }
-.deck-stage[data-pose="p-cover"] [data-actor="glitch-b"] { --x: 120px; --y: 930px; --w: 560px; --h: 40px; }
-.deck-stage[data-pose="p-cover"] [data-actor="qr"]       { --x: 1780px; --y: 940px; --w: 96px; }
-.deck-stage[data-pose="p-cover"] [data-actor="rule"]     { --x: 120px; --y: 150px; --w: 880px; }
+.deck-stage[data-pose="p-cover"]:where(:has(> .actors > [data-actor="glitch"])) [data-actor="slab"]     { --x: 1140px; --y: 0px; --w: 780px; --h: 1080px; }
+.deck-stage[data-pose="p-cover"]:where(:has(> .actors > [data-actor="glitch"])) [data-actor="glitch"]   { --x: 1060px; --y: 60px; --w: 80px; --h: 960px; }
+.deck-stage[data-pose="p-cover"]:where(:has(> .actors > [data-actor="glitch"])) [data-actor="glitch-b"] { --x: 120px; --y: 930px; --w: 560px; --h: 40px; }
+.deck-stage[data-pose="p-cover"]:where(:has(> .actors > [data-actor="glitch"])) [data-actor="qr"]       { --x: 1780px; --y: 940px; --w: 96px; }
+.deck-stage[data-pose="p-cover"]:where(:has(> .actors > [data-actor="glitch"])) [data-actor="rule"]     { --x: 120px; --y: 150px; --w: 880px; }
 /* band: the scan strip becomes the topbar */
-.deck-stage[data-pose="p-band"] [data-actor="glitch-b"] { --x: 120px; --y: 196px; --w: 1680px; --h: 20px; }
-.deck-stage[data-pose="p-band"] [data-actor="rule"]     { --w: 0px; }
+.deck-stage[data-pose="p-band"]:where(:has(> .actors > [data-actor="glitch"])) [data-actor="glitch-b"] { --x: 120px; --y: 196px; --w: 1680px; --h: 20px; }
+.deck-stage[data-pose="p-band"]:where(:has(> .actors > [data-actor="glitch"])) [data-actor="rule"]     { --w: 0px; }
 /* plate: cobalt panel on the right for the "why" */
-.deck-stage[data-pose="p-plate"] [data-actor="slab"]   { --x: 1240px; --y: 230px; --w: 680px; --h: 850px; }
-.deck-stage[data-pose="p-plate"] [data-actor="rule"]   { --w: 1060px; }
-.deck-stage[data-pose="p-plate"] [data-actor="qr"]     { --x: 1196px; --y: 186px; --w: 88px; }
+.deck-stage[data-pose="p-plate"]:where(:has(> .actors > [data-actor="glitch"])) [data-actor="slab"]   { --x: 1240px; --y: 230px; --w: 680px; --h: 850px; }
+.deck-stage[data-pose="p-plate"]:where(:has(> .actors > [data-actor="glitch"])) [data-actor="rule"]   { --w: 1060px; }
+.deck-stage[data-pose="p-plate"]:where(:has(> .actors > [data-actor="glitch"])) [data-actor="qr"]     { --x: 1196px; --y: 186px; --w: 88px; }
 /* split: hairline divides drawing and table */
-.deck-stage[data-pose="p-split"] [data-actor="rule-v"] { --x: 900px; --y: 270px; --h: 720px; }
-.deck-stage[data-pose="p-split"] [data-actor="glitch"] { --x: 1836px; --y: 270px; --w: 64px; --h: 720px; }
+.deck-stage[data-pose="p-split"]:where(:has(> .actors > [data-actor="glitch"])) [data-actor="rule-v"] { --x: 900px; --y: 270px; --h: 720px; }
+.deck-stage[data-pose="p-split"]:where(:has(> .actors > [data-actor="glitch"])) [data-actor="glitch"] { --x: 1836px; --y: 270px; --w: 64px; --h: 720px; }
 /* ring: frame boxes the score */
-.deck-stage[data-pose="p-ring"] [data-actor="frame"]   { --x: 120px; --y: 260px; --w: 760px; --h: 740px; --o: 1; border-color: var(--ink); }
-.deck-stage[data-pose="p-ring"] [data-actor="glitch-b"] { --x: 940px; --y: 960px; --w: 860px; --h: 30px; }
+.deck-stage[data-pose="p-ring"]:where(:has(> .actors > [data-actor="glitch"])) [data-actor="frame"]   { --x: 120px; --y: 260px; --w: 760px; --h: 740px; --o: 1; border-color: var(--ink); }
+.deck-stage[data-pose="p-ring"]:where(:has(> .actors > [data-actor="glitch"])) [data-actor="glitch-b"] { --x: 940px; --y: 960px; --w: 860px; --h: 30px; }
 
 /* ---------- shared parts ---------- */
 .slide { --title-w: 1500px; }
@@ -204,7 +205,7 @@
   </section>
 
   <!-- 2 proportional time bar; the practice block zooms into the next slide (data-morph-seg) -->
-  <section class="slide" data-layout="content" data-pose="p-canvas">
+  <section class="slide" data-layout="diagram" data-pose="p-canvas">
     <h2 class="title reveal">Lịch workshop 90 phút</h2>
     <div class="viz" style="left:120px;right:120px;top:290px;bottom:110px;--bar-h:220px" data-viz="span" data-cap="470" data-values="10,15,20,10,25,10" data-hot="2" data-morph-seg="4" data-morph-id="lab" data-source="Lịch ví dụ"
       data-sub="00:00 - 00:10|00:10 - 00:25|00:25 - 00:45|00:45 - 00:55|00:55 - 01:20|01:20 - 01:30"
@@ -213,7 +214,7 @@
   </section>
 
   <!-- 3 the 25-minute block grows to full width and splits into 5 steps -->
-  <section class="slide" data-layout="content" data-pose="p-canvas">
+  <section class="slide" data-layout="diagram" data-pose="p-canvas">
     <h2 class="title reveal">Thực hành 2: 25 phút, 5 bước</h2>
     <i class="lab-whole" data-morph-id="lab"></i>
     <div class="viz" style="left:120px;right:120px;top:290px;bottom:110px;--bar-h:220px" data-viz="span" data-values="5,5,5,5,5" data-source="Lịch ví dụ"
@@ -226,7 +227,7 @@
   </section>
 
   <!-- 4 two circles: each click sorts one item into its group -->
-  <section class="slide" data-layout="content" data-pose="p-canvas">
+  <section class="slide" data-layout="diagram" data-pose="p-canvas">
     <h2 class="title reveal">Slide trình chiếu và tài liệu để đọc</h2>
     <svg class="venn" style="left:420px;top:280px;width:1080px;height:680px" viewBox="420 280 1080 680">
       <circle class="draw" pathLength="1" cx="760" cy="620" r="330" style="--d:0"/>
@@ -247,7 +248,7 @@
   </section>
 
   <!-- 5 matrix: the click spotlights one cell -->
-  <section class="slide" data-layout="content" data-pose="p-canvas">
+  <section class="slide" data-layout="diagram" data-pose="p-canvas">
     <h2 class="title reveal">Mỗi kiểu ý hợp với một dạng hình</h2>
     <div class="viz" data-viz="matrix" style="left:120px;right:120px;top:290px" data-hot="2"
       data-cols="Có số liệu|Không có số liệu" data-rows="So sánh|Tiến trình|Cấu trúc"
@@ -256,7 +257,7 @@
   </section>
 
   <!-- 6 spectrum: who draws the diagram -->
-  <section class="slide" data-layout="content" data-pose="p-band">
+  <section class="slide" data-layout="diagram" data-pose="p-band">
     <h2 class="title reveal">Ba cách đưa sơ đồ vào slide</h2>
     <svg class="axis abs" style="left:280px;top:360px" width="1360" height="220" viewBox="280 360 1360 220">
       <path class="draw" pathLength="1" d="M300 470H1620" style="--d:0"/>
@@ -276,7 +277,7 @@
   </section>
 
   <!-- 7 chain: what happens on one click; a packet keeps running; click flags two common misses -->
-  <section class="slide" data-layout="content" data-pose="p-canvas">
+  <section class="slide" data-layout="diagram" data-pose="p-canvas">
     <h2 class="title reveal">Một cú bấm chuyển slide</h2>
     <svg class="pipe abs" style="left:330px;top:390px" width="1260" height="260" viewBox="330 390 1260 260"><path class="draw" pathLength="1" d="M340 400H1580V640H340" style="--d:0"/></svg>
     <i class="packet travel" style="offset-path:path('M340 400H1580V640H340');--dur:5s;--d:1.2"></i>
@@ -293,7 +294,7 @@
   </section>
 
   <!-- 8 network: the eight diagram kinds; the click lights the ones that need data-source -->
-  <section class="slide" data-layout="content" data-pose="p-canvas">
+  <section class="slide" data-layout="diagram" data-pose="p-canvas">
     <h2 class="title reveal">Tám dạng sơ đồ tự vẽ</h2>
     <div class="viz" data-viz="network" style="left:120px;right:120px;top:240px;bottom:80px" data-hub="morph-viz" data-on="1,2,3"
       data-nodes="span|donut|plan|gather|matrix|network|funnel|compare"
@@ -302,7 +303,7 @@
   </section>
 
   <!-- 9 triangle graph + 17 pieces gathered into one line of markup -->
-  <section class="slide" data-layout="content" data-pose="p-plate">
+  <section class="slide" data-layout="diagram" data-pose="p-plate">
     <h2 class="title reveal" style="width:1060px">Slide dễ hiểu không chỉ nhờ style</h2>
     <svg class="tri abs" style="left:320px;top:370px" width="640" height="440" viewBox="320 370 640 440">
       <path class="draw" pathLength="1" d="M640 380L330 800L950 800Z" style="--d:.2"/>
@@ -320,7 +321,7 @@
   </section>
 
   <!-- 10 sorting: every reading drops into its bin -->
-  <section class="slide" data-layout="content" data-pose="p-canvas">
+  <section class="slide" data-layout="diagram" data-pose="p-canvas">
     <h2 class="title reveal">Bước 0: đọc số liệu trước khi vẽ</h2>
     <p class="lead fx fx-left" style="left:120px;top:300px;width:820px">Tách số liệu nguồn thành ba loại.</p>
     <div class="bin-head fx fx-up" style="left:160px;--d:.2"><h3>Đọc được</h3><p>Số ghi rõ trong tài liệu</p></div>
@@ -341,7 +342,7 @@
   </section>
 
   <!-- 11 the plan draws its four chains; the one that does not close gets a lens -->
-  <section class="slide" data-layout="content" data-pose="p-split">
+  <section class="slide" data-layout="diagram" data-pose="p-split">
     <h2 class="title reveal">Cộng kiểm bốn chuỗi kích thước</h2>
     <div class="viz" style="left:120px;top:230px;width:740px;height:760px" data-viz="plan" data-w="6000" data-h="8400" data-wall="4000" data-wall-w="100" data-source="Phòng giả định, số minh họa"
       data-top="200,3800,100,1700,200" data-bottom="200,2000,1800,100,1700,200"
@@ -358,7 +359,7 @@
   </section>
 
   <!-- 12 compare: the good prompt wipes over the one-liner -->
-  <section class="slide" data-layout="content" data-pose="p-band">
+  <section class="slide" data-layout="diagram" data-pose="p-band">
     <h2 class="title reveal">Prompt làm slide: trước và sau</h2>
     <div class="viz fx fx-up" data-viz="compare" style="left:120px;right:120px;top:290px;height:660px">
       <div class="cmp-panel">
@@ -384,7 +385,7 @@
   </section>
 
   <!-- 13 funnel: two layers of checking before a deck is handed over -->
-  <section class="slide" data-layout="content" data-pose="p-plate">
+  <section class="slide" data-layout="diagram" data-pose="p-plate">
     <h2 class="title reveal" style="width:1060px">Máy tự soát, người xem lại</h2>
     <span class="tag abs fx" style="left:120px;top:262px;width:900px;text-align:center">Deck vừa dựng đổ vào từ trên</span>
     <div class="viz" data-viz="funnel" style="left:120px;top:310px;width:900px;height:660px" data-dots="p,0,p,1,0,p,p"
@@ -402,7 +403,7 @@
   </section>
 
   <!-- 14 stairs: the ball drops one tier per click -->
-  <section class="slide" data-layout="content" data-pose="p-canvas">
+  <section class="slide" data-layout="diagram" data-pose="p-canvas">
     <h2 class="title reveal">Ba tầng dự phòng khi trình chiếu</h2>
     <svg class="stairs abs" style="left:110px;top:390px" width="1700" height="420" viewBox="110 390 1700 420"><path class="draw" pathLength="1" d="M120 400H700V600H1280V800H1800" style="--d:0"/></svg>
     <div class="tread fx fx-up" style="left:140px;top:250px;--d:.4"><span class="mono">Có mạng, mở bằng Chrome hoặc Edge</span><b>Đủ font và hiệu ứng</b></div>
@@ -415,7 +416,7 @@
   </section>
 
   <!-- 15 donut of an example 100-point rubric -->
-  <section class="slide" data-layout="content" data-pose="p-ring">
+  <section class="slide" data-layout="diagram" data-pose="p-ring">
     <h2 class="title reveal">Chấm bài thực hành</h2>
     <div class="viz" style="left:160px;top:290px" data-viz="donut" data-values="30,25,20,15,10" data-source="Thang điểm ví dụ"></div>
     <div class="score"><b class="count" style="--to:100;--d:.2"></b><span>điểm</span></div>

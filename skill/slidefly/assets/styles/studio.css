@@ -12,6 +12,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 .deck-stage {
+  --dense-stage: diagram;   /* own diagram pose below */
   --actors: "field plate rule-t rule-b bar plus";
   --font-display: 'Barlow', sans-serif;
   --font-body: 'Barlow', sans-serif;

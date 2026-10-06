@@ -12,6 +12,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 .deck-stage {
+  --dense-stage: diagram;   /* own diagram pose below */
   --actors: "dots slab stripe card tilt bar star dot";
   --font-display: 'Inter', sans-serif;
   --font-body: 'Inter', sans-serif;
