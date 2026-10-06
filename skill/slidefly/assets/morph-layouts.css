@@ -140,6 +140,10 @@ b, strong { font-weight: 700; }
 .quote { font-size: 64px; line-height: 1.25; }
 .cite { font-size: 28px; color: var(--muted); }
 
+/* title variant for inner slides: data-title="center" centres the title above the body
+   (breaks the "title top-left on every slide" habit; safe with every style) */
+.slide[data-title="center"] > .title:first-child { left: var(--pad-x); right: var(--pad-x); width: auto; text-align: center; }
+
 /* audit mode: measure final positions (no reveal offsets, actors jump straight to each pose) */
 .deck-stage.auditing, .deck-stage.auditing * { transition: none !important; }
 .deck-stage.auditing :is(.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur) {
