@@ -12,6 +12,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Patrick+Hand&display=swap');
 
 .deck-stage {
+  --dense-stage: diagram;   /* own diagram pose below */
   --actors: "dark ink green card rule stamp tape tape2";
   --font-display: 'Oswald', sans-serif;
   --font-body: 'Space Grotesk', sans-serif;

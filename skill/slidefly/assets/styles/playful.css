@@ -145,6 +145,7 @@
 
 /* ---------- content tweaks ---------- */
 .slide .kicker { display: inline-block; align-self: flex-start; padding: 8px 18px; background: var(--fg); color: var(--bg); font-size: 20px; font-weight: 600; letter-spacing: 0.15em; }
+.deck-stage[data-layout="quote"] .slide .kicker { color: #1a1a1a; }   /* quote turns --fg into the page colour */
 .slide p.kicker { width: fit-content; }
 .slide .subtitle { font-weight: 500; }
 .slide[data-layout="cover"] { align-items: flex-start; text-align: left; padding: 0 860px 0 140px; }

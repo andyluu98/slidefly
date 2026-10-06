@@ -27,7 +27,7 @@
   border: 1.5px solid var(--card-line); border-radius: var(--card-radius, 22px); background: var(--card-tint); }
 .bento .wide { grid-column: span 2; }
 .bento .tall { grid-row: span 2; }
-.bento .hot { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.bento .hot { background: var(--accent); border-color: var(--accent); color: var(--on-accent, var(--bg)); }
 .bento .hot p { color: inherit; opacity: .85; }
 .bento h3 { font: var(--title-weight, 800) 40px/1.15 var(--font-display); }
 .bento p { font-size: 27px; line-height: 1.35; color: var(--muted); }
@@ -61,7 +61,7 @@
 .ba-side.after { border: 3px solid var(--accent); background: var(--card-tint); }
 .ba-tag { align-self: flex-start; padding: 8px 18px; border-radius: 999px; font: 700 20px/1 var(--font-body); letter-spacing: .14em; text-transform: uppercase;
   border: 2px solid currentColor; }
-.ba-side.after .ba-tag { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.ba-side.after .ba-tag { background: var(--accent); border-color: var(--accent); color: var(--on-accent, var(--bg)); }
 .ba-side h3 { font: var(--title-weight, 800) 54px/1.15 var(--font-display); color: var(--fg); }
 .ba-side li { position: relative; padding-left: 1.3em; font-size: 34px; line-height: 1.35; margin-top: 20px; }
 .ba-side.before li::before { content: "\2715"; position: absolute; left: 0; opacity: .6; }
@@ -72,7 +72,7 @@
 .process { position: absolute; top: var(--body-top); bottom: var(--body-bottom); left: var(--pad-x); right: var(--pad-x);
   display: flex; gap: 8px; align-items: center; }
 .process > li { flex: 1; display: flex; flex-direction: column; gap: 18px; }
-.process .n { display: flex; align-items: center; height: 130px; padding-left: 64px; background: var(--accent); color: var(--bg);
+.process .n { display: flex; align-items: center; height: 130px; padding-left: 64px; background: var(--accent); color: var(--on-accent, var(--bg));
   font: var(--title-weight, 800) 64px/1 var(--font-display); clip-path: polygon(0 0, calc(100% - 44px) 0, 100% 50%, calc(100% - 44px) 100%, 0 100%, 44px 50%); }
 .process > li:first-child .n { padding-left: 34px; clip-path: polygon(0 0, calc(100% - 44px) 0, 100% 50%, calc(100% - 44px) 100%, 0 100%); }
 .process > li:nth-child(even) .n { background: color-mix(in srgb, var(--accent) 72%, var(--bg)); }
@@ -86,7 +86,7 @@
 .ctable thead th { border-top: 0; padding-bottom: 18px; font: var(--title-weight, 800) 36px/1.1 var(--font-display); vertical-align: bottom; }
 .ctable tbody th { font: 600 32px/1.3 var(--font-body); color: var(--muted); width: 26%; }
 .ctable .pick { background: var(--card-tint); }
-.ctable thead .pick { background: var(--accent); color: var(--bg); border-radius: var(--card-radius, 16px) var(--card-radius, 16px) 0 0; padding-top: 18px; }
+.ctable thead .pick { background: var(--accent); color: var(--on-accent, var(--bg)); border-radius: var(--card-radius, 16px) var(--card-radius, 16px) 0 0; padding-top: 18px; }
 .ctable .yes { color: var(--accent); font-weight: 800; }
 .ctable .no { opacity: .5; }
 
@@ -117,11 +117,11 @@
 
 /* ---------- 11. statement: one sentence, one highlighted phrase ---------- */
 .statement { margin: 0; font: var(--title-weight, 800) 78px/1.15 var(--font-display); letter-spacing: -.02em; }
-.deck-stage .slide[data-kind="statement"] .kicker { color: var(--fg); opacity: .8; }
+.deck-stage .slide[data-kind="statement"] .kicker { opacity: .85; }
 .statement mark { color: inherit; background: linear-gradient(transparent 58%, color-mix(in srgb, var(--accent) 55%, transparent) 58%); padding: 0 .06em; }
 
 /* ---------- 12. cta: an ending that says what to do next (a cover-shaped slide) ---------- */
 .cta-actions { display: flex; gap: 20px; flex-wrap: wrap; }   /* sits in the cover's .meta slot */
-.cta-btn { padding: 20px 36px; border-radius: 999px; border: 3px solid var(--accent); background: var(--bg); color: var(--fg);
+.cta-btn { padding: 20px 36px; border-radius: 999px; border: 3px solid currentColor; background: transparent; color: var(--fg);
   font: 700 28px/1 var(--font-body); letter-spacing: 0; text-transform: none; white-space: nowrap; }
-.cta-btn.primary { background: var(--accent); color: var(--bg); }
+.cta-btn.primary { background: var(--accent); color: var(--on-accent, var(--bg)); }

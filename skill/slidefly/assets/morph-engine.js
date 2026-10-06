@@ -1,31 +1,22 @@
-/* ===========================================================
-   MORPH-SLIDES ENGINE (no dependencies)
-   - Scales the 1920x1080 stage to the window (letterbox)
-   - Builds actors from the style's --actors list
-   - Sets data-layout / data-pose / data-parity on .deck-stage
-     -> style CSS moves actors, CSS transitions do the "morph"
-   - FLIP for elements sharing data-morph-id across two slides
-   Input (keys, click, swipe, wheel, #hash) lives in morph-nav.js.
-   =========================================================== */
+/* MORPH-SLIDES ENGINE (no dependencies): scales the 1920x1080 stage, builds actors from the style's --actors,
+   sets data-layout/pose/parity on .deck-stage (style CSS moves actors, transitions do the "morph"),
+   FLIPs elements sharing data-morph-id. Input (keys, edge buttons, swipe, #hash) lives in morph-nav.js. */
 (() => {
   const stage = document.querySelector('.deck-stage');
   const slides = stage ? [...stage.querySelectorAll(':scope > .slide')] : [];
   if (!slides.length) return;
   const REVEAL = '.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur';
-  // layouts of morph-layouts-plus.css are variants of a classic layout: the slide keeps its name in
-  // data-kind and takes the classic one in data-layout, so every style poses it and colours it.
-  // Dense ones take 'diagram' for their content rules.
+  // layouts of morph-layouts-plus.css are variants of a classic layout: the slide keeps its name in data-kind
+  // and takes the classic one in data-layout (dense ones: 'diagram'), so every style poses and colours it.
   const CLASSIC_OF = {
     qa: 'quote', 'portrait-quote': 'quote', statement: 'quote', chapter: 'section', cta: 'cover',
     'big-number': 'diagram', 'split-photo': 'diagram', bento: 'diagram', process: 'diagram', 'before-after': 'diagram',
     'compare-table': 'diagram', countdown: 'diagram',
   };
-  // Actor pose of a diagram slide: most styles have no 'diagram' pose, so the actors would step out and
-  // every dense slide looks alike. They borrow the agenda pose instead (it keeps the body zone free).
-  // A style with its own diagram pose sets --dense-stage: diagram; one slide opts out with data-stage="clear".
+  // Diagram slides borrow the agenda pose (body zone free) so dense slides keep the style's look; a style with
+  // its own diagram pose sets --dense-stage: diagram; one slide opts out with data-stage="clear".
   const DENSE = getComputedStyle(stage).getPropertyValue('--dense-stage').replace(/["']/g, '').trim() || 'agenda';
-  let cur = -1;
-  let scale = 1;
+  let cur = -1, scale = 1;
 
   /* ---------- fit stage to window ---------- */
   function fit() {
@@ -35,8 +26,7 @@
     stage.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
   }
 
-  /* Actors: if the deck has no .actors markup, build them from the style's
-     --actors list (DOM order = z-order), so switching style = swapping one CSS link. */
+  /* Actors from the style's --actors list (DOM order = z-order): switching style = swapping one CSS link. */
   if (!stage.querySelector('.actors')) {
     const names = getComputedStyle(stage).getPropertyValue('--actors').replace(/["']/g, '').trim().split(/\s+/).filter(Boolean);
     const layer = Object.assign(document.createElement('div'), { className: 'actors back' });
@@ -84,6 +74,18 @@
       items.forEach((li, i) => li.classList.toggle('is-right', i >= rows));
     });
   });
+
+  /* --on-accent: text colour on accent fills (badges, chosen column, primary button): the style's page or ink
+     colour when it reads (4.5:1), else the best of page, ink, white, black. color-mix() computes to color(srgb 0-1). */
+  const probe = Object.assign(document.createElement('i'), { hidden: true });
+  stage.append(probe);
+  const lumOf = (v) => { probe.style.color = v; const c = getComputedStyle(probe).color, k = c.startsWith('color(') ? 1 : 255;
+    return c.match(/[\d.]+/g).slice(0, 3).map((x) => ((x /= k) <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4)).reduce((s, x, i) => s + x * [0.2126, 0.7152, 0.0722][i], 0); };
+  function ink() {
+    const a = lumOf('var(--accent)'), score = (v) => { const l = lumOf(v); return (Math.max(a, l) + 0.05) / (Math.min(a, l) + 0.05); };
+    const all = ['var(--bg)', 'var(--fg)', '#ffffff', '#111111'];
+    stage.style.setProperty('--on-accent', all.slice(0, 2).find((v) => score(v) >= 4.5) || all.reduce((p, v) => (score(v) > score(p) ? v : p)));
+  }
 
   /* ---------- UI chrome ---------- */
   const progress = Object.assign(document.createElement('div'), { className: 'deck-progress' });
@@ -170,6 +172,7 @@
     from?.classList.remove('active');
     to.classList.add('active');
     cur = n;
+    ink();
 
     pairs.forEach(([a, b, ra, fa]) => flip(a, b, ra, fa));
 
@@ -188,6 +191,7 @@
 
   window.deck = {
     go,
+    ink,
     next: () => go(cur + 1),
     prev: () => go(cur - 1),
     get index() { return cur; },

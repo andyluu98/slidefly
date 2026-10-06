@@ -1,16 +1,10 @@
 /* ===========================================================
    MORPH-SLIDES AUDIT: measures how well each slide fills space.
    Run in the browser console (or via a test tool): deck.audit()
-   - ink = text line boxes + media; maxGapY / maxGapX = biggest empty band in the
-     safe area; overflow = ink past the safe margins. Display slides (cover,
-     section, quote, closing, photo) are only checked for overflow.
-   - a chart with numbers (morph-viz) must carry data-source.
-   - icons (morph-icons): at most 6 per slide, none missing.
-   - a photo slide (morph-photo) must credit its picture.
-   - text lying on a solid actor whose colour gives a contrast ratio
-     under 3:1 with the text (WCAG) = hard to read: "chữ khó đọc trên hình".
-   - variety: 3 inner slides in a row with the same look
-     (layout, pose, diagram kinds, motion verbs) = monotone.
+   - biggest empty band (gapY/gapX) and ink past the safe margins; display slides only for overflow.
+   - charts carry data-source; at most 6 icons, none missing; photo slides credit their picture.
+   - text under 3:1 (WCAG) against the solid actor or its own box below it: "chữ khó đọc trên hình".
+   - 3 inner slides in a row with the same look (layout, pose, diagrams, verbs) = monotone.
    Run it outside a live talk: it briefly shows steps not yet clicked.
    =========================================================== */
 (() => {
@@ -45,6 +39,7 @@
       layout: slide.dataset.stage || slide.dataset.layout || 'content', pose: slide.dataset.pose || '',
       parity: slide.dataset.pose ? 'none' : slide.dataset.parity, variant: slide.dataset.variant,
     });
+    window.deck.ink?.();   // text colour on accent fills follows this slide's accent
     return [...stage.querySelectorAll('.actor')].flatMap((a) => {
       const cs = getComputedStyle(a);
       // soft glows, faint shapes and masked/clipped drawings (pins: the box is not the shape) are skipped
@@ -76,9 +71,13 @@
     .reduce((s, v, i) => s + v * [0.2126, 0.7152, 0.0722][i], 0);
   const ratio = (a, b) => (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
   const clear = (c) => c === 'transparent' || /rgba\(.*,\s*0(\.0*[0-2]\d*)?\)$/.test(c);
-  /* text on its own box (card, band, window) is shielded from the actors behind */
-  const boxed = (e) => { const cs = getComputedStyle(e); return !clear(cs.backgroundColor) || /gradient|url\(/.test(cs.backgroundImage); };
-  const shielded = (el, slide) => { for (let e = el; e && e !== slide; e = e.parentElement) if (boxed(e)) return true; return false; };
+  /* text on its own box (card, band, window, or a filled shape of a drawn diagram) is shielded from the actors behind */
+  const boxed = (e) => { const cs = getComputedStyle(e); return e instanceof SVGGeometryElement ? !/none/.test(cs.fill) && !clear(cs.fill) && +cs.fillOpacity > 0.5 : !clear(cs.backgroundColor) || /gradient|url\(/.test(cs.backgroundImage); };
+  const boxOf = (el, slide) => { for (let e = el; e && e !== slide; e = e.parentElement) if (boxed(e)) return e; return null; };
+  // ...but the box itself must contrast with its text: an opaque plain fill is measured (tints, gradients, pictures are not)
+  const boxLum = (e) => { const c = rgbOf(getComputedStyle(e).backgroundColor); return c && (c[3] ?? 1) >= 0.9 ? lum(c) : null; };
+  // computed colours come as rgb(0-255) or, from color-mix(), as color(srgb 0-1 0-1 0-1 / a)
+  function rgbOf(c) { const m = c.match(/color\(srgb ([^)]+)\)/); if (!m) return c.match(/[\d.]+/g)?.map(Number); const v = m[1].split(/[\s/]+/).map(Number); return [v[0] * 255, v[1] * 255, v[2] * 255, v[3] ?? 1]; }
 
   /* text that ends the slide hidden (pieces gathered away, opacity 0) is not read */
   const faded = (el, slide) => {
@@ -98,11 +97,14 @@
     const walker = document.createTreeWalker(slide, NodeFilter.SHOW_TEXT);
     while (walker.nextNode()) {
       const node = walker.currentNode;
-      if (!node.textContent.trim() || node.parentElement.closest('.mock, svg') || shielded(node.parentElement, slide) || faded(node.parentElement, slide)) continue;
+      if (!node.textContent.trim() || node.parentElement.closest('.mock, svg') || faded(node.parentElement, slide)) continue;
       const tcs = getComputedStyle(node.parentElement);
       if (parseFloat(tcs.webkitTextStrokeWidth) > 0 || tcs.textShadow !== 'none') continue; // outlined text carries its own contrast
-      const ink = lum(tcs.color.match(/[\d.]+/g).slice(0, 3).map(Number));
+      const ink = lum(rgbOf(tcs.color));
       const need = parseFloat(tcs.fontSize) >= 60 ? 2.4 : 3;   // very large type stays readable at lower contrast
+      const box = boxOf(node.parentElement, slide), bl = box && boxLum(box);
+      if (box && bl !== null && ratio(ink, bl) < need) hits.set(`nền ${String(box.className.baseVal ?? box.className).split(' ')[0] || box.tagName.toLowerCase()}`, node.textContent.trim().slice(0, 24));
+      if (box) continue;
       const range = document.createRange(); range.selectNodeContents(node);
       [...range.getClientRects()].forEach((r) => {
         const l = { x0: (r.left - s.left) / k, x1: (r.right - s.left) / k, y0: (r.top - s.top) / k, y1: (r.bottom - s.top) / k };
@@ -127,12 +129,8 @@
   /* biggest uncovered interval of [lo, hi] given covered spans */
   function maxGap(spans, lo, hi) {
     const sorted = spans.map(([a, b]) => [Math.max(a, lo), Math.min(b, hi)]).filter(([a, b]) => b > a).sort((p, q) => p[0] - q[0]);
-    let gap = 0;
-    let cursor = lo;
-    for (const [a, b] of sorted) {
-      gap = Math.max(gap, a - cursor);
-      cursor = Math.max(cursor, b);
-    }
+    let gap = 0, cursor = lo;
+    for (const [a, b] of sorted) { gap = Math.max(gap, a - cursor); cursor = Math.max(cursor, b); }
     return Math.max(gap, hi - cursor);
   }
 
@@ -193,6 +191,7 @@
       r.status = 'SỬA';
     });
     ['layout', 'pose', 'parity', 'variant'].forEach((key) => { stage.dataset[key] = saved[key] ?? ''; });
+    window.deck.ink?.();
     stage.classList.remove('auditing');
     console.table(report);
     return report;
