@@ -23,6 +23,32 @@ NO_MOTION = """
 }
 """
 
+# What the active slide is built from: a UI mock (with its side), a drawn diagram, or its layout.
+COMPONENT = """
+() => {
+  const s = document.querySelector('.deck-stage > .slide.active');
+  const m = s.querySelector('.mock');
+  if (m) {
+    const r = m.getBoundingClientRect(), b = s.getBoundingClientRect();
+    const kind = [...m.classList].find((c) => c.startsWith('mock-')) || 'mock';
+    return `khung ${kind.slice(5)} bên ${r.left + r.width / 2 < b.left + b.width / 2 ? 'trái' : 'phải'}`;
+  }
+  const v = s.querySelector('.viz[data-viz]');
+  return v ? `sơ đồ ${v.dataset.viz}` : `kiểu ${s.dataset.kind || s.dataset.layout || 'content'}`;
+}
+"""
+
+
+def repeats(parts, run=3):
+    """Runs of `run`+ consecutive slides built the same way (a deck that feels like one slide on repeat)."""
+    out, start = [], 0
+    for i in range(1, len(parts) + 1):
+        if i == len(parts) or parts[i] != parts[start]:
+            if i - start >= run:
+                out.append(f"slide {start + 1}-{i}: {i - start} slide liền cùng {parts[start]}")
+            start = i
+    return out
+
 
 def contact_sheet(shots, out_file, cols=2, w=640, h=360, gap=12):
     """Combine slide screenshots into one numbered image (Pillow optional)."""
@@ -78,10 +104,11 @@ def main() -> int:
         count = page.evaluate("deck.count")
         report = page.evaluate("deck.audit ? deck.audit() : []")
 
-        shots = []
+        shots, parts = [], []
         for i in range(count):
             page.evaluate(f"deck.go({i})")
             page.wait_for_timeout(120)
+            parts.append(page.evaluate(COMPONENT))
             shot = out_dir / f"{i + 1:02d}.jpg"
             page.screenshot(path=str(shot), type="jpeg", quality=80)
             shots.append(shot)
@@ -95,6 +122,8 @@ def main() -> int:
         errors.append("deck.audit missing: add morph-audit.js after morph-engine.js")
     for w in warnings:
         print(f"  WARNING (font): {w}")
+    for r in repeats(parts):  # a hint, not a failure: vary the component, its side or the layout
+        print(f"  NHÀM: {r}")
     for e in errors:
         print(f"  CONSOLE ERROR: {e}")
     sheet = contact_sheet(shots, out_dir / "sheet.jpg")

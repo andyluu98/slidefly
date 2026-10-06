@@ -94,6 +94,7 @@ python "$SK/scripts/check-deck.py" "<file.html>" "<scratchpad>/shots/<ten>"
 | `chữ khó đọc trên hình X` | chữ nằm trên hình trang trí X có độ tương phản dưới 3:1: thu hẹp hoặc dời khối chữ ra khỏi hình, hoặc đổi màu chữ cho slide/tư thế đó |
 | `tràn khung` / `chữ tràn hộp` | rút gọn câu, tách slide, hoặc `data-density="sm"` |
 | `nhàm: giống hệt 2 slide trước` | đổi dạng hình hoặc hiệu ứng của slide đó (bảng chọn hình theo ý) |
+| `NHÀM: slide X-Y: 3 slide liền cùng ...` (nhắc, không chặn) | đổi thành phần của slide giữa: khung giao diện sang bên kia, thay sơ đồ bằng bento/so sánh, hoặc chen một slide statement/qa |
 | `quá nhiều icon` / `icon không tồn tại` | giữ icon cho ý chính; tìm đúng tên bằng `icons.py search` |
 | `biểu đồ ... thiếu data-source` | ghi nguồn số liệu vào `data-source`; không có nguồn thì bỏ biểu đồ có số |
 | lỗi console | đọc thông báo, sửa markup/đường dẫn |
