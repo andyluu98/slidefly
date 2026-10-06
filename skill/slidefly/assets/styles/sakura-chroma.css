@@ -186,3 +186,4 @@
 .slide[data-layout="quote"] { padding: 0 330px; }
 .slide[data-layout="quote"] .quote { font-size: 76px; line-height: 1.12; }
 .slide[data-layout="quote"] .cite { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.16em; font-size: 22px; }
+.deck-stage[data-layout="quote"] .slide .kicker { color: #2a5f88; }   /* light blue fades on the cream frame */

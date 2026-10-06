@@ -159,3 +159,4 @@
 .slide[data-layout="quote"] { padding: 0 300px; }
 .slide[data-layout="quote"] .quote { font-size: 68px; line-height: 1.24; }
 .slide[data-layout="quote"] .cite { font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; font-size: 24px; }
+.deck-stage[data-layout="closing"] .slide b { color: inherit; }   /* red bold vanished on the red band */

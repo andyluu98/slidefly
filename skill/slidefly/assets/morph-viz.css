@@ -15,7 +15,7 @@
 .viz .seg { position: absolute; top: 0; bottom: 0; background: var(--viz-ink); color: var(--viz-paper); border-right: 3px solid var(--viz-paper); display: grid; place-items: center; }
 .viz .seg b { position: relative; font: 400 72px/1 var(--font-display); }
 .viz .seg .morph-src { position: absolute; inset: 0; }
-.slide:not([data-at="0"]) .viz .seg.hot { background: var(--viz-hot); transition: background .4s; transition-delay: 0s !important; }
+.slide:not([data-at="0"]) .viz .seg.hot { background: var(--viz-hot); color: #fff; transition: background .4s; transition-delay: 0s !important; }
 .viz .note { position: absolute; display: flex; flex-direction: column; gap: 6px; font-size: 31px; line-height: 1.25; padding-left: 16px; border-left: 1.5px solid var(--viz-ink); }
 .viz .note.flip { padding: 0 16px 0 0; border-left: 0; border-right: 1.5px solid var(--viz-ink); text-align: right; }
 .viz .note.above { bottom: calc(50% + var(--bar-h, 180px) / 2); padding-bottom: 24px; }

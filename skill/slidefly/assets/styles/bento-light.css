@@ -153,3 +153,4 @@
 .bento .hot { background: var(--accent); color: #fff; }
 .ba-side.after, .ctable .pick { background: #fff; }
 .pq-face { background: var(--soft); }
+.deck-stage[data-layout="closing"] .slide .kicker { color: var(--fg); }   /* the blue dot sits behind it */
