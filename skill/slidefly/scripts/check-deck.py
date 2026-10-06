@@ -39,6 +39,38 @@ COMPONENT = """
 """
 
 
+# Text lying on other text on the active slide (a title over a highlight, a label over a caption).
+# Left out: decoration (aria-hidden), svg labels, faded or hidden text, the before/after compare diagram
+# (two stacked panels by design) and anything marked data-layer (a stamp laid over a figure on purpose).
+OVERLAP = """
+() => {
+  const s = document.querySelector('.deck-stage > .slide.active'), lines = [], out = [];
+  const w = document.createTreeWalker(s, NodeFilter.SHOW_TEXT);
+  while (w.nextNode()) {
+    const n = w.currentNode, el = n.parentElement;
+    if (!n.textContent.trim() || el.closest('[aria-hidden="true"], svg, [data-layer], .viz[data-viz="compare"]')) continue;
+    let o = 1; for (let e = el; e && e !== s; e = e.parentElement) o *= +getComputedStyle(e).opacity;
+    if (o < 0.3 || getComputedStyle(el).visibility === 'hidden') continue;
+    const r = document.createRange(); r.selectNodeContents(n);
+    // a line box is taller than its letters (big type above all): keep the band the glyphs really use
+    for (const q of r.getClientRects()) if (q.width > 4 && q.height > 4) {
+      const b = { left: q.left, right: q.right, top: q.top + q.height * 0.25, bottom: q.bottom - q.height * 0.2 };
+      b.height = b.bottom - b.top;
+      lines.push({ el, b, t: n.textContent.trim().slice(0, 22) });
+    }
+  }
+  for (let i = 0; i < lines.length; i++) for (let j = i + 1; j < lines.length; j++) {
+    const A = lines[i], B = lines[j];
+    if (A.el === B.el || A.el.contains(B.el) || B.el.contains(A.el)) continue;
+    const x = Math.min(A.b.right, B.b.right) - Math.max(A.b.left, B.b.left);
+    const y = Math.min(A.b.bottom, B.b.bottom) - Math.max(A.b.top, B.b.top);
+    if (x > 6 && y > Math.min(A.b.height, B.b.height) * 0.4 && out.length < 3) out.push(`"${A.t}" đè "${B.t}"`);
+  }
+  return out;
+}
+"""
+
+
 def repeats(parts, run=3):
     """Runs of `run`+ consecutive slides built the same way (a deck that feels like one slide on repeat)."""
     out, start = [], 0
@@ -109,6 +141,10 @@ def main() -> int:
             page.evaluate(f"deck.go({i})")
             page.wait_for_timeout(120)
             parts.append(page.evaluate(COMPONENT))
+            hit = page.evaluate(OVERLAP)
+            if hit:  # a real defect: counts like an audit finding
+                report.append({"slide": i + 1, "layout": "", "density": "", "gapY": "", "gapX": "", "status": "SỬA",
+                               "issues": "chữ đè chữ: " + "; ".join(hit)})
             shot = out_dir / f"{i + 1:02d}.jpg"
             page.screenshot(path=str(shot), type="jpeg", quality=80)
             shots.append(shot)

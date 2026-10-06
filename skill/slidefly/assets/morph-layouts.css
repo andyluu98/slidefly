@@ -140,9 +140,23 @@ b, strong { font-weight: 700; }
 .quote { font-size: 64px; line-height: 1.25; }
 .cite { font-size: 28px; color: var(--muted); }
 
-/* title variant for inner slides: data-title="center" centres the title above the body
-   (breaks the "title top-left on every slide" habit; safe with every style) */
+/* title variants for inner slides (break the "title top-left on every slide" habit)
+   data-title="center": the title centred above the body */
 .slide[data-title="center"] > .title:first-child { left: var(--pad-x); right: var(--pad-x); width: auto; text-align: center; }
+/* data-title="side": the title runs up the left edge, the body moves right and up (not on stats, whose
+   header band many styles draw at the top). The engine gives these slides the odd pose so the left edge is free. */
+.slide[data-title="side"]:not([data-layout="stats"]) { --pad-l: 230px; }
+.slide[data-title="side"]:not([data-layout="stats"]) { --body-top: 110px; }
+.slide[data-title="side"]:not([data-layout="stats"])[data-density="lg"] .bullets { --b-fs: 54px; --b-gap: 76px; }
+.slide[data-title="side"]:not([data-layout="stats"])[data-density="md"] .bullets { --b-fs: 42px; --b-gap: 56px; }
+.slide[data-title="side"]:not([data-layout="stats"])[data-density="sm"] .bullets { --b-fs: 34px; --b-gap: 30px; }
+.slide[data-title="side"]:not([data-layout="stats"]) > .title:first-child {
+  left: 76px; top: auto; bottom: 90px; width: 880px; font-size: 54px; line-height: 1.05;
+  rotate: -90deg; transform-origin: 0 0; translate: 0 100%;
+  padding: 0 18px; background: var(--viz-paper, var(--bg)); color: var(--fg);
+}
+.slide[data-title="side"]:not([data-layout="stats"]) .bullets { width: calc(var(--bullets-w, 1040px) - 110px); }
+.slide[data-title="side"]:not([data-layout="stats"]) :is(.bullets, .cols, .timeline, .agenda-list, .body-zone, .takeaway) { left: var(--pad-l); }
 
 /* audit mode: measure final positions (no reveal offsets, actors jump straight to each pose) */
 .deck-stage.auditing, .deck-stage.auditing * { transition: none !important; }

@@ -208,3 +208,5 @@ Quy tắc chọn: ý nào có dáng riêng thì dùng dáng đó, đừng nhét 
 ## Biến thể tiêu đề
 
 `<section class="slide" data-layout="content" data-title="center">`: tiêu đề slide nội dung nằm giữa, thân slide giữ nguyên. Đã kiểm trên cả 57 style. Dùng xen kẽ để deck dài không lặp một nhịp "tiêu đề góc trái".
+
+`data-title="side"`: tiêu đề chạy dọc mép trái, thân slide dời sang phải và lên trên (content, two-col, timeline, agenda; không áp dụng cho stats). Engine tự cho các slide này tư thế "lẻ" để mép trái trống. Kiểm trên 57 style: 55 style không lỗi; coral và scatterbrain báo chữ khó đọc ở slide timeline.
