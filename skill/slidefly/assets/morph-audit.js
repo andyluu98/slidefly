@@ -1,6 +1,5 @@
 /* ===========================================================
-   MORPH-SLIDES AUDIT: measures how well each slide fills space.
-   Run in the browser console (or via a test tool): deck.audit()
+   MORPH-SLIDES AUDIT: how well each slide fills space. Run in the console or a test tool: deck.audit()
    - biggest empty band (gapY/gapX) and ink past the safe margins; display slides only for overflow.
    - charts carry data-source; at most 6 icons, none missing; photo slides credit their picture.
    - text under 3:1 (WCAG) against the solid actor or its own box below it: "chữ khó đọc trên hình".
@@ -30,6 +29,8 @@
       [...range.getClientRects()].forEach(push);
     }
     slide.querySelectorAll(':is(img, svg, video, canvas):not(.photo-bg, .split-img)').forEach((el) => push(el.getBoundingClientRect()));
+    // a frame's colour block fills space on purpose and may bleed off the edge: count it, clipped to the safe area
+    slide.querySelectorAll('.frame-panel').forEach((el) => { if (push(el.getBoundingClientRect())) { const o = out.at(-1); o.x0 = Math.max(o.x0, SAFE.x0); o.x1 = Math.min(o.x1, SAFE.x1); o.y0 = Math.max(o.y0, SAFE.y0); o.y1 = Math.min(o.y1, SAFE.y1); } });
     return out;
   }
 
@@ -176,7 +177,7 @@
     const kinds = [...slide.querySelectorAll('.viz[data-viz]')].map((v) => v.dataset.viz)
       .concat([...slide.querySelectorAll('.mock')].map((m) => [...m.classList].find((c) => c.startsWith('mock-')) || 'mock')).sort();
     const verbs = new Set([...slide.querySelectorAll('[class]')].flatMap((e) => [...e.classList].filter((c) => VERB.test(c))));
-    return [slide.dataset.kind || slide.dataset.layout || 'content', slide.dataset.pose || '', kinds.join('+'), [...verbs].sort().join('+')].join('|');
+    return [slide.dataset.kind || slide.dataset.layout || 'content', slide.dataset.pose || '', slide.dataset.frame || '', kinds.join('+'), [...verbs].sort().join('+')].join('|');
   }
 
   window.deck.audit = () => {

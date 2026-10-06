@@ -2,10 +2,8 @@
 
 Usage: python check-deck.py <deck.html> [out_dir]
 
-- Captures console errors.
-- Runs deck.audit() (needs morph-audit.js in the deck) and prints the fill report.
-- Screenshots every slide in its FINAL pose (transitions disabled) and
-  builds one contact sheet <out_dir>/sheet.jpg to review the whole deck at once.
+- Captures console errors; runs deck.audit() (needs morph-audit.js) and prints the fill report.
+- Screenshots every slide in its FINAL pose and builds one contact sheet <out_dir>/sheet.jpg.
 Exit code: 0 = all OK, 1 = audit asks for fixes or console errors, 2 = usage/load error.
 """
 import sys
@@ -34,6 +32,7 @@ COMPONENT = """
     return `khung ${kind.slice(5)} bên ${r.left + r.width / 2 < b.left + b.width / 2 ? 'trái' : 'phải'}`;
   }
   const v = s.querySelector('.viz[data-viz]');
+  if (s.dataset.frame) return `khung ${s.dataset.frame}`;
   return v ? `sơ đồ ${v.dataset.viz}` : `kiểu ${s.dataset.kind || s.dataset.layout || 'content'}`;
 }
 """
@@ -69,6 +68,32 @@ OVERLAP = """
   return out;
 }
 """
+
+
+# Composition of an inner slide: its data-frame, or the default "title top-left, body block" grid.
+# Display slides (cover, chapter, quote...) are their own compositions and are not counted.
+FRAME = """
+() => {
+  const s = document.querySelector('.deck-stage > .slide.active');
+  const shown = ['cover', 'section', 'quote', 'closing', 'photo', 'chapter', 'qa', 'statement', 'cta', 'big-number', 'portrait-quote', 'split-photo'];
+  // a drawn diagram shapes its slide itself, so it does not count toward the default grid
+  if (shown.includes(s.dataset.kind || s.dataset.layout) || (!s.dataset.frame && s.querySelector('.viz[data-viz]'))) return null;
+  return s.dataset.frame || 'mặc định';
+}
+"""
+
+
+def crowded(frames, share=1 / 3, min_inner=12):
+    """One composition on more than a third of the inner slides of a long deck."""
+    inner = [f for f in frames if f]
+    if len(inner) < min_inner:
+        return []
+    out = []
+    for f in sorted(set(inner)):
+        n = inner.count(f)
+        if n > len(inner) * share:
+            out.append(f"khung {f}: {n}/{len(inner)} slide bên trong (nên dưới 1/3, đổi vài slide sang data-frame khác)")
+    return out
 
 
 def repeats(parts, run=3):
@@ -136,11 +161,12 @@ def main() -> int:
         count = page.evaluate("deck.count")
         report = page.evaluate("deck.audit ? deck.audit() : []")
 
-        shots, parts = [], []
+        shots, parts, frames = [], [], []
         for i in range(count):
             page.evaluate(f"deck.go({i})")
             page.wait_for_timeout(120)
             parts.append(page.evaluate(COMPONENT))
+            frames.append(page.evaluate(FRAME))
             hit = page.evaluate(OVERLAP)
             if hit:  # a real defect: counts like an audit finding
                 report.append({"slide": i + 1, "layout": "", "density": "", "gapY": "", "gapX": "", "status": "SỬA",
@@ -159,6 +185,8 @@ def main() -> int:
     for w in warnings:
         print(f"  WARNING (font): {w}")
     for r in repeats(parts):  # a hint, not a failure: vary the component, its side or the layout
+        print(f"  NHÀM: {r}")
+    for r in crowded(frames):
         print(f"  NHÀM: {r}")
     for e in errors:
         print(f"  CONSOLE ERROR: {e}")

@@ -62,7 +62,7 @@
     });
     if (!slide.dataset.density) slide.dataset.density = densityOf(slide);
     // parity of the slide itself: content tweaks must not follow the *current* slide
-    slide.dataset.parity = k % 2 && slide.dataset.title !== 'side' ? 'even' : 'odd';   // a side title needs the left edge free
+    slide.dataset.parity = k % 2 && slide.dataset.title !== 'side' && !slide.dataset.frame ? 'even' : 'odd';   // side titles and frames need the plain pose
     // variant 1..3: Nth time this layout appears (styles may give repeats a different pose)
     const lay = slide.dataset.layout || 'content';
     seen[lay] = (seen[lay] || 0) + 1;

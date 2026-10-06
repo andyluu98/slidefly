@@ -32,13 +32,14 @@ STORIES = [
 # Rhythm of one part in a long deck (after its chapter slide). Drawn without repeats, so part 2
 # does not replay part 1's order of slide kinds.
 BEATS = [
-    ('Hỏi rồi đáp', 'qa > content > process > statement'),
-    ('Số liệu dẫn đường', 'big-number > stats hoặc bento > compare-table'),
-    ('Trước và sau', 'before-after > process > content (data-title="center")'),
-    ('Cho xem tận mắt', 'content + khung giao diện bên trái > diagram > content + khung bên phải'),
-    ('Xếp hạng', 'countdown > two-col > statement'),
-    ('Vẽ ra cho dễ thấy', 'diagram (network, funnel...) > content > portrait-quote'),
-    ('Chia ô', 'bento > timeline > content (data-title="center")'),
+    ('Hỏi rồi đáp', 'qa > content (frame split-left) > process (frame band) > statement'),
+    ('Số liệu dẫn đường', 'big-number > stats (frame rail) hoặc bento > compare-table (frame band)'),
+    ('Trước và sau', 'before-after > process (frame bottom) > content (frame numbered)'),
+    ('Cho xem tận mắt', 'diagram + khung giao diện bên trái > diagram > content (frame diagonal)'),
+    ('Xếp hạng', 'countdown > two-col (frame stack) > statement'),
+    ('Vẽ ra cho dễ thấy', 'diagram (network, funnel...) > content (frame zigzag) > portrait-quote'),
+    ('Chia ô', 'bento (frame corner) > timeline > content (frame poster)'),
+    ('Khung lớn', 'content (frame split-right) > stats (frame poster) > two-col (frame frame)'),
 ]
 
 

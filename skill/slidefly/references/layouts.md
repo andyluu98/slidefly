@@ -210,3 +210,30 @@ Quy tắc chọn: ý nào có dáng riêng thì dùng dáng đó, đừng nhét 
 `<section class="slide" data-layout="content" data-title="center">`: tiêu đề slide nội dung nằm giữa, thân slide giữ nguyên. Đã kiểm trên cả 57 style. Dùng xen kẽ để deck dài không lặp một nhịp "tiêu đề góc trái".
 
 `data-title="side"`: tiêu đề chạy dọc mép trái, thân slide dời sang phải và lên trên (chỉ content, two-col, timeline; stats và agenda giữ tiêu đề trên). Engine tự cho các slide này tư thế "lẻ" để mép trái trống. Kiểm trên cả 57 style: không lỗi.
+
+## Khung bố cục (data-frame): phá lưới "tiêu đề góc trái, khối nội dung ở giữa"
+
+Nạp thêm `morph-frames.css` (sau morph-layouts-plus.css) và `morph-frames.js` (trước morph-engine.js), rồi gắn `data-frame` lên slide bên trong. Nội dung giữ nguyên: gạch đầu dòng, hai cột, số liệu, dòng thời gian, bento, quy trình, bảng so sánh, đếm ngược, lưới icon, sơ đồ đều tự chạy vào vùng của khung.
+
+```html
+<section class="slide" data-layout="content" data-frame="split-left">
+```
+
+| Khung | Cách chia mặt slide | Hợp với |
+|---|---|---|
+| `split-left`, `split-right` | mảng màu nhấn một bên chứa tiêu đề và điểm nhấn, nội dung bên kia | ý quan trọng, mở phần |
+| `poster` | tiêu đề rất lớn, nội dung thành dải thấp bên dưới | một thông điệp mạnh |
+| `band` | nội dung chạy trên dải màu nhạt giữa slide, tiêu đề đặt dưới | số liệu, bảng, quy trình |
+| `rail` | tiêu đề đứng trong cột trái, sau một vạch dọc | slide nhiều chữ |
+| `bottom` | tiêu đề đặt cuối slide, dưới một đường kẻ | kết một phần |
+| `stack` | tiêu đề giữa, nội dung là một cột hẹp | đọc chậm, trích ý |
+| `corner` | khối màu vuông góc trên trái chứa tiêu đề | slide mở chương con |
+| `diagonal` | mảng màu cắt chéo bên phải mang điểm nhấn | slide content có `.highlight` |
+| `frame` | khung viền đậm, tiêu đề nằm trên đường viền | tóm tắt, checklist |
+| `zigzag` | các gạch đầu dòng thành thẻ so le | 3 đến 5 ý ngắn |
+| `numbered` | gạch đầu dòng đánh số lớn | các bước, thứ tự |
+
+- Khung có mảng màu tự cho slide sân khấu trống (mảng màu là phần trang trí); muốn giữ hình của style thì ghi `data-stage`.
+- Chữ trên mảng màu nhấn tự lấy màu tương phản (`--on-accent`, engine chọn theo từng slide).
+- Deck từ 12 slide: dùng ít nhất 3 khung khác nhau, không để quá một phần ba số slide bên trong cùng một khung (hoặc cùng dáng mặc định). Đã kiểm trên cả 57 style.
+- Mẫu đủ 12 khung: `templates/deck-khung.html`.
