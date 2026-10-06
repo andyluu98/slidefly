@@ -158,12 +158,12 @@
         <article class="feature">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>
           <h3>Bố cục tự lấp đầy</h3>
-          <p>Engine đếm số ý trên slide rồi chọn cỡ chữ lớn, vừa hay nhỏ. Slide ít chữ không trống trơn, slide nhiều chữ không tràn. Kiểu slide lặp lại sẽ tự đổi dáng cho đỡ nhàm.</p>
+          <p>Engine đếm số ý trên slide rồi chọn cỡ chữ lớn, vừa hay nhỏ. Slide ít chữ không trống trơn, slide nhiều chữ không tràn. Kiểu slide lặp lại sẽ tự đổi dáng cho đỡ nhàm; slide sơ đồ vẫn giữ hình trang trí của style; tiêu đề có thể đặt giữa hoặc chạy dọc mép trái.</p>
         </article>
         <article class="feature">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
           <h3>Tự kiểm tra trước khi giao</h3>
-          <p>Script chụp từng slide, đo khoảng trống và chữ tràn, bắt lỗi trình duyệt, rồi gom thành một ảnh để Claude nhìn lại và sửa trước khi đưa bạn.</p>
+          <p>Script chụp từng slide, đo khoảng trống, chữ tràn, chữ khó đọc, chữ đè chữ, nhắc khi nhiều slide liền dựng giống nhau, bắt lỗi trình duyệt, rồi gom thành một ảnh để Claude nhìn lại và sửa trước khi đưa bạn.</p>
         </article>
         <article class="feature">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="m10 13-2 2 2 2"/><path d="m14 17 2-2-2-2"/></svg>
@@ -250,8 +250,9 @@ python -m playwright install chromium</pre></div>
           </ul>
           <div class="keys">
             <h3>Khi trình chiếu</h3>
-            <span><kbd>→</kbd> <kbd>Space</kbd> hoặc bấm chuột</span><span>Sang slide sau</span>
-            <span><kbd>←</kbd></span><span>Lùi lại</span>
+            <span><kbd>→</kbd> <kbd>Space</kbd> hoặc nút › ở rìa phải</span><span>Sang slide sau</span>
+            <span><kbd>←</kbd> hoặc nút ‹ ở rìa trái</span><span>Lùi lại</span>
+            <span>Bấm vào thân slide</span><span>Không chuyển: bôi đen, chép chữ thoải mái</span>
             <span><kbd>F</kbd></span><span>Toàn màn hình</span>
             <span><kbd>Home</kbd> <kbd>End</kbd></span><span>Về đầu hoặc cuối</span>
           </div>
@@ -260,10 +261,10 @@ python -m playwright install chromium</pre></div>
           <h3>Sau khi bạn gửi yêu cầu</h3>
           <ol class="flow">
             <li><b>Hỏi gộp một lượt</b><span>Mục đích, người xem, số slide, nhiều hay ít chữ. Câu nào bạn đã nói thì bỏ qua.</span></li>
-            <li><b>Lập dàn ý</b><span>Mỗi slide một ý, gán sẵn kiểu slide phù hợp.</span></li>
+            <li><b>Lập dàn ý</b><span>Mỗi slide một ý, gán sẵn kiểu slide phù hợp. Deck dài chia phần, mỗi phần một nhịp kể riêng.</span></li>
             <li><b>Cho xem trước 3 style</b><span>Dựng bìa, mục lục và một slide nội dung của chính bài bạn ở 3 style để bạn chọn, hoặc trộn màu của style này với hình của style kia.</span></li>
             <li><b>Dựng cả bộ</b><span>Viết slide theo dàn ý, gộp thành một file HTML đặt tên theo thứ tự trong thư mục của bạn.</span></li>
-            <li><b>Tự kiểm tra và sửa</b><span>Chụp mọi slide, đo khoảng trống, chữ tràn, lỗi trình duyệt. Có lỗi thì sửa rồi kiểm lại.</span></li>
+            <li><b>Tự kiểm tra và sửa</b><span>Chụp mọi slide, đo khoảng trống, chữ tràn, chữ khó đọc, chữ đè chữ, lỗi trình duyệt. Có lỗi thì sửa rồi kiểm lại.</span></li>
             <li><b>Bàn giao</b><span>Đường dẫn file, số slide, style đã dùng và cách trình chiếu.</span></li>
           </ol>
         </div>

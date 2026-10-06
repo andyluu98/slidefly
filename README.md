@@ -23,12 +23,12 @@ Mỗi style có một nhóm hình cố định gọi là **diễn viên**. Mỗi
 - **Logo xuyên suốt:** một logo (icon Tabler hoặc file ảnh) to ở bìa, thu về góc ở slide nội dung, ẩn ở slide trích dẫn, và tự bay giữa các vị trí đó.
 - **Khung giao diện giả:** cửa sổ chat, terminal, trình duyệt, điện thoại vẽ bằng CSS. Prompt gõ từng chữ, trợ lý "nghĩ" rồi trả lời từng dòng, lệnh cài hiện dần theo cú bấm.
 - **Slide ảnh nền và lưới icon:** ảnh tràn màn hình làm điểm nghỉ giữa các phần (lớp phủ giữ chữ dễ đọc, bắt buộc ghi nguồn ảnh); lưới 3 đến 6 icon cùng màu cho các ý ngắn.
-- **Không rập khuôn:** `pick-styles.py` gợi ý 3 style (hợp mục đích, khác nền, bất ngờ) và một cách kể chuyện, xáo mỗi lần chạy, nên cả lớp gõ cùng một prompt vẫn ra các bộ slide khác nhau.
+- **Không rập khuôn:** `pick-styles.py` gợi ý 3 style (hợp mục đích, khác nền, bất ngờ) và một cách kể chuyện, xáo mỗi lần chạy, nên cả lớp gõ cùng một prompt vẫn ra các bộ slide khác nhau. Deck dài thêm `--parts N`: mỗi phần một nhịp kể riêng, slide chương xen kẽ nền.
 - **Bấm từng bước:** `data-step` cho phép giảng tới đâu mở tới đó, phím lùi gỡ đúng một bước; slide có `data-at` để đổi trạng thái theo từng cú bấm.
 - **Tự lấp đầy:** engine đếm số ý trên slide rồi chọn cỡ chữ lớn, vừa hoặc nhỏ. Slide nội dung có ô điểm nhấn, slide hai cột có câu kết luận.
-- **Không lặp nhàm:** cùng một kiểu slide xuất hiện nhiều lần sẽ đổi dáng (biến thể 1, 2, 3) và đổi hướng chữ vào khung.
+- **Không lặp nhàm:** cùng một kiểu slide xuất hiện nhiều lần sẽ đổi dáng (biến thể 1, 2, 3) và đổi hướng chữ vào khung. Slide sơ đồ, bento, bảng so sánh vẫn giữ hình trang trí của style ở viền thay vì để sân khấu trống. Tiêu đề có hai biến thể: đặt giữa (`data-title="center"`) và chạy dọc mép trái (`data-title="side"`); slide nào cũng có thể mượn tư thế của kiểu khác bằng `data-stage`.
 - **Chữ bay giữa hai slide (FLIP):** ví dụ tiêu đề mục ở trang mục lục bay sang thành tiêu đề phần.
-- **Tự kiểm tra:** `check-deck.py` chụp mọi slide, gom thành một ảnh, đo khoảng trống và chữ tràn, báo 3 slide liền giống hệt nhau, biểu đồ thiếu nguồn, bắt lỗi console.
+- **Tự kiểm tra:** `check-deck.py` chụp mọi slide, gom thành một ảnh, đo khoảng trống và chữ tràn, đo độ tương phản của chữ với hình phía sau và với chính khung chứa nó, bắt chữ đè chữ (lớp cố ý chồng thì gắn `data-layer`), nhắc khi 3 slide liền dựng cùng một kiểu, biểu đồ thiếu nguồn, lỗi console.
 - **Không phụ thuộc thư viện:** chỉ HTML, CSS, JavaScript thuần. Có chế độ giảm chuyển động.
 
 ## Cài đặt
