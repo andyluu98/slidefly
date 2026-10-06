@@ -92,7 +92,7 @@
     const was = stage.querySelector(':scope > .slide.active');
     was?.classList.remove('active');
     slide.classList.add('active');
-    const shapes = actorRects(slide, k, s);
+    const shapes = slide.querySelector('.photo-bg') ? [] : actorRects(slide, k, s);   // a full-bleed photo hides the actors
     const hits = new Map();   // actor -> first text found on it
     const walker = document.createTreeWalker(slide, NodeFilter.SHOW_TEXT);
     while (walker.nextNode()) {

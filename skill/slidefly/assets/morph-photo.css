@@ -31,7 +31,8 @@
 }
 .photo-text.center { left: 240px; right: 240px; bottom: auto; top: 50%; width: auto; transform: translateY(-50%); align-items: center; text-align: center; }
 .photo-text .title { font-size: 96px; color: #fff; text-shadow: 0 2px 30px rgba(0, 0, 0, .35); }
-.photo-text .kicker { color: var(--photo-accent, #fff); opacity: .9; }
+.photo-text .kicker { color: var(--photo-accent, #fff); opacity: .9;
+  background: none; border: 0; box-shadow: none; padding: 0; }   /* a style's kicker chip would put white on a pale chip */
 .photo-text .subtitle { color: rgba(255, 255, 255, .86); }
 .photo-credit {
   position: absolute; z-index: 1; right: 120px; bottom: 44px; margin: 0;

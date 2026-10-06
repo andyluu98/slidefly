@@ -147,6 +147,7 @@ b, strong { font-weight: 700; }
    two-col and timeline (checked on 57 styles); stats and agenda keep the top title. The engine gives these slides the odd pose so the left edge is free. */
 .slide[data-title="side"]:is([data-layout="content"], [data-layout="two-col"], [data-layout="timeline"]) { --pad-l: 230px; }
 .slide[data-title="side"]:is([data-layout="content"], [data-layout="two-col"], [data-layout="timeline"]) { --body-top: 110px; }
+.slide[data-title="side"][data-layout="timeline"] { --body-top: 170px; }   /* keep the steps off mid-slide bands */
 .slide[data-title="side"]:is([data-layout="content"], [data-layout="two-col"], [data-layout="timeline"])[data-density="lg"] .bullets { --b-fs: 54px; --b-gap: 76px; }
 .slide[data-title="side"]:is([data-layout="content"], [data-layout="two-col"], [data-layout="timeline"])[data-density="md"] .bullets { --b-fs: 42px; --b-gap: 56px; }
 .slide[data-title="side"]:is([data-layout="content"], [data-layout="two-col"], [data-layout="timeline"])[data-density="sm"] .bullets { --b-fs: 34px; --b-gap: 30px; }

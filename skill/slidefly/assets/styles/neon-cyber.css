@@ -10,6 +10,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap');
 
 .deck-stage {
+  --dense-stage: diagram;   /* own diagram pose below */
   --actors: "grid haze ring frame line-c line-m node";
   --font-display: 'Chakra Petch', sans-serif;
   --font-body: 'Space Grotesk', sans-serif;

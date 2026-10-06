@@ -64,6 +64,7 @@
 
 /* ---------- cover ---------- */
 .slide[data-layout="cover"] .title { font-size: 104px; }
+.deck-stage:has(> .actors > [data-actor="glitch"]) .slide[data-pose="p-cover"] { padding-right: 900px; }   /* room for the plate drawing */
 .cover-plan { position: absolute; left: 1180px; top: 110px; width: 700px; height: 860px; }
 /* the plan is drawn for Cobalt Grid's blue plate; other styles keep their own cover shapes there */
 .deck-stage:not(:has(> .actors > [data-actor="glitch"])) .cover-plan { visibility: hidden; }   /* keeps its size: morph-viz draws before the actors exist */
@@ -105,7 +106,7 @@
 .node b { font-size: 29px; line-height: 1.2; }
 .node span { font-size: 22px; color: var(--muted); }
 .node .no { position: absolute; left: -2px; top: -34px; font: 500 20px/1 var(--font-mono); }
-.slide[data-at="1"] .node.weak { border-color: var(--hot-ink); color: var(--hot-ink); background: color-mix(in srgb, var(--hot) 10%, var(--viz-paper)); transition-delay: 0s !important; }
+.slide[data-at="1"] .node.weak { border-color: var(--hot-ink); color: var(--hot-ink); background: var(--viz-paper); transition-delay: 0s !important; }
 .slide[data-at="1"] .node.weak span { color: var(--hot-ink); }
 .pipe path { fill: none; stroke: var(--fg); stroke-width: 3; }
 .packet { position: absolute; left: 0; top: 0; width: 24px; height: 24px; border-radius: 50%; background: var(--hot); z-index: 1; }
@@ -199,7 +200,7 @@
 <div class="deck-stage">
 
   <!-- 1 cover: an example room outline draws itself on the plate -->
-  <section class="slide" data-layout="cover" data-pose="p-cover" style="padding-right:900px">
+  <section class="slide" data-layout="cover" data-pose="p-cover">
     <p class="kicker reveal">Mẫu SlideFly · Sơ đồ hình học</p>
     <h1 class="title reveal">Mỗi ý một hình</h1>
     <p class="subtitle reveal">16 slide, mỗi slide một dạng sơ đồ hoặc chuyển động</p>
@@ -306,7 +307,7 @@
     <div class="viz" data-viz="network" style="left:120px;right:120px;top:240px;bottom:80px" data-hub="morph-viz" data-on="1,2,3"
       data-nodes="span|donut|plan|gather|matrix|network|funnel|compare"
       data-sub="Thanh tỷ lệ: thời lượng, ngân sách|Vòng chia phần: cơ cấu, thang điểm|Mặt bằng và chuỗi kích thước|Nhiều ô dồn về một chỗ|Ma trận hai tiêu chí|Một trung tâm, nhiều nhánh|Phễu lọc nhiều lớp|Màn quét trước và sau"></div>
-    <p class="tag abs fx fx-up" data-step="1" style="left:120px;top:960px;width:560px;line-height:1.4">3 dạng có số liệu phải ghi data-source</p>
+    <p class="tag abs fx fx-up" data-step="1" style="left:120px;bottom:70px;width:760px;line-height:1.4">3 dạng có số liệu phải ghi data-source</p>
   </section>
 
   <!-- 9 triangle graph + 17 pieces gathered into one line of markup -->
@@ -345,7 +346,7 @@
       <p class="chip fx fx-drop" style="--d:1.9;border-style:dashed">Nguồn của con số</p>
       <p class="chip fx fx-drop" style="--d:2.2;border-style:dashed">Đơn vị tính</p>
     </div>
-    <p class="stamp hot slam" data-step="1" style="left:1060px;top:290px;--rot:-4deg">Chưa có bảng này thì chưa vẽ biểu đồ</p>
+    <p class="stamp hot slam" data-step="1" style="right:120px;top:290px;--rot:-4deg">Chưa có bảng này thì chưa vẽ biểu đồ</p>
   </section>
 
   <!-- 11 the plan draws its four chains; the one that does not close gets a lens -->

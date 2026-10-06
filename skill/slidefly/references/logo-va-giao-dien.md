@@ -85,6 +85,7 @@ Tên trên thanh tiêu đề là `data-title`. Đặt vị trí bằng `style="l
 
 ### Luật dùng
 
+- Slide có khung giao diện dùng `data-layout="diagram"`: kiểu `content` đặt sẵn tấm thẻ điểm nhấn bên phải, chữ cạnh khung dễ nằm lên tấm thẻ sai màu.
 - Mỗi slide tối đa **một** khung giao diện. Hai khung cạnh nhau làm người xem không biết nhìn đâu.
 - Nội dung trong khung là **ví dụ**: câu trả lời mẫu của AI không được chứa số liệu bịa. Lệnh cài đặt phải lấy từ tài liệu chính thức.
 - Khung che hình trang trí của style: nếu thấy thò ra lộn xộn, cho diễn viên đó làm tấm nền phía sau khung, ví dụ
@@ -116,10 +117,10 @@ Một ảnh tràn màn hình làm **điểm nghỉ** giữa các phần: mở ch
 
 ## 4. Lưới icon
 
-3 đến 6 ý ngắn, mỗi ý một icon cùng màu. 4 ý chia 2 cột, còn lại 3 cột. Đặt trên slide `data-layout="agenda"`, vì style nào cũng để trống vùng thân của kiểu này.
+3 đến 6 ý ngắn, mỗi ý một icon cùng màu. 4 ý chia 2 cột, còn lại 3 cột. Đặt trên slide `data-layout="diagram"`: hình trang trí của style dạt ra viền, vùng thân để trống cho lưới.
 
 ```html
-<section class="slide" data-layout="agenda">
+<section class="slide" data-layout="diagram">
   <h2 class="title reveal">Sáu việc trợ lý làm tốt</h2>
   <ul class="ico-grid">
     <li class="reveal"><i class="ico" data-icon="file-text"></i><h3>Tóm tắt</h3><p>Rút ý chính từ file dài</p></li>
