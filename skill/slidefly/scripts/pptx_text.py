@@ -13,13 +13,14 @@ class Ctx:
         self.over = over or {}   # class -> colour the style gives that element on this slide
 
     def run(self, text, size, role='fg', bold=False, font='body', italic=False):
+        bold = self.t.get('display_bold', True) if font == 'display' else bold   # the CSS weight of display type
         return {'text': text, 'size': size, 'color': self.t[role] if isinstance(role, str) else role, 'bold': bold,   # role: theme key or (hex, a)
                 'italic': italic, 'font': self.t['font_' + font]}
 
     def box(self, name, x, y, w, h, paras, anchor='t', fill=None, geom='rect', line=None, rot=0, inset=0):
         # body text fades in after the slide arrives; titles and actors travel with Morph instead
         self.items.append({'name': name, 'x': x, 'y': y, 'w': w, 'h': h, 'paras': paras, 'anchor': anchor, 'fill': fill,
-                           'geom': geom, 'line': line, 'rot': rot, 'inset': inset, 'anim': not name.startswith(('!!', 'Title', 'Credit'))})
+                           'geom': geom, 'line': line, 'rot': rot, 'inset': inset, 'anim': not name.startswith(('!!', 'Title', 'Credit', 'UI'))})
 
     def rect(self, name, x, y, w, h, fill, geom='rect', line=None):
         self.items.append({'name': name, 'x': x, 'y': y, 'w': w, 'h': h, 'fill': fill, 'geom': geom, 'line': line})
@@ -30,22 +31,20 @@ class Ctx:
 
 def runs(ctx, node, size, role='fg', font='body', bold=False):
     """Inline runs of a node: <b>/<strong> bold, <em>/<i> italic, <br> newline (split later)."""
-    out, hit = [], next((c for c in node.cls if c in ctx.over), None)
+    out, hit, caps = [], next((c for c in node.cls if c in ctx.over), None), bool(set(node.cls) & getattr(ctx, 'caps', set()))
     role = ctx.over[hit] if hit else role
 
-    def walk(n, b, it):
+    def walk(n, b, it, mk):
         for k in n.kids:
             if isinstance(k, str):   # keep one space at each edge: "<b>Nêu việc:</b> tóm tắt" must not glue
-                if k.strip():
-                    out.append(ctx.run((' ' if k[:1].isspace() else '') + ' '.join(k.split()) + (' ' if k[-1:].isspace() else ''),
-                                       size, role, b, font, it))
-                elif k and out:
-                    out.append(ctx.run(' ', size, role, b, font, it))
+                if k.strip() or (k and out):
+                    txt = (' ' if k[:1].isspace() else '') + ' '.join(k.split()) + (' ' if k[-1:].isspace() and k.strip() else '')
+                    out.append(dict(ctx.run(txt, size, role, b, font, it), mark=ctx.t.get('mark') if mk else None, caps=caps))
             elif k.tag == 'br':
                 out.append(ctx.run('\n', size, role, b, font, it))
             elif k.tag not in ('svg', 'script', 'style', 'button') and 'ico' not in k.cls:
-                walk(k, b or k.tag in ('b', 'strong'), it or k.tag in ('em', 'i'))
-    walk(node, bold, False)
+                walk(k, b or k.tag in ('b', 'strong'), it or k.tag in ('em', 'i'), mk or k.tag == 'mark')   # <mark>: highlighted run
+    walk(node, bold, False, False)
     if out:
         out[0]['text'] = out[0]['text'].lstrip()
         out[-1]['text'] = out[-1]['text'].rstrip()
@@ -93,7 +92,7 @@ def stacked(ctx, slide, x, y, w, h, align, sizes, anchor='ctr'):
              ('qa-a', 'muted', 'body'), ('subtitle', 'muted', 'body'), ('cite', 'muted', 'body'), ('pq-who', 'muted', 'body'), ('meta', 'muted', 'body')]
     for cls, role, font in order:
         for n in node.all_class(cls):
-            if n.attrs.get('aria-hidden') == 'true':
+            if n.attrs.get('aria-hidden') == 'true' or 'cta-actions' in n.cls:   # drawn by pptx_extras
                 continue
             ps.append(para(runs(ctx, n, sizes.get(cls, 30), role, font, font == 'display'), align, 16 if ps else 0))
     if ps:
@@ -114,7 +113,7 @@ def bullets(ctx, node, x, y, w, h, size_key='bullets', frame=''):
         ps = [para([ctx.run(f'{i + 1:02d}   ', fs * 1.3, 'accent', True, 'display')] + runs(ctx, li, fs), 'l', gap if i else 0, 112)
               for i, li in enumerate(items)]
     else:
-        ps = [para(runs(ctx, li, fs), 'l', gap if i else 0, 112, '•') for i, li in enumerate(items)]
+        ps = [para(runs(ctx, li, fs), 'l', gap if i else 0, 112, ctx.t.get('bullet', '•')) for i, li in enumerate(items)]
     ctx.box('Bullets', x, y, w, h, ps, 'ctr')
 
 
@@ -146,7 +145,7 @@ def cols(ctx, node, x0, x1, y0, y1):
         if h3:
             ps.append(para(runs(ctx, h3, hs, 'accent', 'display', True)))
         for li in c.find_all(lambda n: n.tag in ('li', 'p') and n.parent.tag != 'li'):
-            ps.append(para(runs(ctx, li, fs), 'l', 18, 112, '•' if li.tag == 'li' else None))
+            ps.append(para(runs(ctx, li, fs), 'l', 18, 112, ctx.t.get('bullet', '•') if li.tag == 'li' else None))
         ctx.box(f'Col {i + 1}', x0 + i * (w + 64), y0, w, y1 - y0, ps, 't', fill=ctx.t['card'], geom=('roundRect', 6000), inset=48)
 
 

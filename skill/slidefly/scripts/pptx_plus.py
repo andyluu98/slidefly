@@ -2,6 +2,7 @@
 Geometry mirrors the CSS; anything this module does not recognise still lands in a plain text box."""
 import re
 
+from pptx_css import color
 from pptx_text import fit, para, runs
 
 # frame -> body box (left, right, top, bottom margins), title (x, y, w, size, role), panel boxes, highlight box
@@ -69,7 +70,7 @@ def h3p(ctx, node, big=None, h3=34, p=24, role='fg'):
         elif n.parent and not (set(n.parent.cls) & {'big'}):
             ps.append(para(runs(ctx, n, p, 'muted' if role == 'fg' else role), 'l', 6))
     for li in node.find_all(lambda n: n.tag == 'li'):
-        ps.append(para(runs(ctx, li, p, role), 'l', 6, 110, '•'))
+        ps.append(para(runs(ctx, li, p, role), 'l', 6, 110, ctx.t.get('bullet', '•')))
     return ps
 
 
@@ -88,11 +89,17 @@ def plus(ctx, slide, box):
     elif kind == 'bento' and node.by_class('bento'):
         cells = node.all_class('cell')
         groups = [h3p(ctx, c, 120, 36, 24, 'on_accent' if 'hot' in c.cls else 'fg') for c in cells]
-        w = (x1 - x0 - 48) / 3
-        spots = [(0, 0, 1, 2), (1, 0, 1, 1), (2, 0, 1, 1), (1, 1, 2, 1), (0, 2, 1, 1), (1, 2, 1, 1), (2, 2, 1, 1)]
-        h = (y1 - y0 - 24) / 2
+        taken, spots = set(), []   # CSS grid auto-placement: 4 columns, .wide spans 2 columns, .tall 2 rows
+        for c in cells:
+            cw, ch = (2 if 'wide' in c.cls else 1), (2 if 'tall' in c.cls else 1)
+            cy, cx = next((r, q) for r in range(99) for q in range(5 - cw)
+                          if not any((r + a, q + b) in taken for a in range(ch) for b in range(cw)))
+            taken |= {(cy + a, cx + b) for a in range(ch) for b in range(cw)}
+            spots.append((cx, cy, cw, ch))
+        w = (x1 - x0 - 72) / 4
+        h = (y1 - y0 - 24 * (max(r for r, _ in taken))) / (max(r for r, _ in taken) + 1)
         for i, (c, ps) in enumerate(zip(cells, groups)):
-            cx, cy, cw, ch = spots[i] if i < len(spots) else (i % 3, 1, 1, 1)
+            cx, cy, cw, ch = spots[i]
             fill = (ctx.t['accent'][0], 1) if 'hot' in c.cls else ctx.t['card']
             bx, by = x0 + cx * (w + 24), y0 + cy * (h + 24)
             ctx.box(f'Cell {i + 1}', bx, by, w * cw + 24 * (cw - 1), h * ch + 24 * (ch - 1), ps, 'b', fill=fill, geom=('roundRect', 6000), inset=28)
@@ -101,15 +108,16 @@ def plus(ctx, slide, box):
                 ctx.icon(ico, bx + 28, by + 28, 56, 'on_accent' if 'hot' in c.cls else 'accent')
     elif kind == 'process' and node.by_class('process'):
         steps = node.by_class('process').children(lambda n: n.tag == 'li')
-        w = (x1 - x0 - 16 * (len(steps) - 1)) / max(len(steps), 1)
+        w = (x1 - x0 - 8 * (len(steps) - 1)) / max(len(steps), 1)
+        mid = color(f'color-mix(in srgb, #{ctx.t["accent"][0]} 72%, #{ctx.t["bg"][0]})')   # even steps, as morph-layouts-plus
         for i, s in enumerate(steps):
-            x = x0 + i * (w + 16)
+            x = x0 + i * (w + 8)
             n = s.by_class('n')
-            ctx.box(f'Step {i + 1}', x, y0 + 60, w + 30, 130, [para(runs(ctx, n, 54, 'on_accent', 'display', True))] if n else [],
-                    'ctr', fill=(ctx.t['accent'][0], 1 if i % 2 == 0 else 0.75), geom='homePlate' if i == 0 else 'chevron', inset=40)
-            ps = [para(runs(ctx, k, 34 if k.tag == 'h3' else 24, 'fg' if k.tag == 'h3' else 'muted', 'display' if k.tag == 'h3' else 'body', k.tag == 'h3'), 'l', 8)
+            ctx.box(f'Step {i + 1}', x, y0 + 60, w, 130, [para(runs(ctx, n, 64, 'on_accent', 'display'))] if n else [],
+                    'ctr', fill=(ctx.t['accent'][0], 1) if i % 2 == 0 else mid, geom='homePlate' if i == 0 else 'chevron', inset=40)
+            ps = [para(runs(ctx, k, 46 if k.tag == 'h3' else 31, 'fg' if k.tag == 'h3' else 'muted', 'display' if k.tag == 'h3' else 'body'), 'l', 18)
                   for k in s.children(lambda k: k.tag in ('h3', 'p'))]
-            ctx.box(f'Step text {i + 1}', x, y0 + 220, w, y1 - y0 - 220, ps, 't')
+            ctx.box(f'Step text {i + 1}', x, y0 + 200, w, y1 - y0 - 200, ps, 't', inset=14)
     elif kind == 'compare-table' and node.find(lambda n: n.tag == 'table'):
         rows = list(node.find_all(lambda n: n.tag == 'tr'))
         cols_n = max(len(r.children(lambda c: c.tag in ('td', 'th'))) for r in rows)
@@ -123,17 +131,22 @@ def plus(ctx, slide, box):
                         'ctr', fill=fill, inset=14)
     elif kind == 'countdown' and node.by_class('countdown'):
         items = node.by_class('countdown').children(lambda n: n.tag == 'li')
-        h = (y1 - y0) / max(len(items), 1)
+        unit = (y1 - y0) / (len(items) + 0.5)   # grid 150px | 560px | rest, rows split by a hairline, number one 1.5x taller
+        y = y0
         for i, li in enumerate(items):
             last = i == len(items) - 1
-            rk = li.by_class('rk')
-            ctx.box(f'Rank {i + 1}', x0, y0 + i * h, 160, h, [para(runs(ctx, rk, 128 if last else 72, 'accent', 'display', True))] if rk else [], 'ctr')
-            ps = [para(runs(ctx, k, (50 if last else 38) if k.tag == 'h3' else 27, 'accent' if last and k.tag == 'h3' else ('fg' if k.tag == 'h3' else 'muted'),
-                            'display' if k.tag == 'h3' else 'body', k.tag == 'h3')) for k in li.children(lambda k: k.tag in ('h3', 'p'))]
-            ctx.box(f'Rank text {i + 1}', x0 + 200, y0 + i * h, x1 - x0 - 200, h, ps, 'ctr')
+            h = unit * (1.5 if last else 1)
+            ctx.rect(f'Rank line {i + 1}', x0, y, x1 - x0, 1.5, (ctx.t['fg'][0], 0.15))
+            rk, h3, p = li.by_class('rk'), li.find(lambda k: k.tag == 'h3'), li.find(lambda k: k.tag == 'p')
+            if rk:
+                ctx.box(f'Rank {i + 1}', x0, y, 150, h, [para(runs(ctx, rk, 128 if last else 76, 'accent' if last else 'muted', 'display'))], 'ctr')
+            if h3:
+                ctx.box(f'Rank title {i + 1}', x0 + 180, y, 560, h, [para(runs(ctx, h3, 50 if last else 38, 'accent' if last else 'fg', 'display'))], 'ctr')
+            if p:
+                ctx.box(f'Rank text {i + 1}', x0 + 770, y, x1 - x0 - 770, h, [para(runs(ctx, p, 27, 'muted'))], 'ctr')
+            y += h
     elif kind == 'before-after' and node.by_class('ba'):
-        sides = node.all_class('ba-side')
-        cards(ctx, x0, x1, y0, y1, [h3p(ctx, s, None, 40, 28) for s in sides], max(len(sides), 1), ctx.t['card'], 'Side', 't', 140)
+        __import__('pptx_extras').before_after(ctx, node, x0, x1, y0, y1)
     elif node.by_class('ico-grid'):
         items = node.by_class('ico-grid').children(lambda n: n.tag == 'li')
         cards(ctx, x0, x1, y0, y1, [h3p(ctx, li, None, 34, 24) for li in items], 2 if len(items) == 4 else 3, None, 'Point',
@@ -141,15 +154,6 @@ def plus(ctx, slide, box):
     else:
         return False
     return True
-
-
-def mock(ctx, m, x, y, w, h):
-    """A UI mock becomes a dark rounded window with its text in a monospace face."""
-    text = [ln for ln in m.text().split('\n') if ln.strip()]
-    ps = [para([ctx.run(t, 24, ('E6EDF3', 1), False, 'body')], 'l', 8) for t in text[:14]]
-    for r in (r for p in ps for r in p['runs']):
-        r['font'] = 'Consolas'
-    ctx.box('UI mock', x, y, w, h, ps, 't', fill=('161B22', 1), geom=('roundRect', 3000), inset=36)
 
 
 def style_box(node):
@@ -169,18 +173,12 @@ def leftover_text(ctx, node, used, box):
     """Text of top-level children no other rule consumed: never lose content. A child placed with an
     inline left/top keeps that spot; the rest (source lines, notes) goes in a small strip at the foot."""
     rest = [k for k in node.children() if k not in used and k.text() and 'photo-credit' not in k.cls
-            and k.tag not in ('img', 'script', 'style') and 'frame-panel' not in k.cls]
-    notes, body, tok = [], [], r'var\(--(accent|muted|bg|fg|tint|card|on-accent)\)'
+            and k.tag not in ('img', 'script', 'style', 'svg') and 'frame-panel' not in k.cls]
+    notes, body = [], []
     for k in rest:
-        spot, st = style_box(k), k.attrs.get('style', '')
-        if spot:   # free slides: inline background, font-size, colour token, weight and alignment carry over
-            x, y, w, h = spot
-            fs, col, bg, al = (re.search(p, st) for p in (r'font-size:\s*(\d+)px', r'(?<![-\w])color:\s*' + tok,
-                                                          r'background:\s*' + tok, r'text-align:\s*(center|right)'))
-            rs = runs(ctx, k, int(fs.group(1)) if fs else 26, col.group(1).replace('-', '_') if col else 'fg',
-                      'display' if 'font-display' in st else 'body', bool(re.search(r'font-weight:\s*[6-9]00', st)))
-            ctx.box('Text', x, y, w, max(h, 40) if h < 1000 else 120, [para(rs, {'center': 'ctr', 'right': 'r'}.get(al and al.group(1), 'l'))],
-                    't', fill=ctx.t[bg.group(1).replace('-', '_')] if bg else None, inset=28 if bg else 0)
+        spot = style_box(k) or __import__('pptx_free').css_box(ctx, k)
+        if spot:   # free slides: the block keeps its spot and its CSS look (pptx_free)
+            __import__('pptx_free').free_box(ctx, k, spot)
         elif len(k.text()) < 220 and not k.find(lambda n: n.tag == 'li'):
             notes.append(para(runs(ctx, k, 18, 'muted')))
         else:   # a real block (a source list, a paragraph): one paragraph per line or item in the body zone

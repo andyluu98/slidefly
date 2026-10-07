@@ -1,36 +1,59 @@
 # Xuất PowerPoint có Morph
 
-`scripts/export-pptx.py` ghi một file .pptx **sửa được**, có hiệu ứng **Morph** khi chuyển slide. Chỉ dùng thư viện chuẩn của Python 3.10+, không cần trình duyệt, không cần cài gói.
+`scripts/export-pptx.py` ghi một file .pptx **sửa được**, có hiệu ứng **Morph** khi chuyển slide và hiệu ứng xuất hiện bám theo bản HTML. Chỉ dùng thư viện chuẩn của Python 3.10+, không cần trình duyệt, không cần cài gói.
 
 ```bash
 python "$SK/scripts/export-pptx.py" deck.html deck.pptx
+python "$SK/scripts/install-fonts.py" deck.html     # một lần trên máy trình chiếu (Windows): cài font của style
 ```
 
 Đầu vào là file nguồn (có `<link>` tới CSS) hoặc file đã gộp bằng `inline-assets.py`, cả hai đều được.
 
 ## Vì sao Morph chạy được
 
-PowerPoint Morph khớp hai hình ở hai slide liền nhau khi chúng **cùng tên bắt đầu bằng `!!`**: hình trượt, đổi cỡ, đổi màu sang chỗ mới. Đây đúng là cơ chế diễn viên của SlideFly. Script làm như sau:
+PowerPoint Morph khớp hai hình ở hai slide liền nhau khi chúng **cùng tên bắt đầu bằng `!!`**: hình trượt, đổi cỡ, đổi màu sang chỗ mới. Đây đúng là cơ chế diễn viên của SlideFly:
 
-- Mỗi diễn viên của style thành một shape tên `!!<tên diễn viên>` trên **mọi** slide. Shape được đặt đúng tư thế của slide đó, đọc thẳng từ CSS của style (`--x --y --w --h --r --s --o`). Diễn viên đứng ngoài khung ở slide nào thì shape vẫn nằm ngoài khung, để Morph có chỗ bay vào, bay ra.
+- Mỗi diễn viên của style thành một hình tên `!!<tên diễn viên>` trên **mọi** slide, đặt đúng tư thế của slide đó (`--x --y --w --h --r --s --o`, xoay và phóng quanh tâm như CSS). Diễn viên ngoài khung thì hình vẫn nằm ngoài khung để Morph có chỗ bay vào, bay ra.
+- Logo xuyên suốt (`.brand`) thành `!!brand-ico` và `!!brand-name`: to ở bìa và slide kết, nhỏ ở góc, ẩn ở trích dẫn.
 - Đổi đơn vị: 1px = 6350 EMU; cỡ chữ px × 0,5 = pt.
-- Hình tròn thành ellipse, bo góc thành roundRect. `clip-path: polygon()` thành hình tự vẽ. Gradient lấy màu đầu. Hoa văn (lưới kẻ, chấm, ảnh) bỏ qua.
 - Mọi slide gắn chuyển cảnh Morph (theo đối tượng). PowerPoint đời cũ không có Morph thì dùng fade.
-- Chữ thân slide hiện dần (fade) lần lượt sau khi chuyển slide, giống `reveal` của bản HTML. Tiêu đề và diễn viên bay bằng Morph nên không có hiệu ứng riêng.
 
-## Giữ được và đơn giản hóa
+## Hiệu ứng xuất hiện
 
-| Giữ được | Đơn giản hóa |
+Mỗi hộp chữ được dò ngược về phần tử HTML sinh ra nó, rồi lấy đúng hiệu ứng, thứ tự và độ trễ:
+
+| HTML | PowerPoint |
 |---|---|
-| Chữ sửa được: tiêu đề, gạch đầu dòng, hai cột, số liệu, dòng thời gian, mục lục, trích dẫn | Sơ đồ tự vẽ (`.viz`) thành khung có danh sách nhãn |
-| 12 kiểu mới: số lớn, bento, quy trình, bảng so sánh, đếm ngược, trước và sau, hỏi đáp, tuyên bố, ảnh chia đôi... | Khung giao diện (`.mock`) thành cửa sổ tối có chữ dạng code |
-| 12 khung `data-frame`: mảng màu, dải ngang, mảng chéo, thẻ so le, số lớn... | Chữ gõ dần, chấm chạy, rung, đóng dấu: thành hiện dần |
-| Icon Tabler thành hình vẽ thật của PowerPoint (đổi màu, phóng to không vỡ) | Quy tắc style phụ thuộc nội dung (`:has(...)`): hình giữ tư thế chuẩn |
-| Ảnh nền, ảnh chia đôi, nguồn ảnh | Font: nếu máy không có font của style, PowerPoint dùng font thay thế |
-| Màu theo từng kiểu slide, màu riêng của style cho tiêu đề, nhãn, số | Slide tự thiết kế bằng CSS riêng: phần chữ vẫn vào, vị trí lấy theo `left/top` ghi trong `style` |
+| `reveal` | hiện dần, trượt nhẹ lên |
+| `reveal-left`, `reveal-right`, `fx-right`, `fx-left` | hiện dần, trượt ngang |
+| `reveal-scale`, `fx-pop`, `slam` | phóng to (hoặc thu về) |
+| `type` (khung giao diện) | hiện từng chữ |
+| `draw` (nét SVG) | vẽ quét từ trái |
+| `data-step="n"` | chờ cú bấm thứ n, giống phím mũi tên trong bản HTML |
+| `--i`, `--d` | thứ tự và độ trễ |
+
+Gạch đầu dòng, danh sách hiện lần lượt từng dòng. Tiêu đề và diễn viên bay bằng Morph nên không có hiệu ứng riêng.
+
+## Giữ được
+
+- Chữ sửa được ở mọi kiểu slide, 12 khung `data-frame`, màu riêng của style cho tiêu đề, nhãn, số; chữ in hoa (`text-transform`), cụm `<mark>` được tô, số chương viền rỗng, nút bấm của slide `cta`.
+- **Font của style** được nhúng vào file (định dạng EOT như PowerPoint tự làm). Bản PowerPoint nào không đọc font nhúng thì chạy `install-fonts.py` để cài font Google của style cho tài khoản Windows (không cần quyền admin, gỡ được trong Settings, Fonts).
+- **Hoa văn** (giấy kẻ ô, chấm, sọc lặp, gradient, ảnh SVG nhúng, mask, bo góc, cắt chéo) thành ảnh SVG, PowerPoint 365 vẽ dạng vector, vẫn mang tên `!!` để Morph.
+- **Hình SVG tự vẽ** trong slide (mặt bằng, đường nối, con đường) thành ảnh SVG thật, lấy màu và nét từ CSS của deck.
+- **Khung giao diện**: cửa sổ có thanh tiêu đề ba chấm, terminal tối có dấu `$` xanh, bong bóng chat; mỗi khối một hộp để hiện theo nhịp riêng.
+- **Slide tự thiết kế**: khối đặt bằng `left/top` (trong `style` hoặc trong CSS của deck) giữ chỗ, nền, viền, khoảng đệm, cỡ chữ, font tiêu đề hay font mono theo class CSS.
+- Icon Tabler thành hình vẽ của PowerPoint (đổi màu, phóng to không vỡ); ảnh nền, ảnh chia đôi, nguồn ảnh.
+
+## Còn đơn giản hóa
+
+| Phần | Trong PowerPoint |
+|---|---|
+| Sơ đồ tự vẽ bằng JS (`.viz`: funnel, donut, network...) | khung có danh sách nhãn |
+| Chữ gõ dần có con trỏ nhấp nháy, chấm "đang nghĩ" | hiện từng chữ, không con trỏ |
+| Quy tắc style phụ thuộc nội dung (`:has(...)`) | hình giữ tư thế chuẩn của kiểu slide |
+| Khoảng cách dòng, chữ ngắt dòng | gần giống, có thể lệch vài px vì PowerPoint tự ngắt dòng |
 
 ## Sau khi xuất
 
-- Mở bằng PowerPoint 2019 hoặc 365 để có Morph. Google Slides và Keynote không có Morph, khi đó chỉ thấy chuyển cảnh thường.
-- Cài font của style lên máy trình chiếu (Google Fonts, miễn phí) để chữ đúng dáng.
-- Kiểm nhanh bằng PowerPoint (Windows): mở file, bấm **Slide Show**, đi qua vài slide xem hình bay và chữ hiện dần.
+- Mở bằng PowerPoint 2019 hoặc 365 để có Morph và ảnh SVG. Google Slides và Keynote không có Morph.
+- Kiểm nhanh (Windows): mở file, bấm **Slide Show**, đi qua vài slide xem hình bay, chữ hiện dần và các bước chờ bấm.

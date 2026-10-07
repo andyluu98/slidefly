@@ -38,7 +38,7 @@ assets/morph-motion.css, morph-viz*.{css,js}, morph-steps.js   hiệu ứng theo
 assets/morph-brand.css, morph-mock.css/.js, morph-photo.css, morph-icons.css/.js   logo xuyên suốt, khung giao diện giả, ảnh nền, icon Tabler
 assets/styles/*.css (57) + index.json   style; đổi style = đổi một dòng link
 templates/deck-mau, deck-bo-cuc, deck-khung, deck-giao-dien, deck-so-do .html   deck mẫu để xem cách viết markup
-scripts/inline-assets.py   gộp thành 1 file      scripts/export-pptx.py   xuất PowerPoint có Morph
+scripts/inline-assets.py   gộp thành 1 file      scripts/export-pptx.py   xuất PowerPoint có Morph (install-fonts.py: cài font style)
 scripts/pick-styles.py     gợi ý style + cách kể (--parts N cho deck dài)      scripts/icons.py   tìm, gợi ý icon
 ```
 
@@ -83,7 +83,7 @@ python "$SK/scripts/inline-assets.py" nguon.html "<thu-muc-dich>/NN_ten-deck.htm
 ### Bước 6. Bàn giao
 - Nêu đường dẫn tuyệt đối, số slide, style.
 - Trình chiếu: mũi tên, Space hoặc nút `‹ ›` ở hai rìa; `F` toàn màn hình; bấm vào thân slide không chuyển nên chép chữ thoải mái.
-- Cần file PowerPoint: `python "$SK/scripts/export-pptx.py" deck.html deck.pptx` ra file .pptx sửa được, hình trang trí bay bằng Morph, chữ hiện dần (`references/xuat-pptx.md`). Mở bằng PowerPoint 2019/365.
+- Cần file PowerPoint: `python "$SK/scripts/export-pptx.py" deck.html deck.pptx` ra file .pptx sửa được: hình trang trí và logo bay bằng Morph, chữ hiện theo đúng hiệu ứng và cú bấm của bản HTML, font và hoa văn của style đi kèm (`references/xuat-pptx.md`). Mở bằng PowerPoint 2019/365; máy trình chiếu chưa có font của style thì chạy `python "$SK/scripts/install-fonts.py" deck.html`.
 - File HTML cần mạng để tải font Google; không mạng thì dùng font dự phòng.
 
 ## Thay nội dung mẫu Morph Đại Học

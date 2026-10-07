@@ -113,6 +113,19 @@ class Sheet:
             return scoped and bool(re.search(r'\.' + re.escape(cls) + r'(?![\w-])', parts[-1])) and len(re.findall(r'\.[\w-]+', parts[-1])) == 1
         return self._cascade(wanted, state)
 
+    def classes(self, cls):
+        """Declarations of rules whose last part is only classes the element has (`.box`, `.abs.box`): deck CSS for free slides."""
+        have = set(cls)
+
+        def wanted(sel):
+            last = sel.split()[-1] if sel.split() else ''
+            names = re.findall(r'\.([\w-]+)', last)
+            return bool(names) and re.fullmatch(r'(\.[\w-]+)+', last) is not None and set(names) <= have
+        out = {}
+        for sel, spec, order, decl in sorted((r for r in self.rules if wanted(r[0])), key=lambda r: (r[1], r[2])):
+            out.update(decl)
+        return out
+
     def actor(self, name, state):
         """Declarations that land on actor `name` in this state (its own default rule included)."""
         tag = f'[data-actor="{name}"]'
@@ -181,5 +194,5 @@ def color(value):
 
 
 def px(value, default=0.0):
-    m = re.match(r'\s*(-?\d+(?:\.\d+)?)', value or '')
+    m = re.match(r'\s*(-?(?:\d+(?:\.\d+)?|\.\d+))', value or '')   # '12px', '-50%', '.4'
     return float(m.group(1)) if m else default

@@ -1,8 +1,8 @@
 """SlideFly -> PPTX: theme colours, actors as shapes, embedded pictures."""
 import base64
-import math
 import re
 
+from pptx_bgsvg import background_svg
 from pptx_css import color, px, resolve
 
 
@@ -19,12 +19,16 @@ def theme(tok):
     if not t['card'] or t['card'][1] < 0.05:   # no card colour: a faint ink wash keeps cards visible
         t['card'] = color(f'color-mix(in srgb, #{t["fg"][0]} 7%, #{t["bg"][0]})')
     t['tint'] = color(f'color-mix(in srgb, #{t["accent"][0]} 14%, #{t["bg"][0]})')
+    t['mark'] = color(f'color-mix(in srgb, #{t["accent"][0]} 45%, #{t["bg"][0]})')   # .statement mark
     a = lum(t['accent'][0])
     score = lambda c: (max(a, lum(c[0])) + 0.05) / (min(a, lum(c[0])) + 0.05)  # noqa: E731
     pal = [c for c in (t['bg'], t['fg']) if score(c) >= 4.5]
     t['on_accent'] = pal[0] if pal else max((t['bg'], t['fg'], ('FFFFFF', 1), ('111111', 1)), key=score)
     font = lambda k: re.split(r',', resolve(tok.get(k, 'Arial'), [tok]))[0].strip().strip('"\'') or 'Arial'  # noqa: E731
     t['font_display'], t['font_body'] = font('--font-display'), font('--font-body')
+    t['font_mono'] = font('--font-mono') if '--font-mono' in tok else 'Consolas'
+    t['bullet'] = '▪' if px(resolve(tok.get('--bullet-radius', '50%'), [tok]), 50) == 0 else '•'   # square markers when the style says so
+    t['display_bold'] =px(resolve(tok.get('--title-weight', '800'), [tok]), 800) >= 600   # display type follows --title-weight
     return t
 
 
@@ -33,13 +37,14 @@ def actor_shape(name, decl, tok):
     x, y, w = px(g('--x', '-400'), -400), px(g('--y', '-400'), -400), px(g('--w', '200'), 200)
     h, r, s, o = px(g('--h', str(w)), w), px(g('--r', '0')), px(g('--s', '1'), 1), px(g('--o', '1'), 1)
     bw = px(g('--bw', '0'))
+    # .actor has the default transform-origin (its centre), like PowerPoint: the centre stays put, the size scales
+    cx, cy = x - bw / 2 + (w + bw) / 2, y - bw / 2 + (h + bw) / 2
     w, h = (w + bw) * s, (h + bw) * s
-    # CSS rotates/scales around the top-left corner, PowerPoint around the centre
-    rad = math.radians(r)
-    cx = x - bw / 2 + (w / 2) * math.cos(rad) - (h / 2) * math.sin(rad)
-    cy = y - bw / 2 + (w / 2) * math.sin(rad) + (h / 2) * math.cos(rad)
     bg = g('background') or g('background-color') or g('background-image')
-    # patterns (grid lines, dot screens, see-through stops, pictures) have no single fill: leave them out
+    # patterns (grid lines, dot screens, stripes, stamps, masks) become an SVG picture with the same !!name
+    svg = background_svg(decl, tok, w, h)
+    if svg:
+        return {'name': f'!!{name}', 'x': cx - w / 2, 'y': cy - h / 2, 'w': max(w, 0.2), 'h': max(h, 0.2), 'rot': r, 'svg': svg, 'alpha': o}
     pattern = 'url(' in bg or 'transparent' in bg or 'repeating' in bg or bg.count('gradient(') > 1
     fill = None if pattern else color(bg)
     if fill:
