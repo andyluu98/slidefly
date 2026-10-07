@@ -157,4 +157,5 @@ def place(ctx, node, x, y, size, role='accent'):
         svg = rebuild(inner)
     col = ctx.t[role] if isinstance(role, str) else role
     ctx.items.append({'name': 'Icon ' + node.attrs['data-icon'], 'x': x, 'y': y, 'w': size, 'h': size, 'fill': None, 'round': True,
-                      'geom': ('raw', geom(svg)), 'line': (col, max(1.5, size / 24 * 1.75)), 'anim': True})
+                      'geom': ('raw', geom(svg)), 'line': (col, max(1.5, size / 24 * 1.75)), 'anim': True,
+                      'src': node})   # appears with the element that holds it (pptx_anim)

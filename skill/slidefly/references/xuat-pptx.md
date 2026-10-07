@@ -38,7 +38,9 @@ Gạch đầu dòng, danh sách hiện lần lượt từng dòng. Tiêu đề v
 
 - Chữ sửa được ở mọi kiểu slide, 12 khung `data-frame`, màu riêng của style cho tiêu đề, nhãn, số; chữ in hoa (`text-transform`), cụm `<mark>` được tô, số chương viền rỗng, nút bấm của slide `cta`.
 - **Font của style** được nhúng vào file (định dạng EOT như PowerPoint tự làm). Bản PowerPoint nào không đọc font nhúng thì chạy `install-fonts.py` để cài font Google của style cho tài khoản Windows (không cần quyền admin, gỡ được trong Settings, Fonts).
-- **Hoa văn** (giấy kẻ ô, chấm, sọc lặp, gradient, ảnh SVG nhúng, mask, bo góc, cắt chéo) thành ảnh SVG, PowerPoint 365 vẽ dạng vector, vẫn mang tên `!!` để Morph.
+- **Hoa văn** (giấy kẻ ô, chấm, sọc lặp, gradient thẳng, tròn và hình quạt `conic`, ảnh SVG nhúng, mask, bo góc, cắt chéo, nhiều lớp có vị trí và cỡ riêng trong `background`) thành ảnh SVG, PowerPoint 365 vẽ dạng vector, vẫn mang tên `!!` để Morph.
+- **Làm mờ và bóng đổ**: `filter: blur()` thành viền mờ (soft edges), `box-shadow` thành bóng đổ của PowerPoint.
+- Vị trí viết bằng `calc()` và luật nhóm diễn viên (`[data-actor^="b"]`) được tính như trình duyệt.
 - **Hình SVG tự vẽ** trong slide (mặt bằng, đường nối, con đường) thành ảnh SVG thật, lấy màu và nét từ CSS của deck.
 - **Khung giao diện**: cửa sổ có thanh tiêu đề ba chấm, terminal tối có dấu `$` xanh, bong bóng chat; mỗi khối một hộp để hiện theo nhịp riêng.
 - **Slide tự thiết kế**: khối đặt bằng `left/top` (trong `style` hoặc trong CSS của deck) giữ chỗ, nền, viền, khoảng đệm, cỡ chữ, font tiêu đề hay font mono theo class CSS.

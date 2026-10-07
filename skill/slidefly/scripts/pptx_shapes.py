@@ -44,7 +44,8 @@ def actor_shape(name, decl, tok):
     # patterns (grid lines, dot screens, stripes, stamps, masks) become an SVG picture with the same !!name
     svg = background_svg(decl, tok, w, h)
     if svg:
-        return {'name': f'!!{name}', 'x': cx - w / 2, 'y': cy - h / 2, 'w': max(w, 0.2), 'h': max(h, 0.2), 'rot': r, 'svg': svg, 'alpha': o}
+        return {'name': f'!!{name}', 'x': cx - w / 2, 'y': cy - h / 2, 'w': max(w, 0.2), 'h': max(h, 0.2), 'rot': r, 'svg': svg, 'alpha': o,
+                'effects': effects(g('filter'), g('box-shadow'), o)}
     pattern = 'url(' in bg or 'transparent' in bg or 'repeating' in bg or bg.count('gradient(') > 1
     fill = None if pattern else color(bg)
     if fill:
@@ -68,7 +69,23 @@ def actor_shape(name, decl, tok):
         if all(len(p) == 2 for p in pts) and '%' in clip.group(1):
             geom = ('poly', pts)
     return {'name': f'!!{name}', 'x': cx - w / 2, 'y': cy - h / 2, 'w': max(w, 0.2), 'h': max(h, 0.2), 'rot': r,
-            'geom': geom, 'fill': fill, 'line': line}
+            'geom': geom, 'fill': fill, 'line': line, 'effects': effects(g('filter'), g('box-shadow'), o)}
+
+
+def effects(filt, shadow, o=1):
+    """filter: blur() -> soft edges; the first box-shadow -> outer shadow (DrawingML effect list, px values)."""
+    out = {}
+    b = re.search(r'blur\(\s*([\d.]+)px', filt or '')
+    if b and float(b.group(1)) > 0:
+        out['soft'] = float(b.group(1)) * 1.6
+    sh = (shadow or '').split(',')[0].strip()
+    if sh and sh != 'none' and 'inset' not in sh:
+        nums = [px(v) for v in re.findall(r'-?[\d.]+px|(?<![\w.])0(?![\w.])', re.sub(r'(rgba?|hsla?|color-mix)\([^)]*\)', '', sh))]
+        c = color(re.search(r'(rgba?\([^)]*\)|#[0-9a-fA-F]{3,8})', sh).group(1)) if re.search(r'(rgba?\([^)]*\)|#[0-9a-fA-F]{3,8})', sh) else None
+        if len(nums) >= 2 and c and c[1] > 0:
+            x, y, bl = nums[0], nums[1], nums[2] if len(nums) > 2 else 0
+            out['shadow'] = (x, y, bl, (c[0], c[1] * o))
+    return out
 
 
 def image(node, base, store):

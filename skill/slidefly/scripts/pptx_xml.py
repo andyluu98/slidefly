@@ -3,6 +3,7 @@
 Units: the deck stage is 1920x1080 px; 1 px = 6350 EMU (12192000 / 1920), font px * 50 = hundredths of pt.
 Every slide gets a Morph transition (PowerPoint 2019 / 365); older versions fall back to a fade.
 """
+import math
 import zipfile
 from xml.sax.saxutils import escape
 
@@ -54,6 +55,21 @@ def geom_xml(geom):
     return f'<a:prstGeom prst="{geom}"><a:avLst/></a:prstGeom>'
 
 
+def effects_xml(fx):
+    """{'soft': px, 'shadow': (dx, dy, blur, (hex, alpha))} -> <a:effectLst> (blur reads as soft edges in PowerPoint)."""
+    if not fx:
+        return ''
+    out = ''
+    if fx.get('shadow'):
+        dx, dy, bl, col = fx['shadow']
+        ang = int((math.degrees(math.atan2(dy, dx)) % 360) * 60000)
+        out += (f'<a:outerShdw blurRad="{e(bl)}" dist="{e(math.hypot(dx, dy))}" dir="{ang}" algn="ctr" rotWithShape="0">'
+                f'<a:srgbClr val="{col[0]}"><a:alpha val="{int(max(0, min(1, col[1])) * 100000)}"/></a:srgbClr></a:outerShdw>')
+    if fx.get('soft'):
+        out += f'<a:softEdge rad="{e(fx["soft"])}"/>'
+    return f'<a:effectLst>{out}</a:effectLst>'
+
+
 def run_xml(r):
     """r: dict text, size(px), bold, italic, color(hex,alpha), font. A lone newline is a line break."""
     if r['text'] == '\n':
@@ -97,7 +113,7 @@ def shape_xml(sid, s):
     txbox = ' txBox="1"' if s.get('paras') is not None and not s.get('fill') else ''
     return (f'<p:sp><p:nvSpPr><p:cNvPr id="{sid}" name="{escape(s["name"], {chr(34): "&quot;"})}"/><p:cNvSpPr{txbox}/><p:nvPr/></p:nvSpPr>'
             f'<p:spPr><a:xfrm{rot}><a:off x="{e(s["x"])}" y="{e(s["y"])}"/><a:ext cx="{max(e(s["w"]), 1)}" cy="{max(e(s["h"]), 1)}"/></a:xfrm>'
-            f'{geom_xml(s.get("geom", "rect"))}{fill_xml(s.get("fill"))}{line}</p:spPr>{tx}</p:sp>')
+            f'{geom_xml(s.get("geom", "rect"))}{fill_xml(s.get("fill"))}{line}{effects_xml(s.get("effects"))}</p:spPr>{tx}</p:sp>')
 
 
 def pic_xml(sid, s, rid):
@@ -107,7 +123,7 @@ def pic_xml(sid, s, rid):
     return (f'<p:pic><p:nvPicPr><p:cNvPr id="{sid}" name="{escape(s["name"])}"/><p:cNvPicPr><a:picLocks noChangeAspect="1"/></p:cNvPicPr><p:nvPr/></p:nvPicPr>'
             f'<p:blipFill><a:blip r:embed="{rid}">{alpha}{svg}</a:blip><a:srcRect/><a:stretch><a:fillRect/></a:stretch></p:blipFill>'
             f'<p:spPr><a:xfrm{rot}><a:off x="{e(s["x"])}" y="{e(s["y"])}"/><a:ext cx="{max(e(s["w"]), 1)}" cy="{max(e(s["h"]), 1)}"/></a:xfrm>'
-            '<a:prstGeom prst="rect"><a:avLst/></a:prstGeom></p:spPr></p:pic>')
+            f'<a:prstGeom prst="rect"><a:avLst/></a:prstGeom>{effects_xml(s.get("effects"))}</p:spPr></p:pic>')
 
 
 def timing_xml(spids, stagger=110, dur=350):

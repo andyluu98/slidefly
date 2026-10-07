@@ -16,9 +16,20 @@ SVG_PROPS = ('fill', 'stroke', 'stroke-width', 'stroke-linecap', 'stroke-linejoi
              'font-family', 'font-weight', 'fill-opacity', 'stroke-opacity')
 
 
+def class_decl(sheet, cls):
+    """Rules whose last part is only classes the element has (`.box`, `.abs.box`), in cascade order."""
+    have, out = set(cls), {}
+    for sel, spec, order, dd in sorted(sheet.rules, key=lambda r: (r[1], r[2])):
+        last = sel.split()[-1] if sel.split() else ''
+        names = re.findall(r'\.([\w-]+)', last)
+        if names and re.fullmatch(r'(\.[\w-]+)+', last) and set(names) <= have:
+            out.update(dd)
+    return out
+
+
 def decl(ctx, node):
     """Deck CSS for the node's classes, then its inline style (inline wins)."""
-    d = dict(ctx.sheet.classes(node.cls)) if getattr(ctx, 'sheet', None) else {}
+    d = class_decl(ctx.sheet, node.cls) if getattr(ctx, 'sheet', None) else {}
     for k, v in re.findall(r'([\w-]+)\s*:\s*([^;]+)', node.attrs.get('style', '')):
         d[k.strip()] = v.strip()
     return d

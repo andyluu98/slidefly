@@ -4,12 +4,11 @@ Handles what the 57 styles use for paper, grids, stripes, dot screens and stamps
 repeating-linear gradients, radial gradients, inline SVG data URIs (nested <svg>, PowerPoint skips <image> data URIs),
 background-size / -position / -repeat, an SVG mask (mask / -webkit-mask), border-radius, clip-path polygon and border.
 """
-import base64
 import math
 import re
-from urllib.parse import unquote
 
-from pptx_css import color, px, resolve, split_top
+from pptx_bgparts import _angle, _col, _conic, _grad_xml, _stops, _svg_doc
+from pptx_css import px, resolve, split_top
 
 N = [0]
 
@@ -19,80 +18,18 @@ def _id(p):
     return f'{p}{N[0]}'
 
 
-def _col(v, tok):
-    c = color(resolve(v, [tok])) if v else None
-    return c or ('000000', 0)
-
-
-def _stops(args, tok, length):
-    """'color [pos [pos]]' list -> [(offset 0..1, hex, alpha)] with CSS defaults for missing positions."""
-    raw = []
-    for a in args:
-        m = re.match(r'(.+?)((?:\s+-?[\d.]+(?:px|%)?){0,2})\s*$', a.strip())
-        c, pos = (m.group(1), m.group(2).split()) if m else (a, [])
-        hexa = _col(c.strip(), tok)
-        ps = [(px(p) / 100 * length if p.endswith('%') else px(p)) for p in pos] or [None]
-        raw += [(p, hexa) for p in ps]
-    if raw[0][0] is None:
-        raw[0] = (0, raw[0][1])
-    if raw[-1][0] is None:
-        raw[-1] = (length, raw[-1][1])
-    out, last = [], 0
-    for i, (p, c) in enumerate(raw):   # missing positions: spread evenly between known neighbours
-        if p is None:
-            j = next(k for k in range(i, len(raw)) if raw[k][0] is not None)
-            p = last + (raw[j][0] - last) / (j - i + 1)
-        p = max(p, last)
-        out.append((p, c))
-        last = p
-    return [(p / length if length else 0, c[0], c[1]) for p, c in out]
-
-
-def _grad_xml(gid, kind, stops, attrs):
-    st = ''.join(f'<stop offset="{max(0, min(1, o)):.4f}" stop-color="#{h}" stop-opacity="{a:.3f}"/>' for o, h, a in stops)
-    return f'<{kind} id="{gid}" gradientUnits="userSpaceOnUse" {attrs}>{st}</{kind}>'
-
-
-def _angle(first):
-    sides = {'to top': 0, 'to right': 90, 'to bottom': 180, 'to left': 270, 'to top right': 45, 'to right top': 45,
-             'to bottom right': 135, 'to right bottom': 135, 'to bottom left': 225, 'to left bottom': 225, 'to top left': 315, 'to left top': 315}
-    f = first.strip()
-    if f in sides:
-        return sides[f], True
-    m = re.fullmatch(r'(-?[\d.]+)(deg|turn|rad)', f)
-    if m:
-        v = float(m.group(1))
-        return (v * 360 if m.group(2) == 'turn' else math.degrees(v) if m.group(2) == 'rad' else v), True
-    return 180, False
-
-
-def _svg_doc(url):
-    """data:image/svg+xml URL -> (viewBox, preserveAspectRatio, inner markup) or None."""
-    m = re.match(r"""url\(\s*['"]?data:image/svg\+xml(;base64)?,(.*?)['"]?\s*\)$""", url.strip(), re.S)
-    if not m:
-        return None
-    text = base64.b64decode(m.group(2)).decode('utf-8', 'ignore') if m.group(1) else unquote(m.group(2))
-    root = re.search(r'<svg\b([^>]*)>(.*)</svg>', text, re.S)
-    if not root:
-        return None
-    vb = re.search(r'viewBox=["\']([^"\']+)', root.group(1))
-    par = re.search(r'preserveAspectRatio=["\']([^"\']+)', root.group(1))
-    if not vb:
-        w, h = (re.search(rf'{k}=["\']([\d.]+)', root.group(1)) for k in ('width', 'height'))
-        vb = f'0 0 {w.group(1) if w else 100} {h.group(1) if h else 100}'
-    return (vb if isinstance(vb, str) else vb.group(1)), (par.group(1) if par else 'xMidYMid meet'), root.group(2)
-
-
 def _tile(defs, layer, tw, th, tok):
     """One background layer drawn in a tw x th tile -> markup (gradients go to defs)."""
     doc = _svg_doc(layer) if layer.startswith('url(') else None
     if doc:
         vb, par, inner = doc
         return f'<svg x="0" y="0" width="{tw:.2f}" height="{th:.2f}" viewBox="{vb}" preserveAspectRatio="{par}">{inner}</svg>'
-    m = re.match(r'(repeating-)?(linear|radial)-gradient\((.*)\)$', layer.strip(), re.S)
+    m = re.match(r'(repeating-)?(linear|radial|conic)-gradient\((.*)\)$', layer.strip(), re.S)
     if not m:
         return ''
     rep, kind, args = bool(m.group(1)), m.group(2), split_top(m.group(3))
+    if kind == 'conic':
+        return _conic(args, rep, tw, th, tok)
     gid = _id('g')
     if kind == 'linear':
         ang, has = _angle(args[0])
@@ -145,20 +82,30 @@ def background_svg(d, tok, w, h):
     """CSS declarations of a box (actor or stage) -> SVG markup, or None when it is one plain colour."""
     g = lambda k: resolve(d.get(k, ''), [d, tok]).strip()  # noqa: E731
     bg = g('background')
-    imgs = g('background-image')
-    if not imgs and re.search(r'gradient\(|url\(', bg):
-        imgs = ', '.join(p.strip() for p in split_top(bg) if re.search(r'gradient\(|url\(', p))
+    imgs, short = g('background-image'), {'size': [], 'position': [], 'repeat': []}
+    if not imgs and re.search(r'gradient\(|url\(', bg):   # shorthand layers: "<image> <position> / <size> <repeat>"
+        img_re = r'((?:repeating-)?(?:linear|radial|conic)-gradient\(.*\)|url\(.*?\))'
+        parts = [p.strip() for p in split_top(bg) if re.search(r'gradient\(|url\(', p)]
+        imgs = ', '.join(parts)
+        for p in parts:
+            m = re.match(img_re, p, re.S)
+            rest = p[m.end():] if m else ''
+            rep = re.search(r'\b(no-repeat|repeat-x|repeat-y|repeat|space|round)\b', rest)
+            rest = re.sub(r'\b(no-repeat|repeat-x|repeat-y|repeat|space|round)\b', '', rest)
+            pos, _, size = rest.partition('/')
+            short['position'].append(pos.strip()); short['size'].append(size.strip()); short['repeat'].append(rep.group(1) if rep else '')
     mask = g('mask') or g('-webkit-mask')
     if not imgs and 'url(' not in mask:
         return None
     w, h = max(w, 1), max(h, 1)
-    base = g('background-color') or (bg if bg and not re.search(r'gradient\(|url\(', bg) else '')
+    last = split_top(bg)[-1].strip() if bg else ''
+    base = g('background-color') or (last if last and not re.search(r'gradient\(|url\(|/', last) else '')
     defs, body = [], ''
     if base:
         c = _col(base, tok)
         body += f'<rect width="{w:.2f}" height="{h:.2f}" fill="#{c[0]}" fill-opacity="{c[1]:.3f}"/>'
-    layers = [re.match(r'((?:repeating-)?(?:linear|radial)-gradient\(.*\)|url\(.*?\))', s.strip(), re.S) for s in split_top(imgs)]
-    sizes, poss, reps = (split_top(g(k)) or [''] for k in ('background-size', 'background-position', 'background-repeat'))
+    layers = [re.match(r'((?:repeating-)?(?:linear|radial|conic)-gradient\(.*\)|url\(.*?\))', s.strip(), re.S) for s in split_top(imgs)]
+    sizes, poss, reps = (split_top(g('background-' + k)) or short[k] or [''] for k in ('size', 'position', 'repeat'))
     pad = px(g('padding')) if g('background-origin') == 'content-box' else 0
     for i in reversed(range(len(layers))):   # the first CSS layer is on top
         if not layers[i]:
