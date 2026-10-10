@@ -1,0 +1,168 @@
+/* ===========================================================
+   STYLE: RISOGRAPH (idea from MotionFly / lemo-opuscar, MIT,
+   styles/risograph/STYLE.md). A page printed on a stencil
+   duplicator: warm cream paper, three translucent spot inks
+   (fluorescent pink, blue, yellow) that never quite line up.
+   Overprints are painted as their own colour (pink + blue =
+   violet, blue + yellow = green): no blend modes. Halftone dot
+   screens, pinholes in solids, feed streaks, stray specks.
+   Fonts: Bricolage Grotesque (titles) + Be Vietnam Pro (body),
+   both with the Vietnamese subset (Jost -> Be Vietnam Pro).
+   Actors: screen (blue halftone field), band (yellow band with
+           feed streaks), sun (pink disc with pinholes), hill
+           (green overprint hill, misregistered), plum (violet
+           overprint disc with pink and blue fringes), strip
+           (paper knockout panel with plate fringes), ramp
+           (stepped pink halftone ramp), reg (registration mark
+           on three plates). DOM order = z-order (screen first).
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
+
+.deck-stage {
+  --actors: "screen band sun hill plum strip ramp reg";
+  --font-display: 'Bricolage Grotesque', 'Be Vietnam Pro', sans-serif;
+  --font-body: 'Be Vietnam Pro', sans-serif;
+  --bg: #F4EEE2; --fg: #2B2140; --muted: #5A4E6B;
+  --accent: #0078BF; --accent-2: #FF48B0;
+  --card-bg: #F8EC93; --card-fg: #2B2140; --card-radius: 0px;
+  --title-weight: 800; --title-tracking: -0.02em; --bullet-radius: 50%;
+  --paper: #F4EEE2; --pink: #FF48B0; --blue: #0078BF; --yellow: #FFE800;
+  --violet: #5A3B9C; --green: #1E8C4E; --coral: #FF5E3A; --ink3: #2B2140;
+  --pink-tint: #F7C4D6; --yellow-tint: #F8EC93;
+  /* stray ink specks on the paper itself */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260'%3E%3Ccircle cx='31' cy='22' r='1.0' fill='%23FF48B0' fill-opacity='0.35'/%3E%3Ccircle cx='190' cy='40' r='1.4' fill='%230078BF' fill-opacity='0.35'/%3E%3Ccircle cx='118' cy='97' r='1.8' fill='%23FFE800' fill-opacity='0.35'/%3E%3Ccircle cx='226' cy='141' r='1.0' fill='%23FF48B0' fill-opacity='0.35'/%3E%3Ccircle cx='64' cy='180' r='1.4' fill='%230078BF' fill-opacity='0.35'/%3E%3Ccircle cx='150' cy='228' r='1.8' fill='%23FF48B0' fill-opacity='0.35'/%3E%3Ccircle cx='12' cy='240' r='1.0' fill='%230078BF' fill-opacity='0.35'/%3E%3Ccircle cx='205' cy='210' r='1.4' fill='%23FFE800' fill-opacity='0.35'/%3E%3Ccircle cx='90' cy='60' r='1.8' fill='%230078BF' fill-opacity='0.35'/%3E%3Ccircle cx='170' cy='160' r='1.0' fill='%23FF48B0' fill-opacity='0.35'/%3E%3C/svg%3E");
+  background-size: 260px 260px;
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="screen"] {   /* blue plate, 40 percent halftone, 0 degree screen */
+  background: radial-gradient(circle, var(--blue) 42%, transparent 46%) 0 0 / 14px 14px;
+  --x: 1920px; --y: 760px; --w: 840px; --h: 320px;
+}
+[data-actor="band"] {     /* yellow plate, lighter feed streaks running down the sheet */
+  background: repeating-linear-gradient(90deg, rgba(244, 238, 226, 0) 0px 37px, rgba(244, 238, 226, 0.45) 37px 40px, rgba(244, 238, 226, 0) 40px 83px);
+  background-color: var(--yellow);
+  --x: -900px; --y: 650px; --w: 840px; --h: 110px;
+}
+[data-actor="sun"] {      /* pink plate solid, pinholes where the ink skipped */
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Ccircle cx='23' cy='31' r='1.6' fill='%23F4EEE2' fill-opacity='0.8'/%3E%3Ccircle cx='97' cy='14' r='1.1' fill='%23F4EEE2' fill-opacity='0.8'/%3E%3Ccircle cx='151' cy='58' r='2.0' fill='%23F4EEE2' fill-opacity='0.8'/%3E%3Ccircle cx='61' cy='89' r='1.3' fill='%23F4EEE2' fill-opacity='0.8'/%3E%3Ccircle cx='128' cy='121' r='1.7' fill='%23F4EEE2' fill-opacity='0.8'/%3E%3Ccircle cx='17' cy='147' r='1.2' fill='%23F4EEE2' fill-opacity='0.8'/%3E%3Ccircle cx='88' cy='166' r='2.2' fill='%23F4EEE2' fill-opacity='0.8'/%3E%3Ccircle cx='166' cy='162' r='1.0' fill='%23F4EEE2' fill-opacity='0.8'/%3E%3Ccircle cx='44' cy='120' r='0.9' fill='%23F4EEE2' fill-opacity='0.8'/%3E%3C/svg%3E") 0 0 / 180px 180px, repeating-linear-gradient(90deg, rgba(244, 238, 226, 0) 0px 52px, rgba(244, 238, 226, 0.22) 52px 55px, rgba(244, 238, 226, 0) 55px 121px);
+  background-color: var(--pink); border-radius: 50%;
+  --x: 1400px; --y: -700px; --w: 520px; --s: 0.6;
+}
+[data-actor="hill"]  { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 120' preserveAspectRatio='none'%3E%3Cpath d='M0 120 L0 74 C40 44 82 34 122 54 C160 72 192 22 238 30 C268 36 288 50 300 60 L300 120 Z' fill='%23FFE800' transform='translate%285 -5%29'/%3E%3Cpath d='M0 120 L0 74 C40 44 82 34 122 54 C160 72 192 22 238 30 C268 36 288 50 300 60 L300 120 Z' fill='%230078BF' transform='translate%28-4 3%29'/%3E%3Cpath d='M0 120 L0 74 C40 44 82 34 122 54 C160 72 192 22 238 30 C268 36 288 50 300 60 L300 120 Z' fill='%231E8C4E'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat; --x: 1200px; --y: 1120px; --w: 560px; --h: 200px; }
+[data-actor="plum"]  { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' preserveAspectRatio='none'%3E%3Ccircle cx='94' cy='105' r='91' fill='%230078BF'/%3E%3Ccircle cx='106' cy='95' r='91' fill='%23FF48B0'/%3E%3Ccircle cx='100' cy='100' r='86' fill='%235A3B9C'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat; --x: 2000px; --y: 700px; --w: 160px; }
+[data-actor="strip"] {    /* zero ink = paper; the plates around it land off and leave fringes */
+  background: linear-gradient(var(--pink), var(--pink)) 0 0 / 6px 100% no-repeat, linear-gradient(var(--blue), var(--blue)) 0 100% / 100% 5px no-repeat;
+  background-color: var(--paper);
+  --x: 1250px; --y: 1120px; --w: 560px; --h: 0px;
+}
+[data-actor="ramp"]  { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 610 40' fill='%23FF48B0'%3E%3Ccircle cx='10' cy='10' r='2.4'/%3E%3Ccircle cx='20' cy='30' r='2.4'/%3E%3Ccircle cx='30' cy='10' r='2.4'/%3E%3Ccircle cx='40' cy='30' r='2.4'/%3E%3Ccircle cx='50' cy='10' r='2.4'/%3E%3Ccircle cx='60' cy='30' r='2.4'/%3E%3Ccircle cx='70' cy='10' r='2.4'/%3E%3Ccircle cx='80' cy='30' r='2.4'/%3E%3Ccircle cx='90' cy='10' r='2.4'/%3E%3Ccircle cx='100' cy='30' r='2.4'/%3E%3Ccircle cx='110' cy='10' r='2.4'/%3E%3Ccircle cx='120' cy='30' r='2.4'/%3E%3Ccircle cx='130' cy='10' r='2.4'/%3E%3Ccircle cx='140' cy='30' r='2.4'/%3E%3Ccircle cx='150' cy='10' r='2.4'/%3E%3Ccircle cx='160' cy='30' r='2.4'/%3E%3Ccircle cx='170' cy='10' r='3.8'/%3E%3Ccircle cx='180' cy='30' r='3.8'/%3E%3Ccircle cx='190' cy='10' r='3.8'/%3E%3Ccircle cx='200' cy='30' r='3.8'/%3E%3Ccircle cx='210' cy='10' r='3.8'/%3E%3Ccircle cx='220' cy='30' r='3.8'/%3E%3Ccircle cx='230' cy='10' r='3.8'/%3E%3Ccircle cx='240' cy='30' r='3.8'/%3E%3Ccircle cx='250' cy='10' r='3.8'/%3E%3Ccircle cx='260' cy='30' r='3.8'/%3E%3Ccircle cx='270' cy='10' r='3.8'/%3E%3Ccircle cx='280' cy='30' r='3.8'/%3E%3Ccircle cx='290' cy='10' r='3.8'/%3E%3Ccircle cx='300' cy='30' r='3.8'/%3E%3Ccircle cx='310' cy='10' r='5.2'/%3E%3Ccircle cx='320' cy='30' r='5.2'/%3E%3Ccircle cx='330' cy='10' r='5.2'/%3E%3Ccircle cx='340' cy='30' r='5.2'/%3E%3Ccircle cx='350' cy='10' r='5.2'/%3E%3Ccircle cx='360' cy='30' r='5.2'/%3E%3Ccircle cx='370' cy='10' r='5.2'/%3E%3Ccircle cx='380' cy='30' r='5.2'/%3E%3Ccircle cx='390' cy='10' r='5.2'/%3E%3Ccircle cx='400' cy='30' r='5.2'/%3E%3Ccircle cx='410' cy='10' r='5.2'/%3E%3Ccircle cx='420' cy='30' r='5.2'/%3E%3Ccircle cx='430' cy='10' r='5.2'/%3E%3Ccircle cx='440' cy='30' r='5.2'/%3E%3Ccircle cx='450' cy='10' r='8.2'/%3E%3Ccircle cx='460' cy='30' r='8.2'/%3E%3Ccircle cx='470' cy='10' r='8.2'/%3E%3Ccircle cx='480' cy='30' r='8.2'/%3E%3Ccircle cx='490' cy='10' r='8.2'/%3E%3Ccircle cx='500' cy='30' r='8.2'/%3E%3Ccircle cx='510' cy='10' r='8.2'/%3E%3Ccircle cx='520' cy='30' r='8.2'/%3E%3Ccircle cx='530' cy='10' r='8.2'/%3E%3Ccircle cx='540' cy='30' r='8.2'/%3E%3Ccircle cx='550' cy='10' r='8.2'/%3E%3Ccircle cx='560' cy='30' r='8.2'/%3E%3Ccircle cx='570' cy='10' r='8.2'/%3E%3Ccircle cx='580' cy='30' r='8.2'/%3E%3Ccircle cx='590' cy='10' r='8.2'/%3E%3Ccircle cx='600' cy='30' r='8.2'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat; --x: -600px; --y: 990px; --w: 488px; --h: 32px; }
+[data-actor="reg"]   { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg transform='translate%283 3%29' fill='none' stroke='%23FFE800' stroke-width='3'%3E%3Ccircle cx='50' cy='50' r='24'/%3E%3Ccircle cx='50' cy='50' r='9'/%3E%3Cpath d='M50 10 V90 M10 50 H90'/%3E%3C/g%3E%3Cg transform='translate%28-2 -1%29' fill='none' stroke='%23FF48B0' stroke-width='3'%3E%3Ccircle cx='50' cy='50' r='24'/%3E%3Ccircle cx='50' cy='50' r='9'/%3E%3Cpath d='M50 10 V90 M10 50 H90'/%3E%3C/g%3E%3Cg transform='translate%281 -3%29' fill='none' stroke='%230078BF' stroke-width='3'%3E%3Ccircle cx='50' cy='50' r='24'/%3E%3Ccircle cx='50' cy='50' r='9'/%3E%3Cpath d='M50 10 V90 M10 50 H90'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat; --x: 1820px; --y: -120px; --w: 70px; }
+
+/* ---------- 1. cover: a printed landscape, pink sun over a yellow horizon and a blue halftone field ---------- */
+[data-layout="cover"] [data-actor="sun"]    { --x: 1270px; --y: 140px; --w: 520px; --s: 1; }
+[data-layout="cover"] [data-actor="band"]   { --x: 1140px; --y: 650px; --w: 780px; --h: 110px; }
+[data-layout="cover"] [data-actor="screen"] { --x: 1140px; --y: 760px; --w: 780px; --h: 320px; }
+[data-layout="cover"] [data-actor="hill"]   { --x: 1140px; --y: 560px; --w: 560px; --h: 200px; }
+[data-layout="cover"] [data-actor="ramp"]   { --x: 120px; --y: 990px; }
+[data-layout="cover"] [data-actor="reg"]    { --x: 1820px; --y: 30px; }
+
+/* ---------- 2. agenda: yellow masthead, sun peeks in, violet disc marks the gutter ---------- */
+[data-layout="agenda"] [data-actor="band"]   { --x: 0px; --y: 0px; --w: 1920px; --h: 56px; }
+[data-layout="agenda"] [data-actor="sun"]    { --x: 1660px; --y: -170px; --w: 400px; --s: 1; }
+[data-layout="agenda"] [data-actor="screen"] { --x: 0px; --y: 1012px; --w: 1920px; --h: 68px; }
+[data-layout="agenda"] [data-actor="plum"]   { --x: 910px; --y: 580px; --w: 100px; }
+[data-layout="agenda"] [data-actor="ramp"]   { --x: 120px; --y: 206px; }
+[data-layout="agenda"] [data-actor="reg"]    { --x: 1830px; --y: 1000px; --w: 60px; }
+
+/* ---------- 3. section: big sun on a halftone sky, green hill on the yellow ground ---------- */
+[data-layout="section"] [data-actor="screen"] { --x: 1240px; --y: 0px; --w: 680px; --h: 420px; }
+[data-layout="section"] [data-actor="sun"]    { --x: 1100px; --y: 150px; --w: 720px; --s: 1; }
+[data-layout="section"] [data-actor="band"]   { --x: 0px; --y: 930px; --w: 1920px; --h: 150px; }
+[data-layout="section"] [data-actor="hill"]   { --x: 1180px; --y: 760px; --w: 740px; --h: 220px; }
+[data-layout="section"] [data-actor="plum"]   { --x: 1040px; --y: 640px; --w: 220px; }
+[data-layout="section"] [data-actor="ramp"]   { --x: 160px; --y: 984px; --w: 549px; --h: 36px; }
+[data-layout="section"] [data-actor="reg"]    { --x: 1820px; --y: 30px; }
+
+/* ---------- 4. content: paper knockout panel on a halftone column holds the highlight ---------- */
+[data-layout="content"] [data-actor="screen"] { --x: 1200px; --y: 230px; --w: 720px; --h: 850px; }
+[data-layout="content"] [data-actor="strip"]  { --x: 1250px; --y: 260px; --w: 560px; --h: 740px; }
+[data-layout="content"] [data-actor="band"]   { --x: 0px; --y: 0px; --w: 48px; --h: 1080px; }
+[data-layout="content"] [data-actor="sun"]    { --x: 1720px; --y: 40px; --w: 160px; --s: 1; }
+[data-layout="content"] [data-actor="plum"]   { --x: 1175px; --y: 960px; --w: 100px; }
+[data-layout="content"] [data-actor="ramp"]   { --x: 120px; --y: 1012px; }
+[data-layout="content"] [data-actor="reg"]    { --x: 1830px; --y: 1004px; --w: 60px; }
+/* even: the halftone drops to a footer, the paper sheet tilts, the sun rolls to the far corner */
+[data-layout="content"][data-parity="even"] [data-actor="screen"] { --x: 0px; --y: 1030px; --w: 1920px; --h: 50px; }
+[data-layout="content"][data-parity="even"] [data-actor="strip"]  { --x: 1240px; --y: 270px; --w: 580px; --h: 720px; --r: -1.5deg; background-color: var(--yellow-tint); }
+[data-layout="content"][data-parity="even"] [data-actor="band"]   { --x: 0px; --y: 0px; --w: 1920px; --h: 40px; }
+[data-layout="content"][data-parity="even"] [data-actor="sun"]    { --x: -200px; --y: 900px; --w: 300px; }
+[data-layout="content"][data-parity="even"] [data-actor="plum"]   { --x: 1700px; --y: 60px; --w: 120px; }
+[data-layout="content"][data-parity="even"] [data-actor="ramp"]   { --x: 1290px; --y: 1000px; }
+[data-layout="content"][data-parity="even"] [data-actor="reg"]    { --x: 40px; --y: 50px; --w: 60px; }
+
+/* ---------- 5. two-col: tinted cards, takeaway on a paper strip over the yellow band ---------- */
+[data-layout="two-col"] [data-actor="screen"] { --x: 1640px; --y: 0px; --w: 280px; --h: 230px; }
+[data-layout="two-col"] [data-actor="sun"]    { --x: 1700px; --y: -110px; --w: 300px; --s: 1; }
+[data-layout="two-col"] [data-actor="band"]   { --x: 0px; --y: 850px; --w: 1920px; --h: 170px; }
+[data-layout="two-col"] [data-actor="strip"]  { --x: 110px; --y: 870px; --w: 1700px; --h: 130px; }
+[data-layout="two-col"] [data-actor="plum"]   { --x: 900px; --y: 520px; --w: 120px; }
+[data-layout="two-col"] [data-actor="ramp"]   { --x: 120px; --y: 206px; }
+[data-layout="two-col"] [data-actor="reg"]    { --x: 40px; --y: 30px; --w: 60px; }
+.deck-stage[data-layout="two-col"]:not(:has(.slide.active .takeaway)) [data-actor="band"]  { --y: 1030px; --h: 50px; }
+.deck-stage[data-layout="two-col"]:not(:has(.slide.active .takeaway)) [data-actor="strip"] { --y: 1120px; --h: 0px; }
+
+/* ---------- 6. stats: the figures sit on a yellow plate ---------- */
+[data-layout="stats"] [data-actor="band"]   { --x: 0px; --y: 270px; --w: 1920px; --h: 560px; }
+[data-layout="stats"] [data-actor="screen"] { --x: 0px; --y: 1030px; --w: 1920px; --h: 50px; }
+[data-layout="stats"] [data-actor="sun"]    { --x: 1680px; --y: -110px; --w: 330px; --s: 1; }
+[data-layout="stats"] [data-actor="plum"]   { --x: 1800px; --y: 790px; --w: 160px; }
+[data-layout="stats"] [data-actor="ramp"]   { --x: 120px; --y: 206px; }
+[data-layout="stats"] [data-actor="reg"]    { --x: 40px; --y: 990px; --w: 60px; }
+
+/* ---------- 7. timeline: the band turns into a pink tint ribbon under the axis ---------- */
+[data-layout="timeline"] [data-actor="band"]   { --x: 0px; --y: 604px; --w: 1920px; --h: 52px; background-color: var(--pink-tint); }
+[data-layout="timeline"] [data-actor="screen"] { --x: 0px; --y: 1030px; --w: 1920px; --h: 50px; }
+[data-layout="timeline"] [data-actor="sun"]    { --x: 1740px; --y: -90px; --w: 260px; --s: 1; }
+[data-layout="timeline"] [data-actor="ramp"]   { --x: 120px; --y: 206px; }
+[data-layout="timeline"] [data-actor="reg"]    { --x: 40px; --y: 20px; --w: 60px; }
+
+/* ---------- 8. quote: the sun grows over the whole sheet (overprint transition) ---------- */
+.deck-stage[data-layout="quote"] { --fg: #2B2140; --muted: #4B2448; --accent: #2B2140; }
+[data-layout="quote"] [data-actor="sun"]  { --x: -400px; --y: -900px; --w: 2720px; --s: 1; }
+[data-layout="quote"] [data-actor="plum"] { --x: 160px; --y: 330px; --w: 80px; }
+[data-layout="quote"] [data-actor="hill"] { --x: 1480px; --y: 900px; --w: 440px; --h: 180px; }
+[data-layout="quote"] [data-actor="reg"]  { --x: 1820px; --y: 30px; }
+
+/* ---------- 9. closing: the violet overprint floods, one registration mark stays ---------- */
+.deck-stage[data-layout="closing"] { --fg: #F4EEE2; --muted: #E4D6F2; --accent: #FFE800; }
+[data-layout="closing"] [data-actor="plum"] { --x: -400px; --y: -900px; --w: 2720px; }
+[data-layout="closing"] [data-actor="sun"]  { --x: 1500px; --y: 700px; --w: 260px; --s: 1; }
+[data-layout="closing"] [data-actor="ramp"] { --x: 120px; --y: 1010px; }
+[data-layout="closing"] [data-actor="reg"]  { --x: 1640px; --y: 760px; --w: 200px; }
+
+/* ---------- content tweaks: printed type, titles double-hit on two plates ---------- */
+.slide .title { color: var(--blue); text-shadow: 4px 3px 0 rgba(255, 72, 176, 0.75); line-height: 1.15; }
+.slide .kicker { display: inline-block; align-self: flex-start; padding: 6px 18px; background: var(--yellow); color: var(--ink3); letter-spacing: 0.2em; }
+.slide[data-layout="cover"] { align-items: flex-start; text-align: left; padding: 0 840px 0 120px; }
+.slide[data-layout="cover"] .title { font-size: 96px; line-height: 1.12; text-shadow: 6px 4px 0 rgba(255, 72, 176, 0.8); }
+.slide[data-layout="closing"] .kicker { align-self: center; }
+.slide[data-layout="closing"] .title { font-size: 150px; color: var(--fg); text-shadow: 7px 5px 0 var(--pink); }
+.slide[data-layout="section"] .num { font-size: 240px; color: var(--blue); text-shadow: 10px 7px 0 rgba(255, 72, 176, 0.8); }
+.slide[data-layout="section"] .title { line-height: 1.15; }
+.agenda-list { --agenda-gap: 200px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list .num { text-shadow: 5px 4px 0 rgba(255, 72, 176, 0.7); }
+.bullets li::before, .col li::before { background: var(--pink); box-shadow: 3px 2px 0 var(--blue); }
+.hl-big { text-shadow: 6px 5px 0 rgba(255, 72, 176, 0.75); }
+.slide[data-layout="content"] .hl-text { color: var(--fg); }
+.col { padding: 44px 52px; }
+.col + .col { background: var(--pink-tint); }
+.takeaway { border-left: 12px solid var(--pink); color: var(--fg); }
+.slide[data-layout="stats"] .stat-num { text-shadow: 7px 5px 0 rgba(255, 72, 176, 0.75); }
+.slide[data-layout="stats"] .stat-label { color: var(--fg); }
+.timeline::before { background: var(--blue); opacity: 0.6; }
+.step::before { background: var(--pink); box-shadow: -4px 3px 0 var(--blue); }
+.slide[data-layout="quote"] .quote { font-weight: 700; }
+.slide[data-layout="quote"] .cite { letter-spacing: 0.1em; text-transform: uppercase; font-size: 24px; font-weight: 600; }

@@ -28,7 +28,9 @@
       const range = document.createRange(); range.selectNodeContents(node);
       [...range.getClientRects()].forEach(push);
     }
-    slide.querySelectorAll(':is(img, svg, video, canvas):not(.photo-bg, .split-img)').forEach((el) => push(el.getBoundingClientRect()));
+    slide.querySelectorAll(':is(img, svg, video, canvas):not(.photo-bg, .split-img, svg[aria-hidden="true"])').forEach((el) => push(el.getBoundingClientRect()));
+    // decorative art of two-layer styles (svg aria-hidden) may bleed off the edge on purpose: count it, clipped to the safe area
+    slide.querySelectorAll('svg[aria-hidden="true"]').forEach((el) => { if (el.parentElement.closest('svg')) return; if (push(el.getBoundingClientRect())) { const o = out.at(-1); o.x0 = Math.max(o.x0, SAFE.x0); o.x1 = Math.min(o.x1, SAFE.x1); o.y0 = Math.max(o.y0, SAFE.y0); o.y1 = Math.min(o.y1, SAFE.y1); } });
     // a frame's colour block fills space on purpose and may bleed off the edge: count it, clipped to the safe area
     slide.querySelectorAll('.frame-panel').forEach((el) => { if (push(el.getBoundingClientRect())) { const o = out.at(-1); o.x0 = Math.max(o.x0, SAFE.x0); o.x1 = Math.min(o.x1, SAFE.x1); o.y0 = Math.max(o.y0, SAFE.y0); o.y1 = Math.min(o.y1, SAFE.y1); } });
     return out;

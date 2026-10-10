@@ -1,0 +1,208 @@
+/* ===========================================================
+   STYLE: INFOGRAPHIC ISOMETRIC (iso-infographic). A system diagram
+   as a flat isometric diorama: true 30 degree projection, every
+   solid drawn in three flat tones (top light, left mid, right
+   dark, no outlines), a faint iso lattice on a pale ground, ink
+   used only for infographic furniture (dashed flow lines with an
+   arrow, pin rings, dashed station plates). The projection never
+   rotates: blocks only slide and resize; only the flow line turns,
+   and only along the iso axes (0, 30, 90 degrees).
+   Idea: MotionFly / lemo-opuscar (MIT), styles/iso-infographic.
+   Actors: plate (pale station card, dashed outline), slab (floating
+           board with soil strata and a pond), tower (blue block
+           with windows), cube1 coral, cube2 amber, cube3 mint
+           (three-tone iso cubes), route (dashed flow line: ring,
+           dashes, arrow). DOM order = z-order.
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
+
+.deck-stage {
+  --dense-stage: diagram;   /* own diagram pose below */
+  --actors: "plate slab tower cube1 cube2 cube3 route";
+  --font-display: 'Lexend', sans-serif;
+  --font-body: 'Be Vietnam Pro', sans-serif;
+  --ink: #22263A; --ground: #F4F2EC; --paper: #FFFFFF; --plate-side: #D3D8E2; --plate-line: #A3ABBB;
+  --blue-t: #8DBCE8; --blue-l: #4A88C8; --blue-r: #2F619A;
+  --coral-t: #F59A86; --coral-l: #E0644F; --coral-r: #B0473A;
+  --amber-t: #F7CF6E; --amber-l: #E5A93A; --amber-r: #B8842A;
+  --mint-t: #9EDBB4; --mint-l: #55B37F; --mint-r: #3C8A60;
+  --slate-t: #E3E7EE; --slate-l: #BCC4D2; --slate-r: #939CAF;
+  --bg: var(--ground); --fg: var(--ink); --muted: #565C72; --accent: #2B67AD;
+  --card-bg: var(--paper); --card-fg: var(--ink); --card-radius: 14px;
+  --title-weight: 600; --title-tracking: 0.04em; --title-case: uppercase; --bullet-radius: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='69.282' height='40'%3E%3Cpath d='M0 0L69.282 40M0 40L69.282 0' stroke='%23C9CFDA' stroke-width='1' stroke-opacity='.55' fill='none'/%3E%3Cg fill='%23AFB7C6' fill-opacity='.7'%3E%3Ccircle cx='0' cy='0' r='1.6'/%3E%3Ccircle cx='69.282' cy='0' r='1.6'/%3E%3Ccircle cx='0' cy='40' r='1.6'/%3E%3Ccircle cx='69.282' cy='40' r='1.6'/%3E%3Ccircle cx='34.641' cy='20' r='1.6'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 69.282px 40px;
+}
+.deck-stage[data-layout="closing"] { --fg: #FFFFFF; --muted: #DCEBFA; --accent: var(--amber-t); }
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="plate"] {
+  background-color: var(--paper); border: 3px dashed var(--plate-line); border-radius: 14px;
+  box-shadow: 14px 8px 0 var(--plate-side);
+  --x: 960px; --y: 540px; --w: 0px; --h: 0px; --o: 0;
+}
+[data-actor="slab"]  { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 290.94'%3E%3Cpolygon points='0.0,115.5 200.0,230.9 200.0,242.9 0.0,127.5' fill='%238DBF6A'/%3E%3Cpolygon points='0.0,127.5 200.0,242.9 200.0,260.9 0.0,145.5' fill='%23B98557'/%3E%3Cpolygon points='0.0,145.5 200.0,260.9 200.0,274.9 0.0,159.5' fill='%239C6C46'/%3E%3Cpolygon points='0.0,159.5 200.0,274.9 200.0,290.9 0.0,175.5' fill='%237E5636'/%3E%3Cpolygon points='200.0,230.9 400.0,115.5 400.0,127.5 200.0,242.9' fill='%236E9E50'/%3E%3Cpolygon points='200.0,242.9 400.0,127.5 400.0,145.5 200.0,260.9' fill='%2394673F'/%3E%3Cpolygon points='200.0,260.9 400.0,145.5 400.0,159.5 200.0,274.9' fill='%237A5232'/%3E%3Cpolygon points='200.0,274.9 400.0,159.5 400.0,175.5 200.0,290.9' fill='%235F4128'/%3E%3Cpolygon points='200.0,0.0 400.0,115.5 200.0,230.9 0.0,115.5' fill='%23D6EAC0'/%3E%3Cpath d='M250.0 28.9L50.0 144.3M150.0 28.9L350.0 144.3M300.0 57.7L100.0 173.2M100.0 57.7L300.0 173.2M350.0 86.6L150.0 202.1M50.0 86.6L250.0 202.1' stroke='%23FFFFFF' stroke-width='2' stroke-opacity='.7' fill='none'/%3E%3Cpolygon points='100.0,64.7 124.0,78.5 86.0,100.5 62.0,86.6' fill='%237FB0E0'/%3E%3C/svg%3E") center / 100% 100% no-repeat; --x: -520px; --y: 640px; --w: 400px; --h: 291px; }
+[data-actor="tower"] { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 200'%3E%3Cpolygon points='50,0 100,28.87 50,57.74 0,28.87' fill='%238DBCE8'/%3E%3Cpolygon points='0,28.87 50,57.74 50,200 0,171.13' fill='%234A88C8'/%3E%3Cpolygon points='50,57.74 100,28.87 100,171.13 50,200' fill='%232F619A'/%3E%3Cpolygon points='8.0,49.5 21.0,57.0 21.0,69.0 8.0,61.5' fill='%23D8E9FA'/%3E%3Cpolygon points='29.0,61.6 42.0,69.1 42.0,81.1 29.0,73.6' fill='%23D8E9FA'/%3E%3Cpolygon points='58.0,69.1 71.0,61.6 71.0,73.6 58.0,81.1' fill='%236E9BD0'/%3E%3Cpolygon points='79.0,57.0 92.0,49.5 92.0,61.5 79.0,69.0' fill='%236E9BD0'/%3E%3Cpolygon points='8.0,71.5 21.0,79.0 21.0,91.0 8.0,83.5' fill='%23D8E9FA'/%3E%3Cpolygon points='29.0,83.6 42.0,91.1 42.0,103.1 29.0,95.6' fill='%23D8E9FA'/%3E%3Cpolygon points='58.0,91.1 71.0,83.6 71.0,95.6 58.0,103.1' fill='%236E9BD0'/%3E%3Cpolygon points='79.0,79.0 92.0,71.5 92.0,83.5 79.0,91.0' fill='%236E9BD0'/%3E%3Cpolygon points='8.0,93.5 21.0,101.0 21.0,113.0 8.0,105.5' fill='%23D8E9FA'/%3E%3Cpolygon points='29.0,105.6 42.0,113.1 42.0,125.1 29.0,117.6' fill='%23D8E9FA'/%3E%3Cpolygon points='58.0,113.1 71.0,105.6 71.0,117.6 58.0,125.1' fill='%236E9BD0'/%3E%3Cpolygon points='79.0,101.0 92.0,93.5 92.0,105.5 79.0,113.0' fill='%236E9BD0'/%3E%3Cpolygon points='8.0,115.5 21.0,123.0 21.0,135.0 8.0,127.5' fill='%23D8E9FA'/%3E%3Cpolygon points='29.0,127.6 42.0,135.1 42.0,147.1 29.0,139.6' fill='%23D8E9FA'/%3E%3Cpolygon points='58.0,135.1 71.0,127.6 71.0,139.6 58.0,147.1' fill='%236E9BD0'/%3E%3Cpolygon points='79.0,123.0 92.0,115.5 92.0,127.5 79.0,135.0' fill='%236E9BD0'/%3E%3Cpolygon points='8.0,137.5 21.0,145.0 21.0,157.0 8.0,149.5' fill='%23D8E9FA'/%3E%3Cpolygon points='29.0,149.6 42.0,157.1 42.0,169.1 29.0,161.6' fill='%23D8E9FA'/%3E%3Cpolygon points='58.0,157.1 71.0,149.6 71.0,161.6 58.0,169.1' fill='%236E9BD0'/%3E%3Cpolygon points='79.0,145.0 92.0,137.5 92.0,149.5 79.0,157.0' fill='%236E9BD0'/%3E%3Cpolygon points='8.0,159.5 21.0,167.0 21.0,179.0 8.0,171.5' fill='%23D8E9FA'/%3E%3Cpolygon points='29.0,171.6 42.0,179.1 42.0,191.1 29.0,183.6' fill='%23D8E9FA'/%3E%3Cpolygon points='58.0,179.1 71.0,171.6 71.0,183.6 58.0,191.1' fill='%236E9BD0'/%3E%3Cpolygon points='79.0,167.0 92.0,159.5 92.0,171.5 79.0,179.0' fill='%236E9BD0'/%3E%3C/svg%3E") center / 100% 100% no-repeat; --x: 2000px; --y: 160px; --w: 100px; --h: 200px; }
+[data-actor^="cube"] { clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); }
+[data-actor="cube1"] { background: conic-gradient(from -60deg, var(--coral-t) 0deg 120deg, var(--coral-r) 120deg 240deg, var(--coral-l) 240deg 360deg); --x: 2000px; --y: 760px; --w: 100px; --h: 115px; }
+[data-actor="cube2"] { background: conic-gradient(from -60deg, var(--amber-t) 0deg 120deg, var(--amber-r) 120deg 240deg, var(--amber-l) 240deg 360deg); --x: -200px; --y: 260px; --w: 90px; --h: 104px; }
+[data-actor="cube3"] { background: conic-gradient(from -60deg, var(--mint-t) 0deg 120deg, var(--mint-r) 120deg 240deg, var(--mint-l) 240deg 360deg); --x: 920px; --y: -300px; --w: 80px; --h: 92px; }
+[data-actor="route"] {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 24'%3E%3Cpath d='M0 0L30 12L0 24L8 12z' fill='%2322263A'/%3E%3C/svg%3E") right center / 30px 24px no-repeat,
+              url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='8.5' fill='%23FFFFFF' stroke='%2322263A' stroke-width='4'/%3E%3C/svg%3E") left center / 24px 24px no-repeat,
+              repeating-linear-gradient(90deg, var(--ink) 0 16px, transparent 16px 28px) 0 50% / 100% 4px no-repeat;
+  --x: 960px; --y: 1110px; --w: 0px; --h: 24px;
+}
+.deck-stage[data-layout="closing"] [data-actor="plate"] { background-color: var(--blue-r); border-color: #8DBCE8; box-shadow: 14px 8px 0 #1F426B; }
+.deck-stage[data-layout="two-col"]:not(:has(.slide.active .takeaway)) [data-actor="plate"] { --w: 0px; --h: 0px; --o: 0; }
+
+/* ---------- cover: text left, the diorama on the right (board, tower, three blocks, a flow out front right) ---------- */
+[data-layout="cover"] [data-actor="plate"] { --x: 560px; --y: 540px; --w: 0px; --h: 0px; --o: 0; }
+[data-layout="cover"] [data-actor="slab"] { --x: 1000px; --y: 360px; --w: 820px; --h: 596px; }
+[data-layout="cover"] [data-actor="tower"] { --x: 1340px; --y: 225px; --w: 140px; --h: 280px; }
+[data-layout="cover"] [data-actor="cube1"] { --x: 1596px; --y: 502px; --w: 120px; --h: 139px; }
+[data-layout="cover"] [data-actor="cube2"] { --x: 1109px; --y: 511px; --w: 110px; --h: 127px; }
+[data-layout="cover"] [data-actor="cube3"] { --x: 1362px; --y: 665px; --w: 96px; --h: 111px; }
+[data-layout="cover"] [data-actor="route"] { --x: 1490px; --y: 888px; --w: 300px; --h: 24px; --r: -30deg; }
+
+/* ---------- agenda: plate holds the list, a flow underlines the title, blocks line up top right ---------- */
+[data-layout="agenda"] [data-actor="plate"] { --x: 90px; --y: 240px; --w: 1740px; --h: 780px; --o: 1; }
+[data-layout="agenda"] [data-actor="slab"] { --x: 1660px; --y: 920px; --w: 240px; --h: 175px; }
+[data-layout="agenda"] [data-actor="tower"] { --x: 1810px; --y: 36px; --w: 64px; --h: 128px; }
+[data-layout="agenda"] [data-actor="cube1"] { --x: 1560px; --y: 80px; --w: 54px; --h: 62px; }
+[data-layout="agenda"] [data-actor="cube2"] { --x: 1600px; --y: 103px; --w: 54px; --h: 62px; }
+[data-layout="agenda"] [data-actor="cube3"] { --x: 1641px; --y: 127px; --w: 54px; --h: 62px; }
+[data-layout="agenda"] [data-actor="route"] { --x: 120px; --y: 196px; --w: 560px; --h: 24px; --r: 0deg; }
+
+/* ---------- section: a bigger diorama, coral and mint blocks stack, the flow runs along the board front ---------- */
+[data-layout="section"] [data-actor="plate"] { --x: 1460px; --y: 640px; --w: 0px; --h: 0px; --o: 0; }
+[data-layout="section"] [data-actor="slab"] { --x: 1120px; --y: 400px; --w: 700px; --h: 509px; }
+[data-layout="section"] [data-actor="tower"] { --x: 1385px; --y: 222px; --w: 170px; --h: 340px; }
+[data-layout="section"] [data-actor="cube1"] { --x: 1564px; --y: 487px; --w: 140px; --h: 162px; }
+[data-layout="section"] [data-actor="cube2"] { --x: 1246px; --y: 504px; --w: 120px; --h: 139px; }
+[data-layout="section"] [data-actor="cube3"] { --x: 1564px; --y: 406px; --w: 140px; --h: 162px; }
+[data-layout="section"] [data-actor="route"] { --x: 1135px; --y: 872px; --w: 320px; --h: 24px; --r: 30deg; }
+
+/* ---------- content (odd): plate under the highlight, a mini board top right, the flow under the bullets ---------- */
+[data-layout="content"] [data-actor="plate"] { --x: 1240px; --y: 250px; --w: 580px; --h: 760px; --o: 1; }
+[data-layout="content"] [data-actor="slab"] { --x: 1690px; --y: 24px; --w: 200px; --h: 145px; }
+[data-layout="content"] [data-actor="tower"] { --x: 28px; --y: 916px; --w: 64px; --h: 128px; }
+[data-layout="content"] [data-actor="cube1"] { --x: 1760px; --y: 30px; --w: 60px; --h: 69px; }
+[data-layout="content"] [data-actor="cube2"] { --x: 1776px; --y: 948px; --w: 80px; --h: 92px; }
+[data-layout="content"] [data-actor="cube3"] { --x: 1176px; --y: 962px; --w: 50px; --h: 58px; }
+[data-layout="content"] [data-actor="route"] { --x: 120px; --y: 1020px; --w: 680px; --h: 24px; --r: 0deg; }
+
+/* ---------- even: plate slides under the bullets, the mini board drops bottom right ---------- */
+[data-layout="content"][data-parity="even"] [data-actor="plate"] { --x: 80px; --y: 240px; --w: 1140px; --h: 780px; --o: 1; }
+[data-layout="content"][data-parity="even"] [data-actor="slab"] { --x: 1680px; --y: 912px; --w: 220px; --h: 160px; }
+[data-layout="content"][data-parity="even"] [data-actor="tower"] { --x: 1806px; --y: 28px; --w: 60px; --h: 120px; }
+[data-layout="content"][data-parity="even"] [data-actor="cube1"] { --x: 1758px; --y: 920px; --w: 64px; --h: 74px; }
+[data-layout="content"][data-parity="even"] [data-actor="cube2"] { --x: 18px; --y: 18px; --w: 60px; --h: 69px; }
+[data-layout="content"][data-parity="even"] [data-actor="cube3"] { --x: 1230px; --y: 176px; --w: 50px; --h: 58px; }
+[data-layout="content"][data-parity="even"] [data-actor="route"] { --x: 1240px; --y: 1030px; --w: 440px; --h: 24px; --r: 0deg; }
+
+/* ---------- two-col: the flow stands up between the columns and points at the takeaway band ---------- */
+[data-layout="two-col"] [data-actor="plate"] { --x: 100px; --y: 866px; --w: 1720px; --h: 134px; --o: 1; }
+[data-layout="two-col"] [data-actor="slab"] { --x: 1700px; --y: 20px; --w: 180px; --h: 131px; }
+[data-layout="two-col"] [data-actor="tower"] { --x: 24px; --y: 950px; --w: 50px; --h: 100px; }
+[data-layout="two-col"] [data-actor="cube1"] { --x: 1832px; --y: 470px; --w: 60px; --h: 69px; }
+[data-layout="two-col"] [data-actor="cube2"] { --x: 1762px; --y: 23px; --w: 56px; --h: 65px; }
+[data-layout="two-col"] [data-actor="cube3"] { --x: 1846px; --y: 600px; --w: 44px; --h: 51px; }
+[data-layout="two-col"] [data-actor="route"] { --x: 700px; --y: 543px; --w: 520px; --h: 24px; --r: 90deg; }
+
+/* ---------- stats: plate band, blocks counted in a row (Isotype), the flow along the foot ---------- */
+[data-layout="stats"] [data-actor="plate"] { --x: 80px; --y: 250px; --w: 1760px; --h: 760px; --o: 1; }
+[data-layout="stats"] [data-actor="slab"] { --x: -60px; --y: 930px; --w: 300px; --h: 218px; }
+[data-layout="stats"] [data-actor="tower"] { --x: 1806px; --y: 30px; --w: 60px; --h: 120px; }
+[data-layout="stats"] [data-actor="cube1"] { --x: 1640px; --y: 100px; --w: 56px; --h: 65px; }
+[data-layout="stats"] [data-actor="cube2"] { --x: 1682px; --y: 124px; --w: 56px; --h: 65px; }
+[data-layout="stats"] [data-actor="cube3"] { --x: 1724px; --y: 148px; --w: 56px; --h: 65px; }
+[data-layout="stats"] [data-actor="route"] { --x: 420px; --y: 1030px; --w: 1080px; --h: 24px; --r: 0deg; }
+
+/* ---------- timeline: the flow stretches into the axis, its arrow points forward in time ---------- */
+[data-layout="timeline"] [data-actor="plate"] { --x: 960px; --y: 630px; --w: 0px; --h: 0px; --o: 0; }
+[data-layout="timeline"] [data-actor="slab"] { --x: 1690px; --y: 930px; --w: 240px; --h: 175px; }
+[data-layout="timeline"] [data-actor="tower"] { --x: 1806px; --y: 28px; --w: 60px; --h: 120px; }
+[data-layout="timeline"] [data-actor="cube1"] { --x: 1778px; --y: 944px; --w: 64px; --h: 74px; }
+[data-layout="timeline"] [data-actor="cube2"] { --x: 18px; --y: 18px; --w: 56px; --h: 65px; }
+[data-layout="timeline"] [data-actor="cube3"] { --x: 28px; --y: 990px; --w: 48px; --h: 55px; }
+[data-layout="timeline"] [data-actor="route"] { --x: 120px; --y: 618px; --w: 1680px; --h: 24px; --r: 0deg; }
+
+/* ---------- quote: plate card, tower on a board bottom left, blocks stacked top right ---------- */
+[data-layout="quote"] [data-actor="plate"] { --x: 220px; --y: 160px; --w: 1480px; --h: 760px; --o: 1; }
+[data-layout="quote"] [data-actor="slab"] { --x: -40px; --y: 820px; --w: 360px; --h: 262px; }
+[data-layout="quote"] [data-actor="tower"] { --x: 85px; --y: 736px; --w: 110px; --h: 220px; }
+[data-layout="quote"] [data-actor="cube1"] { --x: 1700px; --y: 150px; --w: 120px; --h: 139px; }
+[data-layout="quote"] [data-actor="cube2"] { --x: 1764px; --y: 320px; --w: 80px; --h: 92px; }
+[data-layout="quote"] [data-actor="cube3"] { --x: 1720px; --y: 460px; --w: 60px; --h: 69px; }
+[data-layout="quote"] [data-actor="route"] { --x: 1550px; --y: 948px; --w: 300px; --h: 24px; --r: -30deg; }
+
+/* ---------- closing: blue plate holds the thanks, a small diorama on the right ---------- */
+[data-layout="closing"] [data-actor="plate"] { --x: 360px; --y: 200px; --w: 1200px; --h: 680px; --o: 1; }
+[data-layout="closing"] [data-actor="slab"] { --x: 1560px; --y: 700px; --w: 300px; --h: 218px; }
+[data-layout="closing"] [data-actor="tower"] { --x: 1660px; --y: 589px; --w: 100px; --h: 200px; }
+[data-layout="closing"] [data-actor="cube1"] { --x: 170px; --y: 150px; --w: 120px; --h: 139px; }
+[data-layout="closing"] [data-actor="cube2"] { --x: 210px; --y: 790px; --w: 90px; --h: 104px; }
+[data-layout="closing"] [data-actor="cube3"] { --x: 1728px; --y: 739px; --w: 70px; --h: 81px; }
+[data-layout="closing"] [data-actor="route"] { --x: 640px; --y: 930px; --w: 640px; --h: 24px; --r: 0deg; }
+
+/* ---------- diagram / free: clear stage, a tiny board and tower in the corners ---------- */
+[data-layout="diagram"] [data-actor="plate"] { --x: 960px; --y: 540px; --w: 0px; --h: 0px; --o: 0; }
+[data-layout="diagram"] [data-actor="slab"] { --x: 1730px; --y: 980px; --w: 160px; --h: 116px; }
+[data-layout="diagram"] [data-actor="tower"] { --x: 1838px; --y: 28px; --w: 44px; --h: 88px; }
+[data-layout="diagram"] [data-actor="cube1"] { --x: 1776px; --y: 60px; --w: 40px; --h: 46px; }
+[data-layout="diagram"] [data-actor="cube2"] { --x: -200px; --y: 500px; --w: 60px; --h: 69px; }
+[data-layout="diagram"] [data-actor="cube3"] { --x: 1000px; --y: -200px; --w: 60px; --h: 69px; }
+[data-layout="diagram"] [data-actor="route"] { --x: 960px; --y: 1110px; --w: 0px; --h: 24px; --r: 0deg; }
+
+/* ---------- inline SVG kit for the per-slide drawings (see iso-infographic.art.md) ---------- */
+.i-bt { fill: var(--blue-t); } .i-bl { fill: var(--blue-l); } .i-br { fill: var(--blue-r); }
+.i-ct { fill: var(--coral-t); } .i-cl { fill: var(--coral-l); } .i-cr { fill: var(--coral-r); }
+.i-at { fill: var(--amber-t); } .i-al { fill: var(--amber-l); } .i-ar { fill: var(--amber-r); }
+.i-mt { fill: var(--mint-t); } .i-ml { fill: var(--mint-l); } .i-mr { fill: var(--mint-r); }
+.i-st { fill: var(--slate-t); } .i-sl { fill: var(--slate-l); } .i-sr { fill: var(--slate-r); }
+.i-plate { fill: var(--paper); stroke: var(--plate-line); stroke-width: 3; stroke-dasharray: 10 7; }
+.i-ink { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.i-flow { fill: none; stroke: var(--ink); stroke-width: 4; stroke-dasharray: 14 10; stroke-linecap: butt; }
+.i-ghost { fill: none; stroke: var(--ink); stroke-width: 2.5; stroke-dasharray: 6 6; stroke-opacity: 0.55; }
+.i-head { fill: var(--ink); }
+.i-pin { fill: var(--paper); stroke: var(--ink); stroke-width: 4; }
+.slide.active .i-flow { animation: iso-flow 1.4s linear infinite; }
+@keyframes iso-flow { to { stroke-dashoffset: -48; } }
+.slide svg .fx { transform-box: fill-box; transform-origin: 50% 50%; }
+
+/* ---------- content tweaks: geometric caps, iso bullets, map-label cards ---------- */
+.slide .title { line-height: 1.2; }
+.slide .kicker { letter-spacing: 0.2em; }
+.slide :is(.num, .stat-num, .hl-big, .when, .ch-num) { font-weight: 500; letter-spacing: 0; }
+.slide b, .slide strong { color: var(--coral-r); }
+.slide[data-layout="cover"] { padding: 0 960px 0 140px; align-items: flex-start; text-align: left; }
+.slide[data-layout="cover"] .title { font-size: 86px; line-height: 1.2; text-transform: none; letter-spacing: -0.01em; }
+.slide[data-layout="closing"] { padding: 0 460px; }
+.slide[data-layout="closing"] .title { font-size: 120px; }
+.deck-stage[data-layout="closing"] .slide b { color: inherit; }
+.slide[data-layout="agenda"] { --title-w: 1300px; }
+.agenda-list { --agenda-gap: 200px; --tile-line: 3px dashed rgba(34, 38, 58, 0.22); }
+.agenda-list li { padding-top: 10px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.slide[data-layout="section"] { padding: 0 920px 0 160px; }
+.slide[data-layout="section"] .title { font-size: 80px; }
+.slide[data-layout="content"] { --title-w: 1400px; --hl-left: 1280px; --hl-right: 120px; }
+.slide[data-layout="content"][data-parity="even"] { --bullets-w: 1000px; }
+.slide[data-layout="content"][data-parity="even"] .bullets { left: 150px; }
+.bullets li::before, .col li::before { width: 0.5em; height: 0.577em; top: 0.38em; border-radius: 0; clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); background: conic-gradient(from -60deg, var(--blue-t) 0deg 120deg, var(--blue-r) 120deg 240deg, var(--blue-l) 240deg 360deg); }
+.col { border: 3px dashed var(--plate-line); box-shadow: 14px 8px 0 var(--plate-side); }
+.col + .col { --accent: var(--coral-r); }
+.col + .col li::before { background: conic-gradient(from -60deg, var(--coral-t) 0deg 120deg, var(--coral-r) 120deg 240deg, var(--coral-l) 240deg 360deg); }
+.takeaway { border-left: 0; padding-left: 56px; }
+.stat:nth-child(2) { --accent: var(--coral-r); }
+.stat:nth-child(3) { --accent: var(--mint-r); }
+.timeline::before { display: none; }
+.step::before { width: 34px; height: 39px; left: -2px; border-radius: 0; clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); background: conic-gradient(from -60deg, var(--amber-t) 0deg 120deg, var(--amber-r) 120deg 240deg, var(--amber-l) 240deg 360deg); }
+.step:nth-child(odd)::before { bottom: -20px; }
+.step:nth-child(even)::before { top: -20px; }
+.slide[data-layout="quote"] { padding: 0 320px; }
+.slide[data-layout="quote"] .quote { font-weight: 500; text-transform: none; }
+.slide[data-layout="quote"] .cite { font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; font-size: 24px; }
+.slide[data-kind="chapter"] .ch-num { opacity: 0.2; }

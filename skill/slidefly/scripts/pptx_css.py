@@ -13,10 +13,38 @@ ATTR = re.compile(r'\[data-([a-z-]+)(?:="([^"]*)")?\]')
 SKIP = re.compile(r':has\(|:where\(|::|:hover|:focus|@')
 
 
+def first_url(text):
+    """The first complete `url(...)` token, honouring quotes and nested parentheses inside an SVG data URI
+    (`url(#g)`, `rotate(30)`), or None."""
+    i = text.find('url(')
+    if i < 0:
+        return None
+    depth, quote = 0, ''
+    for j in range(i + 3, len(text)):
+        ch = text[j]
+        if quote:
+            quote = '' if ch == quote else quote
+        elif ch in '"\'':
+            quote = ch
+        elif ch == '(':
+            depth += 1
+        elif ch == ')':
+            depth -= 1
+            if depth == 0:
+                return text[i:j + 1]
+    return None
+
+
 def split_top(text, sep=','):
-    """Split on `sep` outside parentheses."""
-    out, depth, cur = [], 0, ''
+    """Split on `sep` outside parentheses and quotes."""
+    out, depth, cur, quote = [], 0, '', ''
     for ch in text:
+        if quote:
+            quote = '' if ch == quote else quote
+            cur += ch
+            continue
+        if ch in '"\'':
+            quote = ch
         depth += ch == '('
         depth -= ch == ')'
         if ch == sep and depth == 0:
@@ -84,7 +112,9 @@ def matches_stage(sel, state):
 
 class Sheet:
     def __init__(self, css_texts):
-        self.rules = [r for t in css_texts for r in parse(t)]
+        # Source order runs across files in document order, as in the browser: the deck's own <style>
+        # (loaded last) beats a style file rule of the same specificity.
+        self.rules = [(s, spec, i * 1_000_000 + o, d) for i, t in enumerate(css_texts) for s, spec, o, d in parse(t)]
 
     def _cascade(self, wanted, state):
         out = {}

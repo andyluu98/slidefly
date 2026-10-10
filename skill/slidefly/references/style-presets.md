@@ -1,4 +1,4 @@
-# 57 style: chọn theo mục đích
+# 63 style: chọn theo mục đích
 
 Dữ liệu đầy đủ (tên, nền, nhãn tâm trạng, hợp với, font) nằm ở `assets/styles/index.json`. Xem trực quan: trang thư viện style trên GitHub Pages của SlideFly.
 
@@ -18,6 +18,7 @@ Dữ liệu đầy đủ (tên, nền, nhãn tâm trạng, hợp với, font) n�
 | Bản sắc Việt: Tết, văn hóa, du lịch, thương hiệu Việt | `son-mai` (nền tối, sơn son thếp vàng), `dong-ho` (giấy dó, tranh khắc gỗ), `hoi-an` (tường vàng, đèn lồng) |
 | Xu hướng 2026 | `aurora` (cực quang, AI và công nghệ), `bento-light` (thẻ trắng kiểu Apple, báo cáo sản phẩm), `bauhaus` (hình học nguyên sắc, giáo dục thiết kế), `restorative` (màu đất chữa lành, sức khỏe, nhân sự), `wabi` (tối giản Nhật, nghiên cứu, chiêm nghiệm) |
 | Dịp đặc biệt | `art-deco` (gala, trao giải, tất niên), `clay-3d` (đất nặn 3D, trẻ em, edtech) |
+| **Style hai lớp** (sân khấu CSS + minh họa SVG vẽ riêng từng slide theo `<slug>.art.md`) | `blueprint` (bản vẽ kỹ thuật, xây dựng, kiến trúc), `thuy-mac` (tranh thủy mặc, văn hóa, chiêm nghiệm), `mau-nuoc` (màu nước, thiên nhiên, kể chuyện), `iso-infographic` (khối isometric, hệ thống, quy trình), `risograph` (in hai mực lệch đăng, sáng tạo, sự kiện trẻ), `cat-giay-do` (cắt giấy đỏ, Tết, lễ hội) |
 
 ## Gợi ý chọn 3 bản xem trước
 - 1 bản **an toàn** trong nhóm đúng mục đích (ví dụ doanh nghiệp: `swiss-modern` hoặc `blue-professional`; sinh viên: `xanh-dai-hoc`).
@@ -31,3 +32,7 @@ Dữ liệu đầy đủ (tên, nền, nhãn tâm trạng, hợp với, font) n�
 - `bento-light` đặt chữ trong thẻ trắng: slide số liệu có 2, 3 hoặc 4 số thì thẻ tự chia theo số ô.
 - `aurora` dùng vệt sáng mờ (filter blur): máy chiếu yếu vẫn chạy, nhưng nên thử trước trên máy trình chiếu.
 - Ký tự hiếm (≤, ≥, →) có thể không có trong font hiển thị; trình duyệt tự lấy font khác, vẫn đọc được.
+
+## Style hai lớp (thêm ngày 11/10/2026)
+
+6 style phỏng theo bộ style của lemo-opuscar (MIT) qua MotionFly. Ngoài file CSS còn có `assets/styles/<slug>.art.md`: bản luật để vẽ một minh họa SVG riêng cho từng slide (bảng màu, nét, hình mẫu, 4 công thức: bìa, sơ đồ khái niệm, quy trình, con số). Đọc file `.art.md` trước khi dựng; chế độ đẹp và nhanh xem `SKILL.md` Bước 3. Minh họa đánh dấu `aria-hidden="true"` để `deck.audit()` cho phép tràn mép có chủ ý.

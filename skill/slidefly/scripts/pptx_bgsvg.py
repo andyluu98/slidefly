@@ -8,7 +8,7 @@ import math
 import re
 
 from pptx_bgparts import _angle, _col, _conic, _grad_xml, _stops, _svg_doc
-from pptx_css import px, resolve, split_top
+from pptx_css import first_url, px, resolve, split_top
 
 N = [0]
 
@@ -122,7 +122,8 @@ def background_svg(d, tok, w, h):
             pid = _id('t')
             defs.append(f'<pattern id="{pid}" patternUnits="userSpaceOnUse" x="{x0 + pad:.2f}" y="{y0 + pad:.2f}" width="{tw:.2f}" height="{th:.2f}">{tile}</pattern>')
             body += f'<rect x="{pad}" y="{pad}" width="{bw:.2f}" height="{bh:.2f}" fill="url(#{pid})"/>'
-    doc = _svg_doc(re.match(r'(url\(.*?\))', mask, re.S).group(1)) if 'url(' in mask else None
+    mask_url = first_url(mask)   # balanced: an SVG mask may hold url(#g) or rotate(...) inside
+    doc = _svg_doc(mask_url) if mask_url else None
     if doc:
         mid = _id('m')
         defs.append(f'<mask id="{mid}" maskUnits="userSpaceOnUse" x="0" y="0" width="{w:.2f}" height="{h:.2f}">'

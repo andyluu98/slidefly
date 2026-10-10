@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mẫu SlideFly</title>
+<!-- Đổi style: thay đúng 1 dòng link styles/*.css bên dưới. -->
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-base.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-layouts.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/styles/thuy-mac.css">
+<!-- Hiệu ứng theo động từ + sơ đồ: xem templates/deck-so-do.html -->
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-motion.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-viz.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-icons.css">
+<style>
+/* Minh họa vẽ riêng theo styles/thuy-mac.art.md: 4 bức SVG inline (bìa, sơ đồ khái niệm, quy trình, so sánh). */
+.ink-art { position: absolute; overflow: visible; pointer-events: none; }
+.ink-art g { transform-box: fill-box; transform-origin: center; }
+.cn-label { position: absolute; margin: 0; font: italic 400 26px/1.2 var(--font-display); color: var(--muted); text-align: center; }
+.cn-cap { position: absolute; margin: 0; font: italic 400 36px/1.25 var(--font-display); color: var(--fg); text-align: center; }
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<div class="deck-stage">
+  <!-- Diễn viên (hình trang trí) do engine tự tạo từ --actors của style. -->
+
+  <!-- 1. cover: minh họa chính, ngọn núi được vẽ dần bằng nét bút -->
+  <section class="slide" data-layout="cover">
+    <svg class="ink-art reveal" style="left:1010px; top:120px; --i:0" width="860" height="800" viewBox="0 0 860 800" aria-hidden="true">
+      <defs>
+        <linearGradient id="cv-m" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1B1A17" stop-opacity=".46"/><stop offset=".7" stop-color="#1B1A17" stop-opacity=".18"/><stop offset="1" stop-color="#1B1A17" stop-opacity="0"/></linearGradient>
+        <linearGradient id="cv-e" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1B1A17" stop-opacity=".88"/><stop offset="1" stop-color="#1B1A17" stop-opacity=".08"/></linearGradient>
+        <radialGradient id="cv-mist" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#F2ECDE" stop-opacity=".96"/><stop offset=".6" stop-color="#F2ECDE" stop-opacity=".82"/><stop offset="1" stop-color="#F2ECDE" stop-opacity="0"/></radialGradient>
+      </defs>
+      <path fill="url(#cv-m)" d="M60 700C110 600 170 470 230 360C265 295 290 200 330 140C345 120 362 124 375 150C400 205 430 260 470 300C520 350 560 330 600 300C620 288 640 292 660 320C700 380 760 470 820 560L860 700Z"/>
+      <path fill="url(#cv-e)" d="M80 690C140 580 190 470 248 362C282 300 302 210 332 146C338 136 346 134 350 140C322 205 302 300 268 370C214 480 160 590 112 700Z"/>
+      <path class="draw" pathLength="1" style="--d:0.2" fill="none" stroke="#1B1A17" stroke-opacity=".82" stroke-width="5" stroke-linecap="round" d="M350 140C380 200 420 262 470 300"/>
+      <path class="draw" pathLength="1" style="--d:0.5" fill="none" stroke="#1B1A17" stroke-opacity=".6" stroke-width="4" stroke-linecap="round" d="M560 330C600 296 640 288 664 322C700 376 760 466 818 556"/>
+      <path class="draw" pathLength="1" style="--d:0.8" fill="none" stroke="#1B1A17" stroke-opacity=".34" stroke-width="3" stroke-linecap="round" d="M360 190Q340 250 300 320M410 240Q392 300 352 370M300 260Q280 320 240 390M620 340Q600 390 570 440"/>
+      <g fill="#1B1A17" fill-opacity=".92">
+        <circle cx="334" cy="150" r="6"/><circle cx="300" cy="232" r="5"/><circle cx="372" cy="170" r="5"/><circle cx="262" cy="320" r="5.5"/>
+        <circle cx="430" cy="262" r="4"/><circle cx="598" cy="312" r="4"/><circle cx="640" cy="302" r="3.5"/><circle cx="230" cy="380" r="4.5"/>
+      </g>
+      <ellipse cx="440" cy="650" rx="560" ry="100" fill="url(#cv-mist)"/>
+      <path class="draw" pathLength="1" style="--d:1.1" fill="none" stroke="#1B1A17" stroke-opacity=".2" stroke-width="2" stroke-linecap="round" d="M120 735L330 733M420 748L640 745M250 768L420 767"/>
+    </svg>
+    <p class="kicker reveal">SlideFly</p>
+    <h1 class="title reveal">Slide chuyển cảnh kiểu Morph trên trình duyệt</h1>
+    <p class="subtitle reveal">Một file HTML, mở bằng Chrome là trình chiếu được</p>
+    <p class="meta reveal">Bộ mẫu 9 kiểu slide</p>
+  </section>
+
+  <!-- 2. agenda -->
+  <section class="slide" data-layout="agenda">
+    <h2 class="title reveal">Nội dung</h2>
+    <ol class="agenda-list">
+      <li><span class="num reveal">01</span><div><h3 class="reveal" data-morph-id="s1">Cơ chế diễn viên</h3><p class="reveal">Hình cố định, chỉ đổi tư thế</p></div></li>
+      <li><span class="num reveal">02</span><div><h3 class="reveal">Chín kiểu slide</h3><p class="reveal">Từ trang bìa đến lời cảm ơn</p></div></li>
+      <li><span class="num reveal">03</span><div><h3 class="reveal">Tự co giãn</h3><p class="reveal">Ít chữ thì chữ to hơn</p></div></li>
+      <li><span class="num reveal">04</span><div><h3 class="reveal">Đo độ lấp đầy</h3><p class="reveal">Máy tự soát slide bị trống</p></div></li>
+    </ol>
+  </section>
+
+  <!-- 3. section -->
+  <section class="slide" data-layout="section">
+    <p class="num reveal">01</p>
+    <h2 class="title reveal" data-morph-id="s1">Cơ chế diễn viên</h2>
+    <p class="subtitle reveal">Morph là cùng một vật đổi vị trí giữa hai slide</p>
+  </section>
+
+  <!-- 4. content: sơ đồ khái niệm, cùng một ngọn núi ở hai tư thế -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Hình cố định, chỉ đổi tư thế</h2>
+    <ul class="bullets" style="left:120px; width:1040px">
+      <li class="reveal">Mỗi style có một nhóm hình cố định, gọi là <b>diễn viên</b>.</li>
+      <li class="reveal">Mỗi kiểu slide quy định một <b>tư thế</b>: vị trí, kích thước, màu.</li>
+      <li class="reveal">Khi chuyển slide, trình duyệt cho hình <b>trượt dần</b> sang tư thế mới.</li>
+      <li class="reveal">Chữ của slide mới hiện sau, khi hình đã bắt đầu chuyển động.</li>
+    </ul>
+    <svg class="ink-art reveal" style="left:1290px; top:290px" width="500" height="540" viewBox="0 0 500 540" aria-hidden="true">
+      <defs>
+        <linearGradient id="cn-m" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1B1A17" stop-opacity=".62"/><stop offset=".7" stop-color="#1B1A17" stop-opacity=".22"/><stop offset="1" stop-color="#1B1A17" stop-opacity="0"/></linearGradient>
+        <linearGradient id="cn-e" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1B1A17" stop-opacity=".9"/><stop offset="1" stop-color="#1B1A17" stop-opacity=".1"/></linearGradient>
+      </defs>
+      <path transform="translate(30 60) scale(1.2)" fill="#3A4044" fill-opacity=".2" d="M0 80C10 66 18 52 28 40C34 32 38 22 44 12C47 7 51 6 54 11C58 20 62 28 68 34C74 40 80 38 86 44C92 52 96 66 100 80Z"/>
+      <path transform="translate(30 60) scale(1.2)" fill="#3A4044" fill-opacity=".3" d="M3 79C12 64 22 50 31 39C37 30 41 20 45 12C47 9 50 8 52 10C47 20 42 32 35 42C26 55 17 67 12 80Z"/>
+      <path fill="none" stroke="#1B1A17" stroke-opacity=".16" stroke-width="2" stroke-linecap="round" d="M30 166L150 165"/>
+      <path transform="translate(190 240) scale(2.9)" fill="url(#cn-m)" d="M0 80C10 66 18 52 28 40C34 32 38 22 44 12C47 7 51 6 54 11C58 20 62 28 68 34C74 40 80 38 86 44C92 52 96 66 100 80Z"/>
+      <path transform="translate(190 240) scale(2.9)" fill="url(#cn-e)" d="M3 79C12 64 22 50 31 39C37 30 41 20 45 12C47 9 50 8 52 10C47 20 42 32 35 42C26 55 17 67 12 80Z"/>
+      <path transform="translate(190 240) scale(2.9)" fill="none" stroke="#1B1A17" stroke-opacity=".34" stroke-width="1" stroke-linecap="round" d="M52 18Q49 30 42 42M60 28Q57 38 50 50M72 40Q70 48 64 58"/>
+      <g fill="#1B1A17" fill-opacity=".9"><circle cx="323" cy="278" r="4.5"/><circle cx="306" cy="315" r="4"/><circle cx="352" cy="286" r="3.6"/><circle cx="286" cy="350" r="4.2"/><circle cx="393" cy="344" r="3.4"/></g>
+      <path fill="none" stroke="#1B1A17" stroke-opacity=".2" stroke-width="2" stroke-linecap="round" d="M170 492L470 490"/>
+      <path class="draw" pathLength="1" style="--d:0.3" fill="none" stroke="#1B1A17" stroke-opacity=".8" stroke-width="7" stroke-linecap="round" d="M160 118C240 96 310 150 330 236"/>
+      <path class="draw" pathLength="1" style="--d:0.4" fill="none" stroke="#1B1A17" stroke-opacity=".3" stroke-width="2.5" stroke-linecap="round" d="M166 128C236 112 296 158 316 232"/>
+      <circle cx="331" cy="242" r="6" fill="#1B1A17" fill-opacity=".85"/>
+    </svg>
+    <p class="cn-label reveal" style="left:1290px; top:466px; width:180px; font-size:26px; color:var(--muted); text-align:center">Slide trước</p>
+    <p class="cn-label reveal" style="left:1630px; top:410px; width:170px; font-size:26px; color:var(--muted); text-align:center">trượt dần</p>
+    <p class="cn-label reveal" style="left:1535px; top:792px; width:180px; font-size:26px; color:var(--muted); text-align:center">Slide sau</p>
+    <p class="cn-cap reveal" style="left:1290px; top:862px; width:500px; font-size:36px; text-align:center">Cùng tên là cùng một vật</p>
+  </section>
+
+  <!-- 5. content (second in a row: parity changes the pose) -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Một khung cho mọi màn hình</h2>
+    <ul class="bullets">
+      <li class="reveal">Slide được thiết kế ở một kích thước cố định 1920×1080.</li>
+      <li class="reveal">Màn hình to hay nhỏ, cả khung được phóng to, thu nhỏ theo.</li>
+      <li class="reveal">Không vỡ bố cục trên máy chiếu, laptop hay điện thoại.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-big">16:9</p>
+      <p class="hl-text">Tỷ lệ khung chuẩn</p>
+    </aside>
+  </section>
+
+  <!-- 6. two-col + takeaway -->
+  <section class="slide" data-layout="two-col">
+    <h2 class="title reveal">PowerPoint Morph và SlideFly</h2>
+    <div class="cols">
+      <div class="col reveal-left">
+        <h3>PowerPoint</h3>
+        <ul>
+          <li>Chạy trong PowerPoint</li>
+          <li>Sửa trực tiếp bằng chuột</li>
+          <li>Khớp hình theo tên</li>
+        </ul>
+      </div>
+      <div class="col reveal-right">
+        <h3>SlideFly</h3>
+        <ul>
+          <li>Chạy trên trình duyệt</li>
+          <li>Sửa bằng nội dung chữ</li>
+          <li>Khớp hình theo data-actor</li>
+        </ul>
+      </div>
+    </div>
+    <p class="takeaway reveal">Cùng một ý tưởng: vật trùng tên thì trượt sang vị trí mới.</p>
+  </section>
+
+  <!-- 7. stats: so sánh, ba nét bút từ nhạt thưa tới đặc mực -->
+  <section class="slide" data-layout="stats">
+    <h2 class="title reveal">Ba bậc cỡ chữ tự chọn</h2>
+    <div class="stats">
+      <div class="stat reveal"><span class="stat-num">≤3</span><span class="stat-label">ý trên một slide: chữ lớn nhất, dễ đọc từ xa</span></div>
+      <div class="stat reveal"><span class="stat-num">4-5</span><span class="stat-label">ý trên một slide: chữ vừa, vẫn thoáng</span></div>
+      <div class="stat reveal"><span class="stat-num">6+</span><span class="stat-label">ý trên một slide: chữ nhỏ, nên tách slide</span></div>
+    </div>
+    <svg class="ink-art" style="left:120px; top:836px" width="1680" height="120" viewBox="0 0 1680 120" aria-hidden="true">
+      <path class="draw" pathLength="1" style="--d:0.4" fill="none" stroke="#1B1A17" stroke-opacity=".32" stroke-width="7" stroke-linecap="round" d="M94 62C190 54 320 55 434 60"/>
+      <path class="draw" pathLength="1" style="--d:0.45" fill="none" stroke="#1B1A17" stroke-opacity=".22" stroke-width="1.5" stroke-linecap="round" d="M120 54C220 48 330 50 420 53"/>
+      <path class="draw" pathLength="1" style="--d:0.6" fill="none" stroke="#1B1A17" stroke-opacity=".55" stroke-width="16" stroke-linecap="round" d="M664 62C770 50 910 52 1016 62"/>
+      <path class="draw" pathLength="1" style="--d:0.65" fill="none" stroke="#1B1A17" stroke-opacity=".35" stroke-width="3" stroke-linecap="round" d="M680 46C780 38 900 40 1004 48M700 76C800 72 920 74 1010 74"/>
+      <path class="draw" pathLength="1" style="--d:0.8" fill="none" stroke="#1B1A17" stroke-opacity=".88" stroke-width="30" stroke-linecap="round" d="M1238 60C1330 46 1490 48 1594 62"/>
+      <path class="draw" pathLength="1" style="--d:0.9" fill="none" stroke="#1B1A17" stroke-opacity=".7" stroke-width="14" stroke-linecap="round" d="M1250 80C1360 74 1480 76 1590 82"/>
+      <path fill="none" stroke="#F2ECDE" stroke-opacity=".9" stroke-width="2" stroke-linecap="round" d="M860 58L1000 60M900 66L1010 66M1420 52L1590 58M1460 62L1592 66M1380 84L1560 86"/>
+      <g fill="#1B1A17" fill-opacity=".8"><circle cx="1616" cy="40" r="4"/><circle cx="1632" cy="58" r="2.5"/><circle cx="1222" cy="90" r="3"/><circle cx="1576" cy="104" r="2.4"/><circle cx="1300" cy="26" r="2"/></g>
+    </svg>
+  </section>
+
+  <!-- 8. timeline: quy trình, mực loang đậm dần qua từng bước -->
+  <section class="slide" data-layout="timeline">
+    <h2 class="title reveal">Quy trình dựng một deck</h2>
+    <svg class="ink-art" style="left:100px; top:570px" width="1720" height="120" viewBox="0 0 1720 120" aria-hidden="true">
+      <defs><radialGradient id="tl-g" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#1B1A17" stop-opacity="0"/><stop offset=".5" stop-color="#1B1A17" stop-opacity=".22"/><stop offset=".82" stop-color="#1B1A17" stop-opacity=".5"/><stop offset=".93" stop-color="#1B1A17" stop-opacity=".9"/><stop offset="1" stop-color="#1B1A17" stop-opacity="0"/></radialGradient></defs>
+      <g class="reveal-scale" style="--i:1"><ellipse cx="32" cy="60" rx="35" ry="29" transform="rotate(-8 32 60)" fill="url(#tl-g)" fill-opacity=".25"/></g>
+      <g class="reveal-scale" style="--i:2"><ellipse cx="374.4" cy="60" rx="35" ry="29" transform="rotate(12 374.4 60)" fill="url(#tl-g)" fill-opacity=".38"/></g>
+      <g class="reveal-scale" style="--i:3"><ellipse cx="716.8" cy="60" rx="35" ry="29" transform="rotate(-4 716.8 60)" fill="url(#tl-g)" fill-opacity=".52"/><circle cx="754" cy="32" r="2.4" fill="#1B1A17" fill-opacity=".4"/></g>
+      <g class="reveal-scale" style="--i:4"><ellipse cx="1059.2" cy="60" rx="35" ry="29" transform="rotate(18 1059.2 60)" fill="url(#tl-g)" fill-opacity=".68"/><circle cx="1098" cy="90" r="3" fill="#1B1A17" fill-opacity=".5"/><circle cx="1022" cy="28" r="2" fill="#1B1A17" fill-opacity=".45"/></g>
+      <g class="reveal-scale" style="--i:5"><ellipse cx="1401.6" cy="60" rx="35" ry="29" transform="rotate(-14 1401.6 60)" fill="url(#tl-g)" fill-opacity=".85"/><circle cx="1444" cy="30" r="3.4" fill="#1B1A17" fill-opacity=".7"/><circle cx="1362" cy="94" r="2.6" fill="#1B1A17" fill-opacity=".6"/><circle cx="1450" cy="86" r="2" fill="#1B1A17" fill-opacity=".55"/></g>
+    </svg>
+    <div class="timeline">
+      <div class="step reveal"><div class="when">01</div><h3>Nội dung</h3><p>Gom dàn ý, số liệu có nguồn</p></div>
+      <div class="step reveal"><div class="when">02</div><h3>Chọn style</h3><p>Xem 3 bản thử rồi chọn</p></div>
+      <div class="step reveal"><div class="when">03</div><h3>Dựng</h3><p>Viết HTML theo khung mẫu</p></div>
+      <div class="step reveal"><div class="when">04</div><h3>Đo</h3><p>Chạy deck.audit() từng slide</p></div>
+      <div class="step reveal"><div class="when">05</div><h3>Bàn giao</h3><p>Gộp thành một file HTML</p></div>
+    </div>
+  </section>
+
+  <!-- 9. quote -->
+  <section class="slide" data-layout="quote">
+    <blockquote class="quote reveal-blur">Hình trang trí đứng yên chỉ là nền. Khi nó di chuyển, nó kể chuyện.</blockquote>
+    <p class="cite reveal">Nguyên tắc của bộ mẫu</p>
+  </section>
+
+  <!-- 10. closing -->
+  <section class="slide" data-layout="closing">
+    <p class="kicker reveal">Hết phần mẫu</p>
+    <h2 class="title reveal">Cảm ơn</h2>
+    <p class="subtitle reveal">Đổi style chỉ cần thay một dòng link CSS.</p>
+  </section>
+
+</div>
+</div>
+<script src="../skill/slidefly/assets/morph-viz-diagrams.js"></script>
+<script src="../skill/slidefly/assets/morph-viz.js"></script>
+<script src="../skill/slidefly/assets/morph-engine.js"></script>
+<script src="../skill/slidefly/assets/morph-nav.js"></script>
+<script src="../skill/slidefly/assets/morph-audit.js"></script>
+<script src="../skill/slidefly/assets/morph-steps.js"></script>
+<script src="../skill/slidefly/assets/morph-icons.js"></script>
+</body>
+</html>

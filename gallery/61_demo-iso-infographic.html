@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mẫu SlideFly: Infographic isometric</title>
+<!-- Đổi style: thay đúng 1 dòng link styles/*.css bên dưới. -->
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-base.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-layouts.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/styles/iso-infographic.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-motion.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-viz.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-icons.css">
+<style>
+/* deck drawings: labels sit outside the SVG so they stay editable in PowerPoint */
+.pin-lbl, .st-lbl, .pr-num, .pr-lbl, .dim-lbl, .dev-lbl, .n-kick, .n-big, .n-say, .n-src { position: absolute; margin: 0; }
+.iso-art { overflow: visible; }
+br.pp { display: none; }
+.pin-lbl { padding: 6px 16px; background: var(--paper); border: 2px solid var(--ink); border-radius: 8px; font-size: 24px; font-weight: 600; line-height: 1.3; color: var(--ink); }
+.st-lbl, .pr-lbl { font-size: 26px; line-height: 1.35; color: var(--muted); text-align: center; }
+.st-lbl b, .pr-lbl b { display: block; margin-bottom: 6px; font-family: var(--font-display); font-size: 34px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--fg); }
+.pr-num { font-family: var(--font-display); font-size: 60px; font-weight: 500; line-height: 1; color: var(--accent); text-align: center; }
+.dim-lbl { font-family: var(--font-display); font-size: 26px; font-weight: 600; line-height: 1.2; color: var(--ink); }
+.dev-lbl { font-size: 24px; font-weight: 600; line-height: 1.3; color: var(--muted); }
+.n-kick { font-size: 22px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+.n-big { font-family: var(--font-display); font-size: 116px; font-weight: 500; line-height: 1.15; color: var(--accent); }
+.n-say { font-family: var(--font-display); font-size: 38px; font-weight: 500; line-height: 1.3; color: var(--fg); }
+.n-src { font-size: 20px; line-height: 1.3; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<div class="deck-stage">
+  <!-- Diễn viên (hình trang trí) do engine tự tạo từ --actors của style. -->
+
+  <!-- 1. cover -->
+  <section class="slide" data-layout="cover">
+    <p class="kicker reveal">SlideFly</p>
+    <h1 class="title reveal">Slide chuyển cảnh kiểu Morph trên trình duyệt</h1>
+    <p class="subtitle reveal">Một file HTML, mở bằng Chrome là trình chiếu được</p>
+    <p class="meta reveal">Bộ mẫu 9 kiểu slide</p>
+    <svg class="iso-art" style="position:absolute;left:960px;top:200px" width="960" height="860" viewBox="960 200 960 860" aria-hidden="true">
+      <path class="i-flow" d="M1480 504.5L1573.5 558.5"/><polygon class="i-head fx fx-pop" style="--d:.9" points="1596,571.5 1563.9,564 1583,553"/>
+      <path class="i-flow" d="M1340 504.5L1241.5 561.4"/><polygon class="i-head fx fx-pop" style="--d:1.0" points="1219,574.4 1232,555.9 1251,566.9"/>
+      <path class="i-flow" d="M1611 632.2L1480.5 707.5"/><polygon class="i-head fx fx-pop" style="--d:1.1" points="1458,720.5 1471,702 1490,713"/>
+      <path class="i-flow" d="M1205.3 630L1339.5 707.5"/><polygon class="i-head fx fx-pop" style="--d:1.2" points="1362,720.5 1330,713 1349,702"/>
+      <g class="fx fx-pop" style="--d:0.9"><polygon class="i-bl" points="1518.6,516.2 1537.1,526.9 1537.1,548.2 1518.6,537.5"/><polygon class="i-br" points="1555.5,516.2 1537.1,526.9 1537.1,548.2 1555.5,537.5"/><polygon class="i-bt" points="1537.1,505.6 1555.5,516.2 1537.1,526.9 1518.6,516.2"/></g>
+      <g class="fx fx-pop" style="--d:1.0"><polygon class="i-bl" points="1264.5,516.2 1282.9,526.9 1282.9,548.2 1264.5,537.5"/><polygon class="i-br" points="1301.4,516.2 1282.9,526.9 1282.9,548.2 1301.4,537.5"/><polygon class="i-bt" points="1282.9,505.6 1301.4,516.2 1282.9,526.9 1264.5,516.2"/></g>
+      <g class="fx fx-pop" style="--d:1.1"><polygon class="i-bl" points="1518.6,653.5 1537.1,664.2 1537.1,685.5 1518.6,674.8"/><polygon class="i-br" points="1555.5,653.5 1537.1,664.2 1537.1,685.5 1555.5,674.8"/><polygon class="i-bt" points="1537.1,642.9 1555.5,653.5 1537.1,664.2 1518.6,653.5"/></g>
+      <g class="fx fx-pop" style="--d:1.2"><polygon class="i-bl" points="1264.5,653.5 1282.9,664.2 1282.9,685.5 1264.5,674.8"/><polygon class="i-br" points="1301.4,653.5 1282.9,664.2 1282.9,685.5 1301.4,674.8"/><polygon class="i-bt" points="1282.9,642.9 1301.4,653.5 1282.9,664.2 1264.5,653.5"/></g>
+      <path class="i-ink draw" pathLength="1" style="--d:.6" d="M1345.5 748.2A64.5 37.2 0 0 0 1474.5 748.2"/>
+      <path class="i-ink draw" pathLength="1" style="--d:.7" d="M1656 536.9V330H1700"/>
+      <circle class="i-pin" cx="1656" cy="536.9" r="9"/>
+      <path class="i-ink draw" pathLength="1" style="--d:.8" d="M1410 785.4V1010H1330"/>
+      <circle class="i-pin" cx="1410" cy="785.4" r="9"/>
+    </svg>
+    <p class="pin-lbl" style="left:1712px;top:304px">Diễn viên</p>
+    <p class="pin-lbl" style="left:1196px;top:984px">Tư thế</p>
+  </section>
+
+  <!-- 2. agenda -->
+  <section class="slide" data-layout="agenda">
+    <h2 class="title reveal">Nội dung</h2>
+    <ol class="agenda-list">
+      <li><span class="num reveal">01</span><div><h3 class="reveal" data-morph-id="s1">Cơ chế diễn viên</h3><p class="reveal">Hình cố định, chỉ đổi tư thế</p></div></li>
+      <li><span class="num reveal">02</span><div><h3 class="reveal">Chín kiểu slide</h3><p class="reveal">Từ trang bìa đến lời cảm ơn</p></div></li>
+      <li><span class="num reveal">03</span><div><h3 class="reveal">Tự co giãn</h3><p class="reveal">Ít chữ thì chữ to hơn</p></div></li>
+      <li><span class="num reveal">04</span><div><h3 class="reveal">Đo độ lấp đầy</h3><p class="reveal">Máy tự soát slide bị trống</p></div></li>
+    </ol>
+  </section>
+
+  <!-- 3. section -->
+  <section class="slide" data-layout="section">
+    <p class="num reveal">01</p>
+    <h2 class="title reveal" data-morph-id="s1">Cơ chế diễn viên</h2>
+    <p class="subtitle reveal">Morph là cùng một vật đổi vị trí giữa hai slide</p>
+  </section>
+
+  <!-- 3b. free: concept drawing -->
+  <section class="slide" data-layout="free">
+    <h2 class="title reveal">Từ style đến chuyển cảnh</h2>
+    <svg class="iso-art" style="position:absolute;left:120px;top:190px" width="1680" height="600" viewBox="120 190 1680 600" aria-hidden="true">
+      <g class="fx fx-up" style="--d:0.00"><polygon class="i-sl" points="180,690 330,776.6 330,790.6 180,704"/><polygon class="i-sr" points="480,690 330,776.6 330,790.6 480,704"/><polygon class="i-plate" points="330,603.4 480,690 330,776.6 180,690"/><g><polygon class="i-sl" points="246,677.9 330,726.4 330,738.5 246,690"/><polygon class="i-sr" points="414,677.9 330,726.4 330,738.5 414,690"/><polygon class="i-st" points="330,629.4 414,677.9 330,726.4 246,677.9"/></g><g><polygon class="i-sl" points="246,660.6 330,709.1 330,721.2 246,672.7"/><polygon class="i-sr" points="414,660.6 330,709.1 330,721.2 414,672.7"/><polygon class="i-st" points="330,612.1 414,660.6 330,709.1 246,660.6"/></g><g><polygon class="i-bl" points="246,643.2 330,691.7 330,703.9 246,655.4"/><polygon class="i-br" points="414,643.2 330,691.7 330,703.9 414,655.4"/><polygon class="i-bt" points="330,594.7 414,643.2 330,691.7 246,643.2"/></g></g>
+      <g class="fx fx-up" style="--d:0.15"><polygon class="i-sl" points="600,447.5 750,534.1 750,548.1 600,461.5"/><polygon class="i-sr" points="900,447.5 750,534.1 750,548.1 900,461.5"/><polygon class="i-plate" points="750,360.9 900,447.5 750,534.1 600,447.5"/><g><polygon class="i-cl" points="705,357.4 750,383.4 750,435.4 705,409.4"/><polygon class="i-cr" points="795,357.4 750,383.4 750,435.4 795,409.4"/><polygon class="i-ct" points="750,331.5 795,357.4 750,383.4 705,357.4"/></g><g><polygon class="i-al" points="769.5,398.1 814.5,424.1 814.5,476.1 769.5,450.1"/><polygon class="i-ar" points="859.5,398.1 814.5,424.1 814.5,476.1 859.5,450.1"/><polygon class="i-at" points="814.5,372.2 859.5,398.1 814.5,424.1 769.5,398.1"/></g><g><polygon class="i-ml" points="666,414.6 711,440.6 711,492.5 666,466.6"/><polygon class="i-mr" points="756,414.6 711,440.6 711,492.5 756,466.6"/><polygon class="i-mt" points="711,388.6 756,414.6 711,440.6 666,414.6"/></g></g>
+      <g class="fx fx-up" style="--d:0.30"><polygon class="i-sl" points="1020,690 1170,776.6 1170,790.6 1020,704"/><polygon class="i-sr" points="1320,690 1170,776.6 1170,790.6 1320,704"/><polygon class="i-plate" points="1170,603.4 1320,690 1170,776.6 1020,690"/><path class="i-ghost" d="M1220,632.3L1070,718.9M1120,632.3L1270,718.9M1270,661.1L1120,747.7M1070,661.1L1220,747.7"/><polygon class="i-ghost" points="1170,575.1 1203,594.2 1203,632.3 1170,651.3 1137,632.3 1137,594.2"/><path class="i-ghost" d="M1170 613.2L1203,594.2M1170 613.2L1137,594.2M1170 613.2L1170,651.3"/><polygon class="i-ghost" points="1270,632.8 1303,651.9 1303,690 1270,709.1 1237,690 1237,651.9"/><path class="i-ghost" d="M1270 670.9L1303,651.9M1270 670.9L1237,651.9M1270 670.9L1270,709.1"/><g><polygon class="i-cl" points="1037,651.9 1070,670.9 1070,709.1 1037,690"/><polygon class="i-cr" points="1103,651.9 1070,670.9 1070,709.1 1103,690"/><polygon class="i-ct" points="1070,632.8 1103,651.9 1070,670.9 1037,651.9"/></g></g>
+      <g class="fx fx-up" style="--d:0.45"><polygon class="i-sl" points="1440.1,447.5 1590.1,534.1 1590.1,548.1 1440.1,461.5"/><polygon class="i-sr" points="1740.1,447.5 1590.1,534.1 1590.1,548.1 1740.1,461.5"/><polygon class="i-plate" points="1590.1,360.9 1740.1,447.5 1590.1,534.1 1440.1,447.5"/><g><polygon class="i-cl" points="1593.1,383.4 1629.1,404.2 1629.1,445.8 1593.1,425"/><polygon class="i-cr" points="1665.1,383.4 1629.1,404.2 1629.1,445.8 1665.1,425"/><polygon class="i-ct" points="1629.1,362.6 1665.1,383.4 1629.1,404.2 1593.1,383.4"/></g><path class="i-flow" d="M1572.1 457.9L1587 449.2"/><polygon class="i-head fx fx-pop" style="--d:1.5" points="1609.6,436.2 1596.6,454.7 1577.5,443.7"/><polygon class="i-ghost" points="1551.1,407.7 1587.1,428.4 1587.1,470 1551.1,490.8 1515.1,470 1515.1,428.4"/><path class="i-ghost" d="M1551.1 449.2L1587.1,428.4M1551.1 449.2L1515.1,428.4M1551.1 449.2L1551.1,490.8"/></g>
+      <path class="i-flow" d="M405 646.7L649 505.8"/><polygon class="i-head fx fx-pop" style="--d:.8" points="675,490.8 660.3,512.3 637.8,499.3"/>
+      <path class="i-flow" d="M825 490.8L1069.1 631.7"/><polygon class="i-head fx fx-pop" style="--d:1.0" points="1095,646.7 1057.8,638.2 1080.3,625.2"/>
+      <path class="i-flow" d="M1245 646.7L1489.1 505.8"/><polygon class="i-head fx fx-pop" style="--d:1.2" points="1515.1,490.8 1500.3,512.3 1477.8,499.3"/>
+    </svg>
+    <p class="st-lbl reveal" style="left:160px;top:817px;width:340px"><b>Style</b><br class="pp">Một file CSS, đổi bằng một dòng link</p>
+    <p class="st-lbl reveal" style="left:580px;top:574px;width:340px"><b>Diễn viên</b><br class="pp">Nhóm hình cố định của style</p>
+    <p class="st-lbl reveal" style="left:1000px;top:817px;width:340px"><b>Tư thế</b><br class="pp">Vị trí, kích thước, màu theo kiểu slide</p>
+    <p class="st-lbl reveal" style="left:1420px;top:574px;width:340px"><b>Chuyển cảnh</b><br class="pp">Hình trượt dần sang tư thế mới</p>
+  </section>
+
+  <!-- 4. content (bullets + highlight) -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Hình cố định, chỉ đổi tư thế</h2>
+    <ul class="bullets">
+      <li class="reveal">Mỗi style có một nhóm hình cố định, gọi là <b>diễn viên</b>.</li>
+      <li class="reveal">Mỗi kiểu slide quy định một <b>tư thế</b>: vị trí, kích thước, màu.</li>
+      <li class="reveal">Khi chuyển slide, trình duyệt cho hình <b>trượt dần</b> sang tư thế mới.</li>
+      <li class="reveal">Chữ của slide mới hiện sau, khi hình đã bắt đầu chuyển động.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <div class="hl-icon"><i class="ico" data-icon="arrows-move"><svg
+  xmlns="http://www.w3.org/2000/svg"
+ 
+ 
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true" focusable="false"
+><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 9l3 3l-3 3" /><path d="M15 12h6" /><path d="M6 9l-3 3l3 3" /><path d="M3 12h6" /><path d="M9 18l3 3l3 -3" /><path d="M12 15v6" /><path d="M15 6l-3 -3l-3 3" /><path d="M12 3v6" /></svg></i></div>
+      <p class="hl-text">Cùng tên là cùng một vật</p>
+    </aside>
+  </section>
+
+  <!-- 5. content (second in a row: parity changes the pose) -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Một khung cho mọi màn hình</h2>
+    <ul class="bullets">
+      <li class="reveal">Slide được thiết kế ở một kích thước cố định 1920×1080.</li>
+      <li class="reveal">Màn hình to hay nhỏ, cả khung được phóng to, thu nhỏ theo.</li>
+      <li class="reveal">Không vỡ bố cục trên máy chiếu, laptop hay điện thoại.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-big">16:9</p>
+      <p class="hl-text">Tỷ lệ khung chuẩn</p>
+    </aside>
+  </section>
+
+  <!-- 5b. free: process drawing -->
+  <section class="slide" data-layout="free">
+    <h2 class="title reveal">Một lần chuyển slide</h2>
+    <svg class="iso-art" style="position:absolute;left:120px;top:200px" width="1680" height="820" viewBox="120 200 1680 820" aria-hidden="true">
+      <g class="fx fx-up" style="--d:0.0"><polygon class="i-bl" points="264.1,750 420,840 420,940 264.1,850"/><polygon class="i-br" points="575.9,750 420,840 420,940 575.9,850"/><polygon class="i-bt" points="420,660 575.9,750 420,840 264.1,750"/>
+      <g><polygon class="i-sl" points="357.6,732 420,768 420,786 357.6,750"/><polygon class="i-sr" points="482.4,732 420,768 420,786 482.4,750"/><polygon class="i-st" points="420,696 482.4,732 420,768 357.6,732"/></g>
+      <path class="i-ink" d="M388.8,732L451.2,732M441.8,723L451.2,732L441.8,741"/>
+      </g>
+      <g class="fx fx-up" style="--d:0.2"><polygon class="i-al" points="804.1,650 960,740 960,940 804.1,850"/><polygon class="i-ar" points="1115.9,650 960,740 960,940 1115.9,850"/><polygon class="i-at" points="960,560 1115.9,650 960,740 804.1,650"/>
+      <g><polygon class="i-cl" points="960,590.6 994.3,610.4 994.3,650 960,630.2"/><polygon class="i-cr" points="1028.6,590.6 994.3,610.4 994.3,650 1028.6,630.2"/><polygon class="i-ct" points="994.3,570.8 1028.6,590.6 994.3,610.4 960,590.6"/></g><path class="i-flow" d="M944.4 659L953.1 654"/><polygon class="i-head fx fx-pop" style="--d:1.6" points="975.6,641 962.6,659.5 943.5,648.5"/><polygon class="i-ghost" points="925.7,610.4 960,630.2 960,669.8 925.7,689.6 891.4,669.8 891.4,630.2"/><path class="i-ghost" d="M925.7 650L960,630.2M925.7 650L891.4,630.2M925.7 650L925.7,689.6"/>
+      </g>
+      <g class="fx fx-up" style="--d:0.4"><polygon class="i-ml" points="1344.1,550 1500,640 1500,940 1344.1,850"/><polygon class="i-mr" points="1655.9,550 1500,640 1500,940 1655.9,850"/><polygon class="i-mt" points="1500,460 1655.9,550 1500,640 1344.1,550"/>
+      <g class="fx fx-pop" style="--d:1.90"><polygon class="i-sl" points="1484.4,499.6 1577.9,553.6 1577.9,559 1484.4,505"/><polygon class="i-sr" points="1596.6,542.8 1577.9,553.6 1577.9,559 1596.6,548.2"/><polygon class="i-st" points="1503.1,488.8 1596.6,542.8 1577.9,553.6 1484.4,499.6"/></g>
+      <g class="fx fx-pop" style="--d:2.05"><polygon class="i-sl" points="1450.1,519.4 1520.3,559.9 1520.3,565.3 1450.1,524.8"/><polygon class="i-sr" points="1539,549.1 1520.3,559.9 1520.3,565.3 1539,554.5"/><polygon class="i-st" points="1468.8,508.6 1539,549.1 1520.3,559.9 1450.1,519.4"/></g>
+      <g class="fx fx-pop" style="--d:2.20"><polygon class="i-sl" points="1415.8,539.2 1496.9,586 1496.9,591.4 1415.8,544.6"/><polygon class="i-sr" points="1515.6,575.2 1496.9,586 1496.9,591.4 1515.6,580.6"/><polygon class="i-st" points="1434.5,528.4 1515.6,575.2 1496.9,586 1415.8,539.2"/></g>
+      </g>
+      <path class="i-flow" d="M520 730Q695 490 846.9 568.1"/><polygon class="i-head fx fx-pop" style="--d:1.0" points="870,580 841.8,577.9 851.9,558.3"/>
+      <path class="i-flow" d="M1060 630Q1235 390 1386.9 468.1"/><polygon class="i-head fx fx-pop" style="--d:1.3" points="1410,480 1381.8,477.9 1391.9,458.3"/>
+    </svg>
+    <p class="pr-num reveal" style="left:220.0px;top:420px;width:400px">01</p>
+    <p class="pr-lbl reveal" style="left:220.0px;top:490px;width:400px"><b>Đổi slide</b><br class="pp">Bấm phím hoặc nút ở rìa</p>
+    <p class="pr-num reveal" style="left:760.0px;top:320px;width:400px">02</p>
+    <p class="pr-lbl reveal" style="left:760.0px;top:390px;width:400px"><b>Hình trượt</b><br class="pp">Hình trượt dần sang tư thế mới</p>
+    <p class="pr-num reveal" style="left:1300.0px;top:220px;width:400px">03</p>
+    <p class="pr-lbl reveal" style="left:1300.0px;top:290px;width:400px"><b>Chữ hiện sau</b><br class="pp">Chữ mới hiện khi hình đã chuyển động</p>
+  </section>
+
+  <!-- 6. two-col + takeaway -->
+  <section class="slide" data-layout="two-col">
+    <h2 class="title reveal">PowerPoint Morph và SlideFly</h2>
+    <div class="cols">
+      <div class="col reveal-left">
+        <h3>PowerPoint</h3>
+        <ul>
+          <li>Chạy trong PowerPoint</li>
+          <li>Sửa trực tiếp bằng chuột</li>
+          <li>Khớp hình theo tên</li>
+        </ul>
+      </div>
+      <div class="col reveal-right">
+        <h3>SlideFly</h3>
+        <ul>
+          <li>Chạy trên trình duyệt</li>
+          <li>Sửa bằng nội dung chữ</li>
+          <li>Khớp hình theo data-actor</li>
+        </ul>
+      </div>
+    </div>
+    <p class="takeaway reveal">Cùng một ý tưởng: vật trùng tên thì trượt sang vị trí mới.</p>
+  </section>
+
+  <!-- 7. stats -->
+  <section class="slide" data-layout="stats">
+    <h2 class="title reveal">Ba bậc cỡ chữ tự chọn</h2>
+    <div class="stats">
+      <div class="stat reveal"><span class="stat-num">≤3</span><span class="stat-label">ý trên một slide: chữ lớn nhất, dễ đọc từ xa</span></div>
+      <div class="stat reveal"><span class="stat-num">4-5</span><span class="stat-label">ý trên một slide: chữ vừa, vẫn thoáng</span></div>
+      <div class="stat reveal"><span class="stat-num">6+</span><span class="stat-label">ý trên một slide: chữ nhỏ, nên tách slide</span></div>
+    </div>
+  </section>
+
+  <!-- 7b. free: number drawing -->
+  <section class="slide" data-layout="free">
+    <h2 class="title reveal">Một khung, mọi cỡ màn hình</h2>
+    <p class="n-kick reveal" style="left:120px;top:330px;width:720px">Khung cố định</p>
+    <p class="n-big reveal-scale" style="left:120px;top:384px;width:740px">1920×1080</p>
+    <p class="n-say reveal" style="left:120px;top:540px;width:700px">Màn hình to hay nhỏ, cả khung được phóng to, thu nhỏ theo.</p>
+    <p class="n-src reveal" style="left:120px;top:960px;width:700px">Nguồn: kích thước sân khấu của SlideFly (morph-base.css), tỷ lệ 16:9.</p>
+    <svg class="iso-art" style="position:absolute;left:880px;top:200px" width="1000" height="840" viewBox="880 200 1000 840" aria-hidden="true">
+      <polygon class="i-sl" points="923,515 1546.5,875 1546.5,891 923,531"/><polygon class="i-sr" points="1737,765 1546.5,875 1546.5,891 1737,781"/><polygon class="i-plate" points="1113.5,405 1737,765 1546.5,875 923,515"/>
+      <g class="fx fx-up" style="--d:0.2"><polygon class="i-sr" points="1425.3,430 1439.1,422 1439.1,647 1425.3,655"/><polygon class="i-st" points="1078.9,230 1092.7,222 1439.1,422 1425.3,430"/><polygon class="i-sl" points="1078.9,230 1425.3,430 1425.3,655 1078.9,455"/><polygon class="i-br" points="1092.7,251.5 1411.4,435.5 1411.4,633.5 1092.7,449.5"/><polygon class="i-bt" points="1113.5,290.5 1269.4,380.5 1269.4,403 1113.5,313"/><polygon class="i-bt" points="1113.5,344.5 1252.1,424.5 1252.1,438 1113.5,358"/><polygon class="i-bt" points="1113.5,376 1224.3,440 1224.3,453.5 1113.5,389.5"/><polygon class="i-bt" points="1113.5,407.5 1238.2,479.5 1238.2,493 1113.5,421"/><polygon class="i-cl" points="1307.5,447.5 1376.8,487.5 1376.8,568.5 1307.5,528.5"/></g><g class="fx fx-up" style="--d:0.35"><polygon class="i-sr" points="1608.9,673 1619.3,667 1619.3,775 1608.9,781"/><polygon class="i-st" points="1442.6,577 1453,571 1619.3,667 1608.9,673"/><polygon class="i-sl" points="1442.6,577 1608.9,673 1608.9,781 1442.6,685"/><polygon class="i-br" points="1449.2,587.3 1602.2,675.6 1602.2,770.7 1449.2,682.4"/><polygon class="i-bt" points="1459.2,606 1534,649.2 1534,660 1459.2,616.8"/><polygon class="i-bt" points="1459.2,632 1525.7,670.4 1525.7,676.8 1459.2,638.4"/><polygon class="i-bt" points="1459.2,647.1 1512.4,677.8 1512.4,684.3 1459.2,653.6"/><polygon class="i-bt" points="1459.2,662.2 1519.1,696.8 1519.1,703.2 1459.2,668.7"/><polygon class="i-cl" points="1552.3,681.4 1585.6,700.6 1585.6,739.5 1552.3,720.3"/></g><g class="fx fx-up" style="--d:0.5"><polygon class="i-sr" points="1097.9,523 1106.6,518 1106.6,581 1097.9,586"/><polygon class="i-st" points="1000.9,467 1009.6,462 1106.6,518 1097.9,523"/><polygon class="i-sl" points="1000.9,467 1097.9,523 1097.9,586 1000.9,530"/><polygon class="i-br" points="1004.8,473 1094,524.5 1094,580 1004.8,528.5"/><polygon class="i-bt" points="1010.6,483.9 1054.3,509.1 1054.3,515.4 1010.6,490.2"/><polygon class="i-bt" points="1010.6,499.1 1049.4,521.5 1049.4,525.2 1010.6,502.8"/><polygon class="i-bt" points="1010.6,507.9 1041.6,525.8 1041.6,529.6 1010.6,511.7"/><polygon class="i-bt" points="1010.6,516.7 1045.5,536.9 1045.5,540.6 1010.6,520.5"/><polygon class="i-cl" points="1064.9,527.9 1084.3,539.1 1084.3,561.8 1064.9,550.6"/></g>
+      <path class="i-ink draw" pathLength="1" style="--d:.9" d="M1049.4 472L1395.8 672M1059.8 466l-20.8 12M1406.2 666l-20.8 12"/>
+      <path class="i-ink draw" pathLength="1" style="--d:1.1" d="M1049.4 438V213M1037.4 438h24M1037.4 213h24"/>
+      <path class="i-flow" d="M1440 420Q1530 440 1521.7 564.1"/><polygon class="i-head fx fx-pop" style="--d:1.3" points="1520,590 1510.8,563.3 1532.7,564.8"/>
+    </svg>
+    <p class="dim-lbl reveal" style="left:1153px;top:602px;width:160px">1920 px</p>
+    <p class="dim-lbl reveal" style="left:877px;top:304px;width:160px;text-align:right">1080 px</p>
+    <p class="dev-lbl reveal" style="left:1250px;top:236px;width:200px">Máy chiếu</p>
+    <p class="dev-lbl reveal" style="left:1520px;top:796px;width:160px">Laptop</p>
+    <p class="dev-lbl reveal" style="left:890px;top:618px;width:220px">Điện thoại</p>
+  </section>
+
+  <!-- 8. timeline -->
+  <section class="slide" data-layout="timeline">
+    <h2 class="title reveal">Quy trình dựng một deck</h2>
+    <div class="timeline">
+      <div class="step reveal"><div class="when">01</div><h3>Nội dung</h3><p>Gom dàn ý, số liệu có nguồn</p></div>
+      <div class="step reveal"><div class="when">02</div><h3>Chọn style</h3><p>Xem 3 bản thử rồi chọn</p></div>
+      <div class="step reveal"><div class="when">03</div><h3>Dựng</h3><p>Viết HTML theo khung mẫu</p></div>
+      <div class="step reveal"><div class="when">04</div><h3>Đo</h3><p>Chạy deck.audit() từng slide</p></div>
+      <div class="step reveal"><div class="when">05</div><h3>Bàn giao</h3><p>Gộp thành một file HTML</p></div>
+    </div>
+  </section>
+
+  <!-- 9. quote -->
+  <section class="slide" data-layout="quote">
+    <blockquote class="quote reveal-blur">Hình trang trí đứng yên chỉ là nền. Khi nó di chuyển, nó kể chuyện.</blockquote>
+    <p class="cite reveal">Nguyên tắc của bộ mẫu</p>
+  </section>
+
+  <!-- 10. closing -->
+  <section class="slide" data-layout="closing">
+    <p class="kicker reveal">Hết phần mẫu</p>
+    <h2 class="title reveal">Cảm ơn</h2>
+    <p class="subtitle reveal">Đổi style chỉ cần thay một dòng link CSS.</p>
+  </section>
+
+</div>
+</div>
+<script src="../skill/slidefly/assets/morph-viz-diagrams.js"></script>
+<script src="../skill/slidefly/assets/morph-viz.js"></script>
+<script src="../skill/slidefly/assets/morph-engine.js"></script>
+<script src="../skill/slidefly/assets/morph-nav.js"></script>
+<script src="../skill/slidefly/assets/morph-audit.js"></script>
+<script src="../skill/slidefly/assets/morph-steps.js"></script>
+<script src="../skill/slidefly/assets/morph-icons.js"></script>
+</body>
+</html>

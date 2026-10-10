@@ -151,8 +151,8 @@ def build_items(sl, sheet, base):
                 ctx.box('Diagram', *xb, [para([ctx.run(s, 30)], 'l', 10, 110, '•') for s in labels] or [para([ctx.run('Sơ đồ: xem bản HTML', 26, 'muted')])],
                         'ctr', line=((t['accent'][0], 0.6), 2), geom=('roundRect', 3000), inset=40)
         leftover_text(ctx, node, [k for k in node.children() if set(k.cls) & USED or k.tag in ('h1', 'h2')], box)
-        for k in node.children(lambda n: n.tag == 'svg'):   # hand-drawn plans, lines, roads: SVG pictures
-            svg_pic(ctx, k, images)
+    for k in node.children(lambda n: n.tag == 'svg'):   # hand-drawn plans, lines, roads, art of two-layer styles:
+        svg_pic(ctx, k, images)                          # SVG pictures on every layout (cover, section, quote, closing too)
     credit = node.by_class('photo-credit')
     if credit:
         ctx.box('Credit', 120, 1030, 1680, 36, [para(runs(ctx, credit, 18, 'muted'))], 'ctr')

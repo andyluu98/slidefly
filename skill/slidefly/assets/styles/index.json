@@ -730,5 +730,95 @@
   ],
   "best_for": "giáo dục trẻ em, edtech, app tiêu dùng, workshop vui",
   "fonts": "Baloo 2 + Nunito"
+ },
+ {
+  "slug": "blueprint",
+  "name": "Blueprint",
+  "scheme": "mixed",
+  "mood": [
+   "kỹ thuật",
+   "chính xác",
+   "cổ điển",
+   "trí tuệ"
+  ],
+  "best_for": "kỹ thuật, xây dựng, kiến trúc, giải thích công nghệ, ra mắt phần cứng",
+  "fonts": "Barlow Condensed + IBM Plex Sans",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "thuy-mac",
+  "name": "Thủy mặc",
+  "scheme": "light",
+  "mood": [
+   "tĩnh lặng",
+   "thanh nhã",
+   "sâu lắng",
+   "Á Đông"
+  ],
+  "best_for": "văn hóa, triết lý, thương hiệu truyền thống, chiêm nghiệm, thơ ca",
+  "fonts": "Noto Serif Display + Spectral",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "mau-nuoc",
+  "name": "Màu nước",
+  "scheme": "light",
+  "mood": [
+   "mềm mại",
+   "tự nhiên",
+   "ấm áp",
+   "thủ công"
+  ],
+  "best_for": "thiên nhiên, du lịch, kể chuyện, giáo dục, sức khỏe",
+  "fonts": "EB Garamond + Be Vietnam Pro",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "iso-infographic",
+  "name": "Infographic isometric",
+  "scheme": "light",
+  "mood": [
+   "rõ ràng",
+   "hệ thống",
+   "tươi sáng",
+   "hiện đại"
+  ],
+  "best_for": "giải thích hệ thống, quy trình, chuỗi cung ứng, báo cáo năm",
+  "fonts": "Lexend + Be Vietnam Pro",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "risograph",
+  "name": "Risograph",
+  "scheme": "light",
+  "mood": [
+   "trẻ trung",
+   "nghệ thuật",
+   "rực rỡ",
+   "indie"
+  ],
+  "best_for": "thương hiệu sáng tạo, sự kiện, workshop, tạp chí, marketing trẻ",
+  "fonts": "Bricolage Grotesque + Be Vietnam Pro",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "cat-giay-do",
+  "name": "Cắt giấy đỏ",
+  "scheme": "light",
+  "mood": [
+   "lễ hội",
+   "may mắn",
+   "truyền thống",
+   "tươi vui"
+  ],
+  "best_for": "Tết, lễ hội, thiệp chúc mừng, sự kiện cuối năm, văn hóa dân gian",
+  "fonts": "Spectral + Lexend",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
  }
 ]

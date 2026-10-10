@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mẫu SlideFly · Blueprint</title>
+<!-- Đổi style: thay đúng 1 dòng link styles/*.css bên dưới. Minh họa SVG vẽ theo styles/blueprint.art.md -->
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-base.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-layouts.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/styles/blueprint.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-motion.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-viz.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-icons.css">
+<style>
+/* hand-drawn figures (blueprint.art.md): white line work, paper fill under outlines */
+.art { position: absolute; overflow: visible; pointer-events: none; }
+.bp-o { fill: var(--fill); stroke: var(--line); stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; }
+.bp-tab { fill: var(--fill); stroke: var(--line); stroke-width: 3; }
+.bp-d { fill: none; stroke: var(--line); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.bp-t { fill: none; stroke: var(--line-soft); stroke-width: 2; stroke-linecap: round; }
+.bp-h { fill: none; stroke: var(--line-soft); stroke-width: 1.2; }
+.bp-hid { fill: none; stroke: var(--line-soft); stroke-width: 2.5; stroke-dasharray: 10 7; }
+.bp-cl { fill: none; stroke: var(--line-soft); stroke-width: 2; stroke-dasharray: 22 6 4 6; }
+.bp-ph { fill: none; stroke: var(--line-soft); stroke-width: 2; stroke-dasharray: 28 6 6 6 6 6; }
+.bp-let { fill: none; stroke: var(--line-soft); stroke-width: 6; stroke-linecap: round; }
+.bp-ar { fill: var(--line); stroke: none; }
+.bp-bal { fill: var(--fill); stroke: var(--line); stroke-width: 2.5; }
+.bp-lb { fill: var(--line); font-family: var(--font-display); font-size: 24px; font-weight: 600; letter-spacing: 0.06em; }
+.bp-sm { font-size: 19px; }
+.bp-mono { fill: var(--line); font-family: var(--font-mono); font-size: 19px; font-weight: 600; }
+/* the timeline figure draws its own stations on the axis */
+.s-tl .step::before { display: none; }
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<div class="deck-stage">
+  <!-- Diễn viên (hình trang trí) do engine tự tạo từ --actors của style. -->
+
+  <!-- 1. cover + HÌNH 1: máy bay giấy, hình chiếu bằng -->
+  <section class="slide" data-layout="cover">
+    <svg class="art" style="left:1120px; top:200px" width="700" height="540" viewBox="0 0 700 540" aria-hidden="true">
+      <defs><pattern id="bpH1" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V10" stroke="#e7f0f9" stroke-opacity=".55" stroke-width="1.3"/></pattern></defs>
+      <g class="reveal"><text class="bp-lb" x="0" y="24">HÌNH 1 · SLIDEFLY</text><path class="bp-t" d="M0 36H230"/><text class="bp-lb bp-sm" x="0" y="62">HÌNH CHIẾU BẰNG</text></g>
+      <path class="bp-cl" d="M330 70V490"/>
+      <path class="bp-ph" d="M14 470C70 420 120 340 186 282"/>
+      <path class="bp-o draw" pathLength="1" style="--d:0" d="M640 270L160 96L205 252L185 270L205 288L160 444Z"/>
+      <path d="M640 270L160 96L178 168Z" fill="url(#bpH1)"/>
+      <path class="bp-d draw" pathLength="1" style="--d:.45" d="M640 270L205 252M640 270L205 288"/>
+      <path class="bp-hid" d="M640 270L178 168M640 270L178 372"/>
+      <g class="reveal">
+        <path class="bp-t" d="M160 452V520M640 282V520M160 506H640M150 96H92M150 444H92M104 96V444"/>
+        <path class="bp-ar" d="M160 506l22-6v12zM640 506l-22-6v12zM104 96l-6 22h12zM104 444l-6-22h12z"/>
+        <text class="bp-mono" x="400" y="498" text-anchor="middle">L</text><text class="bp-mono" x="86" y="277" text-anchor="end">B</text>
+      </g>
+      <g class="reveal">
+        <path class="bp-t" d="M556 174L590 260M266 66L298 206M472 409L440 272"/>
+        <circle class="bp-ar" cx="590" cy="260" r="4"/><circle class="bp-ar" cx="298" cy="206" r="4"/><circle class="bp-ar" cx="440" cy="272" r="4"/>
+        <circle class="bp-bal" cx="552" cy="152" r="22"/><text class="bp-mono" x="552" y="159" text-anchor="middle">1</text><circle class="bp-bal" cx="264" cy="44" r="22"/><text class="bp-mono" x="264" y="51" text-anchor="middle">2</text><circle class="bp-bal" cx="478" cy="430" r="22"/><text class="bp-mono" x="478" y="437" text-anchor="middle">3</text>
+      </g>
+    </svg>
+    <p class="kicker reveal">SlideFly</p>
+    <h1 class="title reveal">Slide chuyển cảnh kiểu Morph trên trình duyệt</h1>
+    <p class="subtitle reveal">Một file HTML, mở bằng Chrome là trình chiếu được</p>
+    <p class="meta reveal">Bộ mẫu 9 kiểu slide</p>
+  </section>
+
+  <!-- 2. agenda -->
+  <section class="slide" data-layout="agenda">
+    <h2 class="title reveal">Nội dung</h2>
+    <ol class="agenda-list">
+      <li><span class="num reveal">01</span><div><h3 class="reveal" data-morph-id="s1">Cơ chế diễn viên</h3><p class="reveal">Hình cố định, chỉ đổi tư thế</p></div></li>
+      <li><span class="num reveal">02</span><div><h3 class="reveal">Chín kiểu slide</h3><p class="reveal">Từ trang bìa đến lời cảm ơn</p></div></li>
+      <li><span class="num reveal">03</span><div><h3 class="reveal">Tự co giãn</h3><p class="reveal">Ít chữ thì chữ to hơn</p></div></li>
+      <li><span class="num reveal">04</span><div><h3 class="reveal">Đo độ lấp đầy</h3><p class="reveal">Máy tự soát slide bị trống</p></div></li>
+    </ol>
+  </section>
+
+  <!-- 3. section -->
+  <section class="slide" data-layout="section">
+    <p class="num reveal">01</p>
+    <h2 class="title reveal" data-morph-id="s1">Cơ chế diễn viên</h2>
+    <p class="subtitle reveal">Morph là cùng một vật đổi vị trí giữa hai slide</p>
+  </section>
+
+  <!-- 4. content + HÌNH 2: sơ đồ khái niệm (một vật, hai tư thế, bảng kê) -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Hình cố định, chỉ đổi tư thế</h2>
+    <svg class="art" style="left:1260px; top:280px" width="540" height="700" viewBox="0 0 540 700" aria-hidden="true">
+      <g class="reveal"><text class="bp-lb" x="0" y="24">HÌNH 2 · MỘT VẬT, HAI TƯ THẾ</text><path class="bp-t" d="M0 36H330"/></g>
+      <g class="reveal"><rect class="bp-hid" x="40" y="120" width="150" height="90" rx="8"/><circle class="bp-hid" cx="115" cy="165" r="16"/></g>
+      <path class="bp-ph" d="M196 150C230 112 258 104 276 108"/><path class="bp-ar" d="M290 115L269 113L274 102Z"/>
+      <g transform="translate(395 160) rotate(-12) scale(1.25)">
+        <rect class="bp-o draw" pathLength="1" style="--d:.2" x="-75" y="-45" width="150" height="90" rx="8"/>
+        <circle class="bp-d" cx="0" cy="0" r="16"/><path class="bp-cl" d="M-95 0H95M0 -62V62"/>
+      </g>
+      <g class="reveal">
+        <path class="bp-t" d="M52 98L66 122M488 82L458 110"/>
+        <circle class="bp-bal" cx="40" cy="78" r="20"/><text class="bp-mono" x="40" y="85" text-anchor="middle">1</text><circle class="bp-bal" cx="500" cy="62" r="20"/><text class="bp-mono" x="500" y="69" text-anchor="middle">1</text>
+        <text class="bp-lb bp-sm" x="115" y="245" text-anchor="middle">TƯ THẾ A</text><text class="bp-lb bp-sm" x="400" y="268" text-anchor="middle">TƯ THẾ B</text>
+        <path class="bp-t" d="M115 254V304M395 276V304M115 296H395"/>
+        <path class="bp-ar" d="M115 296l20-5v10zM395 296l-20-5v10z"/>
+        <text class="bp-mono" x="255" y="288" text-anchor="middle">x</text>
+      </g>
+      <g class="reveal">
+        <rect class="bp-tab" x="20" y="400" width="500" height="218"/>
+        <path class="bp-t" d="M20 444H520M20 502H520M20 560H520M90 400V618M330 400V618"/>
+        <text class="bp-lb bp-sm" x="55" y="429" text-anchor="middle">SỐ</text><text class="bp-lb bp-sm" x="210" y="429" text-anchor="middle">TÊN</text><text class="bp-lb bp-sm" x="425" y="429" text-anchor="middle">TƯ THẾ</text>
+        <circle class="bp-bal" cx="55" cy="473" r="18"/><text class="bp-mono" x="55" y="480" text-anchor="middle">1</text><path class="bp-let" d="M110 473H196M208 473H262"/><text class="bp-mono" x="425" y="480" text-anchor="middle">A → B</text><circle class="bp-bal" cx="55" cy="531" r="18"/><text class="bp-mono" x="55" y="538" text-anchor="middle">2</text><path class="bp-let" d="M110 531H230M242 531H300"/><path class="bp-let" d="M372 531H478"/><circle class="bp-bal" cx="55" cy="589" r="18"/><text class="bp-mono" x="55" y="596" text-anchor="middle">3</text><path class="bp-let" d="M110 589H170M182 589H250"/><path class="bp-let" d="M372 589H478"/>
+        <path class="bp-d" d="M20 444H520V502H20Z"/>
+        <text class="bp-lb bp-sm" x="20" y="656">BẢNG KÊ CHI TIẾT</text>
+      </g>
+    </svg>
+    <ul class="bullets">
+      <li class="reveal">Mỗi style có một nhóm hình cố định, gọi là <b>diễn viên</b>.</li>
+      <li class="reveal">Mỗi kiểu slide quy định một <b>tư thế</b>: vị trí, kích thước, màu.</li>
+      <li class="reveal">Khi chuyển slide, trình duyệt cho hình <b>trượt dần</b> sang tư thế mới.</li>
+      <li class="reveal">Chữ của slide mới hiện sau, khi hình đã bắt đầu chuyển động.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-text">Cùng tên là cùng một vật</p>
+    </aside>
+  </section>
+
+  <!-- 5. content (second in a row: parity changes the pose) -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Một khung cho mọi màn hình</h2>
+    <ul class="bullets">
+      <li class="reveal">Slide được thiết kế ở một kích thước cố định 1920×1080.</li>
+      <li class="reveal">Màn hình to hay nhỏ, cả khung được phóng to, thu nhỏ theo.</li>
+      <li class="reveal">Không vỡ bố cục trên máy chiếu, laptop hay điện thoại.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-big">16:9</p>
+      <p class="hl-text">Tỷ lệ khung chuẩn</p>
+    </aside>
+  </section>
+
+  <!-- 6. two-col + takeaway -->
+  <section class="slide" data-layout="two-col">
+    <h2 class="title reveal">PowerPoint Morph và SlideFly</h2>
+    <div class="cols">
+      <div class="col reveal-left">
+        <h3>PowerPoint</h3>
+        <ul>
+          <li>Chạy trong PowerPoint</li>
+          <li>Sửa trực tiếp bằng chuột</li>
+          <li>Khớp hình theo tên</li>
+        </ul>
+      </div>
+      <div class="col reveal-right">
+        <h3>SlideFly</h3>
+        <ul>
+          <li>Chạy trên trình duyệt</li>
+          <li>Sửa bằng nội dung chữ</li>
+          <li>Khớp hình theo data-actor</li>
+        </ul>
+      </div>
+    </div>
+    <p class="takeaway reveal">Cùng một ý tưởng: vật trùng tên thì trượt sang vị trí mới.</p>
+  </section>
+
+  <!-- 7. stats + HÌNH 4: ba mặt đứng của slide, càng nhiều ý chữ càng mảnh; vết cắt A-A = tách slide -->
+  <section class="slide" data-layout="stats">
+    <h2 class="title reveal">Ba bậc cỡ chữ tự chọn</h2>
+    <div class="stats">
+      <div class="stat reveal"><span class="stat-num">≤3</span><span class="stat-label">ý trên một slide: chữ lớn nhất, dễ đọc từ xa</span></div>
+      <div class="stat reveal"><span class="stat-num">4-5</span><span class="stat-label">ý trên một slide: chữ vừa, vẫn thoáng</span></div>
+      <div class="stat reveal"><span class="stat-num">6+</span><span class="stat-label">ý trên một slide: chữ nhỏ, nên tách slide</span></div>
+    </div>
+    <svg class="art" style="left:120px; top:836px" width="1680" height="150" viewBox="0 0 1680 150" aria-hidden="true">
+      <g class="reveal"><rect class="bp-tab" x="168" y="20" width="192" height="108"/><path class="bp-let" style="stroke-width:10" d="M202 34H324M202 62H304M202 90H316"/><circle class="bp-ar" cx="188" cy="34" r="5"/><circle class="bp-ar" cx="188" cy="62" r="5"/><circle class="bp-ar" cx="188" cy="90" r="5"/><rect class="bp-tab" x="744" y="20" width="192" height="108"/><path class="bp-let" style="stroke-width:6" d="M772 30H902M772 47H888M772 64H910M772 81H880M772 98H896"/><circle class="bp-ar" cx="762" cy="30" r="3.5"/><circle class="bp-ar" cx="762" cy="47" r="3.5"/><circle class="bp-ar" cx="762" cy="64" r="3.5"/><circle class="bp-ar" cx="762" cy="81" r="3.5"/><circle class="bp-ar" cx="762" cy="98" r="3.5"/><rect class="bp-tab" x="1320" y="20" width="192" height="108"/><path class="bp-let" style="stroke-width:3.5" d="M1344 32H1486M1344 44H1468M1344 56H1480M1344 68H1456M1344 80H1486M1344 92H1474M1344 104H1462"/><circle class="bp-ar" cx="1336" cy="32" r="2.5"/><circle class="bp-ar" cx="1336" cy="44" r="2.5"/><circle class="bp-ar" cx="1336" cy="56" r="2.5"/><circle class="bp-ar" cx="1336" cy="68" r="2.5"/><circle class="bp-ar" cx="1336" cy="80" r="2.5"/><circle class="bp-ar" cx="1336" cy="92" r="2.5"/><circle class="bp-ar" cx="1336" cy="104" r="2.5"/></g>
+      <g class="reveal"><path class="bp-ph" style="stroke-width:3" d="M1416 6V142"/><path class="bp-d" d="M1416 6H1390M1416 142H1390"/><path class="bp-ar" d="M1386 6l14-5v10zM1386 142l14-5v10z"/><text class="bp-mono" x="1428" y="16">A</text><text class="bp-mono" x="1428" y="148">A</text></g>
+    </svg>
+  </section>
+
+  <!-- 8. timeline + HÌNH 3: trạm và cung nối trên trục kích thước -->
+  <section class="slide s-tl" data-layout="timeline">
+    <h2 class="title reveal">Quy trình dựng một deck</h2>
+    <svg class="art" style="left:120px; top:560px" width="1680" height="140" viewBox="0 0 1680 140" aria-hidden="true">
+      <path class="bp-t" d="M16 26V114M358.4 26V114M700.8 26V114M1043.2 26V114M1385.6 26V114"/>
+      <path class="bp-d draw" pathLength="1" style="--d:0.15" d="M44 58Q187.2 22 330.4 58"/><path class="bp-d draw" pathLength="1" style="--d:0.35" d="M386.4 58Q529.6 22 672.8 58"/><path class="bp-d draw" pathLength="1" style="--d:0.55" d="M728.8 58Q872 22 1015.2 58"/><path class="bp-d draw" pathLength="1" style="--d:0.75" d="M1071.2 58Q1214.4 22 1357.6 58"/>
+      <path class="bp-ar" d="M330.4 58l-19 1.4 3-11.6zM672.8 58l-19 1.4 3-11.6zM1015.2 58l-19 1.4 3-11.6zM1357.6 58l-19 1.4 3-11.6zM38 70l18-5v10zM336.4 70l-18-5v10zM380.4 70l18-5v10zM678.8 70l-18-5v10zM722.8 70l18-5v10zM1021.2 70l-18-5v10zM1065.2 70l18-5v10zM1363.6 70l-18-5v10z"/>
+      <g class="reveal"><circle class="bp-bal" cx="16" cy="70" r="20"/><path class="bp-h" d="M5 70H27M16 59V81"/><circle class="bp-bal" cx="358.4" cy="70" r="20"/><path class="bp-h" d="M347.4 70H369.4M358.4 59V81"/><circle class="bp-bal" cx="700.8" cy="70" r="20"/><path class="bp-h" d="M689.8 70H711.8M700.8 59V81"/><circle class="bp-bal" cx="1043.2" cy="70" r="20"/><path class="bp-h" d="M1032.2 70H1054.2M1043.2 59V81"/><circle class="bp-bal" cx="1385.6" cy="70" r="20"/><path class="bp-h" d="M1374.6 70H1396.6M1385.6 59V81"/><circle class="bp-d" cx="1385.6" cy="70" r="28"/></g>
+    </svg>
+    <div class="timeline">
+      <div class="step reveal"><div class="when">01</div><h3>Nội dung</h3><p>Gom dàn ý, số liệu có nguồn</p></div>
+      <div class="step reveal"><div class="when">02</div><h3>Chọn style</h3><p>Xem 3 bản thử rồi chọn</p></div>
+      <div class="step reveal"><div class="when">03</div><h3>Dựng</h3><p>Viết HTML theo khung mẫu</p></div>
+      <div class="step reveal"><div class="when">04</div><h3>Đo</h3><p>Chạy deck.audit() từng slide</p></div>
+      <div class="step reveal"><div class="when">05</div><h3>Bàn giao</h3><p>Gộp thành một file HTML</p></div>
+    </div>
+  </section>
+
+  <!-- 9. quote -->
+  <section class="slide" data-layout="quote">
+    <blockquote class="quote reveal-blur">Hình trang trí đứng yên chỉ là nền. Khi nó di chuyển, nó kể chuyện.</blockquote>
+    <p class="cite reveal">Nguyên tắc của bộ mẫu</p>
+  </section>
+
+  <!-- 10. closing (con dấu đỏ của style hiện duy nhất ở đây) -->
+  <section class="slide" data-layout="closing">
+    <p class="kicker reveal">Hết phần mẫu</p>
+    <h2 class="title reveal">Cảm ơn</h2>
+    <p class="subtitle reveal">Đổi style chỉ cần thay một dòng link CSS.</p>
+  </section>
+
+</div>
+</div>
+<script src="../skill/slidefly/assets/morph-viz-diagrams.js"></script>
+<script src="../skill/slidefly/assets/morph-viz.js"></script>
+<script src="../skill/slidefly/assets/morph-engine.js"></script>
+<script src="../skill/slidefly/assets/morph-nav.js"></script>
+<script src="../skill/slidefly/assets/morph-audit.js"></script>
+<script src="../skill/slidefly/assets/morph-steps.js"></script>
+<script src="../skill/slidefly/assets/morph-icons.js"></script>
+</body>
+</html>
