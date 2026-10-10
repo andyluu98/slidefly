@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mẫu SlideFly · Ký họa đô thị</title>
+<!-- Đổi style: thay đúng 1 dòng link styles/*.css bên dưới. Minh họa SVG vẽ theo styles/urban-sketch.art.md -->
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-base.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-layouts.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/styles/urban-sketch.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-motion.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-viz.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-icons.css">
+<style>
+/* pen-and-wash figures (urban-sketch.art.md): sepia fineliner + loose colour kept a few px off the line */
+.art { position: absolute; overflow: visible; pointer-events: none; }
+.us-k { fill: none; stroke: var(--ink); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.us-t { fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; stroke-opacity: .85; }
+.us-g { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 9 8; stroke-opacity: .5; }
+.us-d { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 2 9; stroke-opacity: .8; }
+.us-sheet { fill: #FBF6E8; stroke: none; }
+.us-shade { fill: #6B5A46; fill-opacity: .16; stroke: none; }
+.us-tape { fill: #E2B04A; fill-opacity: .62; stroke: none; }
+.us-ar { fill: var(--ink); stroke: none; }
+.us-sky { fill: #9FBCD6; fill-opacity: .6; } .us-leaf { fill: #7FA04A; fill-opacity: .6; } .us-stone { fill: #D8C6A0; fill-opacity: .8; }
+.us-red { fill: #C8452F; fill-opacity: .86; } .us-awn { fill: #B8483E; fill-opacity: .78; } .us-lit { fill: #E2B04A; fill-opacity: .7; }
+.us-teal { fill: #6E9AA0; fill-opacity: .6; } .us-pink { fill: #D99A7C; fill-opacity: .8; } .us-vio { fill: #8B86A8; fill-opacity: .22; }
+.us-brown { fill: #8A5A3C; fill-opacity: .62; } .us-pen { fill: #3B2E25; stroke: none; } .us-cap { fill: #B8483E; stroke: none; }
+.us-hand { fill: var(--ink); font-family: var(--font-hand); font-size: 30px; }
+.us-hand2 { fill: var(--accent); font-family: var(--font-hand); font-size: 34px; }
+.us-sm { font-size: 26px; fill-opacity: .8; }
+.us-bal { fill: var(--paper); stroke: var(--ink); stroke-width: 2.4; }
+/* the timeline figure draws its own stations on the inked axis */
+.s-tl .step::before { display: none; }
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<div class="deck-stage">
+  <!-- Diễn viên (hình trang trí) do engine tự tạo từ --actors của style. -->
+
+  <!-- 1. cover + HÌNH 1 -->
+  <section class="slide" data-layout="cover">
+    <svg class="art" style="left:1120px; top:200px" width="700" height="540" viewBox="0 0 700 540" aria-hidden="true"><defs><filter id='usA1' x='-6%' y='-6%' width='112%' height='112%'><feTurbulence type='fractalNoise' baseFrequency='.035' numOctaves='3' seed='13' result='a'/><feDisplacementMap in='SourceGraphic' in2='a' scale='6' xChannelSelector='R' yChannelSelector='G' result='d'/><feTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='2' seed='18' result='g'/><feColorMatrix in='g' type='matrix' values='0 0 0 0 .32 0 0 0 0 .24 0 0 0 0 .16 0 0 0 -1.5 .8' result='gm'/><feComposite in='gm' in2='d' operator='in' result='gc'/><feMerge><feMergeNode in='d'/><feMergeNode in='gc'/></feMerge></filter></defs><path class="us-shade" d="M72.6 37.6C108.4 10.2 624.3 10.2 659.7 37.4C695.2 64.6 699.5 463.9 663.7 491.3C628 518.7 99.2 521 63.7 493.8C28.3 466.5 36.9 64.9 72.6 37.6Z"/><path class="us-sheet" d="M56.7 25.2C92.3 -2.5 604.8 -7.8 640.3 18.8C675.7 45.4 683 440.5 647.4 468.2C611.9 495.8 83 506.2 47.5 479.6C12.1 453 21.2 52.8 56.7 25.2Z"/><path class="us-k draw" pathLength="1" style="--d:0" d="M55.8 23.7Q104.9 25.1 129.4 23.5Q154 21.9 178.5 22.2Q203.1 22.6 227.6 21.4Q252.1 20.3 276.7 20.7Q301.2 21.2 325.8 21.6Q350.3 22 374.9 21.5Q399.4 21 423.9 19.4Q448.5 17.8 473 16.9Q497.5 16.1 522.1 17.2Q546.7 18.3 571.2 17Q595.7 15.7 620.3 15.6L644.8 15.5M641.6 13.6Q641.2 59.6 642.4 82.7Q643.5 105.7 644.6 128.7Q645.6 151.7 645.6 174.7Q645.5 197.7 644.7 220.8Q643.8 243.8 645.2 266.8Q646.5 289.8 646.2 312.9Q645.8 335.9 647.1 358.9Q648.3 381.9 648.7 404.9Q649 428 649.5 451L649.9 474M651.1 469.5Q604.8 468.9 581.7 470.1Q558.6 471.4 535.4 472.3Q512.3 473.2 489.2 473.3Q466 473.4 442.9 473.9Q419.8 474.4 396.6 475.5Q373.5 476.5 350.4 475.4Q327.2 474.3 304.1 475.1Q281 476 257.8 474.5Q234.6 472.9 211.5 474.9Q188.4 476.9 165.3 477.8Q142.2 478.8 119 477.8Q95.9 476.8 72.7 477.4L49.6 478M51.1 478.2Q49.9 427.5 51 402.1Q52.2 376.8 52.1 351.4Q52.1 326.1 52.5 300.7Q52.9 275.4 52.5 250Q52.1 224.7 54.2 199.4Q56.3 174 55.1 148.7Q53.9 123.3 55.8 98Q57.7 72.6 58 47.3L58.3 21.9"/><g class="reveal"><text class="us-hand us-sm" x="92" y="64">Hình 1 · ký họa tại chỗ</text><path class="us-t" d="M90.4 76.3Q138.6 75.1 162.7 75.6Q186.8 76 210.9 75.5Q235.1 75 259.2 76.1Q283.3 77.2 307.4 76L331.5 74.8"/></g><path class="us-k draw" pathLength="1" style="--d:.1" d="M91.1 391.7Q138.7 392.1 162.5 391.1Q186.3 390.2 210.1 391.2Q233.9 392.2 257.7 393.4Q281.4 394.7 305.2 393Q329 391.4 352.8 392.3Q376.6 393.2 400.4 391.7Q424.2 390.1 448 391.4Q471.7 392.8 495.5 393.3Q519.3 393.8 543.1 393.1Q566.9 392.4 590.7 391.8L614.5 391.1"/><path class="us-g" d="M127.2 393.7Q127.4 344.3 127.6 319.7Q127.7 295 127.9 270.3L128.1 245.7M127.5 247.7L193.7 196.9M188.3 199L252.2 247.4M251.4 241.5Q250.9 292.2 251.4 317.5Q251.8 342.9 251.9 368.2L252.1 393.6M117.5 391.5Q166.1 392.3 190.4 392.3Q214.8 392.2 239.1 392L263.4 391.7M226.9 222L227.1 187.9M217.2 189.8L241 190.1M146.8 263.7L177.4 263.6M176.2 263.4L176.2 296M177.3 295.8L148 296M148.9 297.4L148.8 262.6M162.8 263.5L162.5 295.6M201.8 263.3L231.5 263.6M230.2 262.8L230.7 295.7M232.8 295.7L202.5 295.8M203.7 297.4L203.4 261.1M217.1 263.5L217.2 295.6M147.9 307.2L177 307.2M176 305.5L176.2 341.6M177 339.7L147.5 340.1M149.1 341.4L148.9 306.5M162.7 307.3L162.6 339.4M203.1 307.5L232.9 307.4M231 306.8L231.2 339.8M232.6 339.5L201.4 339.4M203.5 339.9L203.1 306M217.6 307.3L217.5 339.4M175.3 392.7L175 358.2M174.5 360.8L190.2 344M189 343.5L205.9 361.1M204.8 358.1L204.8 392.8"/><g filter="url(#usA1)" transform="translate(5 4)" class="reveal"><path class="us-pink" d="M406.5 390C397.5 379.4 395 225.4 403.8 214.8C412.6 204.2 543.7 202.6 552.6 213.1C561.6 223.7 562.1 380.1 553.3 390.7C544.6 401.3 415.4 400.5 406.5 390Z"/><path class="us-vio" d="M517.2 213C519.6 202.3 553.4 204.4 555.7 215.2C557.9 226 556.7 382.4 554.2 393.1C551.8 403.7 517.7 403.6 515.5 392.8C513.2 382 514.7 223.6 517.2 213Z"/><path class="us-red" d="M399.3 216.5C403.4 212.7 471.6 157.6 481.2 157.6C490.9 157.7 556.5 213.5 560.4 217.2C564.3 220.9 551.1 221.5 546.3 219.3C541.6 217.1 489.5 180.4 481.4 180.5C473.3 180.6 416.8 219.2 411.9 221.3C407 223.5 395.1 220.3 399.3 216.5Z"/><path class="us-teal" d="M430.9 234.4C432.9 232 460.7 232.8 462.7 235.2C464.7 237.7 466.2 272.9 464.3 275.3C462.3 277.6 432 276.9 430 274.4C428 272 429 236.7 430.9 234.4Z"/><path class="us-teal" d="M497.4 234.8C499.2 232.5 526.8 232.8 528.7 235.2C530.7 237.6 531.7 273 529.9 275.3C528 277.6 499.2 276 497.3 273.5C495.3 271.1 495.5 237.1 497.4 234.8Z"/><path class="us-teal" d="M429.9 288C431.8 285.6 461.6 286.2 463.7 288.6C465.8 291 466.3 325.8 464.3 328.2C462.4 330.5 432.8 330.7 430.7 328.3C428.7 325.9 427.9 290.4 429.9 288Z"/><path class="us-teal" d="M495.9 289.5C498 287.3 528.2 287.1 530.2 289.4C532.3 291.7 532.1 325 530.1 327.3C528 329.6 497.7 329.9 495.6 327.6C493.6 325.4 493.8 291.8 495.9 289.5Z"/><path class="us-brown" d="M462.4 391.4C460.4 388.2 460.6 342.5 462.7 339.3C464.9 336.1 496.3 335.4 498.4 338.6C500.5 341.8 499.5 389.4 497.3 392.6C495.1 395.8 464.5 394.6 462.4 391.4Z"/></g><path class="us-k draw" pathLength="1" style="--d:.35" d="M405.4 393.4Q404.9 332.7 405 302.4Q405.2 272 405.5 241.7L405.8 211.3M403.8 215.6Q444.1 186.9 463.4 171.4L482.7 155.9M476.5 153.8Q515.6 185.5 536 200.3L556.3 215.1M554.9 209.5Q554.3 255.7 554.3 278.8Q554.3 301.9 554 325Q553.8 348.1 553.9 371.2L554 394.3M394 391.6Q451.3 392.6 480 393.1Q508.7 393.6 537.3 392.8L566 392.1M525.3 184.1L525.2 146.3M514 149.2L537.9 148.9M428.5 235.2L465.8 234.9M463.9 233.2L463.5 274.7M465.2 274.6L429.6 274.5M430.4 276.9L430.5 235.3M447 235.4L446.8 274.5M496 234.9L531.2 235.5M529.9 234.7L529.5 276.9M530.2 274.9L495.5 274.5M496.2 275.7L496.1 233.1M512.8 235.4L513 274.5M428.8 288.7L464.2 288.5M463.7 288.4L463.5 330.3M464.6 327.8L430.3 327.6M430.7 328.2L430.7 287.4M447.1 288.8L447 327.9M494.5 288.8L531.7 289M529.8 287.5L529.5 330.3M531.8 328.3L496.4 327.9M496.2 328L496.4 288.1M513.2 288.8L513.3 327.9M461.8 394L462 351.9M461.7 353.1L480.8 333.8M479.9 334.3L498.7 353.7M497.9 352.7L498 392.8"/><g class="reveal"><path class="us-t" d="M262 262C292 226 322 300 352 262C366 246 374 252 380 262"/><path class="us-t" d="M262 300C300 270 330 330 366 302"/><path class="us-t" d="M362 292L384 302L360 314"/><path class="us-t" style="stroke-opacity:.55" d="M268 336C296 318 322 352 350 334"/><text class="us-hand2" x="296" y="238" text-anchor="middle">Morph</text><text class="us-hand" x="190" y="440" text-anchor="middle">trang 1</text><text class="us-hand" x="480" y="440" text-anchor="middle">trang 2</text></g><g transform="translate(176 22) rotate(-5)"><path class="us-tape" d="M-50 -13l6 6.5-6 6.5 6 6.5-6 6.5H44l6-6.5-6-6.5 6-6.5-6-6.5z"/></g><g transform="translate(552 18) rotate(6)"><path class="us-tape" d="M-50 -13l6 6.5-6 6.5 6 6.5-6 6.5H44l6-6.5-6-6.5 6-6.5-6-6.5z"/></g><g filter="url(#usA1)" class="reveal"><path class="us-lit" d="M625.1 462C624.3 466.7 624.1 471.2 618.9 475.3C613.7 479.4 603.6 486.2 593.8 486.8C584 487.5 571.7 481 560.3 479.2C548.8 477.5 531.8 479.3 525.2 476.4C518.6 473.6 519.3 466.4 520.7 462C522.1 457.6 527.5 453.3 533.8 450.1C540.2 446.9 549.7 444.1 558.8 443C568 441.9 578 442.7 588.8 443.4C599.6 444.2 617.6 444.2 623.7 447.3C629.7 450.4 625.9 457.3 625.1 462Z"/><path class="us-sky" d="M158.8 480C159.4 483.9 165.1 489.5 159.9 492.2C154.8 494.8 137.7 495.8 127.7 495.9C117.7 495.9 108.8 494.3 99.9 492.7C90.9 491 77.7 489.1 74 486.1C70.2 483 73.9 478 77.3 474.3C80.8 470.7 86.4 465.3 94.6 464C102.8 462.7 116.3 465.7 126.6 466.5C136.8 467.3 150.9 466.7 156.3 468.9C161.7 471.2 158.2 476.1 158.8 480Z"/></g><g transform="translate(448 520) rotate(-16)"><rect class="us-pen" x="0" y="-7" width="188" height="14" rx="6"/><rect class="us-cap" x="132" y="-7" width="26" height="14"/><path class="us-pen" d="M0 -7L-20 0L0 7Z"/></g></svg>
+    <p class="kicker reveal">SlideFly</p>
+    <h1 class="title reveal">Slide chuyển cảnh kiểu Morph trên trình duyệt</h1>
+    <p class="subtitle reveal">Một file HTML, mở bằng Chrome là trình chiếu được</p>
+    <p class="meta reveal">Bộ mẫu 9 kiểu slide</p>
+  </section>
+
+  <!-- 2. agenda -->
+  <section class="slide" data-layout="agenda">
+    <h2 class="title reveal">Nội dung</h2>
+    <ol class="agenda-list">
+      <li><span class="num reveal">01</span><div><h3 class="reveal" data-morph-id="s1">Cơ chế diễn viên</h3><p class="reveal">Hình cố định, chỉ đổi tư thế</p></div></li>
+      <li><span class="num reveal">02</span><div><h3 class="reveal">Chín kiểu slide</h3><p class="reveal">Từ trang bìa đến lời cảm ơn</p></div></li>
+      <li><span class="num reveal">03</span><div><h3 class="reveal">Tự co giãn</h3><p class="reveal">Ít chữ thì chữ to hơn</p></div></li>
+      <li><span class="num reveal">04</span><div><h3 class="reveal">Đo độ lấp đầy</h3><p class="reveal">Máy tự soát slide bị trống</p></div></li>
+    </ol>
+  </section>
+
+  <!-- 3. section -->
+  <section class="slide" data-layout="section">
+    <p class="num reveal">01</p>
+    <h2 class="title reveal" data-morph-id="s1">Cơ chế diễn viên</h2>
+    <p class="subtitle reveal">Morph là cùng một vật đổi vị trí giữa hai slide</p>
+  </section>
+
+  <!-- 4. content + HÌNH 2: sơ đồ khái niệm -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Hình cố định, chỉ đổi tư thế</h2>
+    <svg class="art" style="left:1260px; top:280px" width="540" height="700" viewBox="0 0 540 700" aria-hidden="true"><defs><filter id='usA2' x='-6%' y='-6%' width='112%' height='112%'><feTurbulence type='fractalNoise' baseFrequency='.035' numOctaves='3' seed='17' result='a'/><feDisplacementMap in='SourceGraphic' in2='a' scale='4' xChannelSelector='R' yChannelSelector='G' result='d'/><feTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='2' seed='22' result='g'/><feColorMatrix in='g' type='matrix' values='0 0 0 0 .32 0 0 0 0 .24 0 0 0 0 .16 0 0 0 -1.5 .8' result='gm'/><feComposite in='gm' in2='d' operator='in' result='gc'/><feMerge><feMergeNode in='d'/><feMergeNode in='gc'/></feMerge></filter></defs><path class="us-k draw" pathLength="1" style="--d:0" d="M10.5 262.2Q57.7 262.4 81.2 261.7Q104.8 261.1 128.4 261.7Q151.9 262.2 175.5 262.2Q199.1 262.2 222.6 263.7Q246.2 265.2 269.8 263.7Q293.4 262.2 316.9 262.1Q340.5 261.9 364.1 262.9Q387.6 263.8 411.2 263Q434.8 262.3 458.3 263.4Q481.9 264.6 505.5 263.1L529 261.6"/><path class="us-t" style="stroke-opacity:.5" d="M30.1 267.9L36 276M64 268L70.1 275.9M97.9 268.1L103.9 276.1M132.1 267.9L138.1 275.9M166.1 268L172.1 275.9M200.1 267.9L205.9 276M234.1 267.9L240.1 275.9M267.9 268.1L274 276M302 268L308 276M336 268L342 276M370.1 268L375.9 276.1M404.2 267.9L410 276M438 268L444 276M471.9 268.1L477.9 276.1M506 268L512 276"/><path class="us-g" d="M152.7 170C152.6 176.9 149.8 184.4 146.9 190.6C144.1 196.9 140.3 203.8 135.5 207.3C130.6 210.9 123.7 212.2 118 212C112.3 211.8 106 209.6 101.1 206.1C96.2 202.7 91.1 197.2 88.3 191.1C85.6 185.1 84.5 177 84.7 170C84.8 163 86.4 155.4 89.1 149.4C91.8 143.4 96.3 137.2 101.1 133.8C105.9 130.3 112.3 128.8 118 128.7C123.7 128.6 130.3 129.9 135.2 133.3C140.1 136.7 144.4 143 147.3 149.1C150.2 155.2 152.7 163.1 152.7 170Z"/><path class="us-g" d="M118 226C108 250 130 266 118 288"/><g filter="url(#usA2)" transform="translate(4 3)" class="reveal"><path class="us-red" d="M443.8 92C443.7 98.9 441.9 106.8 439.1 112.7C436.2 118.7 431.6 124.1 426.7 127.8C421.9 131.4 415.7 134.3 410 134.5C404.3 134.8 397.5 132.9 392.6 129.3C387.7 125.6 383.7 119 380.8 112.8C378 106.6 375.4 98.9 375.4 92C375.4 85.1 378 77.4 380.9 71.2C383.8 65.1 387.9 58.5 392.7 55.1C397.6 51.6 404.3 50.6 410 50.7C415.7 50.7 422.2 52.1 427.1 55.5C432 58.9 436.5 65 439.3 71.1C442.1 77.2 443.8 85.1 443.8 92Z"/></g><path class="us-k draw" pathLength="1" style="--d:.3" d="M443.8 92C443.7 98.9 441.9 106.8 439.1 112.7C436.2 118.7 431.6 124.1 426.7 127.8C421.9 131.4 415.7 134.3 410 134.5C404.3 134.8 397.5 132.9 392.6 129.3C387.7 125.6 383.7 119 380.8 112.8C378 106.6 375.4 98.9 375.4 92C375.4 85.1 378 77.4 380.9 71.2C383.8 65.1 387.9 58.5 392.7 55.1C397.6 51.6 404.3 50.6 410 50.7C415.7 50.7 422.2 52.1 427.1 55.5C432 58.9 436.5 65 439.3 71.1C442.1 77.2 443.8 85.1 443.8 92Z"/><path class="us-t" d="M410 148C400 172 422 188 410 210"/><path class="us-bal" style="fill:#FBF6E8;fill-opacity:.85;stroke:none" d="M406.7 72C406.7 74.9 405 78.7 403.6 81C402.1 83.3 399.8 85.8 398 85.7C396.2 85.6 394 82.8 392.8 80.5C391.6 78.2 390.8 74.9 390.7 72C390.7 69.1 391.3 65.2 392.5 63.1C393.7 61 396.2 59.3 398 59.4C399.8 59.4 401.9 61.2 403.3 63.3C404.8 65.5 406.7 69.1 406.7 72Z"/><g class="reveal"><path class="us-d" d="M158 120C214 24 296 20 352 56"/><path class="us-t" d="M352 56L334 56M352 56L343 72"/><text class="us-hand" x="70" y="246" text-anchor="middle">A</text><text class="us-hand" x="462" y="176" text-anchor="middle">B</text><circle class="us-bal" cx="476" cy="40" r="19"/><text class="us-hand" x="476" y="50" text-anchor="middle">1</text><circle class="us-bal" cx="46" cy="100" r="19"/><text class="us-hand" x="46" y="110" text-anchor="middle">2</text><circle class="us-bal" cx="262" cy="24" r="19"/><text class="us-hand" x="262" y="34" text-anchor="middle">3</text><path class="us-t" d="M458 52L444 66"/><path class="us-t" d="M62 112L86 132"/></g><g class="reveal"><circle class="us-bal" cx="34" cy="444" r="22"/><text class="us-hand" x="34" y="455" text-anchor="middle">1</text><text class="us-hand" style="font-size:34px" x="76" y="454">diễn viên</text><path class="us-t" style="stroke-opacity:.45;stroke-dasharray:4 7" d="M16.1 473.7Q66.6 473.6 91.9 473.4Q117.2 473.1 142.5 473.6Q167.8 474.1 193.1 473.4Q218.3 472.7 243.6 472.9Q268.9 473.2 294.2 472.5Q319.5 471.9 344.7 471.6Q370 471.2 395.3 471.9Q420.6 472.6 445.9 473.4Q471.2 474.3 496.5 474L521.7 473.6"/></g><g class="reveal"><circle class="us-bal" cx="34" cy="524" r="22"/><text class="us-hand" x="34" y="535" text-anchor="middle">2</text><text class="us-hand" style="font-size:34px" x="76" y="534">hai tư thế A, B</text><path class="us-t" style="stroke-opacity:.45;stroke-dasharray:4 7" d="M16.4 554.4Q66.9 553.4 92.2 553.5Q117.5 553.6 142.7 553.7Q168 553.8 193.3 553.7Q218.6 553.5 243.8 553.7Q269.1 553.9 294.4 554.2Q319.6 554.5 344.9 554.6Q370.2 554.7 395.4 553.6Q420.7 552.5 446 553.2Q471.2 553.8 496.5 553.3L521.8 552.8"/></g><g class="reveal"><circle class="us-bal" cx="34" cy="604" r="22"/><text class="us-hand" x="34" y="615" text-anchor="middle">3</text><text class="us-hand" style="font-size:34px" x="76" y="614">trượt dần</text><path class="us-t" style="stroke-opacity:.45;stroke-dasharray:4 7" d="M16.3 634Q66.9 634.3 92.2 634Q117.4 633.6 142.7 633.8Q168 634.1 193.3 634.1Q218.5 634.2 243.8 633.9Q269.1 633.5 294.3 633.9Q319.6 634.3 344.9 633.3Q370.2 632.2 395.4 632.7Q420.7 633.2 446 632.5Q471.3 631.8 496.5 632L521.8 632.2"/></g><g filter="url(#usA2)" class="reveal"><path class="us-red" d="M489.5 440C489.5 444.5 487.4 450.3 484.8 453.5C482.2 456.7 477.5 459.2 474 459.2C470.5 459.1 466.1 456.1 463.7 452.9C461.2 449.7 459.6 444.4 459.5 440C459.5 435.6 460.8 429.9 463.2 426.5C465.6 423.1 470.4 419.4 474 419.5C477.6 419.5 482 423.3 484.6 426.7C487.2 430.1 489.5 435.5 489.5 440Z"/><path class="us-sky" d="M451.8 530C451.2 533.4 447.9 536.5 444.2 539.1C440.6 541.6 434.7 545.4 430 545.4C425.3 545.4 419.7 541.4 416.1 538.9C412.5 536.3 409 533.3 408.4 530C407.9 526.7 409.3 521.7 412.9 519.1C416.5 516.6 424.1 514.9 430 514.8C435.9 514.7 444.4 516 448 518.5C451.7 521.1 452.4 526.6 451.8 530Z"/><path class="us-leaf" d="M505.7 530C505.4 533.5 506.3 537.7 503.4 539.8C500.4 541.8 493.6 542 488 542.3C482.4 542.6 473.3 543.5 470 541.4C466.7 539.4 468.1 533.8 468.2 530C468.3 526.2 467.2 521.2 470.5 518.9C473.8 516.5 482.2 515.9 488 515.9C493.8 515.9 502.3 516.7 505.2 519C508.2 521.4 506 526.5 505.7 530Z"/><path class="us-lit" d="M472.8 606C473.3 609 469.9 613.4 465.4 615.7C461 618 452 620.1 446 619.9C440 619.6 434 616.5 429.7 614.2C425.4 611.8 420.9 609 420.3 606C419.7 603 421.9 598.3 426.2 596.1C430.5 593.9 439.9 592.3 446 592.6C452.1 592.8 458.1 595.5 462.6 597.7C467.1 599.9 472.4 603 472.8 606Z"/></g><path class="us-d" d="M412 612C436 596 470 596 494 612"/><path class="us-t" d="M494 612L478 606M494 612L484 624"/></svg>
+    <ul class="bullets">
+      <li class="reveal">Mỗi style có một nhóm hình cố định, gọi là <b>diễn viên</b>.</li>
+      <li class="reveal">Mỗi kiểu slide quy định một <b>tư thế</b>: vị trí, kích thước, màu.</li>
+      <li class="reveal">Khi chuyển slide, trình duyệt cho hình <b>trượt dần</b> sang tư thế mới.</li>
+      <li class="reveal">Chữ của slide mới hiện sau, khi hình đã bắt đầu chuyển động.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-text">Cùng tên là cùng một vật</p>
+    </aside>
+  </section>
+
+  <!-- 5. content (second in a row: parity changes the pose) -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Một khung cho mọi màn hình</h2>
+    <ul class="bullets">
+      <li class="reveal">Slide được thiết kế ở một kích thước cố định 1920×1080.</li>
+      <li class="reveal">Màn hình to hay nhỏ, cả khung được phóng to, thu nhỏ theo.</li>
+      <li class="reveal">Không vỡ bố cục trên máy chiếu, laptop hay điện thoại.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-big">16:9</p>
+      <p class="hl-text">Tỷ lệ khung chuẩn</p>
+    </aside>
+  </section>
+
+  <!-- 6. two-col + takeaway -->
+  <section class="slide" data-layout="two-col">
+    <h2 class="title reveal">PowerPoint Morph và SlideFly</h2>
+    <div class="cols">
+      <div class="col reveal-left">
+        <h3>PowerPoint</h3>
+        <ul>
+          <li>Chạy trong PowerPoint</li>
+          <li>Sửa trực tiếp bằng chuột</li>
+          <li>Khớp hình theo tên</li>
+        </ul>
+      </div>
+      <div class="col reveal-right">
+        <h3>SlideFly</h3>
+        <ul>
+          <li>Chạy trên trình duyệt</li>
+          <li>Sửa bằng nội dung chữ</li>
+          <li>Khớp hình theo data-actor</li>
+        </ul>
+      </div>
+    </div>
+    <p class="takeaway reveal">Cùng một ý tưởng: vật trùng tên thì trượt sang vị trí mới.</p>
+  </section>
+
+  <!-- 7. stats + HÌNH 4: dải minh họa dưới ba con số -->
+  <section class="slide" data-layout="stats">
+    <h2 class="title reveal">Ba bậc cỡ chữ tự chọn</h2>
+    <div class="stats">
+      <div class="stat reveal"><span class="stat-num">≤3</span><span class="stat-label">ý trên một slide: chữ lớn nhất, dễ đọc từ xa</span></div>
+      <div class="stat reveal"><span class="stat-num">4-5</span><span class="stat-label">ý trên một slide: chữ vừa, vẫn thoáng</span></div>
+      <div class="stat reveal"><span class="stat-num">6+</span><span class="stat-label">ý trên một slide: chữ nhỏ, nên tách slide</span></div>
+    </div>
+    <svg class="art" style="left:120px; top:840px" width="1680" height="130" viewBox="0 0 1680 130" aria-hidden="true"><defs><filter id='usA3' x='-6%' y='-6%' width='112%' height='112%'><feTurbulence type='fractalNoise' baseFrequency='.035' numOctaves='3' seed='21' result='a'/><feDisplacementMap in='SourceGraphic' in2='a' scale='4' xChannelSelector='R' yChannelSelector='G' result='d'/><feTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='2' seed='26' result='g'/><feColorMatrix in='g' type='matrix' values='0 0 0 0 .32 0 0 0 0 .24 0 0 0 0 .16 0 0 0 -1.5 .8' result='gm'/><feComposite in='gm' in2='d' operator='in' result='gc'/><feMerge><feMergeNode in='d'/><feMergeNode in='gc'/></feMerge></filter></defs><g class="reveal"><g filter="url(#usA3)" transform="translate(5 4)"><path class="us-pink" d="M156.5 12.5C168.9 6.5 355.6 8.3 368.4 14.5C381.2 20.7 382.1 110.1 369.7 116.1C357.3 122.1 174.4 120.9 161.6 114.7C148.8 108.5 144.1 18.5 156.5 12.5Z"/></g><path class="us-k" d="M155.6 11.6Q209.4 9.9 236.3 11.2Q263.1 12.4 290 11.6Q316.9 10.9 343.8 11.4L370.7 12M369.1 10.3Q369 64.9 369.2 92.2L369.4 119.4M369.9 116.2Q316.8 115.8 290.3 115.3Q263.8 114.8 237.2 115.7Q210.7 116.5 184.1 116.4L157.6 116.2M159 117.3Q159.5 63.8 159.4 37.1L159.3 10.3"/><path class="us-k" style="stroke-width:9;stroke-opacity:.82" d="M183 30Q248.1 30 280.6 30.1L313.2 30.3M183 64.3Q233.4 63.8 258.6 64.2Q283.8 64.6 309 64.9L334.2 65.3M183 98.3Q240.4 97.9 269.1 97.7Q297.8 97.5 326.5 97.6L355.2 97.7"/><g transform="translate(173 8) rotate(-8)"><path class="us-tape" d="M-24 -9l5 4.5-5 4.5 5 4.5-5 4.5H20l5-4.5-5-4.5 5-4.5-5-4.5z"/></g></g><g class="reveal"><g filter="url(#usA3)" transform="translate(5 4)"><path class="us-leaf" d="M735.9 13.8C748.3 7.3 930.6 4.1 943.1 10.1C955.5 16.2 955.6 107.6 943.2 114.1C930.9 120.6 749.2 124.2 736.7 118.2C724.3 112.1 723.5 20.3 735.9 13.8Z"/></g><path class="us-k" d="M733.5 12Q787.1 12.5 813.9 11.4Q840.6 10.3 867.4 11.2Q894.2 12.1 921 11.8L947.7 11.5M945.2 8.8Q945.4 63.1 945.3 90.2L945.3 117.3M947 115.8Q894 117 867.5 116.3Q841 115.6 814.5 115.2Q788 114.8 761.5 115.6L735 116.3M735 116.6Q734.6 63.5 734.8 37L735.1 10.4"/><path class="us-k" style="stroke-width:6;stroke-opacity:.82" d="M759 30Q809.4 30.5 834.6 30.2Q859.8 29.9 885 29.9L910.2 30M759 47.1Q816.4 47 845.1 47.3Q873.8 47.6 902.5 48L931.2 48.4M759 64.4Q824.1 64 856.7 64.1L889.2 64.3M759 81Q809.4 81.3 834.6 81.6Q859.8 81.9 885 81.8L910.2 81.7M759 98Q816.4 98 845.1 98Q873.8 98 902.5 98.2L931.2 98.3"/><g transform="translate(749 8) rotate(-8)"><path class="us-tape" d="M-24 -9l5 4.5-5 4.5 5 4.5-5 4.5H20l5-4.5-5-4.5 5-4.5-5-4.5z"/></g></g><g class="reveal"><g filter="url(#usA3)" transform="translate(5 4)"><path class="us-sky" d="M1308.9 12.4C1321.5 6.3 1509.7 6.1 1522.5 12.4C1535.3 18.7 1535 111.8 1522.4 117.8C1509.8 123.8 1325.2 119.4 1312.3 113C1299.5 106.7 1296.3 18.4 1308.9 12.4Z"/></g><path class="us-k" d="M1308.4 12.1Q1362.1 11.4 1389 11.8Q1415.8 12.2 1442.7 12.2Q1469.6 12.2 1496.4 12L1523.3 11.8M1520.9 8.9Q1521.6 63.6 1521.2 91L1520.8 118.3M1521.4 115.8Q1468.6 116.3 1442.3 116.7Q1415.9 117.1 1389.6 116.7Q1363.2 116.3 1336.8 116.1L1310.5 116M1310.8 117.6Q1311.7 64.5 1311.4 38L1311.2 11.5"/><path class="us-k" style="stroke-width:3.6;stroke-opacity:.82" d="M1335 29.8Q1392.4 30.4 1421.1 30.7Q1449.8 31 1478.5 30.5L1507.2 30.1M1335 41.3Q1400.1 41.9 1432.7 42.2L1465.2 42.6M1335 52.7Q1385.4 52.6 1410.6 52Q1435.8 51.4 1461 51.8L1486.2 52.3M1335 63.9Q1392.4 64.5 1421.1 64.6Q1449.8 64.8 1478.5 65.1L1507.2 65.3M1335 75.2Q1400.1 74.3 1432.7 74.9L1465.2 75.5M1335 86.7Q1385.4 87 1410.6 87.2Q1435.8 87.3 1461 87.5L1486.2 87.7M1335 98.1Q1392.4 98.3 1421.1 98.1Q1449.8 97.9 1478.5 97.8L1507.2 97.8"/><g transform="translate(1325 8) rotate(-8)"><path class="us-tape" d="M-24 -9l5 4.5-5 4.5 5 4.5-5 4.5H20l5-4.5-5-4.5 5-4.5-5-4.5z"/></g></g><g class="reveal"><path class="us-g" style="stroke-width:3;stroke-opacity:.7" d="M1416 4V126"/><path class="us-t" d="M1396 66H1378M1378 66L1388 58M1378 66L1388 74M1436 66H1454M1454 66L1444 58M1454 66L1444 74"/></g></svg>
+  </section>
+
+  <!-- 8. timeline + HÌNH 3: các trạm trên trục -->
+  <section class="slide s-tl" data-layout="timeline">
+    <h2 class="title reveal">Quy trình dựng một deck</h2>
+    <svg class="art" style="left:120px; top:560px" width="1680" height="140" viewBox="0 0 1680 140" aria-hidden="true"><defs><filter id='usA4' x='-6%' y='-6%' width='112%' height='112%'><feTurbulence type='fractalNoise' baseFrequency='.035' numOctaves='3' seed='25' result='a'/><feDisplacementMap in='SourceGraphic' in2='a' scale='4' xChannelSelector='R' yChannelSelector='G' result='d'/><feTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='2' seed='30' result='g'/><feColorMatrix in='g' type='matrix' values='0 0 0 0 .32 0 0 0 0 .24 0 0 0 0 .16 0 0 0 -1.5 .8' result='gm'/><feComposite in='gm' in2='d' operator='in' result='gc'/><feMerge><feMergeNode in='d'/><feMergeNode in='gc'/></feMerge></filter></defs><path class="us-k draw" pathLength="1" style="--d:0.15" d="M42 62Q187.2 24 332.4 62"/><path class="us-ar" d="M332.4 62l-17 -2 4 -12z"/><path class="us-k draw" pathLength="1" style="--d:0.35" d="M384.4 62Q529.6 24 674.8 62"/><path class="us-ar" d="M674.8 62l-17 -2 4 -12z"/><path class="us-k draw" pathLength="1" style="--d:0.55" d="M726.8 62Q872 24 1017.2 62"/><path class="us-ar" d="M1017.2 62l-17 -2 4 -12z"/><path class="us-k draw" pathLength="1" style="--d:0.75" d="M1069.2 62Q1214.4 24 1359.6 62"/><path class="us-ar" d="M1359.6 62l-17 -2 4 -12z"/><g class="reveal"><g filter="url(#usA4)" transform="translate(3 2)"><path class="us-sky" d="M32.2 70C32.6 73.2 32.1 78 29.9 80.3C27.6 82.5 22.3 83 18.7 83.3C15 83.7 11 83.7 7.9 82.3C4.9 80.9 2 78 0.4 75C-1.1 72 -2.7 67.3 -1.5 64.4C-0.3 61.5 4.4 59.1 7.8 57.5C11.2 55.9 15.7 54.3 19 54.9C22.3 55.5 25.6 58.8 27.8 61.3C30 63.8 31.9 66.8 32.2 70Z"/></g><path class="us-k" d="M37.5 70C37.5 73.7 37.1 78 35.3 81.2C33.6 84.3 30.3 87.3 27 89.1C23.8 91 19.7 92.4 16 92.3C12.3 92.3 8.2 90.9 5 89C1.9 87.1 -1.3 84.2 -3 81C-4.8 77.8 -5.6 73.6 -5.5 70C-5.5 66.4 -4.5 62.3 -2.7 59.2C-0.9 56.1 2.2 53.3 5.3 51.5C8.5 49.8 12.4 48.6 16 48.5C19.6 48.4 23.8 49.3 27 51C30.2 52.7 33.4 55.8 35.2 58.9C36.9 62.1 37.5 66.3 37.5 70Z"/><path class="us-t" style="stroke-opacity:.55" d="M15.9 100L16.3 124M16.2 16L16 36"/></g><g class="reveal"><g filter="url(#usA4)" transform="translate(3 2)"><path class="us-leaf" d="M373.7 70C373.5 73.1 372.5 76.6 370.3 78.8C368.2 81 364.3 82.8 361 83.2C357.8 83.7 354 83 350.7 81.7C347.4 80.4 342.6 78.3 341.3 75.5C340 72.7 341.6 68.2 342.9 65C344.2 61.8 346.2 58.1 349.3 56.1C352.5 54.2 357.9 52.9 361.7 53.5C365.4 54.2 369.8 57.3 371.8 60.1C373.8 62.8 374 66.9 373.7 70Z"/></g><path class="us-k" d="M379.9 70C379.8 73.7 378.7 77.5 377 80.7C375.3 84 372.9 87.8 369.8 89.7C366.7 91.5 362.1 92.1 358.4 92C354.7 91.8 350.8 90.6 347.5 88.8C344.2 87.1 340.5 84.5 338.7 81.4C337 78.2 336.9 73.8 336.9 70C336.9 66.2 337 61.8 338.8 58.7C340.7 55.6 344.5 53.4 347.8 51.6C351 49.8 354.8 48.2 358.4 48.1C362 48 366 49.4 369.3 51.2C372.6 52.9 376.3 55.5 378.1 58.6C379.9 61.8 380.1 66.3 379.9 70Z"/><path class="us-t" style="stroke-opacity:.55" d="M358.3 100L358.7 124M358.3 16L358.4 36"/></g><g class="reveal"><g filter="url(#usA4)" transform="translate(3 2)"><path class="us-stone" d="M717.4 70C717.2 73.3 715.7 76.7 713.5 79.4C711.2 82 707.4 85.5 704 85.9C700.6 86.3 696.5 83.6 693 81.9C689.5 80.2 684.5 78.6 683 75.7C681.4 72.8 682.1 67.7 683.6 64.5C685.1 61.3 688.7 57.9 692 56.5C695.3 55.1 699.8 55.6 703.6 56.1C707.4 56.6 712.4 57.4 714.7 59.7C717 62 717.6 66.7 717.4 70Z"/></g><path class="us-k" d="M723.1 70C723.2 73.7 722.2 78.1 720.3 81.3C718.4 84.4 714.9 86.9 711.6 88.8C708.4 90.7 704.4 92.5 700.8 92.4C697.2 92.4 693.2 90.6 690 88.7C686.9 86.7 683.6 84.1 681.8 81C680 77.9 679.3 73.6 679.4 70C679.4 66.4 680.4 62.5 682.1 59.2C683.7 55.9 686.3 52.3 689.5 50.4C692.6 48.4 697.1 47.1 700.8 47.2C704.5 47.4 708.3 49.5 711.5 51.4C714.7 53.3 718.1 55.8 720.1 58.9C722 62 723.1 66.3 723.1 70Z"/><path class="us-t" style="stroke-opacity:.55" d="M700.9 100L700.7 124M700.7 16L700.9 36"/></g><g class="reveal"><g filter="url(#usA4)" transform="translate(3 2)"><path class="us-awn" d="M1059.7 70C1059.7 73.4 1059.2 77.6 1057 80.2C1054.8 82.8 1050.1 85 1046.3 85.5C1042.5 86.1 1037.4 85.4 1034.3 83.6C1031.2 81.8 1029.4 78.1 1027.9 74.9C1026.5 71.7 1024.5 67.5 1025.5 64.3C1026.5 61.2 1030.6 57.8 1034.1 56.1C1037.6 54.4 1042.6 53.5 1046.4 54.1C1050.1 54.8 1054.4 57.4 1056.6 60.1C1058.8 62.7 1059.6 66.6 1059.7 70Z"/></g><path class="us-k" d="M1064.7 70C1064.9 73.7 1064.6 78.1 1062.8 81.3C1061.1 84.5 1057.5 87.4 1054.3 89.2C1051 91 1046.9 92 1043.2 92C1039.5 92 1035.3 91.1 1032.1 89.3C1028.8 87.5 1025.5 84.4 1023.8 81.2C1022.1 78 1021.6 73.7 1021.7 70C1021.9 66.3 1022.8 62.4 1024.6 59.2C1026.3 56.1 1029.2 52.9 1032.3 51.1C1035.4 49.4 1039.5 48.6 1043.2 48.6C1046.9 48.5 1051.3 48.9 1054.4 50.7C1057.5 52.5 1060.1 56.1 1061.8 59.3C1063.5 62.5 1064.5 66.3 1064.7 70Z"/><path class="us-t" style="stroke-opacity:.55" d="M1043.2 100L1043.6 124M1043 16L1043.4 36"/></g><g class="reveal"><g filter="url(#usA4)" transform="translate(3 2)"><path class="us-lit" d="M1402.6 70C1403 73.2 1402.1 77.8 1399.8 80.5C1397.5 83.1 1392.6 85.4 1388.8 85.9C1385 86.4 1380 85.1 1376.9 83.3C1373.8 81.5 1371.1 78 1370 75C1369 72 1369.4 68 1370.7 65.2C1372.1 62.5 1375.1 59.8 1378 58.4C1380.9 57 1385 56.3 1388.2 56.8C1391.4 57.4 1394.7 59.3 1397.1 61.5C1399.5 63.7 1402.2 66.8 1402.6 70Z"/></g><path class="us-k" d="M1407.9 70C1407.7 73.7 1406 77.5 1404.2 80.7C1402.3 83.9 1399.8 87.5 1396.8 89.3C1393.7 91.1 1389.3 91.8 1385.6 91.7C1381.9 91.5 1378.1 90.4 1374.8 88.6C1371.6 86.9 1367.8 84.5 1365.9 81.4C1364.1 78.2 1363.6 73.7 1363.8 70C1364 66.3 1365.3 62.5 1367.1 59.3C1368.9 56.1 1371.4 52.7 1374.5 50.7C1377.6 48.8 1381.9 47.8 1385.6 47.8C1389.3 47.7 1393.7 48.5 1396.9 50.4C1400.2 52.2 1403.2 55.5 1405 58.8C1406.9 62 1408 66.3 1407.9 70Z"/><path class="us-k" style="stroke-width:2;stroke-opacity:.8" d="M1416.3 70C1416.5 74.3 1415.7 79.3 1413.7 83.1C1411.7 86.9 1408 90.2 1404.4 92.8C1400.9 95.5 1396.7 97.8 1392.4 98.9C1388.1 99.9 1383 100.2 1378.7 99.2C1374.4 98.2 1370.3 95.6 1366.7 93C1363 90.3 1359.1 87.2 1356.9 83.4C1354.8 79.5 1353.7 74.4 1353.9 70C1354.1 65.6 1355.9 61.1 1357.9 57.1C1359.9 53.1 1362.3 48.6 1365.8 46C1369.3 43.3 1374.3 41.7 1378.7 41C1383.2 40.2 1388 40.5 1392.3 41.5C1396.6 42.5 1401.2 44.4 1404.5 47C1407.9 49.7 1410.7 53.5 1412.7 57.4C1414.6 61.2 1416.1 65.7 1416.3 70Z"/><path class="us-t" style="stroke-opacity:.55" d="M1385.5 100L1385.6 124M1385.6 16L1385.2 36"/></g></svg>
+    <div class="timeline">
+      <div class="step reveal"><div class="when">01</div><h3>Nội dung</h3><p>Gom dàn ý, số liệu có nguồn</p></div>
+      <div class="step reveal"><div class="when">02</div><h3>Chọn style</h3><p>Xem 3 bản thử rồi chọn</p></div>
+      <div class="step reveal"><div class="when">03</div><h3>Dựng</h3><p>Viết HTML theo khung mẫu</p></div>
+      <div class="step reveal"><div class="when">04</div><h3>Đo</h3><p>Chạy deck.audit() từng slide</p></div>
+      <div class="step reveal"><div class="when">05</div><h3>Bàn giao</h3><p>Gộp thành một file HTML</p></div>
+    </div>
+  </section>
+
+  <!-- 9. quote -->
+  <section class="slide" data-layout="quote">
+    <blockquote class="quote reveal-blur">Hình trang trí đứng yên chỉ là nền. Khi nó di chuyển, nó kể chuyện.</blockquote>
+    <p class="cite reveal">Nguyên tắc của bộ mẫu</p>
+  </section>
+
+  <!-- 10. closing -->
+  <section class="slide" data-layout="closing">
+    <p class="kicker reveal">Hết phần mẫu</p>
+    <h2 class="title reveal">Cảm ơn</h2>
+    <p class="subtitle reveal">Đổi style chỉ cần thay một dòng link CSS.</p>
+  </section>
+
+</div>
+</div>
+<script src="../skill/slidefly/assets/morph-viz-diagrams.js"></script>
+<script src="../skill/slidefly/assets/morph-viz.js"></script>
+<script src="../skill/slidefly/assets/morph-engine.js"></script>
+<script src="../skill/slidefly/assets/morph-nav.js"></script>
+<script src="../skill/slidefly/assets/morph-audit.js"></script>
+<script src="../skill/slidefly/assets/morph-steps.js"></script>
+<script src="../skill/slidefly/assets/morph-icons.js"></script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mẫu SlideFly · Game show</title>
+<!-- Đổi style: thay đúng 1 dòng link styles/*.css bên dưới. Minh họa SVG inline vẽ theo styles/game-show.art.md -->
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-base.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-layouts.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/styles/game-show.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-motion.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-viz.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-icons.css">
+<style>
+/* hand-drawn figures (game-show.art.md): flat candy fills, ink outline, hard offset shadow */
+.art { position: absolute; overflow: visible; pointer-events: none; }
+.art .reveal-scale, .art .reveal { transform-box: fill-box; transform-origin: 50% 80%; }
+.gs-w { fill: var(--ink); font-family: var(--font-display); font-weight: 800; font-size: 40px; letter-spacing: 0.02em; }
+.gs-sm { font-size: 22px; }
+.gs-l { fill: var(--cream); font-family: var(--font-display); font-weight: 800; font-size: 20px; letter-spacing: 0.04em; }
+.gs-n { fill: var(--ink); font-family: var(--font-display); font-weight: 800; font-size: 26px; }
+.s-tl .step::before { display: none; }
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<div class="deck-stage">
+  <!-- Diễn viên (hình trang trí) do engine tự tạo từ --actors của style. -->
+
+  <!-- 1. cover + HÌNH 1: mascot slide đứng trên bục -->
+  <section class="slide" data-layout="cover">
+    <svg class="art" style="left:1120px; top:200px" width="700" height="730" viewBox="0 0 700 730" aria-hidden="true"><g class="reveal-scale"><g transform='translate(150 650) scale(0.74)' stroke-linejoin='round' stroke-linecap='round'><path d='M-52 -64Q-88 -78 -84 -126' fill='none' stroke='#1B1035' stroke-width='26'/><path d='M-52 -64Q-88 -78 -84 -126' fill='none' stroke='#4CC9F0' stroke-width='11'/><path d='M52 -64Q88 -78 84 -126' fill='none' stroke='#1B1035' stroke-width='26'/><path d='M52 -64Q88 -78 84 -126' fill='none' stroke='#4CC9F0' stroke-width='11'/><ellipse cx='-26' cy='-3' rx='20' ry='10' fill='#4CC9F0' stroke='#1B1035' stroke-width='7'/><ellipse cx='26' cy='-3' rx='20' ry='10' fill='#4CC9F0' stroke='#1B1035' stroke-width='7'/><path d='M-58 -10C-58 -94 -34 -132 0 -132C34 -132 58 -94 58 -10Q58 3 46 3H-46Q-58 3 -58 -10Z' fill='#4CC9F0' stroke='#1B1035' stroke-width='8'/><ellipse cx='0' cy='-34' rx='32' ry='28' fill='#FFF3D6'/><ellipse cx='-21' cy='-86' rx='10' ry='15' fill='#1B1035'/><circle cx='-24' cy='-91' r='4' fill='#fff'/><circle cx='-40' cy='-62' r='8' fill='#FF7EB6' fill-opacity='.65'/><ellipse cx='21' cy='-86' rx='10' ry='15' fill='#1B1035'/><circle cx='18' cy='-91' r='4' fill='#fff'/><circle cx='40' cy='-62' r='8' fill='#FF7EB6' fill-opacity='.65'/><path d='M-13 -64Q0 -34 13 -64Z' fill='#1B1035' stroke='#1B1035' stroke-width='4'/><path d='M-7 -49Q0 -42 7 -49Q0 -53 -7 -49Z' fill='#FF7EB6'/><path d='M-14 -130Q-18 -156 -2 -150Q0 -168 14 -150Q28 -148 18 -130Z' fill='#FFD23F' stroke='#1B1035' stroke-width='6'/></g></g><g class="reveal-scale" style="--i:2"><g transform='translate(550 710) scale(0.74)' stroke-linejoin='round' stroke-linecap='round'><path d='M-52 -64Q-88 -78 -84 -126' fill='none' stroke='#1B1035' stroke-width='26'/><path d='M-52 -64Q-88 -78 -84 -126' fill='none' stroke='#2EC27E' stroke-width='11'/><path d='M52 -64Q88 -78 84 -126' fill='none' stroke='#1B1035' stroke-width='26'/><path d='M52 -64Q88 -78 84 -126' fill='none' stroke='#2EC27E' stroke-width='11'/><ellipse cx='-26' cy='-3' rx='20' ry='10' fill='#2EC27E' stroke='#1B1035' stroke-width='7'/><ellipse cx='26' cy='-3' rx='20' ry='10' fill='#2EC27E' stroke='#1B1035' stroke-width='7'/><path d='M-58 -10C-58 -94 -34 -132 0 -132C34 -132 58 -94 58 -10Q58 3 46 3H-46Q-58 3 -58 -10Z' fill='#2EC27E' stroke='#1B1035' stroke-width='8'/><ellipse cx='0' cy='-34' rx='32' ry='28' fill='#FFF3D6'/><ellipse cx='-21' cy='-86' rx='10' ry='15' fill='#1B1035'/><circle cx='-24' cy='-91' r='4' fill='#fff'/><circle cx='-40' cy='-62' r='8' fill='#FF7EB6' fill-opacity='.65'/><ellipse cx='21' cy='-86' rx='10' ry='15' fill='#1B1035'/><circle cx='18' cy='-91' r='4' fill='#fff'/><circle cx='40' cy='-62' r='8' fill='#FF7EB6' fill-opacity='.65'/><path d='M-13 -64Q0 -34 13 -64Z' fill='#1B1035' stroke='#1B1035' stroke-width='4'/><path d='M-7 -49Q0 -42 7 -49Q0 -53 -7 -49Z' fill='#FF7EB6'/><path d='M0 -134V-150' stroke='#1B1035' stroke-width='6' fill='none'/><path d='M0 -150C-14 -168 -26 -150 -12 -140L0 -130L12 -140C26 -150 14 -168 0 -150Z' fill='#FF4F5E' stroke='#1B1035' stroke-width='5' transform='translate(0 -14)'/></g></g><g class="reveal-scale" style="--i:1"><g transform='translate(350 580) rotate(-4)' stroke-linejoin='round' stroke-linecap='round'><path d='M-52 -80V-22' stroke='#1B1035' stroke-width='26' fill='none'/><path d='M-52 -80V-22' stroke='#4CC9F0' stroke-width='11' fill='none'/><path d='M52 -80V-22' stroke='#1B1035' stroke-width='26' fill='none'/><path d='M52 -80V-22' stroke='#4CC9F0' stroke-width='11' fill='none'/><ellipse cx='-56' cy='-8' rx='28' ry='13' fill='#4CC9F0' stroke='#1B1035' stroke-width='7'/><ellipse cx='56' cy='-8' rx='28' ry='13' fill='#4CC9F0' stroke='#1B1035' stroke-width='7'/><path d='M-150 -176Q-206 -196 -198 -278' stroke='#1B1035' stroke-width='26' fill='none'/><path d='M-150 -176Q-206 -196 -198 -278' stroke='#FF7EB6' stroke-width='11' fill='none'/><path d='M150 -176Q206 -196 198 -278' stroke='#1B1035' stroke-width='26' fill='none'/><path d='M150 -176Q206 -196 198 -278' stroke='#FF7EB6' stroke-width='11' fill='none'/><circle cx='-198' cy='-286' r='16' fill='#FF7EB6' stroke='#1B1035' stroke-width='7'/><circle cx='198' cy='-286' r='16' fill='#FF7EB6' stroke='#1B1035' stroke-width='7'/><path d='M0 -252V-296' stroke='#1B1035' stroke-width='6' fill='none'/><circle cx='0' cy='-304' r='11' fill='#FFD23F' stroke='#1B1035' stroke-width='6'/><rect x='-150' y='-252' width='300' height='176' rx='22' fill='#FFF3D6' stroke='#1B1035' stroke-width='8'/><path d='M-146 -226V-232Q-146 -248 -130 -248H130Q146 -248 146 -232V-226Z' fill='#FF4F5E'/><circle cx='-120' cy='-236' r='5' fill='#FFF3D6'/><circle cx='-102' cy='-236' r='5' fill='#FFF3D6'/><circle cx='-84' cy='-236' r='5' fill='#FFF3D6'/><ellipse cx='-48' cy='-170' rx='12' ry='18' fill='#1B1035'/><circle cx='-52' cy='-176' r='4.5' fill='#fff'/><ellipse cx='48' cy='-170' rx='12' ry='18' fill='#1B1035'/><circle cx='44' cy='-176' r='4.5' fill='#fff'/><circle cx='-88' cy='-140' r='11' fill='#FF7EB6' fill-opacity='.7'/><circle cx='88' cy='-140' r='11' fill='#FF7EB6' fill-opacity='.7'/><path d='M-24 -150Q0 -102 24 -150Z' fill='#1B1035' stroke='#1B1035' stroke-width='5'/><path d='M-12 -122Q0 -112 12 -122Q0 -130 -12 -122Z' fill='#FF7EB6'/></g></g><g class="reveal-scale" style="--i:3"><g transform='translate(560 150) rotate(-10)' stroke-linejoin='round'><path d='M0.0 -104.0L21.0 -78.4L52.0 -90.1L57.4 -57.4L90.1 -52.0L78.4 -21.0L104.0 0.0L78.4 21.0L90.1 52.0L57.4 57.4L52.0 90.1L21.0 78.4L0.0 104.0L-21.0 78.4L-52.0 90.1L-57.4 57.4L-90.1 52.0L-78.4 21.0L-104.0 0.0L-78.4 -21.0L-90.1 -52.0L-57.4 -57.4L-52.0 -90.1L-21.0 -78.4Z' transform='translate(8 8)' fill='#1B1035'/><path d='M0.0 -104.0L21.0 -78.4L52.0 -90.1L57.4 -57.4L90.1 -52.0L78.4 -21.0L104.0 0.0L78.4 21.0L90.1 52.0L57.4 57.4L52.0 90.1L21.0 78.4L0.0 104.0L-21.0 78.4L-52.0 90.1L-57.4 57.4L-90.1 52.0L-78.4 21.0L-104.0 0.0L-78.4 -21.0L-90.1 -52.0L-57.4 -57.4L-52.0 -90.1L-21.0 -78.4Z' fill='#FFD23F' stroke='#1B1035' stroke-width='7'/><circle r='64' fill='none' stroke='#FF7EB6' stroke-width='6' stroke-dasharray='23 17'/></g><text class="gs-w" x="560" y="164" text-anchor="middle" transform="rotate(-10 560 150)">TUYỆT!</text></g><g class="reveal"><path d='M120.0 48.0L125.4 64.6L142.0 70.0L125.4 75.4L120.0 92.0L114.6 75.4L98.0 70.0L114.6 64.6Z' fill='#FFD23F' stroke='#1B1035' stroke-width='4' stroke-linejoin='round'/><path d='M600.0 312.0L604.5 325.5L618.0 330.0L604.5 334.5L600.0 348.0L595.5 334.5L582.0 330.0L595.5 325.5Z' fill='#FF7EB6' stroke='#1B1035' stroke-width='4' stroke-linejoin='round'/><path d='M70.0 314.0L74.0 326.0L86.0 330.0L74.0 334.0L70.0 346.0L66.0 334.0L54.0 330.0L66.0 326.0Z' fill='#4CC9F0' stroke='#1B1035' stroke-width='4' stroke-linejoin='round'/><path d='M636.0 8.0L639.5 18.5L650.0 22.0L639.5 25.5L636.0 36.0L632.5 25.5L622.0 22.0L632.5 18.5Z' fill='#2EC27E' stroke='#1B1035' stroke-width='4' stroke-linejoin='round'/></g></svg>
+    <p class="kicker reveal">SlideFly</p>
+    <h1 class="title reveal">Slide chuyển cảnh kiểu Morph trên trình duyệt</h1>
+    <p class="subtitle reveal">Một file HTML, mở bằng Chrome là trình chiếu được</p>
+    <p class="meta reveal">Bộ mẫu 9 kiểu slide</p>
+  </section>
+
+  <!-- 2. agenda -->
+  <section class="slide" data-layout="agenda">
+    <h2 class="title reveal">Nội dung</h2>
+    <ol class="agenda-list">
+      <li><span class="num reveal">01</span><div><h3 class="reveal" data-morph-id="s1">Cơ chế diễn viên</h3><p class="reveal">Hình cố định, chỉ đổi tư thế</p></div></li>
+      <li><span class="num reveal">02</span><div><h3 class="reveal">Chín kiểu slide</h3><p class="reveal">Từ trang bìa đến lời cảm ơn</p></div></li>
+      <li><span class="num reveal">03</span><div><h3 class="reveal">Tự co giãn</h3><p class="reveal">Ít chữ thì chữ to hơn</p></div></li>
+      <li><span class="num reveal">04</span><div><h3 class="reveal">Đo độ lấp đầy</h3><p class="reveal">Máy tự soát slide bị trống</p></div></li>
+    </ol>
+  </section>
+
+  <!-- 3. section -->
+  <section class="slide" data-layout="section">
+    <p class="num reveal">01</p>
+    <h2 class="title reveal" data-morph-id="s1">Cơ chế diễn viên</h2>
+    <p class="subtitle reveal">Morph là cùng một vật đổi vị trí giữa hai slide</p>
+  </section>
+
+  <!-- 4. content + HÌNH 2: một nhân vật, hai tư thế, bảng điểm -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Hình cố định, chỉ đổi tư thế</h2>
+    <svg class="art" style="left:1260px; top:280px" width="540" height="700" viewBox="0 0 540 700" aria-hidden="true"><g class="reveal"><text class="gs-w gs-sm" x="20" y="28">MỘT NHÂN VẬT, HAI TƯ THẾ</text></g><g class="reveal-scale"><g transform='translate(130 250) scale(0.95)' stroke-linejoin='round' stroke-linecap='round'><path d='M-54 -54Q-84 -44 -76 -16' fill='none' stroke='#1B1035' stroke-width='26'/><path d='M-54 -54Q-84 -44 -76 -16' fill='none' stroke='#4CC9F0' stroke-width='11'/><path d='M54 -54Q84 -44 76 -16' fill='none' stroke='#1B1035' stroke-width='26'/><path d='M54 -54Q84 -44 76 -16' fill='none' stroke='#4CC9F0' stroke-width='11'/><ellipse cx='-26' cy='-3' rx='20' ry='10' fill='#4CC9F0' stroke='#1B1035' stroke-width='7'/><ellipse cx='26' cy='-3' rx='20' ry='10' fill='#4CC9F0' stroke='#1B1035' stroke-width='7'/><path d='M-58 -10C-58 -94 -34 -132 0 -132C34 -132 58 -94 58 -10Q58 3 46 3H-46Q-58 3 -58 -10Z' fill='#4CC9F0' stroke='#1B1035' stroke-width='8'/><ellipse cx='0' cy='-34' rx='32' ry='28' fill='#FFF3D6'/><ellipse cx='-21' cy='-86' rx='10' ry='15' fill='#1B1035'/><circle cx='-24' cy='-91' r='4' fill='#fff'/><circle cx='-40' cy='-62' r='8' fill='#FF7EB6' fill-opacity='.65'/><ellipse cx='21' cy='-86' rx='10' ry='15' fill='#1B1035'/><circle cx='18' cy='-91' r='4' fill='#fff'/><circle cx='40' cy='-62' r='8' fill='#FF7EB6' fill-opacity='.65'/><path d='M-13 -64Q0 -34 13 -64Z' fill='#1B1035' stroke='#1B1035' stroke-width='4'/><path d='M-7 -49Q0 -42 7 -49Q0 -53 -7 -49Z' fill='#FF7EB6'/><path d='M0 -132V-160' stroke='#1B1035' stroke-width='6' fill='none'/><circle cx='0' cy='-166' r='9' fill='#FFD23F' stroke='#1B1035' stroke-width='5'/></g></g><path d="M180 120C230 20 330 20 380 112" fill="none" stroke="#1B1035" stroke-width="6" stroke-dasharray="4 14" stroke-linecap="round"/><path d="M392 128L360 122L384 98Z" fill="#1B1035" stroke="#1B1035" stroke-width="4" stroke-linejoin="round"/><g class="reveal-scale" style="--i:2"><g transform='translate(410 270) scale(1.05)' stroke-linejoin='round' stroke-linecap='round'><path d='M-52 -64Q-88 -78 -84 -126' fill='none' stroke='#1B1035' stroke-width='26'/><path d='M-52 -64Q-88 -78 -84 -126' fill='none' stroke='#4CC9F0' stroke-width='11'/><path d='M52 -64Q88 -78 84 -126' fill='none' stroke='#1B1035' stroke-width='26'/><path d='M52 -64Q88 -78 84 -126' fill='none' stroke='#4CC9F0' stroke-width='11'/><ellipse cx='-26' cy='-3' rx='20' ry='10' fill='#4CC9F0' stroke='#1B1035' stroke-width='7'/><ellipse cx='26' cy='-3' rx='20' ry='10' fill='#4CC9F0' stroke='#1B1035' stroke-width='7'/><path d='M-58 -10C-58 -94 -34 -132 0 -132C34 -132 58 -94 58 -10Q58 3 46 3H-46Q-58 3 -58 -10Z' fill='#4CC9F0' stroke='#1B1035' stroke-width='8'/><ellipse cx='0' cy='-34' rx='32' ry='28' fill='#FFF3D6'/><ellipse cx='-21' cy='-86' rx='10' ry='15' fill='#1B1035'/><circle cx='-24' cy='-91' r='4' fill='#fff'/><circle cx='-40' cy='-62' r='8' fill='#FF7EB6' fill-opacity='.65'/><ellipse cx='21' cy='-86' rx='10' ry='15' fill='#1B1035'/><circle cx='18' cy='-91' r='4' fill='#fff'/><circle cx='40' cy='-62' r='8' fill='#FF7EB6' fill-opacity='.65'/><path d='M-13 -64Q0 -34 13 -64Z' fill='#1B1035' stroke='#1B1035' stroke-width='4'/><path d='M-7 -49Q0 -42 7 -49Q0 -53 -7 -49Z' fill='#FF7EB6'/><path d='M0 -132V-160' stroke='#1B1035' stroke-width='6' fill='none'/><circle cx='0' cy='-166' r='9' fill='#FFD23F' stroke='#1B1035' stroke-width='5'/></g></g><g class="reveal"><circle cx='40' cy='66' r='22' fill='#FFF3D6' stroke='#1B1035' stroke-width='5'/><text class='gs-n' x='40' y='75' text-anchor='middle'>1</text><circle cx='500' cy='84' r='22' fill='#FFF3D6' stroke='#1B1035' stroke-width='5'/><text class='gs-n' x='500' y='93' text-anchor='middle'>1</text><text class="gs-w gs-sm" x="130" y="292" text-anchor="middle">TƯ THẾ A</text><text class="gs-w gs-sm" x="410" y="312" text-anchor="middle">TƯ THẾ B</text></g><g class="reveal" style="--i:3"><rect x='28' y='418' width='500' height='252' rx='26' fill='#1B1035'/><rect x='20' y='410' width='500' height='252' rx='26' fill='#FFF3D6' stroke='#1B1035' stroke-width='7'/><path d='M27 448V440Q27 417 50 417H490Q513 417 513 440V448Z' fill='#FF4F5E'/><text class='gs-l' x='62' y='441' text-anchor='middle'>SỐ</text><text class='gs-l' x='180' y='441' text-anchor='middle'>TÊN</text><text class='gs-l' x='424' y='441' text-anchor='middle'>GHI CHÚ</text><path d='M20 531H520' stroke='#1B1035' stroke-opacity='.25' stroke-width='3'/><circle cx='62' cy='500' r='22' fill='#FFF3D6' stroke='#1B1035' stroke-width='5'/><text class='gs-n' x='62' y='509' text-anchor='middle'>1</text><text class='gs-w gs-sm' x='110' y='508'>DIỄN VIÊN</text><rect x='360' y='488' width='130' height='24' rx='12' fill='#FFD23F' stroke='#1B1035' stroke-width='4'/><path d='M20 593H520' stroke='#1B1035' stroke-opacity='.25' stroke-width='3'/><circle cx='62' cy='562' r='22' fill='#FFF3D6' stroke='#1B1035' stroke-width='5'/><text class='gs-n' x='62' y='571' text-anchor='middle'>2</text><text class='gs-w gs-sm' x='110' y='570'>TƯ THẾ</text><rect x='360' y='550' width='100' height='24' rx='12' fill='#FF7EB6' stroke='#1B1035' stroke-width='4'/><circle cx='62' cy='624' r='22' fill='#FFF3D6' stroke='#1B1035' stroke-width='5'/><text class='gs-n' x='62' y='633' text-anchor='middle'>3</text><text class='gs-w gs-sm' x='110' y='632'>TRƯỢT DẦN</text><rect x='360' y='612' width='74' height='24' rx='12' fill='#4CC9F0' stroke='#1B1035' stroke-width='4'/></g></svg>
+    <ul class="bullets">
+      <li class="reveal">Mỗi style có một nhóm hình cố định, gọi là <b>diễn viên</b>.</li>
+      <li class="reveal">Mỗi kiểu slide quy định một <b>tư thế</b>: vị trí, kích thước, màu.</li>
+      <li class="reveal">Khi chuyển slide, trình duyệt cho hình <b>trượt dần</b> sang tư thế mới.</li>
+      <li class="reveal">Chữ của slide mới hiện sau, khi hình đã bắt đầu chuyển động.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-text">Cùng tên là cùng một vật</p>
+    </aside>
+  </section>
+
+  <!-- 5. content (second in a row: parity changes the pose) -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Một khung cho mọi màn hình</h2>
+    <ul class="bullets">
+      <li class="reveal">Slide được thiết kế ở một kích thước cố định 1920×1080.</li>
+      <li class="reveal">Màn hình to hay nhỏ, cả khung được phóng to, thu nhỏ theo.</li>
+      <li class="reveal">Không vỡ bố cục trên máy chiếu, laptop hay điện thoại.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-big">16:9</p>
+      <p class="hl-text">Tỷ lệ khung chuẩn</p>
+    </aside>
+  </section>
+
+  <!-- 6. two-col + takeaway -->
+  <section class="slide" data-layout="two-col">
+    <h2 class="title reveal">PowerPoint Morph và SlideFly</h2>
+    <div class="cols">
+      <div class="col reveal-left">
+        <h3>PowerPoint</h3>
+        <ul>
+          <li>Chạy trong PowerPoint</li>
+          <li>Sửa trực tiếp bằng chuột</li>
+          <li>Khớp hình theo tên</li>
+        </ul>
+      </div>
+      <div class="col reveal-right">
+        <h3>SlideFly</h3>
+        <ul>
+          <li>Chạy trên trình duyệt</li>
+          <li>Sửa bằng nội dung chữ</li>
+          <li>Khớp hình theo data-actor</li>
+        </ul>
+      </div>
+    </div>
+    <p class="takeaway reveal">Cùng một ý tưởng: vật trùng tên thì trượt sang vị trí mới.</p>
+  </section>
+
+  <!-- 7. stats + HÌNH 4: ba bảng đèn 3, 5, 7 bóng -->
+  <section class="slide" data-layout="stats">
+    <h2 class="title reveal">Ba bậc cỡ chữ tự chọn</h2>
+    <div class="stats">
+      <div class="stat reveal"><span class="stat-num">≤3</span><span class="stat-label">ý trên một slide: chữ lớn nhất, dễ đọc từ xa</span></div>
+      <div class="stat reveal"><span class="stat-num">4-5</span><span class="stat-label">ý trên một slide: chữ vừa, vẫn thoáng</span></div>
+      <div class="stat reveal"><span class="stat-num">6+</span><span class="stat-label">ý trên một slide: chữ nhỏ, nên tách slide</span></div>
+    </div>
+    <svg class="art" style="left:120px; top:836px" width="1680" height="150" viewBox="0 0 1680 150" aria-hidden="true"><g class="reveal-scale"><rect x='142' y='30' width='260' height='104' rx='22' fill='#1B1035'/><rect x='134' y='22' width='260' height='104' rx='22' fill='#FFF3D6' stroke='#1B1035' stroke-width='6'/><circle cx='194.0' cy='74' r='17' fill='#FFD23F' stroke='#1B1035' stroke-width='4'/><circle cx='188.9' cy='68.9' r='4.8' fill='#fff'/><circle cx='264.0' cy='74' r='17' fill='#FFD23F' stroke='#1B1035' stroke-width='4'/><circle cx='258.9' cy='68.9' r='4.8' fill='#fff'/><circle cx='334.0' cy='74' r='17' fill='#FFD23F' stroke='#1B1035' stroke-width='4'/><circle cx='328.9' cy='68.9' r='4.8' fill='#fff'/><rect x='718' y='30' width='260' height='104' rx='22' fill='#1B1035'/><rect x='710' y='22' width='260' height='104' rx='22' fill='#FFF3D6' stroke='#1B1035' stroke-width='6'/><circle cx='748.0' cy='74' r='14' fill='#FFD23F' stroke='#1B1035' stroke-width='4'/><circle cx='743.8' cy='69.8' r='3.9' fill='#fff'/><circle cx='794.0' cy='74' r='14' fill='#FFD23F' stroke='#1B1035' stroke-width='4'/><circle cx='789.8' cy='69.8' r='3.9' fill='#fff'/><circle cx='840.0' cy='74' r='14' fill='#FFD23F' stroke='#1B1035' stroke-width='4'/><circle cx='835.8' cy='69.8' r='3.9' fill='#fff'/><circle cx='886.0' cy='74' r='14' fill='#FFD23F' stroke='#1B1035' stroke-width='4'/><circle cx='881.8' cy='69.8' r='3.9' fill='#fff'/><circle cx='932.0' cy='74' r='14' fill='#FFD23F' stroke='#1B1035' stroke-width='4'/><circle cx='927.8' cy='69.8' r='3.9' fill='#fff'/><rect x='1294' y='30' width='260' height='104' rx='22' fill='#1B1035'/><rect x='1286' y='22' width='260' height='104' rx='22' fill='#FFF3D6' stroke='#1B1035' stroke-width='6'/><circle cx='1314.0' cy='74' r='11' fill='#FF9A3C' stroke='#1B1035' stroke-width='4'/><circle cx='1310.7' cy='70.7' r='3.1' fill='#fff'/><circle cx='1348.0' cy='74' r='11' fill='#FF9A3C' stroke='#1B1035' stroke-width='4'/><circle cx='1344.7' cy='70.7' r='3.1' fill='#fff'/><circle cx='1382.0' cy='74' r='11' fill='#FF9A3C' stroke='#1B1035' stroke-width='4'/><circle cx='1378.7' cy='70.7' r='3.1' fill='#fff'/><circle cx='1416.0' cy='74' r='11' fill='#FF9A3C' stroke='#1B1035' stroke-width='4'/><circle cx='1412.7' cy='70.7' r='3.1' fill='#fff'/><circle cx='1450.0' cy='74' r='11' fill='#FF9A3C' stroke='#1B1035' stroke-width='4'/><circle cx='1446.7' cy='70.7' r='3.1' fill='#fff'/><circle cx='1484.0' cy='74' r='11' fill='#FF9A3C' stroke='#1B1035' stroke-width='4'/><circle cx='1480.7' cy='70.7' r='3.1' fill='#fff'/><circle cx='1518.0' cy='74' r='11' fill='#FF9A3C' stroke='#1B1035' stroke-width='4'/><circle cx='1514.7' cy='70.7' r='3.1' fill='#fff'/><g transform='translate(1536 28)' stroke-linecap='round'><circle r='25' fill='#FF4F5E' stroke='#1B1035' stroke-width='6'/><path d='M-9 -9L9 9M9 -9L-9 9' stroke='#FFF3D6' stroke-width='7'/></g></g></svg>
+  </section>
+
+  <!-- 8. timeline + HÌNH 3: trạm trên dải đèn marquee -->
+  <section class="slide s-tl" data-layout="timeline">
+    <h2 class="title reveal">Quy trình dựng một deck</h2>
+    <svg class="art" style="left:120px; top:560px" width="1680" height="140" viewBox="0 0 1680 140" aria-hidden="true"><path class='draw' pathLength='1' style='--d:0.2' d='M56.0 52Q187.2 6 297.6 44.7' fill='none' stroke='#1B1035' stroke-width='5' stroke-linecap='round'/><path d='M318.4 52L294.0 55.1L301.3 34.3Z' fill='#1B1035' stroke='#1B1035' stroke-width='3' stroke-linejoin='round'/><path class='draw' pathLength='1' style='--d:0.4' d='M398.4 52Q529.6 6 640.0 44.7' fill='none' stroke='#1B1035' stroke-width='5' stroke-linecap='round'/><path d='M660.8 52L636.4 55.1L643.7 34.3Z' fill='#1B1035' stroke='#1B1035' stroke-width='3' stroke-linejoin='round'/><path class='draw' pathLength='1' style='--d:0.6000000000000001' d='M740.8 52Q872.0 6 982.4 44.7' fill='none' stroke='#1B1035' stroke-width='5' stroke-linecap='round'/><path d='M1003.2 52L978.8 55.1L986.1 34.3Z' fill='#1B1035' stroke='#1B1035' stroke-width='3' stroke-linejoin='round'/><path class='draw' pathLength='1' style='--d:0.8' d='M1083.2 52Q1214.4 6 1324.8 44.7' fill='none' stroke='#1B1035' stroke-width='5' stroke-linecap='round'/><path d='M1345.6 52L1321.2 55.1L1328.5 34.3Z' fill='#1B1035' stroke='#1B1035' stroke-width='3' stroke-linejoin='round'/><g class="reveal-scale"><circle cx='22.0' cy='76' r='30' fill='#1B1035'/><circle cx='16.0' cy='70' r='30' fill='#FFD23F' stroke='#1B1035' stroke-width='6'/><g transform='translate(16.0 70)' stroke-linecap='round' stroke-linejoin='round'><path d='M-12 -9H12M-12 0H8M-12 9H12' stroke='#1B1035' stroke-width='5'/></g><circle cx='364.4' cy='76' r='30' fill='#1B1035'/><circle cx='358.4' cy='70' r='30' fill='#FF7EB6' stroke='#1B1035' stroke-width='6'/><g transform='translate(358.4 70)' stroke-linecap='round' stroke-linejoin='round'><path d='M0.0 -13.0L3.2 -4.4L12.4 -4.0L5.2 1.7L7.6 10.5L0.0 5.5L-7.6 10.5L-5.2 1.7L-12.4 -4.0L-3.2 -4.4Z' fill='#FFF3D6' stroke='#1B1035' stroke-width='4'/></g><circle cx='706.8' cy='76' r='30' fill='#1B1035'/><circle cx='700.8' cy='70' r='30' fill='#4CC9F0' stroke='#1B1035' stroke-width='6'/><g transform='translate(700.8 70)' stroke-linecap='round' stroke-linejoin='round'><rect x='-12' y='-12' width='10' height='10' fill='#FFF3D6' stroke='#1B1035' stroke-width='4'/><rect x='2' y='2' width='10' height='10' fill='#FFF3D6' stroke='#1B1035' stroke-width='4'/></g><circle cx='1049.2' cy='76' r='30' fill='#1B1035'/><circle cx='1043.2' cy='70' r='30' fill='#2EC27E' stroke='#1B1035' stroke-width='6'/><g transform='translate(1043.2 70)' stroke-linecap='round' stroke-linejoin='round'><path d='M-11 -2L-4 7L12 -9' stroke='#1B1035' stroke-width='6' fill='none'/></g><g transform='translate(1385.6 70) rotate(0)' stroke-linejoin='round'><path d='M0.0 -44.0L10.6 -32.6L25.9 -35.6L27.8 -20.2L41.8 -13.6L34.3 0.0L41.8 13.6L27.8 20.2L25.9 35.6L10.6 32.6L0.0 44.0L-10.6 32.6L-25.9 35.6L-27.8 20.2L-41.8 13.6L-34.3 0.0L-41.8 -13.6L-27.8 -20.2L-25.9 -35.6L-10.6 -32.6Z' transform='translate(6 6)' fill='#1B1035'/><path d='M0.0 -44.0L10.6 -32.6L25.9 -35.6L27.8 -20.2L41.8 -13.6L34.3 0.0L41.8 13.6L27.8 20.2L25.9 35.6L10.6 32.6L0.0 44.0L-10.6 32.6L-25.9 35.6L-27.8 20.2L-41.8 13.6L-34.3 0.0L-41.8 -13.6L-27.8 -20.2L-25.9 -35.6L-10.6 -32.6Z' fill='#FFD23F' stroke='#1B1035' stroke-width='5'/><circle r='27' fill='none' stroke='#FF7EB6' stroke-width='4' stroke-dasharray='10 7'/></g><g transform='translate(1385.6 70)' stroke-linecap='round' stroke-linejoin='round'><path d='M-13 0L-4 10L14 -10' stroke='#1B1035' stroke-width='8' fill='none'/></g></g></svg>
+    <div class="timeline">
+      <div class="step reveal"><div class="when">01</div><h3>Nội dung</h3><p>Gom dàn ý, số liệu có nguồn</p></div>
+      <div class="step reveal"><div class="when">02</div><h3>Chọn style</h3><p>Xem 3 bản thử rồi chọn</p></div>
+      <div class="step reveal"><div class="when">03</div><h3>Dựng</h3><p>Viết HTML theo khung mẫu</p></div>
+      <div class="step reveal"><div class="when">04</div><h3>Đo</h3><p>Chạy deck.audit() từng slide</p></div>
+      <div class="step reveal"><div class="when">05</div><h3>Bàn giao</h3><p>Gộp thành một file HTML</p></div>
+    </div>
+  </section>
+
+  <!-- 9. quote -->
+  <section class="slide" data-layout="quote">
+    <blockquote class="quote reveal-blur">Hình trang trí đứng yên chỉ là nền. Khi nó di chuyển, nó kể chuyện.</blockquote>
+    <p class="cite reveal">Nguyên tắc của bộ mẫu</p>
+  </section>
+
+  <!-- 10. closing -->
+  <section class="slide" data-layout="closing">
+    <p class="kicker reveal">Hết phần mẫu</p>
+    <h2 class="title reveal">Cảm ơn</h2>
+    <p class="subtitle reveal">Đổi style chỉ cần thay một dòng link CSS.</p>
+  </section>
+
+</div>
+</div>
+<script src="../skill/slidefly/assets/morph-viz-diagrams.js"></script>
+<script src="../skill/slidefly/assets/morph-viz.js"></script>
+<script src="../skill/slidefly/assets/morph-engine.js"></script>
+<script src="../skill/slidefly/assets/morph-nav.js"></script>
+<script src="../skill/slidefly/assets/morph-audit.js"></script>
+<script src="../skill/slidefly/assets/morph-steps.js"></script>
+<script src="../skill/slidefly/assets/morph-icons.js"></script>
+</body>
+</html>

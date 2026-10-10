@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mẫu SlideFly · Anime 80s</title>
+<!-- Đổi style: thay đúng 1 dòng link styles/*.css bên dưới. Minh họa SVG vẽ theo styles/cel-anime-80s.art.md -->
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-base.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-layouts.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/styles/cel-anime-80s.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-motion.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-viz.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-icons.css">
+<style>
+/* hand-drawn figures (cel-anime-80s.art.md): flat fills, hard two-tone shade, coloured not black lines, backlit neon */
+.art { position: absolute; overflow: visible; pointer-events: none; }
+.an-o { stroke: var(--ink); stroke-width: 5; stroke-linejoin: round; stroke-linecap: round; }
+.an-m { stroke-width: 3.5; }
+.an-s { stroke-width: 2.5; }
+.an-line { fill: none; stroke: #c9b6ee; stroke-width: 4; stroke-linecap: round; }
+.an-ant { fill: none; stroke: #d8c6f0; stroke-width: 6; stroke-linecap: round; }
+.an-rim { fill: none; stroke: #5ee7ff; stroke-width: 5; stroke-linecap: round; }
+.an-bar { fill: none; stroke-width: 10; stroke-linecap: round; }
+.an-arrow { fill: none; stroke: #ff4fa3; stroke-width: 7; stroke-linecap: round; stroke-dasharray: 2 14; }
+.an-tick { fill: none; stroke: #5ee7ff; stroke-opacity: 0.55; stroke-width: 2.5; stroke-dasharray: 6 8; }
+.an-menu { fill: rgba(12, 5, 40, 0.8); stroke: #5ee7ff; stroke-width: 2.5; }
+.an-cel { stroke-width: 3.5; stroke-linejoin: round; }
+.an-c1 { fill: rgba(94, 231, 255, 0.16); stroke: #5ee7ff; }
+.an-c2 { fill: rgba(255, 79, 163, 0.16); stroke: #ff4fa3; }
+.an-c3 { fill: rgba(255, 200, 87, 0.18); stroke: #ffc857; }
+.an-st { fill: #1d0f3d; stroke: #5ee7ff; stroke-width: 6; }
+.an-stp { stroke: #ff4fa3; }
+.g-body { fill: #5a3a9c; } .g-bodyd { fill: #3b2575; } .g-scr { fill: #13093a; } .g-cream { fill: #fff0d9; }
+.g-gold { fill: #ffc857; } .g-pink { fill: #ff4fa3; } .g-cyan { fill: #5ee7ff; } .g-white { fill: #ffffff; }
+.g-ink { fill: #1d0f3d; } .g-vio { fill: #7a3fd1; } .g-red { fill: #ff4d6d; } .g-led { fill: #ff4d6d; } .g-cass { fill: #2a1658; }
+.g-bar1 { stroke: #ff4fa3; } .g-bar2 { stroke: #5ee7ff; } .g-hot { fill: rgba(255, 79, 163, 0.5); }
+.g-halo { fill: rgba(255, 79, 163, 0.1); } .g-halo2 { fill: rgba(94, 231, 255, 0.16); } .g-halo3 { fill: rgba(255, 79, 163, 0.2); }
+.g-sweep { fill: rgba(255, 255, 255, 0.2); } .g-chev { fill: #ff7ab8; }
+.an-osd { fill: #fff0d9; font-family: var(--font-display); font-style: italic; font-weight: 700; font-size: 40px; letter-spacing: 0.06em; }
+.an-sm { font-size: 26px; fill: #5ee7ff; }
+.an-t { fill: #fff0d9; font-family: var(--font-display); font-style: italic; font-weight: 700; font-size: 38px; letter-spacing: 0.04em; }
+.an-num { fill: #1d0f3d; font-family: var(--font-display); font-style: italic; font-weight: 800; font-size: 26px; }
+/* light sweep over a held cel, once */
+.slide.active .an-sweep { animation: anSweep 1.6s ease-out 0.6s both; }
+@keyframes anSweep { 0% { opacity: 0; transform: translateX(-70px); } 35% { opacity: 1; } 100% { opacity: 0; transform: translateX(110px); } }
+@media (prefers-reduced-motion: reduce) { .slide.active .an-sweep { animation: none; opacity: 0; } }
+.an-sweep { opacity: 0; }
+/* the timeline figure draws its own stations on the light streak */
+.s-tl .step::before { display: none; }
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<div class="deck-stage">
+  <!-- Diễn viên (hình trang trí) do engine tự tạo từ --actors của style. -->
+
+  <!-- 1. cover + minh họa 1: tivi CRT chiếu một slide, băng VHS, mặt trời sau lưng -->
+  <section class="slide" data-layout="cover">
+    <svg class="art" style="left:1120px; top:200px" width="700" height="540" viewBox="0 0 700 540" aria-hidden="true">
+  <g class="reveal"><text class="an-osd" x="6" y="52">&#9654; PLAY</text><text class="an-osd an-sm" x="6" y="88">SP 0:01:12</text></g>
+  <circle class="g-halo" cx="340" cy="320" r="260"/>
+  <path class="an-ant draw" pathLength="1" style="--d:.1" d="M330 168L248 66M360 168L452 52"/><circle class="an-o g-gold" cx="246" cy="62" r="9"/><circle class="an-o g-gold" cx="456" cy="48" r="9"/>
+  <path class="an-o g-bodyd" d="M190 468L180 500H230L236 468ZM450 468L460 500H500L494 468Z"/>
+  <rect class="an-o g-body" x="140" y="170" width="400" height="304" rx="36"/>
+  <path class="g-bodyd" d="M540 206V438Q540 474 504 474H300Q470 450 540 206Z"/>
+  <path class="an-rim draw" pathLength="1" style="--d:.2" d="M156 214Q156 186 184 184H500"/>
+  <rect class="an-o g-scr" x="166" y="196" width="286" height="224" rx="30"/>
+  <g class="reveal"><rect class="g-cream" x="188" y="216" width="242" height="184" rx="10"/><path class="g-gold" d="M188 244V226Q188 216 198 216H420Q430 216 430 226V244Z"/><circle class="g-pink" cx="204" cy="230" r="5"/><circle class="g-cyan" cx="222" cy="230" r="5"/><path class="an-bar g-bar1" d="M208 276H350M208 302H320M208 328H336"/><path class="an-bar g-bar2" d="M208 354H300"/><path class="g-pink" d="M372 346A34 34 0 0 1 438 346Z" style="transform:translate(-10px,0)"/><path class="g-gold" d="M360 346A24 24 0 0 1 408 346Z" style="transform:translate(4px,-2px)"/></g>
+  <g class="an-sweep"><path class="g-sweep" d="M296 200H352L292 416H236Z"/></g>
+  <circle class="an-o an-m g-vio" cx="494" cy="238" r="18"/><path class="an-line" d="M494 238L502 228"/><circle class="an-o an-m g-vio" cx="494" cy="292" r="18"/><path class="an-line" d="M494 292L486 282"/><path class="an-line" d="M474 340H514M474 358H514M474 376H514M474 394H514"/><circle class="g-led" cx="184" cy="448" r="7"/><rect class="an-o an-s g-cyan" x="214" y="440" width="26" height="14" rx="4"/><rect class="an-o an-s g-cyan" x="250" y="440" width="26" height="14" rx="4"/>
+  <g transform="rotate(-13 110 470)"><rect class="an-o g-cass" x="20" y="418" width="180" height="108" rx="12"/><rect class="g-pink" x="34" y="430" width="152" height="46" rx="6"/><rect class="g-cream" x="44" y="438" width="84" height="12" rx="3"/><circle class="an-o an-m g-ink" cx="66" cy="498" r="14"/><circle class="an-o an-m g-ink" cx="154" cy="498" r="14"/><circle class="g-cream" cx="66" cy="498" r="5"/><circle class="g-cream" cx="154" cy="498" r="5"/></g>
+  <g class="reveal"><path class="g-gold" transform="translate(590 170) scale(0.7) translate(-50 -50)" d="M50 4C54 36 64 46 96 50C64 54 54 64 50 96C46 64 36 54 4 50C36 46 46 36 50 4Z"/><path class="g-white" transform="translate(610 380) scale(0.4) translate(-50 -50)" d="M50 4C54 36 64 46 96 50C64 54 54 64 50 96C46 64 36 54 4 50C36 46 46 36 50 4Z"/><path class="g-cyan" transform="translate(60 250) scale(0.5) translate(-50 -50)" d="M50 4C54 36 64 46 96 50C64 54 54 64 50 96C46 64 36 54 4 50C36 46 46 36 50 4Z"/></g>
+</svg>
+    <p class="kicker reveal">SlideFly</p>
+    <h1 class="title reveal">Slide chuyển cảnh kiểu Morph trên trình duyệt</h1>
+    <p class="subtitle reveal">Một file HTML, mở bằng Chrome là trình chiếu được</p>
+    <p class="meta reveal">Bộ mẫu 9 kiểu slide</p>
+  </section>
+
+  <!-- 2. agenda -->
+  <section class="slide" data-layout="agenda">
+    <h2 class="title reveal">Nội dung</h2>
+    <ol class="agenda-list">
+      <li><span class="num reveal">01</span><div><h3 class="reveal" data-morph-id="s1">Cơ chế diễn viên</h3><p class="reveal">Hình cố định, chỉ đổi tư thế</p></div></li>
+      <li><span class="num reveal">02</span><div><h3 class="reveal">Chín kiểu slide</h3><p class="reveal">Từ trang bìa đến lời cảm ơn</p></div></li>
+      <li><span class="num reveal">03</span><div><h3 class="reveal">Tự co giãn</h3><p class="reveal">Ít chữ thì chữ to hơn</p></div></li>
+      <li><span class="num reveal">04</span><div><h3 class="reveal">Đo độ lấp đầy</h3><p class="reveal">Máy tự soát slide bị trống</p></div></li>
+    </ol>
+  </section>
+
+  <!-- 3. section -->
+  <section class="slide" data-layout="section">
+    <p class="num reveal">01</p>
+    <h2 class="title reveal" data-morph-id="s1">Cơ chế diễn viên</h2>
+    <p class="subtitle reveal">Morph là cùng một vật đổi vị trí giữa hai slide</p>
+  </section>
+
+  <!-- 4. content + minh họa 2: ba lớp cel chồng nhau và bảng menu của đầu băng -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Hình cố định, chỉ đổi tư thế</h2>
+    <svg class="art" style="left:1260px; top:280px" width="540" height="700" viewBox="0 0 540 700" aria-hidden="true">
+  <g class="reveal"><g transform="translate(10 168)"><path class="an-cel an-c1" d="M20 0H230L210 140H0Z"/><path class="g-gold" transform="translate(120 76) scale(0.7) translate(-50 -50)" d="M50 4C54 36 64 46 96 50C64 54 54 64 50 96C46 64 36 54 4 50C36 46 46 36 50 4Z"/><path class="an-line" d="M70 108H150"/><circle class="an-o an-m g-pink" cx="16" cy="12" r="19"/><text class="an-num" x="16" y="21" text-anchor="middle">1</text></g></g>
+  <g class="reveal"><g transform="translate(150 92)"><path class="an-cel an-c2" d="M20 0H230L210 140H0Z"/><path class="an-arrow" d="M72 96Q110 30 168 52"/><path class="g-pink" d="M178 56L150 60L158 36Z"/><circle class="an-o an-m g-pink" cx="16" cy="12" r="19"/><text class="an-num" x="16" y="21" text-anchor="middle">2</text></g></g>
+  <g class="reveal"><g transform="translate(290 16)"><path class="an-cel an-c3" d="M20 0H230L210 140H0Z"/><rect class="an-o an-s g-cream" x="64" y="38" width="108" height="70" rx="6"/><path class="g-gold" d="M64 54V44Q64 38 70 38H166Q172 38 172 44V54Z"/><path class="an-bar g-bar1" d="M76 72H130M76 88H116"/><circle class="an-o an-m g-pink" cx="16" cy="12" r="19"/><text class="an-num" x="16" y="21" text-anchor="middle">3</text></g></g>
+  <g class="an-sweep"><path class="g-sweep" d="M120 50H168L120 300H72Z"/></g>
+  <g class="reveal"><path class="g-cyan" transform="translate(40 40) scale(0.4) translate(-50 -50)" d="M50 4C54 36 64 46 96 50C64 54 54 64 50 96C46 64 36 54 4 50C36 46 46 36 50 4Z"/><path class="g-white" transform="translate(500 250) scale(0.3) translate(-50 -50)" d="M50 4C54 36 64 46 96 50C64 54 54 64 50 96C46 64 36 54 4 50C36 46 46 36 50 4Z"/></g>
+  <g class="reveal"><rect class="an-menu" x="10" y="410" width="510" height="246" rx="12"/><text class="an-osd an-sm" x="30" y="448">MENU</text><text class="an-osd an-sm" x="400" y="448">CH 04</text><rect class="g-hot" x="22" y="474" width="486" height="52" rx="6"/><text class="an-t" x="44" y="512">&#9654; 1  DIỄN VIÊN</text><text class="an-t" x="44" y="572">2  TƯ THẾ</text><text class="an-t" x="44" y="632">3  TRƯỢT DẦN</text><path class="an-bar g-bar2" style="stroke-width:6" d="M300 600H500"/><path class="an-bar g-bar1" style="stroke-width:6" d="M300 600H410"/></g>
+</svg>
+    <ul class="bullets">
+      <li class="reveal">Mỗi style có một nhóm hình cố định, gọi là <b>diễn viên</b>.</li>
+      <li class="reveal">Mỗi kiểu slide quy định một <b>tư thế</b>: vị trí, kích thước, màu.</li>
+      <li class="reveal">Khi chuyển slide, trình duyệt cho hình <b>trượt dần</b> sang tư thế mới.</li>
+      <li class="reveal">Chữ của slide mới hiện sau, khi hình đã bắt đầu chuyển động.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-text">Cùng tên là cùng một vật</p>
+    </aside>
+  </section>
+
+  <!-- 5. content (second in a row: parity changes the pose) -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Một khung cho mọi màn hình</h2>
+    <ul class="bullets">
+      <li class="reveal">Slide được thiết kế ở một kích thước cố định 1920×1080.</li>
+      <li class="reveal">Màn hình to hay nhỏ, cả khung được phóng to, thu nhỏ theo.</li>
+      <li class="reveal">Không vỡ bố cục trên máy chiếu, laptop hay điện thoại.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-big">16:9</p>
+      <p class="hl-text">Tỷ lệ khung chuẩn</p>
+    </aside>
+  </section>
+
+  <!-- 6. two-col + takeaway -->
+  <section class="slide" data-layout="two-col">
+    <h2 class="title reveal">PowerPoint Morph và SlideFly</h2>
+    <div class="cols">
+      <div class="col reveal-left">
+        <h3>PowerPoint</h3>
+        <ul>
+          <li>Chạy trong PowerPoint</li>
+          <li>Sửa trực tiếp bằng chuột</li>
+          <li>Khớp hình theo tên</li>
+        </ul>
+      </div>
+      <div class="col reveal-right">
+        <h3>SlideFly</h3>
+        <ul>
+          <li>Chạy trên trình duyệt</li>
+          <li>Sửa bằng nội dung chữ</li>
+          <li>Khớp hình theo data-actor</li>
+        </ul>
+      </div>
+    </div>
+    <p class="takeaway reveal">Cùng một ý tưởng: vật trùng tên thì trượt sang vị trí mới.</p>
+  </section>
+
+  <!-- 7. stats + minh họa 4: ba bộ đèn LED equalizer, càng nhiều ý càng quá tải -->
+  <section class="slide" data-layout="stats">
+    <h2 class="title reveal">Ba bậc cỡ chữ tự chọn</h2>
+    <div class="stats">
+      <div class="stat reveal"><span class="stat-num">≤3</span><span class="stat-label">ý trên một slide: chữ lớn nhất, dễ đọc từ xa</span></div>
+      <div class="stat reveal"><span class="stat-num">4-5</span><span class="stat-label">ý trên một slide: chữ vừa, vẫn thoáng</span></div>
+      <div class="stat reveal"><span class="stat-num">6+</span><span class="stat-label">ý trên một slide: chữ nhỏ, nên tách slide</span></div>
+    </div>
+    <svg class="art" style="left:120px; top:836px" width="1680" height="150" viewBox="0 0 1680 150" aria-hidden="true">
+  <g class="reveal"><rect class="an-menu" x="146" y="2" width="236" height="146" rx="10"/><rect class="g-cyan" x="190" y="134" width="40" height="8" rx="2"/><rect class="g-cyan" x="190" y="123.4" width="40" height="8" rx="2"/><rect class="g-cyan" x="190" y="112.8" width="40" height="8" rx="2"/><rect class="g-cyan" x="190" y="102.2" width="40" height="8" rx="2"/><rect class="g-white" x="190" y="87.6" width="40" height="4" rx="2"/><rect class="g-cyan" x="244" y="134" width="40" height="8" rx="2"/><rect class="g-cyan" x="244" y="123.4" width="40" height="8" rx="2"/><rect class="g-cyan" x="244" y="112.8" width="40" height="8" rx="2"/><rect class="g-cyan" x="244" y="102.2" width="40" height="8" rx="2"/><rect class="g-cyan" x="244" y="91.6" width="40" height="8" rx="2"/><rect class="g-cyan" x="244" y="81" width="40" height="8" rx="2"/><rect class="g-white" x="244" y="66.4" width="40" height="4" rx="2"/><rect class="g-cyan" x="298" y="134" width="40" height="8" rx="2"/><rect class="g-cyan" x="298" y="123.4" width="40" height="8" rx="2"/><rect class="g-cyan" x="298" y="112.8" width="40" height="8" rx="2"/><rect class="g-cyan" x="298" y="102.2" width="40" height="8" rx="2"/><rect class="g-cyan" x="298" y="91.6" width="40" height="8" rx="2"/><rect class="g-white" x="298" y="77" width="40" height="4" rx="2"/></g>
+  <g class="reveal"><rect class="an-menu" x="722" y="2" width="236" height="146" rx="10"/><rect class="g-cyan" x="755" y="134" width="26" height="8" rx="2"/><rect class="g-cyan" x="755" y="123.4" width="26" height="8" rx="2"/><rect class="g-cyan" x="755" y="112.8" width="26" height="8" rx="2"/><rect class="g-cyan" x="755" y="102.2" width="26" height="8" rx="2"/><rect class="g-cyan" x="755" y="91.6" width="26" height="8" rx="2"/><rect class="g-cyan" x="755" y="81" width="26" height="8" rx="2"/><rect class="g-white" x="755" y="66.4" width="26" height="4" rx="2"/><rect class="g-cyan" x="791" y="134" width="26" height="8" rx="2"/><rect class="g-cyan" x="791" y="123.4" width="26" height="8" rx="2"/><rect class="g-cyan" x="791" y="112.8" width="26" height="8" rx="2"/><rect class="g-cyan" x="791" y="102.2" width="26" height="8" rx="2"/><rect class="g-cyan" x="791" y="91.6" width="26" height="8" rx="2"/><rect class="g-cyan" x="791" y="81" width="26" height="8" rx="2"/><rect class="g-gold" x="791" y="70.4" width="26" height="8" rx="2"/><rect class="g-gold" x="791" y="59.8" width="26" height="8" rx="2"/><rect class="g-white" x="791" y="45.2" width="26" height="4" rx="2"/><rect class="g-cyan" x="827" y="134" width="26" height="8" rx="2"/><rect class="g-cyan" x="827" y="123.4" width="26" height="8" rx="2"/><rect class="g-cyan" x="827" y="112.8" width="26" height="8" rx="2"/><rect class="g-cyan" x="827" y="102.2" width="26" height="8" rx="2"/><rect class="g-cyan" x="827" y="91.6" width="26" height="8" rx="2"/><rect class="g-cyan" x="827" y="81" width="26" height="8" rx="2"/><rect class="g-gold" x="827" y="70.4" width="26" height="8" rx="2"/><rect class="g-white" x="827" y="55.8" width="26" height="4" rx="2"/><rect class="g-cyan" x="863" y="134" width="26" height="8" rx="2"/><rect class="g-cyan" x="863" y="123.4" width="26" height="8" rx="2"/><rect class="g-cyan" x="863" y="112.8" width="26" height="8" rx="2"/><rect class="g-cyan" x="863" y="102.2" width="26" height="8" rx="2"/><rect class="g-cyan" x="863" y="91.6" width="26" height="8" rx="2"/><rect class="g-cyan" x="863" y="81" width="26" height="8" rx="2"/><rect class="g-gold" x="863" y="70.4" width="26" height="8" rx="2"/><rect class="g-gold" x="863" y="59.8" width="26" height="8" rx="2"/><rect class="g-gold" x="863" y="49.2" width="26" height="8" rx="2"/><rect class="g-white" x="863" y="34.6" width="26" height="4" rx="2"/><rect class="g-cyan" x="899" y="134" width="26" height="8" rx="2"/><rect class="g-cyan" x="899" y="123.4" width="26" height="8" rx="2"/><rect class="g-cyan" x="899" y="112.8" width="26" height="8" rx="2"/><rect class="g-cyan" x="899" y="102.2" width="26" height="8" rx="2"/><rect class="g-cyan" x="899" y="91.6" width="26" height="8" rx="2"/><rect class="g-cyan" x="899" y="81" width="26" height="8" rx="2"/><rect class="g-white" x="899" y="66.4" width="26" height="4" rx="2"/></g>
+  <g class="reveal"><rect class="an-menu" x="1298" y="2" width="236" height="146" rx="10"/><rect class="g-cyan" x="1329" y="134" width="18" height="8" rx="2"/><rect class="g-cyan" x="1329" y="123.4" width="18" height="8" rx="2"/><rect class="g-cyan" x="1329" y="112.8" width="18" height="8" rx="2"/><rect class="g-cyan" x="1329" y="102.2" width="18" height="8" rx="2"/><rect class="g-cyan" x="1329" y="91.6" width="18" height="8" rx="2"/><rect class="g-cyan" x="1329" y="81" width="18" height="8" rx="2"/><rect class="g-gold" x="1329" y="70.4" width="18" height="8" rx="2"/><rect class="g-gold" x="1329" y="59.8" width="18" height="8" rx="2"/><rect class="g-gold" x="1329" y="49.2" width="18" height="8" rx="2"/><rect class="g-pink" x="1329" y="38.6" width="18" height="8" rx="2"/><rect class="g-white" x="1329" y="24" width="18" height="4" rx="2"/><rect class="g-cyan" x="1355" y="134" width="18" height="8" rx="2"/><rect class="g-cyan" x="1355" y="123.4" width="18" height="8" rx="2"/><rect class="g-cyan" x="1355" y="112.8" width="18" height="8" rx="2"/><rect class="g-cyan" x="1355" y="102.2" width="18" height="8" rx="2"/><rect class="g-cyan" x="1355" y="91.6" width="18" height="8" rx="2"/><rect class="g-cyan" x="1355" y="81" width="18" height="8" rx="2"/><rect class="g-gold" x="1355" y="70.4" width="18" height="8" rx="2"/><rect class="g-gold" x="1355" y="59.8" width="18" height="8" rx="2"/><rect class="g-gold" x="1355" y="49.2" width="18" height="8" rx="2"/><rect class="g-pink" x="1355" y="38.6" width="18" height="8" rx="2"/><rect class="g-pink" x="1355" y="28" width="18" height="8" rx="2"/><rect class="g-white" x="1355" y="13.4" width="18" height="4" rx="2"/><rect class="g-cyan" x="1381" y="134" width="18" height="8" rx="2"/><rect class="g-cyan" x="1381" y="123.4" width="18" height="8" rx="2"/><rect class="g-cyan" x="1381" y="112.8" width="18" height="8" rx="2"/><rect class="g-cyan" x="1381" y="102.2" width="18" height="8" rx="2"/><rect class="g-cyan" x="1381" y="91.6" width="18" height="8" rx="2"/><rect class="g-cyan" x="1381" y="81" width="18" height="8" rx="2"/><rect class="g-gold" x="1381" y="70.4" width="18" height="8" rx="2"/><rect class="g-gold" x="1381" y="59.8" width="18" height="8" rx="2"/><rect class="g-gold" x="1381" y="49.2" width="18" height="8" rx="2"/><rect class="g-pink" x="1381" y="38.6" width="18" height="8" rx="2"/><rect class="g-white" x="1381" y="24" width="18" height="4" rx="2"/><rect class="g-cyan" x="1407" y="134" width="18" height="8" rx="2"/><rect class="g-cyan" x="1407" y="123.4" width="18" height="8" rx="2"/><rect class="g-cyan" x="1407" y="112.8" width="18" height="8" rx="2"/><rect class="g-cyan" x="1407" y="102.2" width="18" height="8" rx="2"/><rect class="g-cyan" x="1407" y="91.6" width="18" height="8" rx="2"/><rect class="g-cyan" x="1407" y="81" width="18" height="8" rx="2"/><rect class="g-gold" x="1407" y="70.4" width="18" height="8" rx="2"/><rect class="g-gold" x="1407" y="59.8" width="18" height="8" rx="2"/><rect class="g-gold" x="1407" y="49.2" width="18" height="8" rx="2"/><rect class="g-pink" x="1407" y="38.6" width="18" height="8" rx="2"/><rect class="g-pink" x="1407" y="28" width="18" height="8" rx="2"/><rect class="g-pink" x="1407" y="17.4" width="18" height="8" rx="2"/><rect class="g-white" x="1407" y="2.8" width="18" height="4" rx="2"/><rect class="g-cyan" x="1433" y="134" width="18" height="8" rx="2"/><rect class="g-cyan" x="1433" y="123.4" width="18" height="8" rx="2"/><rect class="g-cyan" x="1433" y="112.8" width="18" height="8" rx="2"/><rect class="g-cyan" x="1433" y="102.2" width="18" height="8" rx="2"/><rect class="g-cyan" x="1433" y="91.6" width="18" height="8" rx="2"/><rect class="g-cyan" x="1433" y="81" width="18" height="8" rx="2"/><rect class="g-gold" x="1433" y="70.4" width="18" height="8" rx="2"/><rect class="g-gold" x="1433" y="59.8" width="18" height="8" rx="2"/><rect class="g-gold" x="1433" y="49.2" width="18" height="8" rx="2"/><rect class="g-pink" x="1433" y="38.6" width="18" height="8" rx="2"/><rect class="g-pink" x="1433" y="28" width="18" height="8" rx="2"/><rect class="g-white" x="1433" y="13.4" width="18" height="4" rx="2"/><rect class="g-cyan" x="1459" y="134" width="18" height="8" rx="2"/><rect class="g-cyan" x="1459" y="123.4" width="18" height="8" rx="2"/><rect class="g-cyan" x="1459" y="112.8" width="18" height="8" rx="2"/><rect class="g-cyan" x="1459" y="102.2" width="18" height="8" rx="2"/><rect class="g-cyan" x="1459" y="91.6" width="18" height="8" rx="2"/><rect class="g-cyan" x="1459" y="81" width="18" height="8" rx="2"/><rect class="g-gold" x="1459" y="70.4" width="18" height="8" rx="2"/><rect class="g-gold" x="1459" y="59.8" width="18" height="8" rx="2"/><rect class="g-gold" x="1459" y="49.2" width="18" height="8" rx="2"/><rect class="g-pink" x="1459" y="38.6" width="18" height="8" rx="2"/><rect class="g-white" x="1459" y="24" width="18" height="4" rx="2"/><rect class="g-cyan" x="1485" y="134" width="18" height="8" rx="2"/><rect class="g-cyan" x="1485" y="123.4" width="18" height="8" rx="2"/><rect class="g-cyan" x="1485" y="112.8" width="18" height="8" rx="2"/><rect class="g-cyan" x="1485" y="102.2" width="18" height="8" rx="2"/><rect class="g-cyan" x="1485" y="91.6" width="18" height="8" rx="2"/><rect class="g-cyan" x="1485" y="81" width="18" height="8" rx="2"/><rect class="g-gold" x="1485" y="70.4" width="18" height="8" rx="2"/><rect class="g-gold" x="1485" y="59.8" width="18" height="8" rx="2"/><rect class="g-gold" x="1485" y="49.2" width="18" height="8" rx="2"/><rect class="g-pink" x="1485" y="38.6" width="18" height="8" rx="2"/><rect class="g-pink" x="1485" y="28" width="18" height="8" rx="2"/><rect class="g-pink" x="1485" y="17.4" width="18" height="8" rx="2"/><rect class="g-white" x="1485" y="2.8" width="18" height="4" rx="2"/><rect class="g-red" x="1496" y="8" width="30" height="10" rx="5"/></g>
+</svg>
+  </section>
+
+  <!-- 8. timeline + minh họa 3: trạm neon trên vệt sáng -->
+  <section class="slide s-tl" data-layout="timeline">
+    <h2 class="title reveal">Quy trình dựng một deck</h2>
+    <svg class="art" style="left:120px; top:560px" width="1680" height="140" viewBox="0 0 1680 140" aria-hidden="true">
+  <path class="an-tick" d="M16 26V114M358.4 26V114M700.8 26V114M1043.2 26V114M1385.6 26V114"/>
+  <path class="g-chev" d="M180.2 58L194.2 70L180.2 82ZM522.6 58L536.6 70L522.6 82ZM865 58L879 70L865 82ZM1207.4 58L1221.4 70L1207.4 82Z"/>
+  <g class="reveal"><circle class="g-halo2" cx="16" cy="70" r="40"/><circle class="an-st" cx="16" cy="70" r="24"/><circle class="g-white" cx="16" cy="70" r="9"/><circle class="g-halo2" cx="358.4" cy="70" r="40"/><circle class="an-st" cx="358.4" cy="70" r="24"/><circle class="g-white" cx="358.4" cy="70" r="9"/><circle class="g-halo2" cx="700.8" cy="70" r="40"/><circle class="an-st" cx="700.8" cy="70" r="24"/><circle class="g-white" cx="700.8" cy="70" r="9"/><circle class="g-halo2" cx="1043.2" cy="70" r="40"/><circle class="an-st" cx="1043.2" cy="70" r="24"/><circle class="g-white" cx="1043.2" cy="70" r="9"/><circle class="g-halo3" cx="1385.6" cy="70" r="52"/><circle class="an-st an-stp" cx="1385.6" cy="70" r="32"/><circle class="g-white" cx="1385.6" cy="70" r="13"/><path class="g-white" transform="translate(1423.6 40) scale(0.5) translate(-50 -50)" d="M50 4C54 36 64 46 96 50C64 54 54 64 50 96C46 64 36 54 4 50C36 46 46 36 50 4Z"/></g>
+</svg>
+    <div class="timeline">
+      <div class="step reveal"><div class="when">01</div><h3>Nội dung</h3><p>Gom dàn ý, số liệu có nguồn</p></div>
+      <div class="step reveal"><div class="when">02</div><h3>Chọn style</h3><p>Xem 3 bản thử rồi chọn</p></div>
+      <div class="step reveal"><div class="when">03</div><h3>Dựng</h3><p>Viết HTML theo khung mẫu</p></div>
+      <div class="step reveal"><div class="when">04</div><h3>Đo</h3><p>Chạy deck.audit() từng slide</p></div>
+      <div class="step reveal"><div class="when">05</div><h3>Bàn giao</h3><p>Gộp thành một file HTML</p></div>
+    </div>
+  </section>
+
+  <!-- 9. quote -->
+  <section class="slide" data-layout="quote">
+    <blockquote class="quote reveal-blur">Hình trang trí đứng yên chỉ là nền. Khi nó di chuyển, nó kể chuyện.</blockquote>
+    <p class="cite reveal">Nguyên tắc của bộ mẫu</p>
+  </section>
+
+  <!-- 10. closing (hoàng hôn trên thành phố) -->
+  <section class="slide" data-layout="closing">
+    <p class="kicker reveal">Hết phần mẫu</p>
+    <h2 class="title reveal">Cảm ơn</h2>
+    <p class="subtitle reveal">Đổi style chỉ cần thay một dòng link CSS.</p>
+  </section>
+
+</div>
+</div>
+<script src="../skill/slidefly/assets/morph-viz-diagrams.js"></script>
+<script src="../skill/slidefly/assets/morph-viz.js"></script>
+<script src="../skill/slidefly/assets/morph-engine.js"></script>
+<script src="../skill/slidefly/assets/morph-nav.js"></script>
+<script src="../skill/slidefly/assets/morph-audit.js"></script>
+<script src="../skill/slidefly/assets/morph-steps.js"></script>
+<script src="../skill/slidefly/assets/morph-icons.js"></script>
+</body>
+</html>

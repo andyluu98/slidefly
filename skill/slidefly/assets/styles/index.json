@@ -1,18 +1,5 @@
 [
  {
-  "slug": "electric-studio",
-  "name": "Electric Studio",
-  "scheme": "mixed",
-  "mood": [
-   "mạnh mẽ",
-   "sạch sẽ",
-   "chuyên nghiệp",
-   "tương phản cao"
-  ],
-  "best_for": "pitch doanh nghiệp, báo cáo chiến lược, ra mắt sản phẩm",
-  "fonts": "Manrope"
- },
- {
   "slug": "creative-voltage",
   "name": "Creative Voltage",
   "scheme": "mixed",
@@ -182,19 +169,6 @@
   "fonts": "Libre Bodoni + Space Grotesk"
  },
  {
-  "slug": "cartesian",
-  "name": "Cartesian",
-  "scheme": "light",
-  "mood": [
-   "tĩnh lặng",
-   "chừng mực",
-   "thanh lịch",
-   "tối giản ấm"
-  ],
-  "best_for": "luận điểm đầu tư, sách trắng, tư vấn, nghiên cứu, triển lãm",
-  "fonts": "Playfair Display + Inter"
- },
- {
   "slug": "cobalt-grid",
   "name": "Cobalt Grid",
   "scheme": "light",
@@ -312,19 +286,6 @@
   "fonts": "Bricolage Grotesque + Fraunces"
  },
  {
-  "slug": "mat",
-  "name": "Mat",
-  "scheme": "mixed",
-  "mood": [
-   "ấm áp",
-   "mộc",
-   "tinh tế",
-   "mid-century"
-  ],
-  "best_for": "studio thiết kế, nội thất, thủ công, tư vấn",
-  "fonts": "Bricolage Grotesque + Be Vietnam Pro + IBM Plex Mono"
- },
- {
   "slug": "monochrome",
   "name": "Monochrome",
   "scheme": "light",
@@ -362,19 +323,6 @@
   ],
   "best_for": "tuyên ngôn, dự án cộng đồng, chiến dịch, pitch truyền cảm hứng",
   "fonts": "Alfa Slab One + Archivo Narrow + Patrick Hand"
- },
- {
-  "slug": "pin-and-paper",
-  "name": "Pin & Paper",
-  "scheme": "mixed",
-  "mood": [
-   "thủ công",
-   "ấm áp",
-   "sổ tay",
-   "văn chương"
-  ],
-  "best_for": "chia sẻ trải nghiệm, kết quả phỏng vấn, tổng kết workshop, câu chuyện thương hiệu",
-  "fonts": "Space Grotesk + Patrick Hand + IBM Plex Mono"
  },
  {
   "slug": "pink-script",
@@ -520,19 +468,6 @@
   "fonts": "Barlow + IBM Plex Mono"
  },
  {
-  "slug": "vellum",
-  "name": "Vellum",
-  "scheme": "dark",
-  "mood": [
-   "trầm tĩnh",
-   "học thuật",
-   "văn chương",
-   "chiêm nghiệm"
-  ],
-  "best_for": "báo cáo nghiên cứu, sách trắng, đề xuất chính sách, bài suy ngẫm",
-  "fonts": "Cormorant Garamond + Be Vietnam Pro + IBM Plex Mono"
- },
- {
   "slug": "swiss-modern",
   "name": "Swiss Modern",
   "scheme": "light",
@@ -557,18 +492,6 @@
   "fonts": "Montserrat + Open Sans"
  },
  {
-  "slug": "bold-signal",
-  "name": "Bold Signal",
-  "scheme": "dark",
-  "mood": [
-   "mạnh",
-   "tự tin",
-   "nổi bật"
-  ],
-  "best_for": "pitch, ra mắt sản phẩm, keynote",
-  "fonts": "Be Vietnam Pro + Space Grotesk"
- },
- {
   "slug": "dark-botanical",
   "name": "Dark Botanical",
   "scheme": "dark",
@@ -589,7 +512,7 @@
    "tương lai",
    "năng động"
   ],
-  "best_for": "AI, công nghệ, sản phẩm số",
+  "best_for": "aI, công nghệ, sản phẩm số",
   "fonts": "Chakra Petch + Space Grotesk"
  },
  {
@@ -650,7 +573,7 @@
    "tương lai",
    "mơ màng"
   ],
-  "best_for": "AI, ra mắt sản phẩm, keynote công nghệ, startup",
+  "best_for": "aI, ra mắt sản phẩm, keynote công nghệ, startup",
   "fonts": "Unbounded + Manrope"
  },
  {
@@ -818,6 +741,426 @@
   ],
   "best_for": "Tết, lễ hội, thiệp chúc mừng, sự kiện cuối năm, văn hóa dân gian",
   "fonts": "Spectral + Lexend",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "whiteboard",
+  "name": "Bảng trắng",
+  "scheme": "light",
+  "mood": [
+   "nét tay",
+   "bút lông",
+   "giải thích",
+   "thân thiện"
+  ],
+  "best_for": "giải thích khái niệm, quy trình, bài giảng đào tạo, nội dung kiểu vừa nói vừa vẽ lên bảng",
+  "fonts": "Playpen Sans + Patrick Hand",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "dataviz",
+  "name": "Kể chuyện số liệu",
+  "scheme": "light",
+  "mood": [
+   "báo chí dữ liệu",
+   "giấy kem",
+   "chính xác",
+   "kể chuyện"
+  ],
+  "best_for": "báo cáo số liệu, phân tích, bài trình bày có biểu đồ, đào tạo về dữ liệu và kết quả đo",
+  "fonts": "Newsreader + IBM Plex Mono + Patrick Hand",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "dark-keynote",
+  "name": "Keynote nền tối",
+  "scheme": "dark",
+  "mood": [
+   "ra mắt sản phẩm",
+   "kính tối",
+   "chính xác",
+   "một điểm nhấn"
+  ],
+  "best_for": "ra mắt phần mềm hoặc tính năng, thuyết trình công nghệ, báo cáo sản phẩm trên màn hình lớn",
+  "fonts": "Inter + Inter Tight + JetBrains Mono",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "hologram-hud",
+  "name": "HUD hologram",
+  "scheme": "dark",
+  "mood": [
+   "Viễn tưởng",
+   "Chính xác",
+   "Lạnh",
+   "Công nghệ"
+  ],
+  "best_for": "giới thiệu sản phẩm công nghệ, thông số kỹ thuật, gọi vốn, màn hình trình diễn hội chợ",
+  "fonts": "Chakra Petch + Barlow + IBM Plex Mono",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "pictogram",
+  "name": "Pictogram",
+  "scheme": "mixed",
+  "mood": [
+   "Thể thao",
+   "Phẳng",
+   "Rộn ràng",
+   "Nhận diện"
+  ],
+  "best_for": "sự kiện, giải đấu, nhận diện thương hiệu, danh mục từng mục một, mở màn chương trình",
+  "fonts": "Inter Tight + IBM Plex Mono",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "spy-titles",
+  "name": "Điệp viên 60s",
+  "scheme": "mixed",
+  "mood": [
+   "Hoài cổ",
+   "Kịch tính",
+   "Giấy cắt",
+   "Tương phản"
+  ],
+  "best_for": "mở màn sự kiện, trailer, ra mắt sản phẩm kiểu bí mật, bài thuyết trình cần kịch tính",
+  "fonts": "League Gothic + League Spartan",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "engraving",
+  "name": "Tranh khắc đồng",
+  "scheme": "light",
+  "mood": [
+   "cổ điển",
+   "tinh xảo",
+   "học thuật",
+   "di sản"
+  ],
+  "best_for": "bảo tàng, giải thích khoa học, di sản thương hiệu, bài giảng lịch sử và tự nhiên",
+  "fonts": "Playfair Display SC + Newsreader",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "woodcut",
+  "name": "Tranh khắc gỗ",
+  "scheme": "mixed",
+  "mood": [
+   "thô mộc",
+   "mạnh mẽ",
+   "thủ công",
+   "kịch tính"
+  ],
+  "best_for": "truyện dân gian, thương hiệu thủ công, trailer sách, kể chuyện lịch sử và di cư",
+  "fonts": "Anton + Vollkorn",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "halftone-dossier",
+  "name": "Hồ sơ halftone",
+  "scheme": "mixed",
+  "mood": [
+   "hài hước",
+   "truyện tranh",
+   "bí mật",
+   "vui nhộn"
+  ],
+  "best_for": "kể chuyện vui, điều tra, thú cưng, nội dung mạng xã hội, khóa học nhập môn",
+  "fonts": "Alfa Slab One + Be Vietnam Pro",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "silkscreen-poster",
+  "name": "Poster in lụa",
+  "scheme": "light",
+  "mood": [
+   "ấm áp",
+   "phẳng",
+   "hoài cổ",
+   "du lịch"
+  ],
+  "best_for": "điểm đến, du lịch, sự kiện, giới thiệu địa điểm hoặc sản phẩm theo loạt",
+  "fonts": "Big Shoulders Display + Be Vietnam Pro",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "stained-glass",
+  "name": "Kính màu",
+  "scheme": "dark",
+  "mood": [
+   "rực rỡ",
+   "trang nghiêm",
+   "huyền ảo",
+   "cổ kính"
+  ],
+  "best_for": "kể chuyện, lịch sử, nghệ thuật, lễ hội, bài thuyết trình trang trọng cần điểm nhấn ánh sáng",
+  "fonts": "Cormorant Garamond + Lora",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "silent-film",
+  "name": "Phim câm",
+  "scheme": "mixed",
+  "mood": [
+   "hoài cổ",
+   "kịch tính",
+   "đen trắng",
+   "điện ảnh"
+  ],
+  "best_for": "kể chuyện, lịch sử, điện ảnh, thuyết trình cần giọng điệu hài hước khô hoặc hoài niệm",
+  "fonts": "Playfair Display SC + Newsreader",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "crayon-book",
+  "name": "Sách tranh sáp màu",
+  "scheme": "light",
+  "mood": [
+   "ngây thơ",
+   "ấm áp",
+   "thủ công",
+   "kể chuyện"
+  ],
+  "best_for": "bài giảng cho trẻ em, truyện kể trước giờ ngủ, giáo dục mầm non, câu chuyện thương hiệu dịu dàng",
+  "fonts": "Itim + Mali",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "impasto",
+  "name": "Sơn dầu impasto",
+  "scheme": "dark",
+  "mood": [
+   "đậm đặc",
+   "ấm áp",
+   "nghệ thuật",
+   "giàu cảm xúc"
+  ],
+  "best_for": "triển lãm nghệ thuật, giới thiệu tác phẩm, thương hiệu cao cấp, kể chuyện cảm xúc, sự kiện văn hóa",
+  "fonts": "Fraunces + Source Serif 4",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "one-line",
+  "name": "Vẽ một nét",
+  "scheme": "light",
+  "mood": [
+   "tối giản",
+   "tinh tế",
+   "liền mạch",
+   "thoáng đãng"
+  ],
+  "best_for": "câu chuyện thương hiệu, cột mốc đời người, quảng cáo tối giản, bài nói nhiều khoảng trắng",
+  "fonts": "Quicksand + Patrick Hand",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "urban-sketch",
+  "name": "Ký họa đô thị",
+  "scheme": "light",
+  "mood": [
+   "thân mật",
+   "phóng khoáng",
+   "thơ mộng",
+   "đời thường"
+  ],
+  "best_for": "du lịch, thành phố, kiến trúc, nhật ký hành trình, giới thiệu địa điểm",
+  "fonts": "Playpen Sans + Be Vietnam Pro",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "ukiyoe",
+  "name": "Ukiyo-e",
+  "scheme": "mixed",
+  "mood": [
+   "cổ điển",
+   "tĩnh lặng",
+   "trang trọng",
+   "đậm chất Nhật"
+  ],
+  "best_for": "văn hóa, du lịch Nhật, thơ ca, lịch sử, thương hiệu truyền thống",
+  "fonts": "Noto Serif + Be Vietnam Pro",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "paper-popup",
+  "name": "Sách pop-up giấy",
+  "scheme": "light",
+  "mood": [
+   "vui tươi",
+   "thủ công",
+   "ấm áp",
+   "kể chuyện"
+  ],
+  "best_for": "kể chuyện, marketing, giải thích xã hội, bài giảng cho trẻ em, giới thiệu sản phẩm thân thiện",
+  "fonts": "Baloo 2 + Nunito",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "den-long-giay",
+  "name": "Đèn lồng giấy",
+  "scheme": "dark",
+  "mood": [
+   "ấm áp",
+   "lễ hội",
+   "huyền ảo",
+   "đêm trăng"
+  ],
+  "best_for": "Trung thu, lễ hội, phố cổ, chuyện văn hóa, quà tặng, sự kiện cuối năm",
+  "fonts": "Cormorant Garamond + Be Vietnam Pro",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "roi-bong",
+  "name": "Múa rối bóng",
+  "scheme": "light",
+  "mood": [
+   "ấm áp",
+   "di sản",
+   "thủ công",
+   "kịch rối"
+  ],
+  "best_for": "thần thoại, di sản, lễ hội, kể chuyện văn hóa, bảo tàng, giáo dục lịch sử",
+  "fonts": "Alegreya + Be Vietnam Pro",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "brick-toy",
+  "name": "Đồ chơi lắp ghép",
+  "scheme": "light",
+  "mood": [
+   "vui nhộn",
+   "tươi sáng",
+   "thủ công",
+   "tuổi thơ"
+  ],
+  "best_for": "đồ chơi trẻ em, giáo dục, lắp ráp sản phẩm, khởi nghiệp, chủ đề vũ trụ và công nghệ",
+  "fonts": "Baloo 2 + Nunito",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "game-show",
+  "name": "Game show",
+  "scheme": "mixed",
+  "mood": [
+   "vui nhộn",
+   "màu kẹo",
+   "sôi động",
+   "truyền hình"
+  ],
+  "best_for": "tổng kết năm, đào tạo vui, sự kiện giải trí, lễ trao giải, giới thiệu theo từng vòng",
+  "fonts": "Baloo 2 + Nunito",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "pixel-rpg",
+  "name": "Pixel RPG",
+  "scheme": "dark",
+  "mood": [
+   "hoài niệm",
+   "phiêu lưu",
+   "pixel",
+   "game nhập vai"
+  ],
+  "best_for": "trailer game, tổng kết hành trình, đào tạo theo cấp độ, nội dung hoài niệm 16-bit",
+  "fonts": "VT323",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "hd-2d",
+  "name": "HD-2D",
+  "scheme": "dark",
+  "mood": [
+   "ấm áp",
+   "huyền ảo",
+   "ánh sáng",
+   "diorama"
+  ],
+  "best_for": "trailer game, kể chuyện, giới thiệu thương hiệu, nội dung giả tưởng và hoài niệm",
+  "fonts": "Cormorant + Cormorant Garamond",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "midcentury-toon",
+  "name": "Hoạt hình giữa thế kỷ",
+  "scheme": "light",
+  "mood": [
+   "hoài cổ",
+   "vui tươi",
+   "ấm áp",
+   "in lệch màu"
+  ],
+  "best_for": "hướng dẫn từng bước, tài liệu trợ giúp khách hàng, bài giảng nhẹ nhàng, thẻ quy tắc và danh sách việc cần làm",
+  "fonts": "Alfa Slab One + Be Vietnam Pro",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "rubber-hose",
+  "name": "Rubber hose 1930",
+  "scheme": "light",
+  "mood": [
+   "hoài cổ",
+   "nhí nhảnh",
+   "đen trắng",
+   "nhạc jazz"
+  ],
+  "best_for": "bài giảng nhẹ nhàng, nội dung cho thiếu nhi hoặc gia đình, quảng cáo vui, kể chuyện bằng đồ vật có mặt cười",
+  "fonts": "Lobster + Playfair Display SC + Be Vietnam Pro",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "scifi-toon",
+  "name": "Hoạt hình viễn tưởng",
+  "scheme": "mixed",
+  "mood": [
+   "vui nhộn",
+   "viền dày",
+   "màu phẳng",
+   "viễn tưởng"
+  ],
+  "best_for": "bài thuyết trình hài hước, thương hiệu công nghệ, video ngắn, deck giải thích ý tưởng nhẹ nhàng",
+  "fonts": "Baloo 2 + Be Vietnam Pro",
+  "art": true,
+  "source": "MotionFly / lemo-opuscar (MIT)"
+ },
+ {
+  "slug": "cel-anime-80s",
+  "name": "Anime 80s",
+  "scheme": "dark",
+  "mood": [
+   "hoài niệm",
+   "neon",
+   "hoàng hôn",
+   "thành phố đêm"
+  ],
+  "best_for": "deck hoài niệm, trailer, MV, giới thiệu sản phẩm công nghệ phong cách retro, sự kiện âm nhạc",
+  "fonts": "Barlow Condensed + Barlow",
   "art": true,
   "source": "MotionFly / lemo-opuscar (MIT)"
  }

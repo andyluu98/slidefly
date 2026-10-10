@@ -41,5 +41,5 @@ Khi hệ điều hành bật giảm chuyển động (Windows: tắt Animation e
 - Chiều ngược lại (deck SlideFly ra file .pptx có Morph): `scripts/export-pptx.py`, xem `references/xuat-pptx.md`.
 
 ## 7. Nguồn và giấy phép
-- Khung co giãn và lớp reveal lấy ý từ `frontend-slides` (zarazhangrui, MIT). Style Bold Signal, Swiss Modern, Dark Botanical, Neon Cyber, Paper & Ink phỏng theo bộ preset của repo này, font thay bằng font có tiếng Việt.
+- Khung co giãn và lớp reveal lấy ý từ `frontend-slides` (zarazhangrui, MIT). Style Swiss Modern, Dark Botanical, Neon Cyber, Paper & Ink phỏng theo bộ preset của repo này, font thay bằng font có tiếng Việt.
 - Icon: Lucide (ISC).

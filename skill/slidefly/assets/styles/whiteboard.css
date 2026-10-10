@@ -1,0 +1,179 @@
+/* ===========================================================
+   STYLE: WHITEBOARD (glossy dry-erase board, marker, light).
+   Idea source: MotionFly / lemo-opuscar (MIT), styles/whiteboard.
+   One physical board: warm white with micro scratches, ghosts of old
+   lessons, a window sheen drifting across, three marker colours with
+   one meaning each (black = things, blue = signals, orange = the
+   answer). Props float with a cast shadow, no hands.
+   Actors: sheen (window glint), ghost (faint old drawing), rule (blue
+           marker underline, becomes the timeline axis), circle (the
+           answer circled, orange), arrow (black hand arrow), magnet
+           (orange hero magnet), eraser (felt eraser), pen-b + pen-o
+           (floating markers). DOM order = z-order (sheen first).
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@500;700;800&family=Patrick+Hand&display=swap');
+
+.deck-stage {
+  --actors: "sheen ghost rule circle arrow magnet eraser pen-b pen-o";
+  --font-display: 'Playpen Sans', 'Patrick Hand', sans-serif;
+  --font-body: 'Playpen Sans', sans-serif;
+  --font-hand: 'Patrick Hand', 'Playpen Sans', sans-serif;
+  --bg: #F4F4EF; --fg: #23262c; --muted: #4A505A; --accent: #2a5cb3;
+  --card-bg: transparent; --card-fg: #23262c; --card-radius: 16px;
+  --title-weight: 800; --title-tracking: 0; --bullet-radius: 50%;
+  --ink: #23262c; --blue: #2a5cb3; --orange: #d97757; --orange-d: #b5502b;
+  /* the board: micro scratches (tile), soft light falloff, warm white */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='360'%3E%3Cg stroke='%236a7388' stroke-linecap='round' fill='none'%3E%3Cpath d='M40 60L96 52' stroke-opacity='.08' stroke-width='1.2'/%3E%3Cpath d='M310 200L420 188' stroke-opacity='.07' stroke-width='1'/%3E%3Cpath d='M520 40L560 62' stroke-opacity='.07' stroke-width='1.2'/%3E%3Cpath d='M120 300L230 312' stroke-opacity='.08' stroke-width='1'/%3E%3Cpath d='M440 290L470 262' stroke-opacity='.07' stroke-width='1.4'/%3E%3Cpath d='M200 130L238 150' stroke-opacity='.06' stroke-width='1'/%3E%3Ccircle cx='350' cy='90' r='1.6' fill='%236a7388' fill-opacity='.1'/%3E%3Ccircle cx='70' cy='200' r='1.3' fill='%236a7388' fill-opacity='.1'/%3E%3Ccircle cx='580' cy='240' r='1.5' fill='%236a7388' fill-opacity='.09'/%3E%3C/g%3E%3C/svg%3E"),
+    radial-gradient(ellipse 80% 70% at 32% 24%, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0) 70%),
+    linear-gradient(180deg, #F6F6F1 0%, #EFEFE9 100%);
+  background-size: 640px 360px, 100% 100%, 100% 100%;
+}
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="sheen"] { background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.6) 42%, rgba(255, 255, 255, 0.6) 54%, rgba(255, 255, 255, 0) 100%); --x: 2250px; --y: -210px; --w: 700px; --h: 1500px; }
+[data-actor="ghost"] { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 560'%3E%3Cg fill='none' stroke='%235b7096' stroke-opacity='.14' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M144.6 108.4C148.3 107.4 159.1 103.7 166.6 102.3C174.2 100.9 182 100.2 189.7 100.1C197.4 100 205.2 100.6 212.8 101.8C220.4 103.1 228.1 105 235.2 107.7C242.3 110.4 249.3 113.8 255.4 117.9C261.4 122 267 127 271.4 132.3C275.8 137.6 279.4 143.7 281.6 149.8C283.9 155.9 285 162.6 285 168.9C285 175.3 283.8 181.9 281.6 188C279.5 194.1 276.1 200.1 272.1 205.6C268 211 262.9 216.2 257.3 220.6C251.7 225.1 245.1 229.1 238.3 232.3C231.4 235.5 223.8 238.1 216.1 239.8C208.5 241.5 200.3 242.5 192.3 242.6C184.4 242.7 176.2 242 168.4 240.5C160.7 239.1 153 236.8 145.9 233.9C138.9 231 132.1 227.4 126 223.2C120 219.1 114.4 214.2 109.8 209C105.1 203.8 101.1 197.9 98.3 191.9C95.5 185.8 93.5 179.2 92.9 172.7C92.3 166.3 92.9 159.4 94.7 153C96.5 146.6 99.7 140.2 103.8 134.5C107.9 128.9 113.3 123.5 119.2 119C125.1 114.5 132.1 110.7 139.2 107.6C146.3 104.5 154.1 102.2 161.9 100.5C169.6 98.8 177.7 97.9 185.7 97.6C193.6 97.3 201.8 97.6 209.7 98.7C217.6 99.8 225.7 101.5 233.1 104C240.6 106.6 251 112.2 254.6 113.9'/%3E%3Cpath d='M380 120C392.9 120 431.7 119.8 457.6 119.9C483.4 120 509.3 119.9 535.1 120.8C560.9 121.7 586.7 124.4 612.5 125.2C638.4 125.9 664.2 125 690.1 125.2C715.9 125.5 741.8 125.5 767.6 126.5C793.4 127.6 832.1 130.8 845 131.7'/%3E%3Cpath d='M400 100V150'/%3E%3Cpath d='M456 100V136'/%3E%3Cpath d='M512 100V150'/%3E%3Cpath d='M568 100V136'/%3E%3Cpath d='M624 100V150'/%3E%3Cpath d='M680 100V136'/%3E%3Cpath d='M736 100V150'/%3E%3Cpath d='M792 100V136'/%3E%3Cpath d='M848 100V150'/%3E%3Cpath d='M300 340Q459 299 570 420M545.8 410.5L570 420M562.6 395.1L570 420'/%3E%3Cpath d='M650 300C648 236 752 236 752 306C752 352 702 354 702 404'/%3E%3Ccircle cx='702' cy='452' r='6' fill='%235b7096' fill-opacity='.14'/%3E%3Cpath d='M110 440C120.8 440.1 153.3 440.6 175 440.7C196.7 440.8 239.9 457.4 240 440.6C240.1 423.7 197.4 339.8 175.6 339.6C153.8 339.4 120.2 422.8 109.1 439.4'/%3E%3Cpath d='M420 500H820' stroke-dasharray='2 18'/%3E%3C/g%3E%3C/svg%3E") center / 100% 100% no-repeat; --x: 0px; --y: -780px; --w: 900px; --h: 560px; }
+[data-actor="rule"] { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 24' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%232a5cb3' stroke-width='6.5' stroke-linecap='round' vector-effect='non-scaling-stroke'%3E%3Cpath vector-effect='non-scaling-stroke' d='M8 13C30 12.6 96.3 10.7 140 10.7C183.7 10.8 228 13.6 270 13.5C312 13.4 371.7 10.8 392 10.2'/%3E%3Cpath vector-effect='non-scaling-stroke' d='M46 19.5C71.7 19.2 152.7 17.9 200 18C247.3 18 308.3 19.6 330 19.9' stroke-width='4.5' stroke-opacity='.85'/%3E%3C/g%3E%3C/svg%3E") center / 100% 100% no-repeat; --x: 760px; --y: 1188px; --w: 400px; --h: 24px; }
+[data-actor="circle"] { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200' preserveAspectRatio='none'%3E%3Cpath d='M48.3 61.2C53 58.6 65.8 50.2 76.5 45.7C87.1 41.1 99.4 37.1 112.2 33.8C124.9 30.5 138.9 27.9 153.1 26C167.3 24.1 182.3 22.9 197.2 22.6C212.1 22.2 227.6 22.6 242.4 23.8C257.1 25.1 272.2 27.2 285.9 30.2C299.6 33.2 313 37.1 324.4 41.7C335.8 46.2 346.2 51.7 354.2 57.5C362.3 63.3 368.6 69.9 372.7 76.5C376.7 83 378.6 90.1 378.6 96.8C378.6 103.5 376.4 110.4 372.6 116.9C368.9 123.4 363.1 129.7 356.1 135.6C349 141.4 340.2 147 330.3 152C320.4 157 308.9 161.6 296.6 165.3C284.3 169.1 270.5 172.4 256.3 174.7C242.1 177 226.7 178.7 211.5 179.3C196.4 179.9 180.4 179.6 165.3 178.5C150.3 177.3 135 175.1 121.1 172.2C107.1 169.3 93.6 165.5 81.9 161C70.1 156.6 59.3 151.4 50.5 145.7C41.6 140.1 34.2 133.8 28.9 127.4C23.6 120.9 20.1 114 18.8 107.1C17.5 100.3 18.3 93.2 21.1 86.5C23.9 79.7 29 73 35.6 66.9C42.3 60.7 51.1 54.9 61.1 49.7C71 44.6 82.8 39.9 95.2 36.1C107.6 32.2 121.4 28.9 135.5 26.4C149.6 24 164.8 22.1 179.9 21.2C195 20.2 210.8 20 226.2 20.6C241.5 21.3 257.3 22.8 271.9 25.2C286.6 27.6 301.2 30.9 313.9 35C326.6 39.1 338.6 44.2 348.3 49.8C358 55.3 366.1 61.8 371.9 68.3C377.6 74.8 381.3 81.9 382.8 88.8C384.3 95.7 383.6 102.9 381.1 109.7C378.6 116.5 374 123.3 368 129.6C361.9 135.9 354 142 344.9 147.4C335.8 152.9 325 158.1 313.2 162.4C301.3 166.8 280.6 171.8 274.1 173.7' fill='none' stroke='%23d97757' stroke-width='7' stroke-linecap='round' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") center / 100% 100% no-repeat; --x: 760px; --y: 1200px; --w: 400px; --h: 200px; }
+[data-actor="arrow"] { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 120'%3E%3Cpath d='M14 100Q76.2 16.5 178 38M151.1 45.8L178 38M156.5 20L178 38' fill='none' stroke='%2323262c' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat; --x: 2200px; --y: 540px; --w: 200px; --h: 120px; }
+[data-actor="magnet"] { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3CradialGradient id='m' cx='.38' cy='.32' r='.75'%3E%3Cstop offset='0' stop-color='%23f6b393'/%3E%3Cstop offset='.55' stop-color='%23d97757'/%3E%3Cstop offset='1' stop-color='%23a84a29'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cellipse cx='56' cy='92' rx='34' ry='7' fill='%2323262c' fill-opacity='.16'/%3E%3Ccircle cx='50' cy='46' r='38' fill='url(%23m)'/%3E%3Ccircle cx='50' cy='46' r='38' fill='none' stroke='%238f3c20' stroke-opacity='.45' stroke-width='2'/%3E%3Cellipse cx='36' cy='30' rx='14' ry='8' fill='%23fff' fill-opacity='.6' transform='rotate(-32 36 30)'/%3E%3C/svg%3E") center / 100% 100% no-repeat; --x: 2050px; --y: 250px; --w: 100px; --h: 100px; }
+[data-actor="eraser"] { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 70'%3E%3Cellipse cx='86' cy='64' rx='70' ry='6' fill='%2323262c' fill-opacity='.15'/%3E%3Crect x='6' y='6' width='148' height='52' rx='9' fill='%233a3f4a'/%3E%3Crect x='6' y='40' width='148' height='18' rx='7' fill='%23dcdcd6'/%3E%3Crect x='16' y='12' width='128' height='5' rx='2.5' fill='%23fff' fill-opacity='.22'/%3E%3C/svg%3E") center / 100% 100% no-repeat; --x: 820px; --y: 1265px; --w: 160px; --h: 70px; }
+[data-actor="pen-b"] { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 280'%3E%3Cellipse cx='36' cy='270' rx='16' ry='5' fill='%2323262c' fill-opacity='.14'/%3E%3Cpath d='M12 14H54V268L48 276H18L12 268Z' fill='%2323262c' fill-opacity='.12' transform='translate(7 4)'/%3E%3Crect x='5' y='2' width='46' height='78' rx='10' fill='%232a5cb3'/%3E%3Crect x='9' y='78' width='38' height='168' rx='6' fill='%23fbfbf8' stroke='%2323262c' stroke-opacity='.55' stroke-width='2'/%3E%3Crect x='9' y='116' width='38' height='46' fill='%232a5cb3'/%3E%3Cpath d='M14 246H42L36 276H20Z' fill='%236e737c'/%3E%3Cpath d='M23 266H33L30 278H26Z' fill='%232a5cb3'/%3E%3C/svg%3E") center / 100% 100% no-repeat; --x: 2072px; --y: 560px; --w: 56px; --h: 280px; }
+[data-actor="pen-o"] { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 280'%3E%3Cellipse cx='36' cy='270' rx='16' ry='5' fill='%2323262c' fill-opacity='.14'/%3E%3Cpath d='M12 14H54V268L48 276H18L12 268Z' fill='%2323262c' fill-opacity='.12' transform='translate(7 4)'/%3E%3Crect x='5' y='2' width='46' height='78' rx='10' fill='%23d97757'/%3E%3Crect x='9' y='78' width='38' height='168' rx='6' fill='%23fbfbf8' stroke='%2323262c' stroke-opacity='.55' stroke-width='2'/%3E%3Crect x='9' y='116' width='38' height='46' fill='%23d97757'/%3E%3Cpath d='M14 246H42L36 276H20Z' fill='%236e737c'/%3E%3Cpath d='M23 266H33L30 278H26Z' fill='%23d97757'/%3E%3C/svg%3E") center / 100% 100% no-repeat; --x: 2072px; --y: 760px; --w: 56px; --h: 280px; }
+
+/* ---------- cover: ring around the picture, markers parked bottom right, eraser under the text ---------- */
+[data-layout="cover"] [data-actor="sheen"]   { --x: 950px; --y: -210px; --w: 700px; --h: 1500px; --r: 20deg; }
+[data-layout="cover"] [data-actor="ghost"]   { --x: 190px; --y: 360px; --w: 900px; --h: 560px; --r: -4deg; --s: 1.1; }
+[data-layout="cover"] [data-actor="rule"]    { --x: 130px; --y: 913px; --w: 860px; --h: 24px; }
+[data-layout="cover"] [data-actor="circle"]  { --x: 1070px; --y: 270px; --w: 800px; --h: 400px; --r: -3deg; }
+[data-layout="cover"] [data-actor="arrow"]   { --x: 1010px; --y: 761px; --w: 130px; --h: 78px; --r: -14deg; }
+[data-layout="cover"] [data-actor="magnet"]  { --x: 1675px; --y: 850px; --w: 110px; --h: 110px; }
+[data-layout="cover"] [data-actor="eraser"]  { --x: 925px; --y: 973px; --w: 170px; --h: 74px; --r: 4deg; }
+[data-layout="cover"] [data-actor="pen-b"]   { --x: 1612px; --y: 870px; --w: 56px; --h: 280px; --r: 80deg; }
+[data-layout="cover"] [data-actor="pen-o"]   { --x: 1812px; --y: 820px; --w: 56px; --h: 280px; --r: 100deg; }
+
+/* ---------- agenda: short underline, ring on the first number, arrow in the gutter, pens on the right edge ---------- */
+[data-layout="agenda"] [data-actor="sheen"]   { --x: 150px; --y: -210px; --w: 700px; --h: 1500px; --r: 20deg; }
+[data-layout="agenda"] [data-actor="ghost"]   { --x: 950px; --y: 420px; --w: 900px; --h: 560px; --r: 6deg; --s: 0.9; }
+[data-layout="agenda"] [data-actor="rule"]    { --x: 145px; --y: 172px; --w: 330px; --h: 24px; }
+[data-layout="agenda"] [data-actor="circle"]  { --x: 85.5px; --y: 387px; --w: 205px; --h: 130px; --r: -3deg; }
+[data-layout="agenda"] [data-actor="arrow"]   { --x: 900px; --y: 584px; --w: 120px; --h: 72px; --r: 90deg; }
+[data-layout="agenda"] [data-actor="magnet"]  { --x: 1720px; --y: 30px; --w: 100px; --h: 100px; }
+[data-layout="agenda"] [data-actor="eraser"]  { --x: 1615px; --y: 998px; --w: 170px; --h: 74px; }
+[data-layout="agenda"] [data-actor="pen-b"]   { --x: 1822px; --y: 420px; --w: 56px; --h: 280px; --r: 100deg; }
+[data-layout="agenda"] [data-actor="pen-o"]   { --x: 1842px; --y: 690px; --w: 56px; --h: 280px; --r: 78deg; }
+
+/* ---------- section: the number circled, a big arrow sweeps the right half to the hero magnet ---------- */
+[data-layout="section"] [data-actor="sheen"]   { --x: 1100px; --y: -210px; --w: 700px; --h: 1500px; --r: 20deg; }
+[data-layout="section"] [data-actor="ghost"]   { --x: 950px; --y: 260px; --w: 900px; --h: 560px; --s: 1.3; }
+[data-layout="section"] [data-actor="rule"]    { --x: 160px; --y: 788px; --w: 800px; --h: 24px; }
+[data-layout="section"] [data-actor="circle"]  { --x: 100px; --y: 320px; --w: 410px; --h: 250px; --r: -3deg; }
+[data-layout="section"] [data-actor="arrow"]   { --x: 1030px; --y: 574px; --w: 520px; --h: 312px; --r: -8deg; }
+[data-layout="section"] [data-actor="magnet"]  { --x: 1565px; --y: 345px; --w: 150px; --h: 150px; }
+[data-layout="section"] [data-actor="eraser"]  { --x: 1380px; --y: 876px; --w: 200px; --h: 88px; --r: -10deg; }
+[data-layout="section"] [data-actor="pen-b"]   { --x: 1532px; --y: 30px; --w: 56px; --h: 280px; --r: 130deg; --s: 1.1; }
+[data-layout="section"] [data-actor="pen-o"]   { --x: 1672px; --y: 760px; --w: 56px; --h: 280px; --r: 55deg; --s: 1.1; }
+
+/* ---------- content: underline, ring on the highlight line, small arrow from the bullets to it ---------- */
+[data-layout="content"] [data-actor="sheen"]   { --x: 1200px; --y: -210px; --w: 700px; --h: 1500px; --r: 20deg; }
+[data-layout="content"] [data-actor="ghost"]   { --x: 1050px; --y: 280px; --w: 900px; --h: 560px; --r: 5deg; }
+[data-layout="content"] [data-actor="rule"]    { --x: 120px; --y: 172px; --w: 560px; --h: 24px; }
+[data-layout="content"] [data-actor="circle"]  { --x: 1220px; --y: 513px; --w: 620px; --h: 190px; --r: -2deg; }
+[data-layout="content"] [data-actor="arrow"]   { --x: 1162px; --y: 540px; --w: 100px; --h: 60px; --r: 8deg; }
+[data-layout="content"] [data-actor="magnet"]  { --x: 1680px; --y: 40px; --w: 100px; --h: 100px; }
+[data-layout="content"] [data-actor="eraser"]  { --x: 115px; --y: 1003px; --w: 170px; --h: 74px; }
+[data-layout="content"] [data-actor="pen-b"]   { --x: 1802px; --y: 870px; --w: 56px; --h: 280px; --r: 80deg; }
+[data-layout="content"] [data-actor="pen-o"]   { --x: 1612px; --y: 910px; --w: 56px; --h: 280px; --r: 92deg; }
+
+/* ---------- content even: underline runs long, the ring grows, the arrow turns back, pens swap sides ---------- */
+[data-layout="content"][data-parity="even"] [data-actor="sheen"]   { --x: 50px; --y: -210px; --w: 700px; --h: 1500px; --r: 20deg; }
+[data-layout="content"][data-parity="even"] [data-actor="ghost"]   { --x: 250px; --y: 280px; --w: 900px; --h: 560px; --r: -3deg; --s: 1.2; }
+[data-layout="content"][data-parity="even"] [data-actor="rule"]    { --x: 120px; --y: 172px; --w: 900px; --h: 24px; }
+[data-layout="content"][data-parity="even"] [data-actor="circle"]  { --x: 1250px; --y: 541px; --w: 560px; --h: 190px; --r: 2deg; }
+[data-layout="content"][data-parity="even"] [data-actor="arrow"]   { --x: 1125px; --y: 866px; --w: 130px; --h: 78px; --r: 160deg; }
+[data-layout="content"][data-parity="even"] [data-actor="magnet"]  { --x: 1124px; --y: 929px; --w: 92px; --h: 92px; }
+[data-layout="content"][data-parity="even"] [data-actor="eraser"]  { --x: 1615px; --y: 1003px; --w: 170px; --h: 74px; --r: -3deg; }
+[data-layout="content"][data-parity="even"] [data-actor="pen-b"]   { --x: 62px; --y: 870px; --w: 56px; --h: 280px; --r: 88deg; }
+[data-layout="content"][data-parity="even"] [data-actor="pen-o"]   { --x: 1832px; --y: 110px; --w: 56px; --h: 280px; --r: 100deg; }
+
+/* ---------- two-col: ring on the second heading, arrow from the title row, markers rest on the tray line ---------- */
+[data-layout="two-col"] [data-actor="sheen"]   { --x: 550px; --y: -210px; --w: 700px; --h: 1500px; --r: 20deg; }
+[data-layout="two-col"] [data-actor="ghost"]   { --x: 510px; --y: 320px; --w: 900px; --h: 560px; --s: 1.7; }
+[data-layout="two-col"] [data-actor="rule"]    { --x: 120px; --y: 172px; --w: 700px; --h: 24px; }
+[data-layout="two-col"] [data-actor="circle"]  { --x: 1010px; --y: 285.5px; --w: 340px; --h: 125px; --r: -2deg; }
+[data-layout="two-col"] [data-actor="arrow"]   { --x: 1645px; --y: 137px; --w: 110px; --h: 66px; --r: 30deg; }
+[data-layout="two-col"] [data-actor="magnet"]  { --x: 1805px; --y: 25px; --w: 90px; --h: 90px; }
+[data-layout="two-col"] [data-actor="eraser"]  { --x: 1665px; --y: 1003px; --w: 170px; --h: 74px; }
+[data-layout="two-col"] [data-actor="pen-b"]   { --x: 982px; --y: 910px; --w: 56px; --h: 280px; --r: 90deg; }
+[data-layout="two-col"] [data-actor="pen-o"]   { --x: 1152px; --y: 910px; --w: 56px; --h: 280px; --r: 92deg; }
+
+/* ---------- stats: the last figure circled, arrow between figures two and three ---------- */
+[data-layout="stats"] [data-actor="sheen"]   { --x: 1150px; --y: -210px; --w: 700px; --h: 1500px; --r: 20deg; }
+[data-layout="stats"] [data-actor="ghost"]   { --x: -50px; --y: 480px; --w: 900px; --h: 560px; --r: 3deg; }
+[data-layout="stats"] [data-actor="rule"]    { --x: 110px; --y: 172px; --w: 640px; --h: 24px; }
+[data-layout="stats"] [data-actor="circle"]  { --x: 1296px; --y: 435px; --w: 480px; --h: 280px; --r: -3deg; }
+[data-layout="stats"] [data-actor="arrow"]   { --x: 1190px; --y: 544px; --w: 120px; --h: 72px; --r: -6deg; }
+[data-layout="stats"] [data-actor="magnet"]  { --x: 1750px; --y: 30px; --w: 100px; --h: 100px; }
+[data-layout="stats"] [data-actor="eraser"]  { --x: 1415px; --y: 1008px; --w: 170px; --h: 74px; }
+[data-layout="stats"] [data-actor="pen-b"]   { --x: 82px; --y: 890px; --w: 56px; --h: 280px; --r: 86deg; }
+[data-layout="stats"] [data-actor="pen-o"]   { --x: 472px; --y: 902px; --w: 56px; --h: 280px; --r: 92deg; }
+
+/* ---------- timeline: the underline is stretched into the axis (y 630), the magnet starts the ride ---------- */
+[data-layout="timeline"] [data-actor="sheen"]   { --x: -50px; --y: -210px; --w: 700px; --h: 1500px; --r: 20deg; }
+[data-layout="timeline"] [data-actor="ghost"]   { --x: 1050px; --y: 20px; --w: 900px; --h: 560px; --r: -6deg; }
+[data-layout="timeline"] [data-actor="rule"]    { --x: 120px; --y: 618px; --w: 1680px; --h: 24px; }
+[data-layout="timeline"] [data-actor="circle"]  { --x: 1420px; --y: 575px; --w: 170px; --h: 110px; }
+[data-layout="timeline"] [data-actor="arrow"]   { --x: 1723px; --y: 613px; --w: 90px; --h: 54px; }
+[data-layout="timeline"] [data-actor="magnet"]  { --x: 30px; --y: 598px; --w: 64px; --h: 64px; }
+[data-layout="timeline"] [data-actor="eraser"]  { --x: 1565px; --y: 1008px; --w: 170px; --h: 74px; }
+[data-layout="timeline"] [data-actor="pen-b"]   { --x: 1822px; --y: 10px; --w: 56px; --h: 280px; --r: 120deg; }
+[data-layout="timeline"] [data-actor="pen-o"]   { --x: 92px; --y: 905px; --w: 56px; --h: 280px; --r: 90deg; }
+
+/* ---------- quote: one big loop around the whole quote, glint behind it ---------- */
+[data-layout="quote"] [data-actor="sheen"]   { --x: 650px; --y: -210px; --w: 700px; --h: 1500px; --r: 20deg; }
+[data-layout="quote"] [data-actor="ghost"]   { --x: 510px; --y: 260px; --w: 900px; --h: 560px; --s: 1.9; }
+[data-layout="quote"] [data-actor="rule"]    { --x: 560px; --y: 788px; --w: 800px; --h: 24px; }
+[data-layout="quote"] [data-actor="circle"]  { --x: 50px; --y: 260px; --w: 1820px; --h: 560px; }
+[data-layout="quote"] [data-actor="arrow"]   { --x: 125px; --y: 799px; --w: 170px; --h: 102px; --r: -15deg; }
+[data-layout="quote"] [data-actor="magnet"]  { --x: 180px; --y: 210px; --w: 120px; --h: 120px; }
+[data-layout="quote"] [data-actor="eraser"]  { --x: 1605px; --y: 918.5px; --w: 190px; --h: 83px; --r: 10deg; }
+[data-layout="quote"] [data-actor="pen-b"]   { --x: 1762px; --y: 240px; --w: 56px; --h: 280px; --r: 70deg; }
+[data-layout="quote"] [data-actor="pen-o"]   { --x: 1812px; --y: 420px; --w: 56px; --h: 280px; --r: 105deg; }
+
+/* ---------- closing: the answer circled, underline, markers capped and parked ---------- */
+[data-layout="closing"] [data-actor="sheen"]   { --x: 1050px; --y: -210px; --w: 700px; --h: 1500px; --r: 20deg; }
+[data-layout="closing"] [data-actor="ghost"]   { --x: -50px; --y: 420px; --w: 900px; --h: 560px; --r: 8deg; --s: 1.1; }
+[data-layout="closing"] [data-actor="rule"]    { --x: 610px; --y: 736px; --w: 700px; --h: 24px; }
+[data-layout="closing"] [data-actor="circle"]  { --x: 520px; --y: 433px; --w: 880px; --h: 230px; --r: -2deg; }
+[data-layout="closing"] [data-actor="arrow"]   { --x: 1440px; --y: 718px; --w: 240px; --h: 144px; --r: -8deg; }
+[data-layout="closing"] [data-actor="magnet"]  { --x: 1485px; --y: 255px; --w: 150px; --h: 150px; }
+[data-layout="closing"] [data-actor="eraser"]  { --x: 300px; --y: 856px; --w: 200px; --h: 88px; --r: -14deg; }
+[data-layout="closing"] [data-actor="pen-b"]   { --x: 1672px; --y: 820px; --w: 56px; --h: 280px; --r: 75deg; }
+[data-layout="closing"] [data-actor="pen-o"]   { --x: 1812px; --y: 460px; --w: 56px; --h: 280px; --r: 100deg; }
+
+/* ---------- content tweaks: marker lettering on a board ---------- */
+.slide .title { line-height: 1.22; }
+.slide .kicker, .slide .meta, .slide .cite { font-family: var(--font-hand); letter-spacing: 0.06em; text-transform: none; }
+.slide .kicker { font-size: 34px; font-weight: 400; color: var(--orange-d); }
+.slide .meta, .slide .cite { font-size: 32px; }
+.slide[data-layout="cover"] { align-items: flex-start; text-align: left; padding: 0 880px 0 120px; }
+.slide[data-layout="cover"] .title { font-size: 80px; }
+.slide[data-layout="closing"] .title { font-size: 150px; }
+.slide[data-layout="section"] .num { font-size: 230px; color: var(--blue); }
+.agenda-list { --agenda-gap: 200px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.agenda-list .num { color: var(--blue); }
+.bullets li::before, .col li::before { background: var(--blue); border-radius: 55% 45% 50% 50%; }
+.slide[data-layout="content"] .hl-text { color: var(--fg); }
+.hl-big { color: var(--orange-d); }
+.col { border: 4px solid var(--ink); border-radius: 18px 7px 16px 9px; padding: 44px 52px; }
+.col + .col { border-color: var(--blue); }
+.col h3 { color: var(--blue); }
+.takeaway { border-left: 0; padding-left: 64px; }
+.takeaway::before { content: ""; position: absolute; left: 10px; top: 24px; bottom: 24px; width: 12px; border-radius: 6px; background: var(--orange); }
+.slide[data-layout="stats"] .stat-num { color: var(--blue); }
+.stat-label { color: var(--muted); }
+.timeline::before { display: none; }
+.step::before { background: var(--blue); }
+.step .when { font-family: var(--font-hand); font-weight: 400; color: var(--blue); }
+.slide[data-layout="quote"] .quote { font-weight: 700; }

@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mẫu SlideFly · Phim câm</title>
+<!-- Đổi style: thay đúng 1 dòng link styles/*.css bên dưới. Minh họa SVG vẽ theo styles/silent-film.art.md -->
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-base.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-layouts.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/styles/silent-film.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-motion.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-viz.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-icons.css">
+<style>
+/* engraved ink-and-wash figures (silent-film.art.md): five silver greys, 45 degree hatching, black film stock */
+.art { position: absolute; overflow: visible; pointer-events: none; }
+.sf-f1 { fill: #E4DAC0; } .sf-f2 { fill: #C9BB98; } .sf-f3 { fill: #A8977A; } .sf-f4 { fill: #8F7A57; } .sf-f5 { fill: #6E5E46; } .sf-f6 { fill: #4A3C2C; } .sf-f7 { fill: #2E241A; }
+.sf-ink { fill: #1E1610; } .sf-cream { fill: #EFE4C8; } .sf-film { fill: #17110C; } .sf-sep { fill: #DACEB2; } .sf-pale { fill: #F2EBDA; }
+.sf-l { fill: none; stroke: #1E1610; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.sf-lT { fill: none; stroke: #1E1610; stroke-width: 1.6; stroke-linecap: round; }
+.sf-lC { fill: none; stroke: #EFE4C8; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.sf-lCT { fill: none; stroke: #EFE4C8; stroke-width: 1.6; stroke-linecap: round; stroke-opacity: .75; }
+.sf-lD { fill: none; stroke: #EFE4C8; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 3 9; }
+.sf-trail { fill: none; stroke: #1E1610; stroke-width: 2.6; stroke-linecap: round; stroke-dasharray: 2 9; }
+.sf-bar { fill: none; stroke: #EFE4C8; stroke-width: 7; stroke-linecap: round; stroke-opacity: .85; }
+.sf-frame { fill: #17110C; stroke: #EFE4C8; stroke-width: 3; }
+.sf-frameD { fill: #17110C; stroke: #1E1610; stroke-width: 4; }
+.sf-win { fill: #CFC1A0; stroke: #0E0A08; stroke-width: 2.5; }
+.sf-tape { fill: #EFE4C8; fill-opacity: .92; stroke: #1E1610; stroke-width: 1.8; }
+.sf-lb { fill: #EFE4C8; font-family: var(--font-display); font-size: 25px; font-weight: 700; letter-spacing: 0.1em; }
+.sf-num { fill: #EFE4C8; font-family: var(--font-display); font-size: 26px; font-weight: 700; }
+.s-tl .step::before { display: none; }
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<div class="deck-stage">
+  <!-- Diễn viên (hình trang trí) do engine tự tạo từ --actors của style. -->
+
+  <!-- 1. cover + hình minh họa -->
+  <section class="slide" data-layout="cover">
+    <svg class="art" style="left:1070px; top:280px" width="520" height="520" viewBox="0 0 520 520" aria-hidden="true"><defs><clipPath id="sfc"><circle cx="260" cy="260" r="250"/></clipPath><pattern id="sfh1" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V6" stroke="#1E1610" stroke-width="1.5"/></pattern></defs><g clip-path="url(#sfc)"><rect x="0" y="0" width="520" height="520" fill="#C5B690"/><rect y="90" width="520" height="430" fill="#D0C3A1"/><rect y="160" width="520" height="360" fill="#DACEB0"/><rect y="226" width="520" height="294" fill="#E3D9BF"/><rect y="284" width="520" height="236" fill="#EAE1CA"/><ellipse cx="100" cy="120" rx="64" ry="16" fill="#EEE6D1" fill-opacity=".85"/><ellipse cx="150" cy="106" rx="40" ry="14" fill="#EEE6D1" fill-opacity=".85"/><ellipse cx="420" cy="196" rx="70" ry="14" fill="#EEE6D1" fill-opacity=".8"/><rect class="sf-f3" x="18" y="260" width="34" height="100"/><rect class="sf-f3" x="52" y="234" width="34" height="126"/><rect class="sf-f3" x="86" y="270" width="34" height="90"/><rect class="sf-f3" x="120" y="218" width="34" height="142"/><rect class="sf-f3" x="160" y="252" width="34" height="108"/><rect class="sf-f3" x="196" y="226" width="34" height="134"/><rect class="sf-f3" x="232" y="264" width="34" height="96"/><rect class="sf-f3" x="268" y="212" width="34" height="148"/><rect class="sf-f3" x="306" y="248" width="34" height="112"/><rect class="sf-f3" x="346" y="222" width="34" height="138"/><rect class="sf-f3" x="386" y="260" width="34" height="100"/><rect class="sf-f3" x="424" y="232" width="34" height="128"/><rect class="sf-f3" x="462" y="256" width="34" height="104"/><rect class="sf-f2" x="26" y="272" width="7" height="10"/><rect class="sf-f2" x="26" y="294" width="7" height="10"/><rect class="sf-f2" x="38" y="272" width="7" height="10"/><rect class="sf-f2" x="38" y="294" width="7" height="10"/><rect class="sf-f2" x="60" y="246" width="7" height="10"/><rect class="sf-f2" x="60" y="268" width="7" height="10"/><rect class="sf-f2" x="60" y="290" width="7" height="10"/><rect class="sf-f2" x="72" y="246" width="7" height="10"/><rect class="sf-f2" x="72" y="268" width="7" height="10"/><rect class="sf-f2" x="72" y="290" width="7" height="10"/><rect class="sf-f2" x="94" y="282" width="7" height="10"/><rect class="sf-f2" x="94" y="304" width="7" height="10"/><rect class="sf-f2" x="106" y="282" width="7" height="10"/><rect class="sf-f2" x="106" y="304" width="7" height="10"/><rect class="sf-f2" x="128" y="230" width="7" height="10"/><rect class="sf-f2" x="128" y="252" width="7" height="10"/><rect class="sf-f2" x="128" y="274" width="7" height="10"/><rect class="sf-f2" x="128" y="296" width="7" height="10"/><rect class="sf-f2" x="140" y="230" width="7" height="10"/><rect class="sf-f2" x="140" y="252" width="7" height="10"/><rect class="sf-f2" x="140" y="274" width="7" height="10"/><rect class="sf-f2" x="140" y="296" width="7" height="10"/><rect class="sf-f2" x="168" y="264" width="7" height="10"/><rect class="sf-f2" x="168" y="286" width="7" height="10"/><rect class="sf-f2" x="180" y="264" width="7" height="10"/><rect class="sf-f2" x="180" y="286" width="7" height="10"/><rect class="sf-f2" x="204" y="238" width="7" height="10"/><rect class="sf-f2" x="204" y="260" width="7" height="10"/><rect class="sf-f2" x="204" y="282" width="7" height="10"/><rect class="sf-f2" x="216" y="238" width="7" height="10"/><rect class="sf-f2" x="216" y="260" width="7" height="10"/><rect class="sf-f2" x="216" y="282" width="7" height="10"/><rect class="sf-f2" x="240" y="276" width="7" height="10"/><rect class="sf-f2" x="240" y="298" width="7" height="10"/><rect class="sf-f2" x="252" y="276" width="7" height="10"/><rect class="sf-f2" x="252" y="298" width="7" height="10"/><rect class="sf-f2" x="276" y="224" width="7" height="10"/><rect class="sf-f2" x="276" y="246" width="7" height="10"/><rect class="sf-f2" x="276" y="268" width="7" height="10"/><rect class="sf-f2" x="276" y="290" width="7" height="10"/><rect class="sf-f2" x="288" y="224" width="7" height="10"/><rect class="sf-f2" x="288" y="246" width="7" height="10"/><rect class="sf-f2" x="288" y="268" width="7" height="10"/><rect class="sf-f2" x="288" y="290" width="7" height="10"/><rect class="sf-f2" x="314" y="260" width="7" height="10"/><rect class="sf-f2" x="314" y="282" width="7" height="10"/><rect class="sf-f2" x="326" y="260" width="7" height="10"/><rect class="sf-f2" x="326" y="282" width="7" height="10"/><rect class="sf-f2" x="354" y="234" width="7" height="10"/><rect class="sf-f2" x="354" y="256" width="7" height="10"/><rect class="sf-f2" x="354" y="278" width="7" height="10"/><rect class="sf-f2" x="366" y="234" width="7" height="10"/><rect class="sf-f2" x="366" y="256" width="7" height="10"/><rect class="sf-f2" x="366" y="278" width="7" height="10"/><rect class="sf-f2" x="394" y="272" width="7" height="10"/><rect class="sf-f2" x="394" y="294" width="7" height="10"/><rect class="sf-f2" x="406" y="272" width="7" height="10"/><rect class="sf-f2" x="406" y="294" width="7" height="10"/><rect class="sf-f2" x="432" y="244" width="7" height="10"/><rect class="sf-f2" x="432" y="266" width="7" height="10"/><rect class="sf-f2" x="432" y="288" width="7" height="10"/><rect class="sf-f2" x="444" y="244" width="7" height="10"/><rect class="sf-f2" x="444" y="266" width="7" height="10"/><rect class="sf-f2" x="444" y="288" width="7" height="10"/><rect class="sf-f2" x="470" y="268" width="7" height="10"/><rect class="sf-f2" x="470" y="290" width="7" height="10"/><rect class="sf-f2" x="482" y="268" width="7" height="10"/><rect class="sf-f2" x="482" y="290" width="7" height="10"/><rect class="sf-f5" x="0" y="300" width="70" height="100"/><rect class="sf-f5" x="66" y="268" width="56" height="132"/><rect class="sf-f5" x="118" y="310" width="66" height="90"/><rect class="sf-f5" x="190" y="284" width="52" height="116"/><rect class="sf-f5" x="244" y="320" width="70" height="80"/><rect x="0" y="300" width="330" height="110" fill="url(#sfh1)" fill-opacity=".35"/><rect class="sf-f7" x="318" y="236" width="214" height="290"/><rect class="sf-ink" x="440" y="196" width="26" height="60"/><rect x="318" y="236" width="214" height="290" fill="url(#sfh1)" fill-opacity=".45"/><path class="sf-lT" d="M318 236H532M330 248H532" stroke="#EFE4C8" stroke-opacity=".8"/><rect class="sf-sep" x="344" y="274" width="22" height="30" fill-opacity="0.45"/><rect class="sf-sep" x="344" y="328" width="22" height="30" fill-opacity="0.85"/><rect class="sf-sep" x="344" y="382" width="22" height="30" fill-opacity="0.45"/><rect class="sf-sep" x="344" y="436" width="22" height="30" fill-opacity="0.85"/><rect class="sf-sep" x="388" y="274" width="22" height="30" fill-opacity="0.85"/><rect class="sf-sep" x="388" y="328" width="22" height="30" fill-opacity="0.45"/><rect class="sf-sep" x="388" y="382" width="22" height="30" fill-opacity="0.85"/><rect class="sf-sep" x="388" y="436" width="22" height="30" fill-opacity="0.45"/><rect class="sf-sep" x="432" y="274" width="22" height="30" fill-opacity="0.45"/><rect class="sf-sep" x="432" y="328" width="22" height="30" fill-opacity="0.85"/><rect class="sf-sep" x="432" y="382" width="22" height="30" fill-opacity="0.45"/><rect class="sf-sep" x="432" y="436" width="22" height="30" fill-opacity="0.85"/><rect class="sf-sep" x="476" y="274" width="22" height="30" fill-opacity="0.85"/><rect class="sf-sep" x="476" y="328" width="22" height="30" fill-opacity="0.45"/><rect class="sf-sep" x="476" y="382" width="22" height="30" fill-opacity="0.85"/><rect class="sf-sep" x="476" y="436" width="22" height="30" fill-opacity="0.45"/><path class="sf-f4" d="M0 410C60 400 150 404 330 408V520H0Z"/><path d="M0 410C60 400 150 404 330 408" class="sf-l"/><rect x="0" y="414" width="330" height="106" fill="url(#sfh1)" fill-opacity=".4"/><path class="sf-ink" d="M92 408L96 352L88 338L96 322L122 322L130 338L124 352L128 408Z"/><path class="sf-ink" d="M98 354L66 340L62 346L98 366Z"/><circle class="sf-f1" cx="109" cy="306" r="13"/><path class="sf-ink" d="M94 304Q96 290 109 290Q124 290 124 302L136 302L124 308Q110 296 94 304Z"/><path class="sf-lT" d="M102 308H106M113 308H117M105 316H114"/><path class="sf-lT" d="M98 372L90 408M120 372L126 408" stroke="#EFE4C8" stroke-opacity=".6"/><path class="sf-trail" d="M70 334C110 270 190 196 280 148"/><path class="sf-pale sf-l" d="M392 98L276 140L318 152Z"/><path class="sf-f3 sf-l" d="M392 98L318 152L298 184Z"/><path d="M392 98L318 152L298 184Z" fill="url(#sfh1)" fill-opacity=".55"/><path class="sf-l" d="M276 140L318 152L292 154"/><path class="sf-lT" d="M262 118L238 126M262 134L236 146M270 150L252 164"/></g></svg>
+    <p class="kicker reveal">SlideFly</p>
+    <h1 class="title reveal">Slide chuyển cảnh kiểu Morph trên trình duyệt</h1>
+    <p class="subtitle reveal">Một file HTML, mở bằng Chrome là trình chiếu được</p>
+    <p class="meta reveal">Bộ mẫu 9 kiểu slide</p>
+  </section>
+
+  <!-- 2. agenda -->
+  <section class="slide" data-layout="agenda">
+    <h2 class="title reveal">Nội dung</h2>
+    <ol class="agenda-list">
+      <li><span class="num reveal">01</span><div><h3 class="reveal" data-morph-id="s1">Cơ chế diễn viên</h3><p class="reveal">Hình cố định, chỉ đổi tư thế</p></div></li>
+      <li><span class="num reveal">02</span><div><h3 class="reveal">Chín kiểu slide</h3><p class="reveal">Từ trang bìa đến lời cảm ơn</p></div></li>
+      <li><span class="num reveal">03</span><div><h3 class="reveal">Tự co giãn</h3><p class="reveal">Ít chữ thì chữ to hơn</p></div></li>
+      <li><span class="num reveal">04</span><div><h3 class="reveal">Đo độ lấp đầy</h3><p class="reveal">Máy tự soát slide bị trống</p></div></li>
+    </ol>
+  </section>
+
+  <!-- 3. section -->
+  <section class="slide" data-layout="section">
+    <svg class="art" style="left:1080px; top:270px" width="560" height="560" viewBox="0 0 560 560" aria-hidden="true"><defs><clipPath id="sfs"><circle cx="280" cy="280" r="285"/></clipPath><pattern id="sfh3" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V6" stroke="#1E1610" stroke-width="1.5"/></pattern></defs><g clip-path="url(#sfs)"><rect width="560" height="560" fill="#C5B690"/><rect y="134" width="560" height="560" fill="#D0C3A1"/><rect y="258" width="560" height="560" fill="#DACEB0"/><rect y="381" width="560" height="560" fill="#E3D9BF"/><path d="M40 40L290 300L110 520H0V40Z" fill="#F2EBDA" fill-opacity=".28"/><path class="sf-f4" d="M0 430C120 418 380 424 560 430V560H0Z"/><path d="M0 430C120 418 380 424 560 430" class="sf-l"/><rect y="434" width="560" height="126" fill="url(#sfh3)" fill-opacity=".4"/><path class="sf-l" style="stroke-width:8" d="M276 372L196 506M276 372L276 520M276 372L360 506"/><rect class="sf-f6" x="196" y="262" width="160" height="112"/><rect x="196" y="262" width="160" height="112" fill="url(#sfh3)" fill-opacity=".55"/><rect class="sf-l" x="196" y="262" width="160" height="112" fill="none"/><path class="sf-ink sf-l" d="M356 290H408L416 322H356Z"/><circle class="sf-f2" cx="393" cy="306" r="9"/><circle class="sf-f7 sf-l" cx="232" cy="226" r="40"/><circle class="sf-f7 sf-l" cx="318" cy="216" r="40"/><circle class="sf-f3" cx="252.3" cy="234.6" r="8"/><circle class="sf-f3" cx="214.4" cy="239.3" r="8"/><circle class="sf-f3" cx="229.3" cy="204.2" r="8"/><circle class="sf-f3" cx="338.3" cy="224.6" r="8"/><circle class="sf-f3" cx="300.4" cy="229.3" r="8"/><circle class="sf-f3" cx="315.3" cy="194.2" r="8"/><path class="sf-l" style="stroke-width:5" d="M196 322L164 350"/><circle class="sf-ink" cx="160" cy="354" r="9"/><path class="sf-lT" d="M214 282H336M214 300H336" stroke="#EFE4C8" stroke-opacity=".5"/></g></svg>
+    <p class="num reveal">01</p>
+    <h2 class="title reveal" data-morph-id="s1">Cơ chế diễn viên</h2>
+    <p class="subtitle reveal">Morph là cùng một vật đổi vị trí giữa hai slide</p>
+  </section>
+
+  <!-- 4. content + hình minh họa -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Hình cố định, chỉ đổi tư thế</h2>
+    <svg class="art" style="left:1262px; top:336px" width="556" height="640" viewBox="0 0 556 640" aria-hidden="true"><defs><pattern id="sfh2" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V6" stroke="#1E1610" stroke-width="1.5"/></pattern></defs><g class="reveal"><text class="sf-lb" x="0" y="22" style="font-size:23px">HÌNH 2 · MỘT VẬT, HAI TƯ THẾ</text><path class="sf-lCT" d="M0 34H350M0 40H350"/></g><g class="reveal"><rect class="sf-frame" x="2" y="54" width="238" height="140"/><rect class="sf-cream" x="14.0" y="59" width="12" height="8" rx="2"/><rect class="sf-cream" x="14.0" y="181" width="12" height="8" rx="2"/><rect class="sf-cream" x="42.9" y="59" width="12" height="8" rx="2"/><rect class="sf-cream" x="42.9" y="181" width="12" height="8" rx="2"/><rect class="sf-cream" x="71.7" y="59" width="12" height="8" rx="2"/><rect class="sf-cream" x="71.7" y="181" width="12" height="8" rx="2"/><rect class="sf-cream" x="100.6" y="59" width="12" height="8" rx="2"/><rect class="sf-cream" x="100.6" y="181" width="12" height="8" rx="2"/><rect class="sf-cream" x="129.4" y="59" width="12" height="8" rx="2"/><rect class="sf-cream" x="129.4" y="181" width="12" height="8" rx="2"/><rect class="sf-cream" x="158.3" y="59" width="12" height="8" rx="2"/><rect class="sf-cream" x="158.3" y="181" width="12" height="8" rx="2"/><rect class="sf-cream" x="187.1" y="59" width="12" height="8" rx="2"/><rect class="sf-cream" x="187.1" y="181" width="12" height="8" rx="2"/><rect class="sf-cream" x="216.0" y="59" width="12" height="8" rx="2"/><rect class="sf-cream" x="216.0" y="181" width="12" height="8" rx="2"/><rect class="sf-win" x="16" y="76" width="210" height="96"/><circle class="sf-f7" cx="62" cy="148" r="17"/><circle cx="62" cy="148" r="17" fill="url(#sfh2)" fill-opacity=".5"/><path class="sf-lC" style="stroke-width:2" d="M51.8 146.3A10.5 10.5 0 0 1 60.3 137.8"/></g><g class="reveal" style="--i:2"><rect class="sf-frame" x="316" y="54" width="238" height="140"/><rect class="sf-cream" x="328.0" y="59" width="12" height="8" rx="2"/><rect class="sf-cream" x="328.0" y="181" width="12" height="8" rx="2"/><rect class="sf-cream" x="356.9" y="59" width="12" height="8" rx="2"/><rect class="sf-cream" x="356.9" y="181" width="12" height="8" rx="2"/><rect class="sf-cream" x="385.7" y="59" width="12" height="8" rx="2"/><rect class="sf-cream" x="385.7" y="181" width="12" height="8" rx="2"/><rect class="sf-cream" x="414.6" y="59" width="12" height="8" rx="2"/><rect class="sf-cream" x="414.6" y="181" width="12" height="8" rx="2"/><rect class="sf-cream" x="443.4" y="59" width="12" height="8" rx="2"/><rect class="sf-cream" x="443.4" y="181" width="12" height="8" rx="2"/><rect class="sf-cream" x="472.3" y="59" width="12" height="8" rx="2"/><rect class="sf-cream" x="472.3" y="181" width="12" height="8" rx="2"/><rect class="sf-cream" x="501.1" y="59" width="12" height="8" rx="2"/><rect class="sf-cream" x="501.1" y="181" width="12" height="8" rx="2"/><rect class="sf-cream" x="530.0" y="59" width="12" height="8" rx="2"/><rect class="sf-cream" x="530.0" y="181" width="12" height="8" rx="2"/><rect class="sf-win" x="330" y="76" width="210" height="96"/><circle class="sf-f7" cx="478" cy="118" r="30"/><circle cx="478" cy="118" r="30" fill="url(#sfh2)" fill-opacity=".5"/><path class="sf-lC" style="stroke-width:2" d="M460.0 115.0A18.6 18.6 0 0 1 475.0 100.0"/></g><path class="sf-lD" d="M250 124H300"/><path class="sf-cream" d="M308 124L292 115V133Z"/><g class="reveal"><text class="sf-lb" x="121" y="224" text-anchor="middle" style="font-size:21px">TƯ THẾ A</text><text class="sf-lb" x="435" y="224" text-anchor="middle" style="font-size:21px">TƯ THẾ B</text></g><g class="reveal"><text class="sf-lb" x="0" y="372">BẢNG KÊ</text><path class="sf-lCT" d="M0 384H556M0 390H556"/><circle cx="30" cy="428" r="20" fill="none" stroke="#EFE4C8" stroke-width="3"/><text class="sf-num" x="30" y="437" text-anchor="middle">1</text><rect class="sf-frame" x="68" y="404" width="100" height="48"/><rect class="sf-f1" x="78" y="414" width="80" height="28"/><path class="sf-bar" d="M196 428H300M316 428H400"/><circle cx="30" cy="492" r="20" fill="none" stroke="#EFE4C8" stroke-width="3"/><text class="sf-num" x="30" y="501" text-anchor="middle">2</text><rect class="sf-frame" x="68" y="468" width="100" height="48"/><rect class="sf-f4" x="78" y="478" width="80" height="28"/><path class="sf-bar" d="M196 492H330M346 492H380"/><circle cx="30" cy="556" r="20" fill="none" stroke="#EFE4C8" stroke-width="3"/><text class="sf-num" x="30" y="565" text-anchor="middle">3</text><rect class="sf-frame" x="68" y="532" width="100" height="48"/><rect class="sf-f6" x="78" y="542" width="80" height="28"/><path class="sf-bar" d="M196 556H300M316 556H360"/><path class="sf-lCT" d="M0 610H556M0 616H556"/></g></svg>
+    <ul class="bullets">
+      <li class="reveal">Mỗi style có một nhóm hình cố định, gọi là <b>diễn viên</b>.</li>
+      <li class="reveal">Mỗi kiểu slide quy định một <b>tư thế</b>: vị trí, kích thước, màu.</li>
+      <li class="reveal">Khi chuyển slide, trình duyệt cho hình <b>trượt dần</b> sang tư thế mới.</li>
+      <li class="reveal">Chữ của slide mới hiện sau, khi hình đã bắt đầu chuyển động.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-text">Cùng tên là cùng một vật</p>
+    </aside>
+  </section>
+
+  <!-- 5. content (second in a row: parity changes the pose) -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Một khung cho mọi màn hình</h2>
+    <ul class="bullets">
+      <li class="reveal">Slide được thiết kế ở một kích thước cố định 1920×1080.</li>
+      <li class="reveal">Màn hình to hay nhỏ, cả khung được phóng to, thu nhỏ theo.</li>
+      <li class="reveal">Không vỡ bố cục trên máy chiếu, laptop hay điện thoại.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-big">16:9</p>
+      <p class="hl-text">Tỷ lệ khung chuẩn</p>
+    </aside>
+  </section>
+
+  <!-- 6. two-col + takeaway -->
+  <section class="slide" data-layout="two-col">
+    <h2 class="title reveal">PowerPoint Morph và SlideFly</h2>
+    <div class="cols">
+      <div class="col reveal-left">
+        <h3>PowerPoint</h3>
+        <ul>
+          <li>Chạy trong PowerPoint</li>
+          <li>Sửa trực tiếp bằng chuột</li>
+          <li>Khớp hình theo tên</li>
+        </ul>
+      </div>
+      <div class="col reveal-right">
+        <h3>SlideFly</h3>
+        <ul>
+          <li>Chạy trên trình duyệt</li>
+          <li>Sửa bằng nội dung chữ</li>
+          <li>Khớp hình theo data-actor</li>
+        </ul>
+      </div>
+    </div>
+    <p class="takeaway reveal">Cùng một ý tưởng: vật trùng tên thì trượt sang vị trí mới.</p>
+  </section>
+
+  <!-- 7. stats + hình minh họa -->
+  <section class="slide" data-layout="stats">
+    <h2 class="title reveal">Ba bậc cỡ chữ tự chọn</h2>
+    <div class="stats">
+      <div class="stat reveal"><span class="stat-num">≤3</span><span class="stat-label">ý trên một slide: chữ lớn nhất, dễ đọc từ xa</span></div>
+      <div class="stat reveal"><span class="stat-num">4-5</span><span class="stat-label">ý trên một slide: chữ vừa, vẫn thoáng</span></div>
+      <div class="stat reveal"><span class="stat-num">6+</span><span class="stat-label">ý trên một slide: chữ nhỏ, nên tách slide</span></div>
+    </div>
+    <svg class="art" style="left:120px; top:836px" width="1680" height="150" viewBox="0 0 1680 150" aria-hidden="true"><g class="reveal"><rect class="sf-frameD" x="144" y="8" width="240" height="134"/><rect class="sf-sep" x="156.0" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="156.0" y="129" width="12" height="8" rx="2"/><rect class="sf-sep" x="185.1" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="185.1" y="129" width="12" height="8" rx="2"/><rect class="sf-sep" x="214.3" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="214.3" y="129" width="12" height="8" rx="2"/><rect class="sf-sep" x="243.4" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="243.4" y="129" width="12" height="8" rx="2"/><rect class="sf-sep" x="272.6" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="272.6" y="129" width="12" height="8" rx="2"/><rect class="sf-sep" x="301.7" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="301.7" y="129" width="12" height="8" rx="2"/><rect class="sf-sep" x="330.9" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="330.9" y="129" width="12" height="8" rx="2"/><rect class="sf-sep" x="360.0" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="360.0" y="129" width="12" height="8" rx="2"/><rect class="sf-f1" x="162" y="32.0" width="204" height="29.3"/><rect class="sf-f4" x="162" y="60.7" width="204" height="29.3"/><rect class="sf-f7" x="162" y="89.3" width="204" height="29.3"/><rect x="162" y="32" width="204" height="86" fill="none" stroke="#0E0A08" stroke-width="2.5"/></g><g class="reveal"><rect class="sf-frameD" x="720" y="8" width="240" height="134"/><rect class="sf-sep" x="732.0" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="732.0" y="129" width="12" height="8" rx="2"/><rect class="sf-sep" x="761.1" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="761.1" y="129" width="12" height="8" rx="2"/><rect class="sf-sep" x="790.3" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="790.3" y="129" width="12" height="8" rx="2"/><rect class="sf-sep" x="819.4" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="819.4" y="129" width="12" height="8" rx="2"/><rect class="sf-sep" x="848.6" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="848.6" y="129" width="12" height="8" rx="2"/><rect class="sf-sep" x="877.7" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="877.7" y="129" width="12" height="8" rx="2"/><rect class="sf-sep" x="906.9" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="906.9" y="129" width="12" height="8" rx="2"/><rect class="sf-sep" x="936.0" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="936.0" y="129" width="12" height="8" rx="2"/><rect class="sf-f1" x="738" y="32.0" width="204" height="17.8"/><rect class="sf-f3" x="738" y="49.2" width="204" height="17.8"/><rect class="sf-f4" x="738" y="66.4" width="204" height="17.8"/><rect class="sf-f5" x="738" y="83.6" width="204" height="17.8"/><rect class="sf-f7" x="738" y="100.8" width="204" height="17.8"/><rect x="738" y="32" width="204" height="86" fill="none" stroke="#0E0A08" stroke-width="2.5"/></g><g class="reveal"><rect class="sf-frameD" x="1296" y="8" width="240" height="134"/><rect class="sf-sep" x="1308.0" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="1308.0" y="129" width="12" height="8" rx="2"/><rect class="sf-sep" x="1337.1" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="1337.1" y="129" width="12" height="8" rx="2"/><rect class="sf-sep" x="1366.3" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="1366.3" y="129" width="12" height="8" rx="2"/><rect class="sf-sep" x="1395.4" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="1395.4" y="129" width="12" height="8" rx="2"/><rect class="sf-sep" x="1424.6" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="1424.6" y="129" width="12" height="8" rx="2"/><rect class="sf-sep" x="1453.7" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="1453.7" y="129" width="12" height="8" rx="2"/><rect class="sf-sep" x="1482.9" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="1482.9" y="129" width="12" height="8" rx="2"/><rect class="sf-sep" x="1512.0" y="13" width="12" height="8" rx="2"/><rect class="sf-sep" x="1512.0" y="129" width="12" height="8" rx="2"/><rect class="sf-f1" x="1314" y="32.0" width="204" height="12.9"/><rect class="sf-f2" x="1314" y="44.3" width="204" height="12.9"/><rect class="sf-f3" x="1314" y="56.6" width="204" height="12.9"/><rect class="sf-f4" x="1314" y="68.9" width="204" height="12.9"/><rect class="sf-f5" x="1314" y="81.1" width="204" height="12.9"/><rect class="sf-f6" x="1314" y="93.4" width="204" height="12.9"/><rect class="sf-f7" x="1314" y="105.7" width="204" height="12.9"/><rect x="1314" y="32" width="204" height="86" fill="none" stroke="#0E0A08" stroke-width="2.5"/><path class="sf-tape" d="M1396 0L1446 0L1438 150L1388 150Z"/><path class="sf-lT" d="M1403 12H1431M1400 138H1428" stroke-opacity=".7"/><path class="sf-lT" style="stroke-dasharray:6 6" d="M1417 6V146"/></g></svg>
+  </section>
+
+  <!-- 8. timeline + hình minh họa -->
+  <section class="slide s-tl" data-layout="timeline">
+    <h2 class="title reveal">Quy trình dựng một deck</h2>
+    <svg class="art" style="left:120px; top:560px" width="1680" height="140" viewBox="0 0 1680 140" aria-hidden="true"><g class="reveal"><rect class="sf-frame" x="-38.0" y="40" width="108" height="60" style="stroke:#0E0A08"/><rect class="sf-sep" x="-30.0" y="46" width="92" height="48"/><clipPath id="sft0"><rect x="-30.0" y="46" width="92" height="48"/></clipPath><g clip-path="url(#sft0)"><circle class="sf-ink" cx="28.0" cy="86" r="8"/><path class="sf-f6" d="M-30.0 94V80L-6.0 70L16.0 82L38.0 72L62.0 84V94Z"/></g><rect class="sf-frame" x="304.4" y="40" width="108" height="60" style="stroke:#0E0A08"/><rect class="sf-sep" x="312.4" y="46" width="92" height="48"/><clipPath id="sft1"><rect x="312.4" y="46" width="92" height="48"/></clipPath><g clip-path="url(#sft1)"><circle class="sf-ink" cx="370.4" cy="78" r="8"/><path class="sf-f6" d="M312.4 94V80L336.4 70L358.4 82L380.4 72L404.4 84V94Z"/></g><rect class="sf-frame" x="646.8" y="40" width="108" height="60" style="stroke:#0E0A08"/><rect class="sf-sep" x="654.8" y="46" width="92" height="48"/><clipPath id="sft2"><rect x="654.8" y="46" width="92" height="48"/></clipPath><g clip-path="url(#sft2)"><circle class="sf-ink" cx="712.8" cy="70" r="8"/><path class="sf-f6" d="M654.8 94V80L678.8 70L700.8 82L722.8 72L746.8 84V94Z"/></g><rect class="sf-frame" x="989.2" y="40" width="108" height="60" style="stroke:#0E0A08"/><rect class="sf-sep" x="997.2" y="46" width="92" height="48"/><clipPath id="sft3"><rect x="997.2" y="46" width="92" height="48"/></clipPath><g clip-path="url(#sft3)"><circle class="sf-ink" cx="1055.2" cy="62" r="8"/><path class="sf-f6" d="M997.2 94V80L1021.2 70L1043.2 82L1065.2 72L1089.2 84V94Z"/></g><rect class="sf-frame" x="1331.6" y="40" width="108" height="60" style="stroke:#0E0A08"/><rect class="sf-sep" x="1339.6" y="46" width="92" height="48"/><clipPath id="sft4"><rect x="1339.6" y="46" width="92" height="48"/></clipPath><g clip-path="url(#sft4)"><circle class="sf-ink" cx="1397.6" cy="54" r="11"/><path class="sf-f6" d="M1339.6 94V80L1363.6 70L1385.6 82L1407.6 72L1431.6 84V94Z"/></g><path class="sf-l" style="stroke-width:2" d="M1412.6 54.0L1418.6 54.0"/><path class="sf-l" style="stroke-width:2" d="M1408.2 64.6L1412.4 68.8"/><path class="sf-l" style="stroke-width:2" d="M1397.6 69.0L1397.6 75.0"/><path class="sf-l" style="stroke-width:2" d="M1387.0 64.6L1382.8 68.8"/><path class="sf-l" style="stroke-width:2" d="M1382.6 54.0L1376.6 54.0"/></g></svg>
+    <div class="timeline">
+      <div class="step reveal"><div class="when">01</div><h3>Nội dung</h3><p>Gom dàn ý, số liệu có nguồn</p></div>
+      <div class="step reveal"><div class="when">02</div><h3>Chọn style</h3><p>Xem 3 bản thử rồi chọn</p></div>
+      <div class="step reveal"><div class="when">03</div><h3>Dựng</h3><p>Viết HTML theo khung mẫu</p></div>
+      <div class="step reveal"><div class="when">04</div><h3>Đo</h3><p>Chạy deck.audit() từng slide</p></div>
+      <div class="step reveal"><div class="when">05</div><h3>Bàn giao</h3><p>Gộp thành một file HTML</p></div>
+    </div>
+  </section>
+
+  <!-- 9. quote -->
+  <section class="slide" data-layout="quote">
+    <svg class="art" style="left:890px; top:60px" width="140" height="140" viewBox="0 0 140 140" aria-hidden="true"><defs><clipPath id="sfq"><circle cx="70" cy="70" r="62"/></clipPath></defs><g clip-path="url(#sfq)"><rect width="140" height="140" fill="#6E5E46"/><rect y="40" width="140" height="100" fill="#8F7A57"/><rect y="84" width="140" height="60" fill="#A8977A"/><path d="M70 40L40 140H100Z" fill="#F2EBDA" fill-opacity=".38"/><rect class="sf-f7" x="0" y="112" width="140" height="30"/><path class="sf-l" style="stroke-width:4" d="M70 112V44"/><path class="sf-ink" d="M56 44L84 44L76 34L64 34Z"/><circle class="sf-pale" cx="70" cy="48" r="5"/><path class="sf-lT" style="stroke:#EFE4C8" d="M54 56L46 62M86 56L94 62M70 30V24"/></g></svg>
+    <blockquote class="quote reveal-blur">Hình trang trí đứng yên chỉ là nền. Khi nó di chuyển, nó kể chuyện.</blockquote>
+    <p class="cite reveal">Nguyên tắc của bộ mẫu</p>
+  </section>
+
+  <!-- 10. closing  -->
+  <section class="slide" data-layout="closing">
+    <svg class="art" style="left:820px; top:80px" width="280" height="280" viewBox="0 0 280 280" aria-hidden="true"><defs><clipPath id="sfx"><circle cx="140" cy="140" r="128"/></clipPath><pattern id="sfh4" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V6" stroke="#1E1610" stroke-width="1.5"/></pattern></defs><g clip-path="url(#sfx)"><rect width="280" height="280" fill="#C5B690"/><rect y="67" width="280" height="280" fill="#D0C3A1"/><rect y="129" width="280" height="280" fill="#DACEB0"/><rect y="190" width="280" height="280" fill="#E3D9BF"/><g transform="translate(150 98) rotate(-24)"><ellipse class="sf-f7 sf-l" cx="0" cy="0" rx="46" ry="20"/><path class="sf-f7 sf-l" d="M-48 4Q-80 12 -72 22Q-40 24 -20 12Z"/><path d="M-46 0Q0 -22 46 0Q0 18 -46 0Z" fill="url(#sfh4)" fill-opacity=".5"/><path class="sf-lC" style="stroke-width:2" d="M-30 -8Q-6 -16 18 -10"/></g><path class="sf-trail" d="M70 240C84 200 98 160 112 122"/><path class="sf-lT" d="M188 60L204 40M206 84L228 76M120 56L112 36M226 118L248 120"/><path class="sf-f7" d="M0 236C60 226 160 232 280 228V280H0Z"/><rect y="238" width="280" height="42" fill="url(#sfh4)" fill-opacity=".4"/></g></svg>
+    <p class="kicker reveal">Hết phần mẫu</p>
+    <h2 class="title reveal">Cảm ơn</h2>
+    <p class="subtitle reveal">Đổi style chỉ cần thay một dòng link CSS.</p>
+  </section>
+
+</div>
+</div>
+<script src="../skill/slidefly/assets/morph-viz-diagrams.js"></script>
+<script src="../skill/slidefly/assets/morph-viz.js"></script>
+<script src="../skill/slidefly/assets/morph-engine.js"></script>
+<script src="../skill/slidefly/assets/morph-nav.js"></script>
+<script src="../skill/slidefly/assets/morph-audit.js"></script>
+<script src="../skill/slidefly/assets/morph-steps.js"></script>
+<script src="../skill/slidefly/assets/morph-icons.js"></script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mẫu SlideFly · Múa rối bóng</title>
+<!-- Đổi style: thay đúng 1 dòng link styles/*.css bên dưới. Minh họa SVG vẽ theo styles/roi-bong.art.md -->
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-base.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-layouts.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/styles/roi-bong.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-motion.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-viz.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-icons.css">
+<style>
+/* hand-drawn figures (roi-bong.art.md): carved hide on a lit cloth, holes are real holes, dyes are translucent */
+.art { position: absolute; overflow: visible; pointer-events: none; }
+.rb-ink { fill: var(--ink); }
+.rb-red { fill: #c4341a; }
+.rb-och { fill: #e0a52a; }
+.rb-cloth { fill: #ffe9a8; }
+.rb-cord { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linecap: round; }
+.rb-line { fill: none; stroke: var(--ink); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+.rb-ghost { fill: none; stroke: var(--ink); stroke-width: 2.6; stroke-dasharray: 9 8; stroke-linecap: round; stroke-linejoin: round; }
+.rb-ar { fill: var(--ink); stroke: none; }
+.rb-ring { fill: none; stroke: var(--ink); stroke-width: 3; }
+.rb-lb { fill: var(--ink); font-family: var(--font-body); font-size: 20px; font-weight: 700; letter-spacing: .12em; }
+.rb-num { fill: var(--ink); font-family: var(--font-display); font-size: 22px; font-weight: 800; }
+/* the coin-hole strip is the timeline axis; the stations sit on it as cloth coins */
+.s-tl .step::before { box-shadow: none; }
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<div class="deck-stage">
+  <!-- Diễn viên (hình trang trí) do engine tự tạo từ --actors của style. -->
+
+  <!-- 1. cover -->
+  <section class="slide" data-layout="cover">
+    <svg class="art" style="left:0px; top:0px" width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true"><g class="reveal"><g transform="translate(1066 396) rotate(-6)"><path class="rb-cord" d="M0 0L56.2 -56.4L200 0"/><path class="rb-ink" fill-rule="evenodd" d="M137.3 33.1L136.9 33.6L136.8 34.3L137.2 34.9L138 35.2L150 33.2L159.9 35.2L160.8 34.9L161.2 34L160.6 33L150 26.8ZM200 113L200 0L0 0L0 113ZM11 11L189 11L189 66L150 80L112 58L74 84L44 70L11 86ZM189 101.4L188 102L179.5 101.8L177.6 100.4L176.2 98.5L175.3 96.3L175 94L175.4 91.5L175.6 93.1L176.4 95.2L177.8 97L179.6 98.4L181.7 99.2L184 99.5L186.3 99.2L189 97.9ZM158 102L155.6 100.4L154.2 98.5L153.3 96.3L153 94L153.4 91.5L153.6 93.1L154.4 95.2L155.8 97L157.6 98.4L159.7 99.2L162 99.5L164.3 99.2L166.4 98.4L168.2 97L169.6 95.2L170.4 93.1L170.6 91.5L171 94L170.7 96.3L169.8 98.5L168.4 100.4L166 102ZM136 102L133.6 100.4L132.2 98.5L131.3 96.3L131 94L131.4 91.5L131.6 93.1L132.4 95.2L133.8 97L135.6 98.4L137.7 99.2L140 99.5L142.3 99.2L144.4 98.4L146.2 97L147.6 95.2L148.4 93.1L148.6 91.5L149 94L148.7 96.3L147.8 98.5L146.4 100.4L144 102ZM114 102L111.6 100.4L110.2 98.5L109.3 96.3L109 94L109.4 91.5L109.6 93.1L110.4 95.2L111.8 97L113.6 98.4L115.7 99.2L118 99.5L120.3 99.2L122.4 98.4L124.2 97L125.6 95.2L126.4 93.1L126.6 91.5L127 94L126.7 96.3L125.8 98.5L124.4 100.4L122 102ZM92 102L89.6 100.4L88.2 98.5L87.3 96.3L87 94L87.4 91.5L87.6 93.1L88.4 95.2L89.8 97L91.6 98.4L93.7 99.2L96 99.5L98.3 99.2L100.4 98.4L102.2 97L103.6 95.2L104.4 93.1L104.6 91.5L105 94L104.7 96.3L103.8 98.5L102.4 100.4L100 102ZM70 102L67.6 100.4L66.2 98.5L65.3 96.3L65 94L65.4 91.5L65.6 93.1L66.4 95.2L67.8 97L69.6 98.4L71.7 99.2L74 99.5L76.3 99.2L78.4 98.4L80.2 97L81.6 95.2L82.4 93.1L82.6 91.5L83 94L82.7 96.3L81.8 98.5L80.4 100.4L78 102ZM48 102L45.6 100.4L44.2 98.5L43.3 96.3L43 94L43.4 91.5L43.6 93.1L44.4 95.2L45.8 97L47.6 98.4L49.7 99.2L52 99.5L54.3 99.2L56.4 98.4L58.2 97L59.6 95.2L60.4 93.1L60.6 91.5L61 94L60.7 96.3L59.8 98.5L58.4 100.4L56 102ZM26 102L23.6 100.4L22.2 98.5L21.3 96.3L21 94L21.4 91.5L21.6 93.1L22.4 95.2L23.8 97L25.6 98.4L27.7 99.2L30 99.5L32.3 99.2L34.4 98.4L36.2 97L37.6 95.2L38.4 93.1L38.6 91.5L39 94L38.7 96.3L37.8 98.5L36.4 100.4L34 102Z"/><circle class="rb-och" cx="58" cy="46" r="17"/><circle class="rb-ring" style="stroke-width:2" cx="58" cy="46" r="17"/><path class="rb-red" fill-rule="evenodd" d="M106.1 109.5L104.9 108.1L103.5 106.9L101.8 106.2L100 106L98.2 106.2L96.5 106.9L95.1 108.1L93.9 109.5L92.4 112.6L82 166.6L82.3 168.1L83.6 169L85.1 168.7L86 167.4L93.4 128.7L90 158.8L90.4 160.2L91.8 161L93.2 160.6L94 159.2L98 123.7L98.2 151.8L99.2 152.8L100.8 152.8L101.4 152.4L102 151L102 123.7L106.2 160L106.8 160.6L108.2 161L109.6 160.2L110 158.8L106.6 128.7L114 167.4L114.9 168.7L115.6 169L117.1 168.7L118 167.4L107.6 112.6Z"/></g></g></svg>
+    <p class="kicker reveal">SlideFly</p>
+    <h1 class="title reveal">Slide chuyển cảnh kiểu Morph trên trình duyệt</h1>
+    <p class="subtitle reveal">Một file HTML, mở bằng Chrome là trình chiếu được</p>
+    <p class="meta reveal">Bộ mẫu 9 kiểu slide</p>
+  </section>
+
+  <!-- 2. agenda -->
+  <section class="slide" data-layout="agenda">
+    <h2 class="title reveal">Nội dung</h2>
+    <ol class="agenda-list">
+      <li><span class="num reveal">01</span><div><h3 class="reveal" data-morph-id="s1">Cơ chế diễn viên</h3><p class="reveal">Hình cố định, chỉ đổi tư thế</p></div></li>
+      <li><span class="num reveal">02</span><div><h3 class="reveal">Chín kiểu slide</h3><p class="reveal">Từ trang bìa đến lời cảm ơn</p></div></li>
+      <li><span class="num reveal">03</span><div><h3 class="reveal">Tự co giãn</h3><p class="reveal">Ít chữ thì chữ to hơn</p></div></li>
+      <li><span class="num reveal">04</span><div><h3 class="reveal">Đo độ lấp đầy</h3><p class="reveal">Máy tự soát slide bị trống</p></div></li>
+    </ol>
+  </section>
+
+  <!-- 3. section -->
+  <section class="slide" data-layout="section">
+    <p class="num reveal">01</p>
+    <h2 class="title reveal" data-morph-id="s1">Cơ chế diễn viên</h2>
+    <p class="subtitle reveal">Morph là cùng một vật đổi vị trí giữa hai slide</p>
+  </section>
+
+  <!-- 4. content -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Hình cố định, chỉ đổi tư thế</h2>
+    <svg class="art" style="left:1260px; top:280px" width="540" height="700" viewBox="0 0 540 700" aria-hidden="true">
+      <g class="reveal"><text class="rb-lb" x="0" y="26">MỘT KHỚP, HAI TƯ THẾ</text><path class="rb-line" style="stroke-width:1.8" d="M0 40H312"/></g>
+      <path class="rb-ink" fill-rule="evenodd" d="M51.9 165.6L54 165.9L56.5 165.6L58.8 164.6L60.9 163.1L62.4 161L63.4 158.7L63.6 157.2L64 160L63.7 162.6L62.7 165L61.1 167.1L59 168.7L56.6 169.7L54 170L51.5 169.7L48 207.7L49.1 208.6L51.5 209.6L54 209.9L56.5 209.6L58.8 208.6L60.9 207.1L62.4 205L63.4 202.7L63.6 201.2L64 204L63.7 206.6L62.7 209L61.1 211.1L59 212.7L56.6 213.7L54 214L51.4 213.7L49 212.7L47.7 211.6L44.6 246.7L45.6 249L47.1 251.1L49.1 252.6L51.5 253.6L54 253.9L56.5 253.6L58.8 252.6L60.9 251.1L62.4 249L63.4 246.7L63.6 245.2L64 248L63.7 250.6L62.7 253L61.1 255.1L59 256.7L56.6 257.7L54 258L51.4 257.7L49 256.7L46.9 255.1L45.3 253L44.2 249.6L40 296L162 296L160.7 276.3L158 278.7L155.6 279.7L153 280L150.4 279.7L148 278.7L145.9 277.1L144.3 275L143.3 272.6L143 270L143.4 267.2L143.6 268.7L144.6 271.1L146.1 273.1L148.2 274.6L150.5 275.6L153 275.9L155.5 275.6L157.8 274.6L160.4 272.4L157.8 234.7L155.6 235.7L153 236L150.4 235.7L148 234.7L145.9 233.1L144.3 231L143.3 228.6L143 226L143.4 223.2L143.6 224.7L144.6 227L146.1 229.1L148.2 230.6L150.5 231.6L153 231.9L155.5 231.6L157.5 230.7L154.9 191.8L153 192L150.4 191.7L148 190.7L145.9 189.1L144.3 187L143.3 184.6L143 182L143.4 179.2L143.6 180.7L144.6 183L146.1 185.1L148.2 186.6L150.5 187.6L153 187.9L154.6 187.7L150 120L56 120ZM82.9 163.1L84.4 161L85.4 158.7L85.6 157.2L86 160L85.7 162.6L84.7 165L83.1 167.1L81 168.7L78.6 169.7L76 170L73.4 169.7L71 168.7L68.9 167.1L67.3 165L66.3 162.6L66 160L66.3 157.4L66.4 157.2L66.6 158.7L67.6 161L69.1 163.1L71.1 164.6L73.5 165.6L76 165.9L78.5 165.6L80.8 164.6ZM104.9 163.1L106.4 161L107.4 158.7L107.6 157.2L108 160L107.7 162.6L106.7 165L105.1 167.1L103 168.7L100.6 169.7L98 170L95.4 169.7L93 168.7L90.9 167.1L89.3 165L88.3 162.6L88 160L88.3 157.4L88.4 157.2L88.6 158.7L89.6 161L91.1 163.1L93.1 164.6L95.5 165.6L98 165.9L100.5 165.6L102.8 164.6ZM71.9 185.1L73.4 183L74.4 180.7L74.6 179.2L75 182L74.7 184.6L73.7 187L72.1 189.1L70 190.7L67.6 191.7L65 192L62.4 191.7L60 190.7L57.9 189.1L56.3 187L55.3 184.6L55 182L55.3 179.4L55.4 179.2L55.6 180.7L56.6 183L58.1 185.1L60.1 186.6L62.5 187.6L65 187.9L67.5 187.6L69.8 186.6ZM93.9 185.1L95.4 183L96.4 180.7L96.6 179.2L97 182L96.7 184.6L95.7 187L94.1 189.1L92 190.7L89.6 191.7L87 192L84.4 191.7L82 190.7L79.9 189.1L78.3 187L77.3 184.6L77 182L77.3 179.4L77.4 179.2L77.6 180.7L78.6 183L80.1 185.1L82.1 186.6L84.5 187.6L87 187.9L89.5 187.6L91.8 186.6ZM82.9 207.1L84.4 205L85.4 202.7L85.6 201.2L86 204L85.7 206.6L84.7 209L83.1 211.1L81 212.7L78.6 213.7L76 214L73.4 213.7L71 212.7L68.9 211.1L67.3 209L66.3 206.6L66 204L66.3 201.4L66.4 201.2L66.6 202.7L67.6 205L69.1 207.1L71.1 208.6L73.5 209.6L76 209.9L78.5 209.6L80.8 208.6ZM104.9 207.1L106.4 205L107.4 202.7L107.6 201.2L108 204L107.7 206.6L106.7 209L105.1 211.1L103 212.7L100.6 213.7L98 214L95.4 213.7L93 212.7L90.9 211.1L89.3 209L88.3 206.6L88 204L88.3 201.4L88.4 201.2L88.6 202.7L89.6 205L91.1 207.1L93.1 208.6L95.5 209.6L98 209.9L100.5 209.6L102.8 208.6ZM71.9 229.1L73.4 227L74.4 224.7L74.6 223.2L75 226L74.7 228.6L73.7 231L72.1 233.1L70 234.7L67.6 235.7L65 236L62.4 235.7L60 234.7L57.9 233.1L56.3 231L55.3 228.6L55 226L55.3 223.4L55.4 223.2L55.6 224.7L56.6 227L58.1 229.1L60.1 230.6L62.5 231.6L65 231.9L67.5 231.6L69.8 230.6ZM93.9 229.1L95.4 227L96.4 224.7L96.6 223.2L97 226L96.7 228.6L95.7 231L94.1 233.1L92 234.7L89.6 235.7L87 236L84.4 235.7L82 234.7L79.9 233.1L78.3 231L77.3 228.6L77 226L77.3 223.4L77.4 223.2L77.6 224.7L78.6 227L80.1 229.1L82.1 230.6L84.5 231.6L87 231.9L89.5 231.6L91.8 230.6ZM82.9 251.1L84.4 249L85.4 246.7L85.6 245.2L86 248L85.7 250.6L84.7 253L83.1 255.1L81 256.7L78.6 257.7L76 258L73.4 257.7L71 256.7L68.9 255.1L67.3 253L66.3 250.6L66 248L66.3 245.4L66.4 245.2L66.6 246.7L67.6 249L69.1 251.1L71.1 252.6L73.5 253.6L76 253.9L78.5 253.6L80.8 252.6ZM104.9 251.1L106.4 249L107.4 246.7L107.6 245.2L108 248L107.7 250.6L106.7 253L105.1 255.1L103 256.7L100.6 257.7L98 258L95.4 257.7L93 256.7L90.9 255.1L89.3 253L88.3 250.6L88 248L88.3 245.4L88.4 245.2L88.6 246.7L89.6 249L91.1 251.1L93.1 252.6L95.5 253.6L98 253.9L100.5 253.6L102.8 252.6ZM71.9 273.1L73.4 271.1L74.4 268.7L74.6 267.2L75 270L74.7 272.6L73.7 275L72.1 277.1L70 278.7L67.6 279.7L65 280L62.4 279.7L60 278.7L57.9 277.1L56.3 275L55.3 272.6L55 270L55.3 267.4L55.4 267.2L55.6 268.7L56.6 271.1L58.1 273.1L60.1 274.6L62.5 275.6L65 275.9L67.5 275.6L69.8 274.6ZM93.9 273.1L95.4 271.1L96.4 268.7L96.6 267.2L97 270L96.7 272.6L95.7 275L94.1 277.1L92 278.7L89.6 279.7L87 280L84.4 279.7L82 278.7L79.9 277.1L78.3 275L77.3 272.6L77 270L77.3 267.4L77.4 267.2L77.6 268.7L78.6 271.1L80.1 273.1L82.1 274.6L84.5 275.6L87 275.9L89.5 275.6L91.8 274.6ZM128.4 161L129.4 158.7L129.6 157.2L130 160L129.7 162.6L128.7 165L127.1 167.1L125 168.7L122.6 169.7L120 170L117.4 169.7L115 168.7L112.9 167.1L111.3 165L110.3 162.6L110 160L110.4 157.2L110.6 158.7L111.6 161L113.1 163.1L115.1 164.6L117.5 165.6L120 165.9L122.5 165.6L124.8 164.6L126.9 163.1ZM148.9 163.1L150.4 161L151.4 158.7L151.6 157.2L152 160L151.7 162.6L150.7 165L149.1 167.1L147 168.7L144.6 169.7L142 170L139.4 169.7L137 168.7L134.9 167.1L133.3 165L132.3 162.6L132 160L132.3 157.4L132.4 157.2L132.6 158.7L133.6 161L135.1 163.1L137.2 164.6L139.5 165.6L142 165.9L144.5 165.6L146.8 164.6ZM115.9 185.1L117.4 183L118.4 180.7L118.6 179.2L119 182L118.7 184.6L117.7 187L116.1 189.1L114 190.7L111.6 191.7L109 192L106.4 191.7L104 190.7L101.9 189.1L100.3 187L99.3 184.6L99 182L99.3 179.4L99.4 179.2L99.6 180.7L100.6 183L102.1 185.1L104.1 186.6L106.5 187.6L109 187.9L111.5 187.6L113.8 186.6ZM137.9 185.1L139.4 183L140.4 180.7L140.6 179.2L141 182L140.7 184.6L139.7 187L138.1 189.1L136 190.7L133.6 191.7L131 192L128.4 191.7L126 190.7L123.9 189.1L122.3 187L121.3 184.6L121 182L121.3 179.4L121.4 179.2L121.6 180.7L122.6 183L124.1 185.1L126.1 186.6L128.5 187.6L131 187.9L133.5 187.6L135.8 186.6ZM126.9 207.1L128.4 205L129.4 202.7L129.6 201.2L130 204L129.7 206.6L128.7 209L127.1 211.1L125 212.7L122.6 213.7L120 214L117.4 213.7L115 212.7L112.9 211.1L111.3 209L110.3 206.6L110 204L110.3 201.4L110.4 201.2L110.6 202.7L111.6 205L113.1 207.1L115.1 208.6L117.5 209.6L120 209.9L122.5 209.6L124.8 208.6ZM148.9 207.1L150.4 205L151.4 202.7L151.6 201.2L152 204L151.7 206.6L150.7 209L149.1 211.1L147 212.7L144.6 213.7L142 214L139.4 213.7L137 212.7L134.9 211.1L133.3 209L132.3 206.6L132 204L132.3 201.4L132.4 201.2L132.6 202.7L133.6 205L135.1 207.1L137.2 208.6L139.5 209.6L142 209.9L144.5 209.6L146.8 208.6ZM115.9 229.1L117.4 227L118.4 224.7L118.6 223.2L119 226L118.7 228.6L117.7 231L116.1 233.1L114 234.7L111.6 235.7L109 236L106.4 235.7L104 234.7L101.9 233.1L100.3 231L99.3 228.6L99 226L99.3 223.4L99.4 223.2L99.6 224.7L100.6 227L102.1 229.1L104.1 230.6L106.5 231.6L109 231.9L111.5 231.6L113.8 230.6ZM137.9 229.1L139.4 227L140.4 224.7L140.6 223.2L141 226L140.7 228.6L139.7 231L138.1 233.1L136 234.7L133.6 235.7L131 236L128.4 235.7L126 234.7L123.9 233.1L122.3 231L121.3 228.6L121 226L121.3 223.4L121.4 223.2L121.6 224.7L122.6 227L124.1 229.1L126.1 230.6L128.5 231.6L131 231.9L133.5 231.6L135.8 230.6ZM126.9 251.1L128.4 249L129.4 246.7L129.6 245.2L130 248L129.7 250.6L128.7 253L127.1 255.1L125 256.7L122.6 257.7L120 258L117.4 257.7L115 256.7L112.9 255.1L111.3 253L110.3 250.6L110 248L110.3 245.4L110.4 245.2L110.6 246.7L111.6 249L113.1 251.1L115.1 252.6L117.5 253.6L120 253.9L122.5 253.6L124.8 252.6ZM148.9 251.1L150.4 249L151.4 246.7L151.6 245.2L152 248L151.7 250.6L150.7 253L149.1 255.1L147 256.7L144.6 257.7L142 258L139.4 257.7L137 256.7L134.9 255.1L133.3 253L132.3 250.6L132 248L132.3 245.4L132.4 245.2L132.6 246.7L133.6 249L135.1 251.1L137.2 252.6L139.5 253.6L142 253.9L144.5 253.6L146.8 252.6ZM115.9 273.1L117.4 271.1L118.4 268.7L118.6 267.2L119 270L118.7 272.6L117.7 275L116.1 277.1L114 278.7L111.6 279.7L109 280L106.4 279.7L104 278.7L101.9 277.1L100.3 275L99.3 272.6L99 270L99.3 267.4L99.4 267.2L99.6 268.7L100.6 271.1L102.1 273.1L104.1 274.6L106.5 275.6L109 275.9L111.5 275.6L113.8 274.6ZM137.9 273.1L139.4 271.1L140.4 268.7L140.6 267.2L141 270L140.7 272.6L139.7 275L138.1 277.1L136 278.7L133.6 279.7L131 280L128.4 279.7L126 278.7L123.9 277.1L122.3 275L121.3 272.6L121 270L121.3 267.4L121.4 267.2L121.6 268.7L122.6 271.1L124.1 273.1L126.1 274.6L128.5 275.6L131 275.9L133.5 275.6L135.8 274.6Z"/>
+      <g class="reveal"><path class="rb-ghost" d="M133.6 154.4L169.2 279.5L173 286.2L179.8 290.1L187.5 290.1L194.3 286.2L198.1 279.5L198.1 271.7L166.4 145.6L162 138L154.4 133.6L145.6 133.6L138 138L133.6 145.6Z"/><circle class="rb-ghost" cx="183.6" cy="275.6" r="13"/></g>
+      <path class="rb-red" fill-rule="evenodd" d="M255.1 72L141.5 135.3L135.3 141.5L133 150L135.3 158.5L141.5 164.7L150 167L158.5 164.7L270.1 98L275.6 92.5L277.6 85L275.6 77.5L270.1 72L262.6 70ZM241.6 98.4L241.6 100.8L240.5 102.8L238.5 103.9L237.3 104.1L236.1 103.9L234.1 102.8L233.4 101.9L232.8 99.6L232.9 98.4L234.1 96.4L236.1 95.3L237.3 95.1L238.5 95.3L240.5 96.4ZM216.7 112.8L216.7 115.2L216.3 116.2L214.6 117.9L213.5 118.3L211.2 118.3L210.1 117.9L208.5 116.2L208 115.2L208 112.8L208.5 111.8L210.1 110.1L211.2 109.7L213.5 109.7L214.6 110.1L216.3 111.8ZM191.8 127.2L191.8 129.6L191.3 130.7L189.7 132.3L188.6 132.7L186.2 132.7L185.2 132.3L183.5 130.7L183.1 129.6L183.1 127.2L183.5 126.2L185.2 124.5L186.2 124.1L188.6 124.1L189.7 124.5L191.3 126.2Z"/>
+      <path class="rb-ink" fill-rule="evenodd" d="M276.6 85L276.1 81.4L274.7 78L272.5 75.1L269.6 72.9L266.2 71.5L262.6 71L259 71.5L255.6 72.9L252.7 75.1L250.5 78L249.1 81.4L248.6 85L249.1 88.6L250.5 92L252.7 94.9L255.6 97.1L259 98.5L262.6 99L266.2 98.5L269.6 97.1L272.5 94.9L274.7 92L276.1 88.6Z"/>
+      <path class="rb-ink" fill-rule="evenodd" d="M163 142.5L160.6 139.4L157.5 137L153.9 135.5L150 135L146.1 135.5L142.5 137L139.4 139.4L137 142.5L135.5 146.1L135 150L135.5 153.9L137 157.5L139.4 160.6L142.5 163L146.1 164.5L150 165L153.9 164.5L157.5 163L160.6 160.6L163 157.5L164.5 153.9L165 150L164.5 146.1ZM157.8 154.5L156.4 156.4L154.5 157.8L152.3 158.7L150 159L147.7 158.7L145.5 157.8L143.6 156.4L142.2 154.5L141.3 152.3L141 150L141.3 147.7L142.2 145.5L143.6 143.6L145.5 142.2L147.7 141.3L150 141L152.3 141.3L154.5 142.2L156.4 143.6L157.8 145.5L158.7 147.7L159 150L158.7 152.3ZM154 150L153.5 148L152 146.5L150 146L149 146.1L148 146.5L146.5 148L146 150L146.1 151L146.5 152L148 153.5L150 154L151 153.9L152 153.5L153.5 152Z"/>
+      <path class="rb-line" style="stroke-dasharray:3 9" d="M192.7 309.4L201.0 306.9L209.1 304.0L217.1 300.7L224.9 297.0L232.5 292.9L239.9 288.4L247.0 283.5L253.8 278.2L260.4 272.6L266.7 266.7L272.6 260.4L278.2 253.8L283.5 247.0L288.4 239.9L292.9 232.5L297.0 224.9L300.7 217.1L304.0 209.1L306.9 201.0L309.4 192.7L311.4 184.3L313.0 175.8L314.1 167.2L314.8 158.6L315.0 150.0L314.8 141.4L314.1 132.8L313.0 124.2L311.4 115.7L309.4 107.3L306.9 99.0L304.0 90.9L300.7 82.9L297.0 75.1L292.9 67.5"/>
+      <path class="rb-ar" d="M284.1 52.9L300.6 62.9L285.2 72.1Z"/>
+      <path class="rb-cord draw" pathLength="1" style="--d:.45;stroke-width:4" d="M262.6 97.0V296"/>
+      <g class="reveal"><path class="rb-ink" fill-rule="evenodd" d="M474.1 258.5L471.2 265.6L466.6 271.6L460.5 276.2L456 278.1L456 266L436 266L436 278.1L431.4 276.2L425.4 271.6L420.8 265.6L417.9 258.5L417.3 253.7L416 262L417 269.8L420 277L424.8 283.2L431 288L436 290.1L436 292L456 292L456 290.1L461 288L467.2 283.2L472 277L475 269.8L476 262L474.7 253.7Z"/><path class="rb-och" fill-rule="evenodd" d="M447.8 195.2L447 194.3L446.1 194L445 194.3L444.3 195L432 221.9L435.2 244.9L444.7 253.5L445.9 254L447.3 253.5L456.8 244.9L460 222.1L459.8 221.2Z"/><path class="rb-line" style="stroke-width:2.4" d="M446 170V158M410 190L400 180M482 190L492 180M396 226H382M496 226H510"/></g>
+      <g class="reveal"><path class="rb-line" style="stroke-width:2" d="M118 136L96 112M274 250L300 270M424 214L408 196"/><circle class="rb-cloth" cx="84" cy="100" r="17"/><circle class="rb-ring" cx="84" cy="100" r="17"/><text class="rb-num" x="84" y="108" text-anchor="middle">1</text><circle class="rb-cloth" cx="312" cy="280" r="17"/><circle class="rb-ring" cx="312" cy="280" r="17"/><text class="rb-num" x="312" y="288" text-anchor="middle">2</text><circle class="rb-cloth" cx="396" cy="180" r="17"/><circle class="rb-ring" cx="396" cy="180" r="17"/><text class="rb-num" x="396" y="188" text-anchor="middle">3</text></g>
+      <g class="reveal"><path class="rb-cord" d="M0 412H540"/>
+        <path class="rb-cord" d="M85 412V440"/><path class="rb-ink" fill-rule="evenodd" d="M10 440L10 650L160 650L160 440ZM18 642L18 448L152 448L152 642ZM22 638L148 638L148 452L22 452ZM101 480L100.5 484.1L98.9 488L96.3 491.3L93 493.9L89.1 495.5L85 496L80.9 495.5L77 493.9L73.7 491.3L71.1 488L69.5 484.1L69 480L69.5 475.9L71.1 472L73.7 468.7L77 466.1L80.9 464.5L85 464L89.1 464.5L93 466.1L96.3 468.7L98.9 472L100.5 475.9ZM116.2 552L119.8 560.7L121 570L119.8 579.3L116.2 588L110.5 595.5L103 601.2L94.3 604.8L85 606L75.7 604.8L67 601.2L59.5 595.5L53.8 588L50.2 579.3L49 570L50.2 560.7L53.8 552L59.5 544.5L67 538.8L75.7 535.2L85 534L94.3 535.2L103 538.8L110.5 544.5ZM99.7 578.5L101.4 574.4L102 570L101.4 565.6L99.7 561.5L97 558L93.5 555.3L89.4 553.6L85 553L80.6 553.6L76.5 555.3L73 558L70.3 561.5L68.6 565.6L68 570L68.6 574.4L70.3 578.5L73 582L76.5 584.7L80.6 586.4L85 587L89.4 586.4L93.5 584.7L97 582Z"/><text class="rb-num" x="85" y="488" text-anchor="middle">1</text><text class="rb-lb" x="85" y="684" text-anchor="middle" style="font-size:18px;letter-spacing:.1em">KHỚP</text>
+        <path class="rb-cord" d="M270 412V440"/><path class="rb-ink" fill-rule="evenodd" d="M195 440L195 650L345 650L345 440ZM203 642L203 448L337 448L337 642ZM207 638L333 638L333 452L207 452ZM285.5 475.9L286 480L285.5 484.1L283.9 488L281.3 491.3L278 493.9L274.1 495.5L270 496L265.9 495.5L262 493.9L258.7 491.3L256.1 488L254.5 484.1L254 480L254.5 475.9L256.1 472L258.7 468.7L262 466.1L265.9 464.5L270 464L274.1 464.5L278 466.1L281.3 468.7L283.9 472ZM273.5 530L273.5 608.5L294 608.5L295.3 608.8L296.5 609.5L297.2 610.7L297.5 612L297.2 613.3L296.5 614.5L295.3 615.2L294 615.5L246 615.5L244.7 615.2L243.5 614.5L242.8 613.3L242.5 612L242.8 610.7L243.5 609.5L244.7 608.8L246 608.5L266.5 608.5L266.5 530L266.8 528.7L267.5 527.5L268.7 526.8L270 526.5L271.3 526.8L272.5 527.5L273.2 528.7Z"/><text class="rb-num" x="270" y="488" text-anchor="middle">2</text><text class="rb-lb" x="270" y="684" text-anchor="middle" style="font-size:18px;letter-spacing:.1em">QUE</text>
+        <path class="rb-cord" d="M455 412V440"/><path class="rb-ink" fill-rule="evenodd" d="M380 440L380 650L530 650L530 440ZM388 642L388 448L522 448L522 642L470.7 642L463.8 644.8L455 646L446.2 644.8L439.3 642ZM392 638L433.5 638L431 636L425.6 629L422.2 620.8L421 612L422.2 603.2L423.1 610.5L426.4 618.5L431.7 625.3L438.5 630.6L446.5 633.9L455 635L463.5 633.9L471.5 630.6L478.3 625.3L483.6 618.5L486.9 610.5L487.8 603.2L489 612L487.8 620.8L484.4 629L479 636L476.5 638L518 638L518 452L392 452ZM470.5 475.9L471 480L470.5 484.1L468.9 488L466.3 491.3L463 493.9L459.1 495.5L455 496L450.9 495.5L447 493.9L443.7 491.3L441.1 488L439.5 484.1L439 480L439.5 475.9L441.1 472L443.7 468.7L447 466.1L450.9 464.5L455 464L459.1 464.5L463 466.1L466.3 468.7L468.9 472ZM455.8 519.5L474 556L467.9 586.4L455.6 596.8L455 597L454.4 596.8L442.1 586.4L436 556L454.1 519.6L455 519Z"/><text class="rb-num" x="455" y="488" text-anchor="middle">3</text><text class="rb-lb" x="455" y="684" text-anchor="middle" style="font-size:18px;letter-spacing:.1em">ĐÈN</text>
+      </g>
+    </svg>
+    <ul class="bullets">
+      <li class="reveal">Mỗi style có một nhóm hình cố định, gọi là <b>diễn viên</b>.</li>
+      <li class="reveal">Mỗi kiểu slide quy định một <b>tư thế</b>: vị trí, kích thước, màu.</li>
+      <li class="reveal">Khi chuyển slide, trình duyệt cho hình <b>trượt dần</b> sang tư thế mới.</li>
+      <li class="reveal">Chữ của slide mới hiện sau, khi hình đã bắt đầu chuyển động.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-text">Cùng tên là cùng một vật</p>
+    </aside>
+  </section>
+
+  <!-- 5. content -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Một khung cho mọi màn hình</h2>
+    <ul class="bullets">
+      <li class="reveal">Slide được thiết kế ở một kích thước cố định 1920×1080.</li>
+      <li class="reveal">Màn hình to hay nhỏ, cả khung được phóng to, thu nhỏ theo.</li>
+      <li class="reveal">Không vỡ bố cục trên máy chiếu, laptop hay điện thoại.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-big">16:9</p>
+      <p class="hl-text">Tỷ lệ khung chuẩn</p>
+    </aside>
+  </section>
+
+  <!-- 6. two-col -->
+  <section class="slide" data-layout="two-col">
+    <h2 class="title reveal">PowerPoint Morph và SlideFly</h2>
+    <div class="cols">
+      <div class="col reveal-left">
+        <h3>PowerPoint</h3>
+        <ul>
+          <li>Chạy trong PowerPoint</li>
+          <li>Sửa trực tiếp bằng chuột</li>
+          <li>Khớp hình theo tên</li>
+        </ul>
+      </div>
+      <div class="col reveal-right">
+        <h3>SlideFly</h3>
+        <ul>
+          <li>Chạy trên trình duyệt</li>
+          <li>Sửa bằng nội dung chữ</li>
+          <li>Khớp hình theo data-actor</li>
+        </ul>
+      </div>
+    </div>
+    <p class="takeaway reveal">Cùng một ý tưởng: vật trùng tên thì trượt sang vị trí mới.</p>
+  </section>
+
+  <!-- 7. stats -->
+  <section class="slide" data-layout="stats">
+    <h2 class="title reveal">Ba bậc cỡ chữ tự chọn</h2>
+    <div class="stats">
+      <div class="stat reveal"><span class="stat-num">≤3</span><span class="stat-label">ý trên một slide: chữ lớn nhất, dễ đọc từ xa</span></div>
+      <div class="stat reveal"><span class="stat-num">4-5</span><span class="stat-label">ý trên một slide: chữ vừa, vẫn thoáng</span></div>
+      <div class="stat reveal"><span class="stat-num">6+</span><span class="stat-label">ý trên một slide: chữ nhỏ, nên tách slide</span></div>
+    </div>
+    <svg class="art" style="left:120px; top:836px" width="1680" height="150" viewBox="0 0 1680 150" aria-hidden="true">
+      <g class="reveal">
+        <path class="rb-cord" d="M194 0V26M334 0V26"/>
+        <path class="rb-ink" fill-rule="evenodd" d="M164 26L164 138L364 138L364 26ZM172 130L172 34L356 34L356 130ZM175.5 126.5L352.5 126.5L352.5 37.5L175.5 37.5ZM326.1 57.1L324 57.5L204 57.5L201.9 57.1L200.1 55.9L198.9 54.1L198.5 52L198.9 49.9L200.1 48.1L201.9 46.9L204 46.5L324 46.5L326.1 46.9L327.9 48.1L329.1 49.9L329.5 52L329.1 54.1L327.9 55.9ZM315.1 89.1L313 89.5L215 89.5L212.9 89.1L211.1 87.9L209.9 86.1L209.5 84L209.9 81.9L211.1 80.1L212.9 78.9L215 78.5L313 78.5L315.1 78.9L316.9 80.1L318.1 81.9L318.5 84L318.1 86.1L316.9 87.9ZM304.1 121.1L302 121.5L226 121.5L223.9 121.1L222.1 119.9L220.9 118.1L220.5 116L220.9 113.9L222.1 112.1L223.9 110.9L226 110.5L302 110.5L304.1 110.9L305.9 112.1L307.1 113.9L307.5 116L307.1 118.1L305.9 119.9Z"/>
+        <path class="rb-cord" d="M770 0V26M910 0V26"/>
+        <path class="rb-ink" fill-rule="evenodd" d="M740 26L740 138L940 138L940 26ZM932 130L748 130L748 34L932 34ZM751.5 37.5L751.5 126.5L928.5 126.5L928.5 37.5ZM901.3 55.2L900 55.5L780 55.5L778.7 55.2L777.5 54.5L776.8 53.3L776.5 52L776.8 50.7L777.5 49.5L778.7 48.8L780 48.5L900 48.5L901.3 48.8L902.5 49.5L903.2 50.7L903.5 52L903.2 53.3L902.5 54.5ZM891.5 70.5L890.3 71.2L889 71.5L791 71.5L789.7 71.2L788.5 70.5L787.8 69.3L787.5 68L787.8 66.7L788.5 65.5L789.7 64.8L791 64.5L889 64.5L890.3 64.8L891.5 65.5L892.2 66.7L892.5 68L892.2 69.3ZM879.3 87.2L878 87.5L802 87.5L800.7 87.2L799.5 86.5L798.8 85.3L798.5 84L798.8 82.7L799.5 81.5L800.7 80.8L802 80.5L878 80.5L879.3 80.8L880.5 81.5L881.2 82.7L881.5 84L881.2 85.3L880.5 86.5ZM902.5 102.5L901.3 103.2L900 103.5L780 103.5L778.7 103.2L777.5 102.5L776.8 101.3L776.5 100L776.8 98.7L777.5 97.5L778.7 96.8L780 96.5L900 96.5L901.3 96.8L902.5 97.5L903.2 98.7L903.5 100L903.2 101.3ZM891.5 118.5L890.3 119.2L889 119.5L791 119.5L789.7 119.2L788.5 118.5L787.8 117.3L787.5 116L787.8 114.7L788.5 113.5L789.7 112.8L791 112.5L889 112.5L890.3 112.8L891.5 113.5L892.2 114.7L892.5 116L892.2 117.3Z"/>
+        <path class="rb-cord" d="M1346 0V26M1486 0V26"/>
+        <path class="rb-ink" fill-rule="evenodd" d="M1316 138L1410 138L1410 130L1324 130L1324 34L1410 34L1410 26L1316 26ZM1327.5 126.5L1410 126.5L1410 118.2L1356 118.2L1354.4 117.6L1353.8 116L1354.4 114.4L1356 113.8L1410 113.8L1410 107.5L1378 107.5L1376.4 106.9L1375.8 105.3L1376.4 103.8L1378 103.1L1410 103.1L1410 96.9L1367 96.9L1365.4 96.2L1364.8 94.7L1365.4 93.1L1367 92.5L1410 92.5L1410 86.2L1356 86.2L1354.4 85.6L1353.8 84L1354.4 82.4L1356 81.8L1410 81.8L1410 75.5L1378 75.5L1376.4 74.9L1375.8 73.3L1376.4 71.8L1378 71.1L1410 71.1L1410 64.9L1367 64.9L1365.4 64.2L1364.8 62.7L1365.4 61.1L1367 60.5L1410 60.5L1410 54.2L1356 54.2L1354.4 53.6L1353.8 52L1354.4 50.4L1356 49.8L1410 49.8L1410 37.5L1327.5 37.5Z" transform="translate(-8 0)"/><path class="rb-ink" fill-rule="evenodd" d="M1516 138L1516 26L1422 26L1422 34L1508 34L1508 130L1422 130L1422 138ZM1504.5 126.5L1504.5 37.5L1422 37.5L1422 49.8L1476 49.8L1477.6 50.4L1478.2 52L1477.6 53.6L1476 54.2L1422 54.2L1422 60.5L1465 60.5L1466.6 61.1L1467.2 62.7L1466.6 64.2L1465 64.9L1422 64.9L1422 71.1L1454 71.1L1455.6 71.8L1456.2 73.3L1455.6 74.9L1454 75.5L1422 75.5L1422 81.8L1476 81.8L1477.6 82.4L1478.2 84L1477.6 85.6L1476 86.2L1422 86.2L1422 92.5L1465 92.5L1466.6 93.1L1467.2 94.7L1466.6 96.2L1465 96.9L1422 96.9L1422 103.1L1454 103.1L1455.6 103.8L1456.2 105.3L1455.6 106.9L1454 107.5L1422 107.5L1422 113.8L1476 113.8L1477.6 114.4L1478.2 116L1477.6 117.6L1476 118.2L1422 118.2L1422 126.5Z" transform="translate(8 2)"/>
+      </g>
+      <g class="reveal"><path class="rb-ghost" d="M1416 4V148"/><path class="rb-ar" d="M1288 82l16 -8v16zM1544 82l-16 -8v16z"/></g>
+    </svg>
+  </section>
+
+  <!-- 8. timeline -->
+  <section class="slide s-tl" data-layout="timeline">
+    <h2 class="title reveal">Quy trình dựng một deck</h2>
+    <svg class="art" style="left:120px; top:560px" width="1680" height="140" viewBox="0 0 1680 140" aria-hidden="true">
+      <circle class="rb-red" style="fill-opacity:0.22" cx="11.0" cy="70" r="25"/>
+      <circle class="rb-red" style="fill-opacity:0.39" cx="353.4" cy="70" r="25"/>
+      <circle class="rb-red" style="fill-opacity:0.56" cx="695.8" cy="70" r="25"/>
+      <circle class="rb-red" style="fill-opacity:0.73" cx="1038.2" cy="70" r="25"/>
+      <circle class="rb-red" style="fill-opacity:0.90" cx="1380.6" cy="70" r="25"/>
+      <g class="reveal">
+        <circle class="rb-ring" style="stroke-width:2.4" cx="11.0" cy="70" r="25"/>
+        <circle class="rb-ring" style="stroke-width:2.4" cx="353.4" cy="70" r="25"/>
+        <circle class="rb-ring" style="stroke-width:2.4" cx="695.8" cy="70" r="25"/>
+        <circle class="rb-ring" style="stroke-width:2.4" cx="1038.2" cy="70" r="25"/>
+        <circle class="rb-ring" style="stroke-width:2.4" cx="1380.6" cy="70" r="25"/>
+      </g>
+      <path class="rb-line draw" pathLength="1" style="--d:0.15;stroke-dasharray:none" d="M41.0 48Q182.2 8 317.4 46"/>
+      <path class="rb-ar" d="M323.4 50l-18 1l6 -14z"/>
+      <path class="rb-line draw" pathLength="1" style="--d:0.35;stroke-dasharray:none" d="M383.4 48Q524.6 8 659.8 46"/>
+      <path class="rb-ar" d="M665.8 50l-18 1l6 -14z"/>
+      <path class="rb-line draw" pathLength="1" style="--d:0.55;stroke-dasharray:none" d="M725.8 48Q867.0 8 1002.2 46"/>
+      <path class="rb-ar" d="M1008.2 50l-18 1l6 -14z"/>
+      <path class="rb-line draw" pathLength="1" style="--d:0.75;stroke-dasharray:none" d="M1068.2 48Q1209.4 8 1344.6 46"/>
+      <path class="rb-ar" d="M1350.6 50l-18 1l6 -14z"/>
+    </svg>
+    <div class="timeline">
+      <div class="step reveal"><div class="when">01</div><h3>Nội dung</h3><p>Gom dàn ý, số liệu có nguồn</p></div>
+      <div class="step reveal"><div class="when">02</div><h3>Chọn style</h3><p>Xem 3 bản thử rồi chọn</p></div>
+      <div class="step reveal"><div class="when">03</div><h3>Dựng</h3><p>Viết HTML theo khung mẫu</p></div>
+      <div class="step reveal"><div class="when">04</div><h3>Đo</h3><p>Chạy deck.audit() từng slide</p></div>
+      <div class="step reveal"><div class="when">05</div><h3>Bàn giao</h3><p>Gộp thành một file HTML</p></div>
+    </div>
+  </section>
+
+  <!-- 9. quote -->
+  <section class="slide" data-layout="quote">
+    <blockquote class="quote reveal-blur">Hình trang trí đứng yên chỉ là nền. Khi nó di chuyển, nó kể chuyện.</blockquote>
+    <p class="cite reveal">Nguyên tắc của bộ mẫu</p>
+  </section>
+
+  <!-- 10. closing -->
+  <section class="slide" data-layout="closing">
+    <p class="kicker reveal">Hết phần mẫu</p>
+    <h2 class="title reveal">Cảm ơn</h2>
+    <p class="subtitle reveal">Đổi style chỉ cần thay một dòng link CSS.</p>
+  </section>
+
+</div>
+</div>
+<script src="../skill/slidefly/assets/morph-viz-diagrams.js"></script>
+<script src="../skill/slidefly/assets/morph-viz.js"></script>
+<script src="../skill/slidefly/assets/morph-engine.js"></script>
+<script src="../skill/slidefly/assets/morph-nav.js"></script>
+<script src="../skill/slidefly/assets/morph-audit.js"></script>
+<script src="../skill/slidefly/assets/morph-steps.js"></script>
+<script src="../skill/slidefly/assets/morph-icons.js"></script>
+</body>
+</html>

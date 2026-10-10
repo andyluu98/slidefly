@@ -41,7 +41,7 @@ Gạch đầu dòng, danh sách hiện lần lượt từng dòng. Tiêu đề v
 - **Hoa văn** (giấy kẻ ô, chấm, sọc lặp, gradient thẳng, tròn và hình quạt `conic`, ảnh SVG nhúng, mask, bo góc, cắt chéo, nhiều lớp có vị trí và cỡ riêng trong `background`) thành ảnh SVG, PowerPoint 365 vẽ dạng vector, vẫn mang tên `!!` để Morph.
 - **Làm mờ và bóng đổ**: `filter: blur()` thành viền mờ (soft edges), `box-shadow` thành bóng đổ của PowerPoint.
 - Vị trí viết bằng `calc()` và luật nhóm diễn viên (`[data-actor^="b"]`) được tính như trình duyệt.
-- **Hình SVG tự vẽ** trong slide (mặt bằng, đường nối, con đường) thành ảnh SVG thật, lấy màu và nét từ CSS của deck.
+- **Hình SVG tự vẽ** trong slide (mặt bằng, đường nối, con đường, minh họa của style hai lớp) thành ảnh SVG thật trên mọi layout, kể cả bìa, chương, trích dẫn và kết, lấy màu và nét từ CSS của deck.
 - **Khung giao diện**: cửa sổ có thanh tiêu đề ba chấm, terminal tối có dấu `$` xanh, bong bóng chat; mỗi khối một hộp để hiện theo nhịp riêng.
 - **Slide tự thiết kế**: khối đặt bằng `left/top` (trong `style` hoặc trong CSS của deck) giữ chỗ, nền, viền, khoảng đệm, cỡ chữ, font tiêu đề hay font mono theo class CSS.
 - Icon Tabler thành hình vẽ của PowerPoint (đổi màu, phóng to không vỡ); ảnh nền, ảnh chia đôi, nguồn ảnh.

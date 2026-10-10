@@ -50,4 +50,4 @@ Fonts are not bundled. Styles load them at runtime from fonts.googleapis.com; ea
 
 ## lemo-opuscar (MIT)
 
-Luật mỹ thuật của 6 style hai lớp (`blueprint`, `thuy-mac`, `mau-nuoc`, `iso-infographic`, `risograph`, `cat-giay-do`) phỏng theo `styles/<slug>/STYLE.md` của [lemomo-ai/lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar) (commit a75e2b3), Copyright (c) 2026 LemoLab, giấy phép MIT. File CSS và minh họa SVG trong repo này được viết mới; không chép mã nguồn hay hình ảnh của lemo-opuscar.
+Luật mỹ thuật của 34 style hai lớp (các mục có `"art": true` trong `skill/slidefly/assets/styles/index.json`, ví dụ `blueprint`, `thuy-mac`, `whiteboard`, `ukiyoe`, `roi-bong`) phỏng theo `styles/<slug>/STYLE.md` của [lemomo-ai/lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar) (commit a75e2b3), Copyright (c) 2026 LemoLab, giấy phép MIT. File CSS và minh họa SVG trong repo này được viết mới; không chép mã nguồn hay hình ảnh của lemo-opuscar.

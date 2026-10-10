@@ -2,9 +2,9 @@
 
 Skill cho [Claude Code](https://claude.com/claude-code) tạo **slide HTML có hiệu ứng chuyển cảnh kiểu PowerPoint Morph**: hình trang trí trượt, phóng to, đổi màu liền mạch giữa các slide. Một file HTML, mở bằng Chrome là trình chiếu được. Có **57 style**, bố cục tự lấp đầy theo lượng chữ và tự đo độ trống của từng slide.
 
-*A Claude Code skill that builds single-file HTML decks with PowerPoint-Morph-like transitions: 63 styles, auto-filling layouts and an automatic fill/overflow audit. Docs are in Vietnamese.*
+*A Claude Code skill that builds single-file HTML decks with PowerPoint-Morph-like transitions: 85 styles, auto-filling layouts and an automatic fill/overflow audit. Docs are in Vietnamese.*
 
-**Xem trực tuyến:** [Thư viện 63 style](https://andyluu98.github.io/slidefly/gallery/00-gallery.html) · [Deck mẫu 20 slide (Stencil & Tablet)](https://andyluu98.github.io/slidefly/examples/ai-agent-stencil-tablet-20-slide.html) · [Deck mẫu 15 slide (Swiss Modern)](https://andyluu98.github.io/slidefly/examples/ai-agent-swiss-15-slide.html)
+**Xem trực tuyến:** [Thư viện 85 style](https://andyluu98.github.io/slidefly/gallery/00-gallery.html) · [Deck mẫu 20 slide (Stencil & Tablet)](https://andyluu98.github.io/slidefly/examples/ai-agent-stencil-tablet-20-slide.html) · [Deck mẫu 15 slide (Swiss Modern)](https://andyluu98.github.io/slidefly/examples/ai-agent-swiss-15-slide.html)
 
 ![Thư viện style](docs/gallery.jpg)
 
@@ -14,7 +14,7 @@ Mỗi style có một nhóm hình cố định gọi là **diễn viên**. Mỗi
 
 ## Tính năng
 
-- **63 style:** 12 preset và 34 bold template phỏng theo [frontend-slides](https://github.com/zarazhangrui/frontend-slides), 1 style tái tạo mẫu Morph "vòng tròn xanh", và 10 style mới: 3 style bản sắc Việt (sơn mài, tranh Đông Hồ, Hội An), 5 style xu hướng 2026 (aurora, bento, bauhaus, restorative, wabi), 2 style cho dịp đặc biệt (art deco, clay 3D), và 6 **style hai lớp** phỏng theo [lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar) qua MotionFly (blueprint, thủy mặc, màu nước, infographic isometric, risograph, cắt giấy đỏ): ngoài lớp CSS còn có bản luật `.art.md` để Claude vẽ minh họa SVG riêng cho từng slide. Mọi font đều có bộ chữ tiếng Việt.
+- **85 style:** 10 preset và 30 bold template phỏng theo [frontend-slides](https://github.com/zarazhangrui/frontend-slides), 1 style tái tạo mẫu Morph "vòng tròn xanh", và 10 style mới: 3 style bản sắc Việt (sơn mài, tranh Đông Hồ, Hội An), 5 style xu hướng 2026 (aurora, bento, bauhaus, restorative, wabi), 2 style cho dịp đặc biệt (art deco, clay 3D), và 34 **style hai lớp** phỏng theo [lemo-opuscar](https://github.com/lemomo-ai/lemo-opuscar) qua MotionFly (blueprint, thủy mặc, màu nước, cắt giấy đỏ, bảng trắng, kể chuyện số liệu, HUD hologram, tranh khắc gỗ, kính màu, phim câm, sách tranh sáp màu, ukiyo-e, đèn lồng giấy, múa rối bóng, pixel RPG, anime 80s...): ngoài lớp CSS còn có bản luật `.art.md` để Claude vẽ minh họa SVG riêng cho từng slide. Mọi font đều có bộ chữ tiếng Việt.
 - **10 kiểu slide:** cover, agenda, section, content, two-col, stats, timeline, quote, closing, và `diagram` (sơ đồ chiếm cả vùng thân, hình trang trí dạt ra viền).
 - **8 dạng sơ đồ tự vẽ từ số liệu:** thanh tỷ lệ, vòng tròn chia phần, mặt bằng có chuỗi kích thước, các ô dồn về tâm, ma trận, mạng lưới nút, phễu lọc, màn quét trước và sau. Khai báo bằng vài thuộc tính `data-*`, biểu đồ có số phải ghi nguồn.
 - **Hiệu ứng theo động từ:** vẽ nét, đếm số, đóng dấu, rơi vào chỗ, bay vào nhóm, gộp về tâm, rung khi lệch, chấm chạy dọc đường ống.
@@ -77,12 +77,12 @@ skill/slidefly/
 │   ├── morph-mock.css/.js   khung chat, terminal, trình duyệt, điện thoại
 │   ├── morph-photo.css      slide ảnh nền
 │   ├── icons/               danh mục Tabler + từ khóa tiếng Việt
-│   └── styles/              63 style (+ .art.md cho style hai lớp) + index.json
+│   └── styles/              85 style (+ .art.md cho style hai lớp) + index.json
 ├── references/              cơ chế, layout, công thức chuyển cảnh, chọn style, font tiếng Việt
 ├── scripts/                 inline-assets.py, export-pptx.py, icons.py, pick-styles.py
 └── templates/              deck-mau.html (10 slide đủ 9 kiểu), deck-so-do.html (16 slide, mỗi slide một dạng hình), deck-giao-dien.html (10 slide, logo, khung giao diện, ảnh nền, lưới icon), deck-bo-cuc.html (13 slide, 12 bố cục mới)
 examples/                    2 deck mẫu về AI Agent
-gallery/                     00-gallery.html + 63 deck demo
+gallery/                     00-gallery.html + 85 deck demo
 ```
 
 ## Ghi nguồn

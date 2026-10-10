@@ -88,7 +88,7 @@ Khối CSS mẫu cho deck:
 .slide.active .ri-kick { animation: ri-kick 0.9s cubic-bezier(.3, .7, .4, 1) calc(var(--reveal-base) + var(--d, 0) * 1s) both; }
 ```
 
-**Khi xuất PPTX:** SVG inline thành ảnh vector (PowerPoint 365), màu lấy từ class, nét `draw` thành hiệu ứng quét. Chuyển động `ri-kick` không sang PPTX (hình đứng ở vị trí đã khớp). Script hiện chỉ đọc SVG trên các slide bên trong (`content`, `two-col`, `stats`, `timeline`, `agenda`, `free`...); SVG trên `cover`, `section`, `quote`, `closing` chỉ có trong bản HTML. Chữ cần sửa được thì để ngoài SVG.
+**Khi xuất PPTX:** SVG inline thành ảnh vector (PowerPoint 365), màu lấy từ class, nét `draw` thành hiệu ứng quét. Chuyển động `ri-kick` không sang PPTX (hình đứng ở vị trí đã khớp). SVG inline xuất trên mọi layout, kể cả `cover`, `section`, `quote`, `closing`. Chữ cần sửa được thì để ngoài SVG.
 
 ## 6. Cấm
 

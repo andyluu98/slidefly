@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mẫu SlideFly · Vẽ một nét</title>
+<!-- Đổi style: thay đúng 1 dòng link styles/*.css bên dưới. Minh họa SVG vẽ theo styles/one-line.art.md -->
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-base.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-layouts.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/styles/one-line.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-motion.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-viz.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-icons.css">
+<style>
+/* Minh họa vẽ riêng theo styles/one-line.art.md: mỗi hình là MỘT nét liền không nhấc bút */
+.ol-art { position: absolute; overflow: visible; pointer-events: none; }
+.ol-p { fill: none; stroke: #1D1A17; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
+.ol-lb { fill: #1D1A17; font-family: var(--font-hand); font-size: 30px; font-weight: 400; }
+.ol-sm { fill: #6B645A; font-size: 28px; }
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<div class="deck-stage">
+  <!-- Diễn viên (hình trang trí) do engine tự tạo từ --actors của style. -->
+
+  <!-- 1. cover + HÌNH 1 -->
+  <section class="slide" data-layout="cover">
+    <svg class="ol-art" style="left:1100px; top:160px" width="760" height="700" viewBox="0 0 760 700" aria-hidden="true"><circle cx="660" cy="330" r="6.5" fill="#1D1A17"/><path class="ol-p draw" pathLength="1" style="--d:0.1" d="M660 330Q475.3 239.5 290 150Q359.1 243.2 430 335Q378.8 416.8 330 500Q496.0 416.9 660 330Q545.0 331.3 430 335Q379.9 334.5 330 338L330 338L326 339L322 340L318 341L314 341L310 342L307 343L303 344L299 345L295 346L291 348L288 350L284 352L281 354L278 357L276 360L273 363L270 366L268 369L266 372L264 376L261 379L259 383L258 386L256 390L254 393L252 397L251 401L249 404L248 408L247 412L245 416L244 420L243 423L242 427L242 431L241 435L240 439L239 443L239 447L239 451L238 455L238 459L238 463L238 467L239 471L239 475L240 479L241 483L242 487L243 491L244 494L245 498L247 502L248 506L250 509L251 513L253 516L255 520L257 523L259 527L262 530L264 533L266 537L269 540L271 543L274 546L277 549L280 551L283 554L286 557L289 559L292 562L295 564L299 566L302 568L305 570L309 572L312 574L316 576L320 578L323 579L327 581L330 583L334 584L338 586L341 588L345 589L349 591L353 592L356 594L360 595L364 597L367 598L371 600L375 601L379 602L382 604L386 605L390 606L394 608L397 609L401 610L405 611L409 612L413 614L417 615L421 616L424 617L428 618L432 619L436 620L440 621L444 621L448 622L452 623L455 624L459 625L463 626L467 627L471 628L475 629L479 630L483 631L487 632L491 632L494 633L498 634L502 635L506 636L510 637L514 638L518 638L522 639L526 640L530 641L534 642L537 642L541 643L545 644L549 645L553 645L557 646L561 647L565 647L569 648L573 649L577 649L581 650L585 651L589 651L593 652L597 652L601 653L605 654L609 654L613 655L616 655L620 655L624 656L628 656L632 657L636 657L640 658L644 658L648 659L652 659L656 660L660 660"/></svg>
+    <p class="kicker reveal">SlideFly</p>
+    <h1 class="title reveal">Slide chuyển cảnh kiểu Morph trên trình duyệt</h1>
+    <p class="subtitle reveal">Một file HTML, mở bằng Chrome là trình chiếu được</p>
+    <p class="meta reveal">Bộ mẫu 9 kiểu slide</p>
+  </section>
+
+  <!-- 2. agenda -->
+  <section class="slide" data-layout="agenda">
+    <h2 class="title reveal">Nội dung</h2>
+    <ol class="agenda-list">
+      <li><span class="num reveal">01</span><div><h3 class="reveal" data-morph-id="s1">Cơ chế diễn viên</h3><p class="reveal">Hình cố định, chỉ đổi tư thế</p></div></li>
+      <li><span class="num reveal">02</span><div><h3 class="reveal">Chín kiểu slide</h3><p class="reveal">Từ trang bìa đến lời cảm ơn</p></div></li>
+      <li><span class="num reveal">03</span><div><h3 class="reveal">Tự co giãn</h3><p class="reveal">Ít chữ thì chữ to hơn</p></div></li>
+      <li><span class="num reveal">04</span><div><h3 class="reveal">Đo độ lấp đầy</h3><p class="reveal">Máy tự soát slide bị trống</p></div></li>
+    </ol>
+  </section>
+
+  <!-- 3. section -->
+  <section class="slide" data-layout="section">
+    <p class="num reveal">01</p>
+    <h2 class="title reveal" data-morph-id="s1">Cơ chế diễn viên</h2>
+    <p class="subtitle reveal">Morph là cùng một vật đổi vị trí giữa hai slide</p>
+  </section>
+
+  <!-- 4. content + HÌNH 2: sơ đồ khái niệm -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Hình cố định, chỉ đổi tư thế</h2>
+    <svg class="ol-art" style="left:1260px; top:280px" width="540" height="700" viewBox="0 0 540 700" aria-hidden="true"><path class="ol-p draw" pathLength="1" style="--d:0.1" d="M67 195Q66.4 179.7 67 164Q80.5 163.3 94 164Q93.5 179.7 94 195Q67.0 196.4 40 195Q40.1 168.0 40 141Q60.0 122.7 80 105Q101.7 121.9 121 141Q121.0 168.0 121 195L124 198L127 200L130 203L133 205L136 208L139 211L142 213L145 216L148 218L152 221L155 223L158 225L162 227L165 229L169 230L173 232L176 234L180 235L184 236L188 238L191 239L195 240L199 241L203 242L207 244L211 245L214 246L218 247L222 248L226 249L230 250L234 251L238 252L242 253L245 254L249 255L253 256L257 257L261 257L265 258L269 259L273 260L277 260L281 261L285 261L289 262L293 262L297 262L301 262L305 262L309 262L312 262L312 262Q298.4 197.4 289 132Q329.9 79.9 371 28Q428.8 61.1 484 98Q497.5 162.3 507 228Q409.6 245.2 312 262Q344.8 257.8 377 251Q368.7 214.0 364 177Q396.3 169.8 429 165Q434.9 202.4 442 239"/><path class="ol-p draw" pathLength="1" style="--d:0.8" d="M10 530L14 530L18 530L22 530L26 530L30 530L34 530L38 530L42 530L46 530L50 530L54 530L58 530L62 530L66 530L70 530L74 530L78 530L82 530L86 529L90 529L94 528L98 527L101 525L105 524L108 522L112 519L115 517L118 514L120 511L123 508L124 504L126 501L127 497L127 493L127 489L125 485L122 483L118 482L115 485L113 488L113 492L113 496L114 500L115 504L117 508L120 511L122 514L125 517L128 519L131 522L135 524L138 525L142 527L146 528L150 529L154 529L158 530L162 530L166 530L170 530L174 530L178 530L182 530L186 530L190 530L194 530L198 530L202 530L206 530L210 530L214 530L218 530L222 530L226 530L230 530L234 530L238 529L242 529L246 528L249 526L253 525L257 523L260 521L263 518L266 516L269 513L271 510L273 506L275 503L276 499L277 495L277 491L276 487L274 484L270 482L267 483L264 486L263 490L263 494L263 498L265 502L266 506L268 509L271 512L273 515L276 518L279 520L283 522L286 524L290 526L294 527L298 528L302 529L306 530L310 530L313 530L317 530L321 530L325 530L329 530L333 530L337 530L341 530L345 530L349 530L353 530L357 530L361 530L365 530L369 530L373 530L377 530L381 530L385 529L389 529L393 528L397 527L401 526L405 524L408 522L411 520L414 517L417 514L420 511L422 508L424 505L426 501L427 497L427 493L427 489L425 485L423 483L419 482L415 484L414 488L413 492L413 496L414 500L415 504L417 507L419 510L422 514L425 516L428 519L431 521L434 523L438 525L442 527L445 528L449 529L453 529L457 530L461 530L465 530L469 530L473 530L477 530L481 530L485 530L489 530L493 530L497 530L501 531L505 531L509 531L513 532L517 532L520 532"/><g class="reveal"><text class="ol-lb" x="62" y="240" text-anchor="middle">Tư thế A</text><text class="ol-lb" x="414" y="304" text-anchor="middle">Tư thế B</text><text class="ol-lb ol-sm" x="120" y="610" text-anchor="middle">Vị trí</text><text class="ol-lb ol-sm" x="270" y="610" text-anchor="middle">Cỡ</text><text class="ol-lb ol-sm" x="420" y="610" text-anchor="middle">Màu</text></g></svg>
+    <ul class="bullets" style="left:120px; width:1040px">
+      <li class="reveal">Mỗi style có một nhóm hình cố định, gọi là <b>diễn viên</b>.</li>
+      <li class="reveal">Mỗi kiểu slide quy định một <b>tư thế</b>: vị trí, kích thước, màu.</li>
+      <li class="reveal">Khi chuyển slide, trình duyệt cho hình <b>trượt dần</b> sang tư thế mới.</li>
+      <li class="reveal">Chữ của slide mới hiện sau, khi hình đã bắt đầu chuyển động.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-text">Cùng tên là cùng một vật</p>
+    </aside>
+  </section>
+
+  <!-- 5. content (second in a row: parity changes the pose) -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Một khung cho mọi màn hình</h2>
+    <ul class="bullets">
+      <li class="reveal">Slide được thiết kế ở một kích thước cố định 1920×1080.</li>
+      <li class="reveal">Màn hình to hay nhỏ, cả khung được phóng to, thu nhỏ theo.</li>
+      <li class="reveal">Không vỡ bố cục trên máy chiếu, laptop hay điện thoại.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-big">16:9</p>
+      <p class="hl-text">Tỷ lệ khung chuẩn</p>
+    </aside>
+  </section>
+
+  <!-- 6. two-col + takeaway -->
+  <section class="slide" data-layout="two-col">
+    <h2 class="title reveal">PowerPoint Morph và SlideFly</h2>
+    <div class="cols">
+      <div class="col reveal-left">
+        <h3>PowerPoint</h3>
+        <ul>
+          <li>Chạy trong PowerPoint</li>
+          <li>Sửa trực tiếp bằng chuột</li>
+          <li>Khớp hình theo tên</li>
+        </ul>
+      </div>
+      <div class="col reveal-right">
+        <h3>SlideFly</h3>
+        <ul>
+          <li>Chạy trên trình duyệt</li>
+          <li>Sửa bằng nội dung chữ</li>
+          <li>Khớp hình theo data-actor</li>
+        </ul>
+      </div>
+    </div>
+    <p class="takeaway reveal">Cùng một ý tưởng: vật trùng tên thì trượt sang vị trí mới.</p>
+  </section>
+
+  <!-- 7. stats + HÌNH 4 -->
+  <section class="slide" data-layout="stats">
+    <h2 class="title reveal">Ba bậc cỡ chữ tự chọn</h2>
+    <div class="stats">
+      <div class="stat reveal"><span class="stat-num">≤3</span><span class="stat-label">ý trên một slide: chữ lớn nhất, dễ đọc từ xa</span></div>
+      <div class="stat reveal"><span class="stat-num">4-5</span><span class="stat-label">ý trên một slide: chữ vừa, vẫn thoáng</span></div>
+      <div class="stat reveal"><span class="stat-num">6+</span><span class="stat-label">ý trên một slide: chữ nhỏ, nên tách slide</span></div>
+    </div>
+    <svg class="ol-art" style="left:120px; top:836px" width="1680" height="150" viewBox="0 0 1680 150" aria-hidden="true"><path class="ol-p draw" pathLength="1" style="--d:0.2" d="M20 92L24 92L28 92L32 92L36 92L40 92L44 92L48 92L52 92L56 92L60 92L64 92L68 92L72 92L76 92L80 92L84 92L88 92L92 92L96 92L100 92L104 92L108 92L112 92L116 92L120 92L124 92L128 91L132 91L136 90L140 89L143 87L147 86L151 84L154 82L157 79L160 77L163 74L166 71L168 68L170 64L172 61L173 57L174 53L174 49L174 45L172 42L168 40L165 42L163 45L162 49L162 53L163 57L164 61L166 64L168 68L170 71L173 74L175 77L179 79L182 82L185 84L189 86L192 87L196 89L200 90L204 91L208 91L212 92L216 92L220 92L224 92L228 91L232 90L235 89L239 87L243 86L246 84L250 82L253 80L256 77L259 74L262 71L264 68L266 65L268 61L269 57L270 53L270 49L270 46L268 42L264 40L261 41L259 45L258 49L258 53L259 57L260 60L261 64L263 67L266 71L268 74L271 77L274 79L278 81L281 84L284 85L288 87L292 89L296 90L300 91L303 91L307 92L311 92L315 92L319 92L323 91L327 90L331 89L335 87L339 86L342 84L346 82L349 80L352 77L355 75L358 72L360 68L362 65L364 61L365 58L366 54L366 50L366 46L364 42L361 40L357 41L355 44L354 48L354 52L354 56L356 60L357 64L359 67L362 70L364 74L367 76L370 79L373 81L377 83L380 85L384 87L388 88L391 90L395 90L399 91L403 92L407 92L411 92L415 92L419 92L423 92L427 92L431 92L435 92L439 92L443 92L447 92L451 92L455 92L459 92L463 92L467 92L471 92L475 92L479 92L483 92L487 92L491 92L495 92L499 92L503 92L507 92L511 92L515 92L519 92L523 92L527 92L531 92L535 92L539 92L543 92L547 92L551 92L555 92L559 92L563 92L567 92L571 92L575 92L579 92L583 92L587 92L591 92L595 92L599 92L603 92L607 92L611 92L615 92L619 92L623 92L627 92L631 92L635 92L639 92L643 92L647 92L651 92L655 92L659 92L663 92L667 92L671 92L675 92L679 91L683 90L687 89L691 88L694 86L698 84L701 81L704 79L706 76L709 73L711 69L712 65L713 61L713 57L711 54L708 52L705 54L703 58L703 62L704 66L706 70L708 73L710 76L713 79L716 82L719 84L722 86L726 88L730 89L734 90L738 91L742 92L745 92L742 92L738 92L739 92L743 91L747 91L751 90L754 89L758 87L761 85L765 83L768 81L771 78L773 75L776 71L777 68L778 64L779 60L778 56L776 53L772 53L770 56L769 60L769 64L771 67L772 71L774 74L777 77L780 80L783 83L786 85L790 87L793 89L797 90L801 91L805 91L809 92L810 92L806 92L802 92L806 92L810 91L814 91L818 90L822 88L825 86L829 84L832 82L835 80L838 77L840 73L842 70L844 66L845 62L845 58L844 55L841 52L837 53L835 57L835 61L836 65L837 69L839 72L841 76L844 79L847 81L850 84L853 86L857 88L861 89L865 90L869 91L873 91L876 92L875 92L871 92L870 92L874 91L878 91L882 90L885 89L889 88L893 86L896 84L899 81L902 78L905 75L907 72L909 69L910 65L911 61L911 57L909 53L905 52L902 55L901 59L901 63L902 66L904 70L906 74L908 77L911 80L914 82L917 85L921 86L924 88L928 90L932 91L936 91L940 92L943 92L939 92L935 92L937 92L941 91L945 91L949 90L953 89L956 87L960 85L963 83L966 80L969 77L972 74L974 71L975 67L977 63L977 59L976 56L974 53L970 53L968 56L967 60L968 64L969 68L971 71L973 75L975 78L978 81L981 83L985 85L988 87L992 89L996 90L1000 91L1004 91L1007 92L1008 92L1006 92L1010 92L1014 92L1018 92L1022 92L1026 92L1030 92L1034 92L1038 92L1042 92L1046 92L1050 92L1054 92L1058 92L1062 92L1066 92L1070 92L1074 92L1078 92L1082 92L1086 92L1090 92L1094 92L1098 92L1102 92L1106 92L1110 92L1114 92L1118 92L1122 92L1126 92L1130 92L1134 92L1138 92L1142 92L1146 92L1150 92L1154 92L1158 92L1162 92L1166 92L1170 92L1174 92L1178 92L1182 92L1186 92L1190 92L1194 92L1198 92L1202 92L1206 92L1210 92L1214 92L1218 92L1222 92L1226 92L1230 92L1234 92L1238 92L1242 92L1246 92L1250 92L1254 92L1258 92L1262 92L1266 91L1270 90L1273 88L1277 86L1280 84L1283 81L1285 78L1287 74L1287 70L1287 66L1283 65L1281 67L1281 71L1282 75L1284 79L1286 82L1289 85L1292 87L1296 89L1300 90L1304 91L1308 92L1309 92L1305 92L1302 92L1306 92L1310 91L1314 90L1317 88L1321 86L1324 84L1327 81L1329 78L1331 74L1331 70L1331 66L1327 65L1325 67L1325 71L1326 75L1328 79L1330 82L1333 85L1336 87L1340 89L1344 90L1347 91L1351 92L1353 92L1349 92L1346 92L1350 92L1354 91L1358 90L1361 88L1365 86L1368 84L1371 81L1373 78L1375 74L1375 70L1375 66L1371 65L1369 67L1369 71L1370 75L1372 79L1374 82L1377 85L1380 87L1384 89L1387 90L1391 91L1395 92L1398 92L1394 92L1390 92L1394 92L1398 91L1401 90L1405 88L1409 86L1412 84L1415 81L1417 78L1419 74L1419 70L1419 66L1416 65L1413 67L1413 71L1414 75L1416 79L1418 82L1421 84L1424 87L1428 89L1431 90L1435 91L1439 92L1442 92L1438 92L1434 92L1438 92L1441 91L1445 90L1449 88L1452 86L1456 84L1458 81L1461 78L1463 74L1463 70L1463 67L1460 65L1457 67L1457 71L1458 75L1459 78L1462 82L1465 84L1468 87L1471 89L1475 90L1479 91L1483 92L1486 92L1482 92L1478 92L1481 92L1485 91L1489 90L1493 89L1496 87L1500 84L1502 81L1505 78L1506 74L1507 71L1507 67L1504 65L1501 67L1501 71L1502 75L1503 78L1506 82L1509 84L1512 87L1515 89L1519 90L1523 91L1527 92L1530 92L1526 92L1522 92L1525 92L1529 91L1533 90L1537 89L1540 87L1543 84L1546 81L1549 78L1550 75L1551 71L1551 67L1548 65L1545 67L1545 71L1546 75L1547 78L1550 81L1553 84L1556 87L1559 89L1563 90L1567 91L1571 92L1574 92L1570 92L1574 92L1578 92L1582 92L1586 92L1590 92L1594 92L1598 92L1602 92L1606 92L1610 92L1614 92L1618 92L1622 92L1626 92L1630 92L1634 92L1638 92L1642 92L1646 92L1650 92L1654 92L1658 92L1660 92"/></svg>
+  </section>
+
+  <!-- 8. timeline + HÌNH 3 -->
+  <section class="slide s-tl" data-layout="timeline">
+    <h2 class="title reveal">Quy trình dựng một deck</h2>
+    <svg class="ol-art" style="left:120px; top:560px" width="1680" height="140" viewBox="0 0 1680 140" aria-hidden="true"><path class="ol-p draw" pathLength="1" style="--d:0.2" d="M16.0 70Q187.2 4 358.4 70Q529.6 4 700.8 70Q872.0 4 1043.2 70Q1214.4 4 1385.6 70"/></svg>
+    <div class="timeline">
+      <div class="step reveal"><div class="when">01</div><h3>Nội dung</h3><p>Gom dàn ý, số liệu có nguồn</p></div>
+      <div class="step reveal"><div class="when">02</div><h3>Chọn style</h3><p>Xem 3 bản thử rồi chọn</p></div>
+      <div class="step reveal"><div class="when">03</div><h3>Dựng</h3><p>Viết HTML theo khung mẫu</p></div>
+      <div class="step reveal"><div class="when">04</div><h3>Đo</h3><p>Chạy deck.audit() từng slide</p></div>
+      <div class="step reveal"><div class="when">05</div><h3>Bàn giao</h3><p>Gộp thành một file HTML</p></div>
+    </div>
+  </section>
+
+  <!-- 9. quote -->
+  <section class="slide" data-layout="quote">
+    <blockquote class="quote reveal-blur">Hình trang trí đứng yên chỉ là nền. Khi nó di chuyển, nó kể chuyện.</blockquote>
+    <p class="cite reveal">Nguyên tắc của bộ mẫu</p>
+  </section>
+
+  <!-- 10. closing -->
+  <section class="slide" data-layout="closing">
+    <p class="kicker reveal">Hết phần mẫu</p>
+    <h2 class="title reveal">Cảm ơn</h2>
+    <p class="subtitle reveal">Đổi style chỉ cần thay một dòng link CSS.</p>
+  </section>
+
+</div>
+</div>
+<script src="../skill/slidefly/assets/morph-viz-diagrams.js"></script>
+<script src="../skill/slidefly/assets/morph-viz.js"></script>
+<script src="../skill/slidefly/assets/morph-engine.js"></script>
+<script src="../skill/slidefly/assets/morph-nav.js"></script>
+<script src="../skill/slidefly/assets/morph-audit.js"></script>
+<script src="../skill/slidefly/assets/morph-steps.js"></script>
+<script src="../skill/slidefly/assets/morph-icons.js"></script>
+</body>
+</html>

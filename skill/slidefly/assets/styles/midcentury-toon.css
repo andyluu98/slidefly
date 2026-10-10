@@ -1,0 +1,194 @@
+/* ===========================================================
+   STYLE: MIDCENTURY-TOON (1950s flat cartoon, limited animation).
+   Idea: MotionFly / lemo-opuscar (MIT), styles/midcentury-toon/STYLE.md.
+   A printed classroom-film card: warm paper, warm near-black ink,
+   soft atomic-age colours (burnt orange, turquoise, mustard) that are
+   printed a few px off their ink line. Sunburst rays, boomerang,
+   starburst and 4-point sparkles. Nothing neon, no gradients on shapes.
+   Fonts: Alfa Slab One (titles, numerals) + Be Vietnam Pro (body,
+   labels); both have the Vietnamese subset (Jost -> Be Vietnam Pro).
+   Actors: rays (sunburst), plane (turquoise colour plate), edge (its ink
+           line, printed off-register), slab (orange or mustard plate),
+           floor (darker floor band, broken horizon line), dots (polka
+           dots), boom (boomerang), burst (starburst), medal (numbered
+           medallion), star (atomic sparkle). DOM order = z-order.
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
+
+.deck-stage {
+  --actors: "rays plane slab edge floor dots boom burst medal star";
+  --font-display: 'Alfa Slab One', 'Be Vietnam Pro', serif;
+  --font-body: 'Be Vietnam Pro', sans-serif;
+  --bg: #F5EAD0; --fg: #261D18; --muted: #5A4A3E; --accent: #B2441A;
+  --card-bg: #FBF3DC; --card-fg: #261D18; --card-radius: 16px;
+  --title-weight: 400; --title-tracking: 0.005em; --bullet-radius: 0;
+  --ink: #261D18; --paper: #F5EAD0; --deep: #EBD9B2; --cream: #FBF3DC;
+  --orange: #E4682A; --teal: #1F9C96; --teal-deep: #0F6B68; --mustard: #F2B63D; --plate: #F2B63D;
+  /* printed paper: tooth + brush streaks, warm vignette */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='360'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85 .55' numOctaves='2' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .22 0 0 0 0 .1 0 0 0 .1 0'/%3E%3C/filter%3E%3Cfilter id='b' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.004 .09' numOctaves='3' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .3 0 0 0 0 .12 0 0 0 .04 0'/%3E%3C/filter%3E%3Crect width='640' height='360' filter='url(%23g)'/%3E%3Crect width='640' height='360' filter='url(%23b)'/%3E%3C/svg%3E"), radial-gradient(ellipse at 50% 46%, rgba(120, 80, 30, 0) 58%, rgba(120, 80, 30, 0.16) 100%);
+  background-size: 640px 360px, 100% 100%;
+}
+/* the two dark plates swap the text colours (quote on turquoise, closing on mustard) */
+.deck-stage[data-layout="quote"] { --fg: #FBF3DC; --muted: #EBDDB8; --accent: #F2B63D; }
+.deck-stage[data-layout="closing"] { --fg: #261D18; --muted: #261D18; --accent: #261D18; }
+
+/* ---------- actor looks + off-stage defaults ---------- */
+[data-actor="rays"]  { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000'%3E%3Cpath d='M500 500L1260.0 500.0L1248.5 632.0ZM500 500L1214.2 759.9L1158.2 880.0ZM500 500L1082.2 988.5L988.5 1082.2ZM500 500L880.0 1158.2L759.9 1214.2ZM500 500L632.0 1248.5L500.0 1260.0ZM500 500L368.0 1248.5L240.1 1214.2ZM500 500L120.0 1158.2L11.5 1082.2ZM500 500L-82.2 988.5L-158.2 880.0ZM500 500L-214.2 759.9L-248.5 632.0ZM500 500L-260.0 500.0L-248.5 368.0ZM500 500L-214.2 240.1L-158.2 120.0ZM500 500L-82.2 11.5L11.5 -82.2ZM500 500L120.0 -158.2L240.1 -214.2ZM500 500L368.0 -248.5L500.0 -260.0ZM500 500L632.0 -248.5L759.9 -214.2ZM500 500L880.0 -158.2L988.5 -82.2ZM500 500L1082.2 11.5L1158.2 120.0ZM500 500L1214.2 240.1L1248.5 368.0Z' fill='%23F2B63D' fill-opacity='0.55'/%3E%3C/svg%3E") center / 100% 100% no-repeat; --x: -900px; --y: -900px; --w: 1600px; --o: 0; }
+[data-actor="plane"] { background-color: var(--teal); background-image: repeating-linear-gradient(100deg, rgba(255, 255, 255, 0.07) 0 3px, transparent 3px 13px);
+  --x: 960px; --y: 540px; --w: 0px; --h: 0px; }
+[data-actor="slab"]  { background-color: var(--orange); --x: -300px; --y: 1100px; --w: 120px; --h: 120px; }
+[data-actor="edge"]  { border: 4px solid var(--ink); border-radius: 0; --x: 960px; --y: 540px; --w: 0px; --h: 0px; --o: 0; }
+[data-actor="floor"] { background-color: var(--deep);
+  background-image: repeating-linear-gradient(90deg, var(--ink) 0 210px, transparent 210px 232px, var(--ink) 232px 330px, transparent 330px 360px, var(--ink) 360px 640px, transparent 640px 668px),
+    repeating-linear-gradient(90deg, rgba(38, 29, 24, 0.07) 0 2px, transparent 2px 17px);
+  background-size: 100% 4px, 100% 100%; background-repeat: no-repeat; --x: 0px; --y: 1080px; --w: 1920px; --h: 0px; }
+[data-actor="dots"]  { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='12' cy='12' r='7.5' fill='%23E4682A'/%3E%3Ccircle cx='36' cy='36' r='7.5' fill='%23E4682A'/%3E%3C/svg%3E") 0 0 / 48px 48px repeat; --x: -700px; --y: 900px; --w: 576px; --h: 48px; }
+[data-actor="boom"]  { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M3.5 24.6L5.4 31.0L7.4 37.0L9.5 42.7L11.6 48.1L14.0 53.1L16.5 57.8L19.1 62.2L22.0 66.2L25.2 69.9L28.6 73.2L32.3 76.0L36.4 78.4L40.7 80.2L45.3 81.3L50.0 81.8L54.7 81.5L59.3 80.5L63.7 78.9L67.9 76.8L71.8 74.2L75.5 71.2L79.0 67.8L82.4 64.0L85.6 59.9L88.7 55.4L91.8 50.6L94.8 45.4L97.8 39.9L98.9 37.4L98.9 34.6L97.8 32.1L95.9 30.2L93.4 29.1L90.6 29.1L88.1 30.2L86.2 32.1L82.4 36.5L78.6 40.4L75.0 43.8L71.5 46.8L68.2 49.3L65.1 51.4L62.2 53.0L59.6 54.3L57.3 55.1L55.3 55.6L53.6 55.9L52.1 55.9L50.9 55.8L49.7 55.7L48.5 55.4L47.1 55.0L45.4 54.4L43.6 53.4L41.5 52.0L39.1 50.3L36.6 48.1L34.0 45.4L31.2 42.2L28.4 38.6L25.4 34.5L22.5 29.9L19.5 24.9L16.5 19.4L15.0 17.1L12.8 15.6L10.1 15.0L7.4 15.5L5.1 17.0L3.6 19.2L3.0 21.9Z' fill='%23E4682A' transform='translate(4 4)'/%3E%3Cpath d='M3.5 24.6L5.4 31.0L7.4 37.0L9.5 42.7L11.6 48.1L14.0 53.1L16.5 57.8L19.1 62.2L22.0 66.2L25.2 69.9L28.6 73.2L32.3 76.0L36.4 78.4L40.7 80.2L45.3 81.3L50.0 81.8L54.7 81.5L59.3 80.5L63.7 78.9L67.9 76.8L71.8 74.2L75.5 71.2L79.0 67.8L82.4 64.0L85.6 59.9L88.7 55.4L91.8 50.6L94.8 45.4L97.8 39.9L98.9 37.4L98.9 34.6L97.8 32.1L95.9 30.2L93.4 29.1L90.6 29.1L88.1 30.2L86.2 32.1L82.4 36.5L78.6 40.4L75.0 43.8L71.5 46.8L68.2 49.3L65.1 51.4L62.2 53.0L59.6 54.3L57.3 55.1L55.3 55.6L53.6 55.9L52.1 55.9L50.9 55.8L49.7 55.7L48.5 55.4L47.1 55.0L45.4 54.4L43.6 53.4L41.5 52.0L39.1 50.3L36.6 48.1L34.0 45.4L31.2 42.2L28.4 38.6L25.4 34.5L22.5 29.9L19.5 24.9L16.5 19.4L15.0 17.1L12.8 15.6L10.1 15.0L7.4 15.5L5.1 17.0L3.6 19.2L3.0 21.9Z' fill='none' stroke='%23261D18' stroke-width='3.2' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat; --x: -300px; --y: 800px; --w: 200px; }
+[data-actor="burst"] { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50.0 3.0L56.4 17.6L68.0 6.6L68.3 22.6L83.2 16.8L77.4 31.7L93.4 32.0L82.4 43.6L97.0 50.0L82.4 56.4L93.4 68.0L77.4 68.3L83.2 83.2L68.3 77.4L68.0 93.4L56.4 82.4L50.0 97.0L43.6 82.4L32.0 93.4L31.7 77.4L16.8 83.2L22.6 68.3L6.6 68.0L17.6 56.4L3.0 50.0L17.6 43.6L6.6 32.0L22.6 31.7L16.8 16.8L31.7 22.6L32.0 6.6L43.6 17.6Z' fill='%23F2B63D' transform='translate(4 4)'/%3E%3Cpath d='M50.0 3.0L56.4 17.6L68.0 6.6L68.3 22.6L83.2 16.8L77.4 31.7L93.4 32.0L82.4 43.6L97.0 50.0L82.4 56.4L93.4 68.0L77.4 68.3L83.2 83.2L68.3 77.4L68.0 93.4L56.4 82.4L50.0 97.0L43.6 82.4L32.0 93.4L31.7 77.4L16.8 83.2L22.6 68.3L6.6 68.0L17.6 56.4L3.0 50.0L17.6 43.6L6.6 32.0L22.6 31.7L16.8 16.8L31.7 22.6L32.0 6.6L43.6 17.6Z' fill='none' stroke='%23261D18' stroke-width='3.2' stroke-linejoin='round' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='50' r='19' fill='none' stroke='%23261D18' stroke-width='2' stroke-dasharray='5 4'/%3E%3C/svg%3E") center / 100% 100% no-repeat; --x: 2000px; --y: -200px; --w: 160px; }
+[data-actor="medal"] { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23261D18'/%3E%3Ccircle cx='50' cy='50' r='38' fill='%23F5EAD0'/%3E%3Ccircle cx='54' cy='53' r='30' fill='%23E4682A'/%3E%3Ccircle cx='50' cy='50' r='30' fill='none' stroke='%23261D18' stroke-width='3'/%3E%3Cpath d='M50 3C54 38 62 46 97 50C62 54 54 62 50 97C46 62 38 54 3 50C38 46 46 38 50 3Z' transform='translate(26 26) scale(.48)' fill='%23FBF3DC' stroke='%23261D18' stroke-width='3'/%3E%3C/svg%3E") center / 100% 100% no-repeat; --x: 2000px; --y: 1100px; --w: 110px; }
+[data-actor="star"]  { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 3C54 38 62 46 97 50C62 54 54 62 50 97C46 62 38 54 3 50C38 46 46 38 50 3Z' fill='%23E4682A' transform='translate(4 4)'/%3E%3Cpath d='M50 3C54 38 62 46 97 50C62 54 54 62 50 97C46 62 38 54 3 50C38 46 46 38 50 3Z' fill='none' stroke='%23261D18' stroke-width='3.2' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat; --x: -100px; --y: -100px; --w: 60px; }
+
+/* ---------- 1. cover: a colour plate with the projector scene, sunburst behind, orange base bar ---------- */
+[data-layout="cover"] [data-actor="rays"]  { --x: 430px; --y: -560px; --w: 2100px; --o: 0.55; }
+[data-layout="cover"] [data-actor="plane"] { --x: 1150px; --y: 190px; --w: 660px; --h: 570px; border-radius: 40px 40px 0 0; }
+[data-layout="cover"] [data-actor="edge"]  { --x: 1138px; --y: 180px; --w: 660px; --h: 570px; --o: 1; border-radius: 40px 40px 0 0; }
+[data-layout="cover"] [data-actor="slab"]  { --x: 0px; --y: 1008px; --w: 960px; --h: 72px; }
+[data-layout="cover"] [data-actor="floor"] { --x: 1040px; --y: 760px; --w: 880px; --h: 320px; }
+[data-layout="cover"] [data-actor="dots"]  { --x: 120px; --y: 912px; --w: 576px; --h: 48px; }
+[data-layout="cover"] [data-actor="boom"]  { --x: 1030px; --y: 96px; --w: 200px; --r: 20deg; }
+[data-layout="cover"] [data-actor="burst"] { --x: 1690px; --y: 100px; --w: 170px; --r: 8deg; }
+[data-layout="cover"] [data-actor="medal"] { --x: 1064px; --y: 820px; --w: 110px; }
+[data-layout="cover"] [data-actor="star"]  { --x: 1090px; --y: 580px; --w: 64px; }
+
+/* ---------- 2. agenda: spine at the left, bookmark tab at the top right, rays rise from the corner ---------- */
+[data-layout="agenda"] [data-actor="rays"]  { --x: 1150px; --y: -710px; --w: 1500px; --r: 10deg; --o: 0.5; }
+[data-layout="agenda"] [data-actor="plane"] { --x: 0px; --y: 0px; --w: 64px; --h: 1080px; }
+[data-layout="agenda"] [data-actor="edge"]  { --x: 14px; --y: 10px; --w: 64px; --h: 1080px; --o: 1; }
+[data-layout="agenda"] [data-actor="slab"]  { --x: 1690px; --y: -20px; --w: 130px; --h: 190px; border-radius: 0 0 65px 65px; }
+[data-layout="agenda"] [data-actor="floor"] { --x: 64px; --y: 1030px; --w: 1856px; --h: 50px; }
+[data-layout="agenda"] [data-actor="dots"]  { --x: 120px; --y: 198px; --w: 576px; --h: 48px; }
+[data-layout="agenda"] [data-actor="boom"]  { --x: 1450px; --y: 36px; --w: 150px; --r: -30deg; }
+[data-layout="agenda"] [data-actor="burst"] { --x: 1300px; --y: 62px; --w: 110px; --r: 12deg; }
+[data-layout="agenda"] [data-actor="medal"] { --x: 1700px; --y: 122px; --w: 110px; }
+[data-layout="agenda"] [data-actor="star"]  { --x: 1590px; --y: 200px; --w: 56px; }
+
+/* ---------- 3. section: a turquoise colour plane on the right carries the orange sun ---------- */
+[data-layout="section"] [data-actor="rays"]  { --x: 340px; --y: -750px; --w: 2400px; --r: 5deg; --o: 0.5; }
+[data-layout="section"] [data-actor="plane"] { --x: 1180px; --y: 0px; --w: 740px; --h: 1080px; }
+[data-layout="section"] [data-actor="edge"]  { --x: 1166px; --y: -10px; --w: 740px; --h: 1080px; --o: 1; }
+[data-layout="section"] [data-actor="slab"]  { --x: 1270px; --y: 180px; --w: 540px; --h: 540px; border-radius: 50%; }
+[data-layout="section"] [data-actor="floor"] { --x: 1180px; --y: 900px; --w: 740px; --h: 180px; }
+[data-layout="section"] [data-actor="dots"]  { --x: 160px; --y: 912px; --w: 576px; --h: 48px; }
+[data-layout="section"] [data-actor="boom"]  { --x: 1330px; --y: 730px; --w: 330px; --r: -15deg; }
+[data-layout="section"] [data-actor="burst"] { --x: 1650px; --y: 70px; --w: 200px; --r: 14deg; }
+[data-layout="section"] [data-actor="medal"] { --x: 1230px; --y: 110px; --w: 130px; }
+[data-layout="section"] [data-actor="star"]  { --x: 1100px; --y: 760px; --w: 80px; }
+
+/* ---------- 4. content: rays fan out behind the highlight, a plate bar underlines the title ---------- */
+[data-layout="content"] [data-actor="rays"]  { --x: 830px; --y: -70px; --w: 1400px; --r: 0deg; --o: 0.5; }
+[data-layout="content"] [data-actor="plane"] { --x: 1860px; --y: 0px; --w: 60px; --h: 1080px; }
+[data-layout="content"] [data-actor="edge"]  { --x: 1872px; --y: 10px; --w: 60px; --h: 1080px; --o: 1; }
+[data-layout="content"] [data-actor="slab"]  { --x: 120px; --y: 192px; --w: 260px; --h: 16px; border-radius: 8px; }
+[data-layout="content"] [data-actor="floor"] { --x: 0px; --y: 1040px; --w: 1860px; --h: 40px; }
+[data-layout="content"] [data-actor="dots"]  { --x: 1260px; --y: 204px; --w: 528px; --h: 48px; }
+[data-layout="content"] [data-actor="boom"]  { --x: 1740px; --y: 36px; --w: 130px; --r: 40deg; }
+[data-layout="content"] [data-actor="burst"] { --x: 1150px; --y: 930px; --w: 100px; --r: 6deg; }
+[data-layout="content"] [data-actor="medal"] { --x: 1640px; --y: 56px; --w: 90px; }
+[data-layout="content"] [data-actor="star"]  { --x: 1260px; --y: 1000px; --w: 50px; }
+/* even: the spine moves to the left edge, the sunburst swings to the lower right */
+[data-layout="content"][data-parity="even"] [data-actor="rays"]  { --x: 900px; --y: 20px; --w: 1500px; --r: 15deg; }
+[data-layout="content"][data-parity="even"] [data-actor="plane"] { --x: 0px; --y: 0px; --w: 60px; }
+[data-layout="content"][data-parity="even"] [data-actor="edge"]  { --x: 12px; --y: 10px; --w: 60px; }
+[data-layout="content"][data-parity="even"] [data-actor="slab"]  { --x: 120px; --y: 192px; --w: 420px; --h: 16px; }
+[data-layout="content"][data-parity="even"] [data-actor="floor"] { --x: 60px; --y: 1040px; --w: 1860px; }
+[data-layout="content"][data-parity="even"] [data-actor="dots"]  { --x: 1200px; --y: 204px; --w: 576px; --h: 48px; }
+[data-layout="content"][data-parity="even"] [data-actor="boom"]  { --x: 1100px; --y: 930px; --w: 130px; --r: -20deg; }
+[data-layout="content"][data-parity="even"] [data-actor="burst"] { --x: 1700px; --y: 70px; --w: 120px; --r: -10deg; }
+[data-layout="content"][data-parity="even"] [data-actor="medal"] { --x: 1540px; --y: 70px; --w: 100px; }
+[data-layout="content"][data-parity="even"] [data-actor="star"]  { --x: 1250px; --y: 214px; --w: 56px; }
+
+/* ---------- 5. two-col: a plate across the top, a mustard plate under the cards for the takeaway ---------- */
+[data-layout="two-col"] [data-actor="rays"]  { --x: -240px; --y: -20px; --w: 2400px; --r: 0deg; --o: 0.5; }
+[data-layout="two-col"] [data-actor="plane"] { --x: 0px; --y: 0px; --w: 1920px; --h: 56px; }
+[data-layout="two-col"] [data-actor="edge"]  { --x: -10px; --y: 12px; --w: 1940px; --h: 56px; --o: 1; }
+[data-layout="two-col"] [data-actor="slab"]  { --x: 120px; --y: 880px; --w: 1680px; --h: 110px; background-color: var(--mustard); border-radius: 14px; }
+[data-layout="two-col"] [data-actor="floor"] { --x: 0px; --y: 1040px; --w: 1920px; --h: 40px; }
+[data-layout="two-col"] [data-actor="dots"]  { --x: 120px; --y: 196px; --w: 384px; --h: 48px; }
+[data-layout="two-col"] [data-actor="boom"]  { --x: 1640px; --y: 72px; --w: 140px; --r: -20deg; }
+[data-layout="two-col"] [data-actor="burst"] { --x: 1490px; --y: 74px; --w: 110px; --r: 4deg; }
+[data-layout="two-col"] [data-actor="medal"] { --x: 1790px; --y: 90px; --w: 90px; }
+[data-layout="two-col"] [data-actor="star"]  { --x: 40px; --y: 600px; --w: 56px; }
+
+/* ---------- 6. stats: low plate along the bottom, a corner sun, a ring of rays behind the figures ---------- */
+[data-layout="stats"] [data-actor="rays"]  { --x: 950px; --y: -760px; --w: 1600px; --r: 6deg; --o: 0.5; }
+[data-layout="stats"] [data-actor="plane"] { --x: 0px; --y: 1004px; --w: 1920px; --h: 76px; }
+[data-layout="stats"] [data-actor="edge"]  { --x: -10px; --y: 994px; --w: 1940px; --h: 76px; --o: 1; }
+[data-layout="stats"] [data-actor="slab"]  { --x: 1560px; --y: -150px; --w: 380px; --h: 380px; border-radius: 50%; }
+[data-layout="stats"] [data-actor="floor"] { --x: 0px; --y: 1080px; --w: 1920px; --h: 0px; }
+[data-layout="stats"] [data-actor="dots"]  { --x: 120px; --y: 196px; --w: 576px; --h: 48px; }
+[data-layout="stats"] [data-actor="boom"]  { --x: 1750px; --y: 868px; --w: 150px; --r: 12deg; }
+[data-layout="stats"] [data-actor="burst"] { --x: 1200px; --y: 50px; --w: 130px; --r: -8deg; }
+[data-layout="stats"] [data-actor="medal"] { --x: 20px; --y: 880px; --w: 90px; }
+[data-layout="stats"] [data-actor="star"]  { --x: 1060px; --y: 130px; --w: 56px; }
+
+/* ---------- 7. timeline: the turquoise plate IS the axis (y 630); the orange sun rises low left ---------- */
+[data-layout="timeline"] [data-actor="rays"]  { --x: -690px; --y: 330px; --w: 1400px; --r: 0deg; --o: 0.5; }
+[data-layout="timeline"] [data-actor="plane"] { --x: 120px; --y: 616px; --w: 1680px; --h: 28px; border-radius: 14px; }
+[data-layout="timeline"] [data-actor="edge"]  { --x: 132px; --y: 626px; --w: 1680px; --h: 28px; --o: 1; border-radius: 14px; }
+[data-layout="timeline"] [data-actor="slab"]  { --x: -140px; --y: 880px; --w: 300px; --h: 300px; border-radius: 50%; }
+[data-layout="timeline"] [data-actor="floor"] { --x: 0px; --y: 1040px; --w: 1920px; --h: 40px; }
+[data-layout="timeline"] [data-actor="dots"]  { --x: 120px; --y: 196px; --w: 576px; --h: 48px; }
+[data-layout="timeline"] [data-actor="boom"]  { --x: 1500px; --y: 60px; --w: 140px; --r: 160deg; }
+[data-layout="timeline"] [data-actor="burst"] { --x: 1330px; --y: 62px; --w: 100px; --r: 20deg; }
+[data-layout="timeline"] [data-actor="medal"] { --x: 1740px; --y: 80px; --w: 100px; }
+[data-layout="timeline"] [data-actor="star"]  { --x: 1850px; --y: 600px; --w: 50px; }
+
+/* ---------- 8. quote: the plate floods the page turquoise (cream frame), mustard sparkle and orange sun ---------- */
+[data-layout="quote"] [data-actor="rays"]  { --x: 160px; --y: -440px; --w: 1600px; --o: 0; }
+[data-layout="quote"] [data-actor="plane"] { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; background-color: var(--teal-deep); }
+[data-layout="quote"] [data-actor="edge"]  { --x: 40px; --y: 40px; --w: 1840px; --h: 1000px; --o: 1; border-color: var(--paper); border-radius: 36px; }
+[data-layout="quote"] [data-actor="slab"]  { --x: 1560px; --y: 800px; --w: 460px; --h: 460px; border-radius: 50%; }
+[data-layout="quote"] [data-actor="floor"] { --x: 0px; --y: 1080px; --w: 1920px; --h: 0px; }
+[data-layout="quote"] [data-actor="dots"]  { --x: 280px; --y: 912px; --w: 576px; --h: 48px; }
+[data-layout="quote"] [data-actor="boom"]  { --x: 180px; --y: 110px; --w: 220px; --r: -25deg; }
+[data-layout="quote"] [data-actor="burst"] { --x: 1560px; --y: 100px; --w: 220px; --r: 20deg; }
+[data-layout="quote"] [data-actor="medal"] { --x: 140px; --y: 770px; --w: 130px; }
+[data-layout="quote"] [data-actor="star"]  { --x: 1480px; --y: 520px; --w: 70px; }
+
+/* ---------- 9. closing: the plate floods mustard, a turquoise sun sets low left, the frame turns ink ---------- */
+[data-layout="closing"] [data-actor="rays"]  { --x: 360px; --y: -460px; --w: 1200px; --o: 0; }
+[data-layout="closing"] [data-actor="plane"] { --x: 0px; --y: 0px; --w: 1920px; --h: 1080px; background-color: var(--mustard); border-radius: 0; }
+[data-layout="closing"] [data-actor="slab"]  { --x: -200px; --y: 640px; --w: 700px; --h: 700px; background-color: var(--teal); border-radius: 50%; }
+[data-layout="closing"] [data-actor="edge"]  { --x: 40px; --y: 40px; --w: 1840px; --h: 1000px; --o: 1; border-radius: 36px; }
+[data-layout="closing"] [data-actor="floor"] { --x: 40px; --y: 960px; --w: 1840px; --h: 80px; }
+[data-layout="closing"] [data-actor="dots"]  { --x: 672px; --y: 780px; --w: 576px; --h: 48px; }
+[data-layout="closing"] [data-actor="boom"]  { --x: 140px; --y: 110px; --w: 240px; --r: -35deg; }
+[data-layout="closing"] [data-actor="burst"] { --x: 1600px; --y: 80px; --w: 240px; --r: 14deg; }
+[data-layout="closing"] [data-actor="medal"] { --x: 1640px; --y: 760px; --w: 150px; }
+[data-layout="closing"] [data-actor="star"]  { --x: 1500px; --y: 440px; --w: 76px; }
+
+/* ---------- content tweaks: slab titles over a colour plate, star bullets, offset-plate cards ---------- */
+.slide .title { line-height: 1.18; text-shadow: 4px 4px 0 var(--plate); }
+.slide[data-layout="quote"] .quote { text-shadow: 3px 3px 0 #0A4A48; line-height: 1.3; }
+.slide[data-layout="closing"] .title, .slide[data-layout="section"] .num { text-shadow: 5px 5px 0 var(--orange); }
+.slide .kicker { font-weight: 700; letter-spacing: 0.24em; }
+.slide .subtitle { line-height: 1.4; }
+.slide[data-layout="cover"] { align-items: flex-start; text-align: left; padding: 0 880px 0 120px; }
+.slide[data-layout="cover"] .title { font-size: 82px; }
+.slide[data-layout="cover"] .meta { font-weight: 600; border-top: 3px solid var(--ink); padding-top: 14px; }
+.slide[data-layout="closing"] .title { font-size: 150px; }
+.slide[data-layout="closing"] .subtitle { font-weight: 600; }
+.slide[data-layout="section"] .num { font-size: 230px; color: var(--accent); }
+.agenda-list { --agenda-gap: 160px; --tile-line: 3px solid var(--ink); }
+.agenda-list li { padding-top: 12px; }
+.agenda-list li.is-right { flex-direction: row; text-align: left; }
+.agenda-list li.is-right .num { text-align: left; }
+.bullets li::before, .col li::before { background: var(--orange); border-radius: 0; width: 0.62em; height: 0.62em; top: 0.38em;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%); }
+.col { border: 3px solid var(--ink); box-shadow: 12px 12px 0 var(--teal); }
+.col h3 { color: var(--accent); }
+.takeaway { border-left: 0; padding-left: 44px; color: var(--ink); }
+.timeline::before { display: none; }
+.step::before { background: var(--ink); border: 4px solid var(--cream); box-shadow: 0 0 0 3px var(--ink); }
+.step .when { color: var(--accent); }
+.slide[data-layout="quote"] .cite { font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; font-size: 24px; }

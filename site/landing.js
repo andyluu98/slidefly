@@ -79,13 +79,22 @@
   tabs.forEach((t) => t.addEventListener('click', () => pickOs(t.dataset.os)));
   pickOs(/Windows/i.test(navigator.userAgent) ? 'win' : 'unix');
 
-  /* ---------- gallery: reveal all 47 styles in place ---------- */
-  const shelf = $('#shelf'), showAll = $('#show-all');
+  /* ---------- gallery: reveal every style in place, copy a style command ---------- */
+  const shelf = $('#shelf'), showAll = $('#show-all'), allLabel = showAll.textContent;
   showAll.addEventListener('click', () => {
     const open = shelf.classList.toggle('open');
     showAll.setAttribute('aria-expanded', String(open));
-    showAll.textContent = open ? 'Thu gọn' : 'Hiện cả 47 style';
+    showAll.textContent = open ? 'Thu gọn' : allLabel;
     if (!open) shelf.scrollIntoView({ block: 'start' });
+  });
+  shelf.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.cp');
+    if (!btn) return;
+    const text = `/slidefly Làm [số] slide về [chủ đề của bạn], style ${btn.dataset.cmd}`;
+    try { await navigator.clipboard.writeText(text); btn.textContent = 'Đã chép, dán vào Claude Code'; }
+    catch { window.prompt('Chép dòng này:', text); }
+    btn.classList.add('done');
+    setTimeout(() => { btn.textContent = 'Chép lệnh'; btn.classList.remove('done'); }, 1800);
   });
 
   /* ---------- copy buttons ---------- */

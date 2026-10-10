@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mẫu SlideFly · Đèn lồng giấy</title>
+<!-- Đổi style: thay đúng 1 dòng link styles/*.css bên dưới. Minh họa SVG vẽ theo styles/den-long-giay.art.md -->
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-base.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-layouts.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/styles/den-long-giay.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-motion.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-viz.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-icons.css">
+<style>
+/* hand-drawn figures (den-long-giay.art.md): cut paper lit from behind, warm light only through the holes */
+.art { position: absolute; overflow: visible; pointer-events: none; }
+.dl-paper { fill: #f6e2b0; stroke: #fff6d8; stroke-opacity: .8; stroke-width: 1.6; stroke-linejoin: round; }
+.dl-lamp { fill: var(--lamp); stroke: #8f2417; stroke-opacity: .6; stroke-width: 2; stroke-linejoin: round; }
+.dl-red { fill: var(--lamp-red); }
+.dl-gold { fill: #e8b941; }
+.dl-cut { fill: #fff2c4; }
+.dl-hole { fill: var(--amber); }
+.dl-night { fill: var(--night); stroke: var(--amber); stroke-opacity: .55; stroke-width: 2; stroke-linejoin: round; }
+.dl-cord { fill: none; stroke: #d8b45e; stroke-width: 3; stroke-linecap: round; }
+.dl-line { fill: none; stroke: var(--amber); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.dl-ghost { fill: none; stroke: var(--amber); stroke-width: 2.5; stroke-dasharray: 9 8; stroke-linecap: round; stroke-linejoin: round; }
+.dl-ink { fill: none; stroke: #5a2a10; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+.dl-ar { fill: var(--amber); stroke: none; }
+.dl-tag { fill: #f7d98c; stroke: #fff2c4; stroke-width: 2; stroke-linejoin: round; }
+.dl-bead { fill: #f7d98c; stroke: #8f2417; stroke-opacity: .6; stroke-width: 2; }
+.dl-lb { fill: var(--cream); font-family: var(--font-body); font-size: 20px; font-weight: 600; letter-spacing: .12em; }
+.dl-num { fill: #3a1410; font-family: var(--font-body); font-size: 22px; font-weight: 700; }
+/* the garland on the timeline axis already hangs a lantern under every station */
+.s-tl .step::before { box-shadow: 0 0 0 7px rgba(255, 154, 58, 0.28); }
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<div class="deck-stage">
+  <!-- Diễn viên (hình trang trí) do engine tự tạo từ --actors của style. -->
+
+  <!-- 1. cover -->
+  <section class="slide" data-layout="cover">
+    <svg class="art" style="left:1150px; top:500px" width="275" height="238" viewBox="0 0 220 190" aria-hidden="true">
+      <defs><radialGradient id="dlH1"><stop offset="0" stop-color="#ffb84d" stop-opacity=".55"/><stop offset=".55" stop-color="#ff9a3a" stop-opacity=".2"/><stop offset="1" stop-color="#ff9a3a" stop-opacity="0"/></radialGradient></defs>
+      <circle class="reveal" cx="162" cy="62" r="46" fill="url(#dlH1)"/>
+      <g class="reveal">
+        <path class="dl-cord" d="M110 126L160 40"/>
+        <path class="dl-cord" d="M160 40V44"/><rect x="152" y="40" width="16" height="6" rx="2" fill="#3a1410"/>
+        <ellipse class="dl-lamp" cx="160" cy="62" rx="17" ry="19"/><path class="dl-cut" d="M160 50l5 12l-5 12l-5 -12z"/><rect x="152" y="80" width="16" height="5" rx="2" fill="#3a1410"/>
+        <path class="dl-cord" d="M155 86l-2 12M160 86v14M165 86l2 12" stroke="#d6401f" stroke-width="2.4"/>
+      </g>
+      <g class="reveal">
+        <path class="dl-paper" d="M96 56C88 22 94 -4 106 2C118 8 118 36 116 58Z"/>
+        <path class="dl-paper" d="M120 56C124 24 136 0 146 8C154 16 142 44 130 60Z"/>
+        <path class="dl-hole" d="M104 14C100 28 102 40 106 46C110 38 111 24 104 14Z"/><path class="dl-hole" d="M139 20C136 32 134 40 136 46C142 38 143 28 139 20Z"/>
+        <circle class="dl-paper" cx="24" cy="146" r="13"/>
+        <path class="dl-paper" d="M22 154C18 118 48 90 84 90C106 90 118 106 118 128C118 154 100 170 58 170C40 170 26 166 22 154Z"/>
+        <ellipse class="dl-paper" cx="84" cy="176" rx="44" ry="9"/>
+        <ellipse class="dl-paper" cx="110" cy="150" rx="11" ry="22"/>
+        <circle class="dl-paper" cx="112" cy="80" r="27"/><ellipse class="dl-paper" cx="136" cy="88" rx="17" ry="12"/>
+        <circle cx="121" cy="73" r="3.4" fill="#3a1410"/><circle class="dl-red" cx="151" cy="86" r="3.4"/>
+        <path class="dl-hole" d="M46 148C34 148 34 130 46 130C56 130 58 142 50 142"/>
+        <path class="dl-hole" d="M62 118C66 106 78 106 82 114C76 116 68 120 62 118Z"/><path class="dl-hole" d="M70 140C76 130 90 130 94 138C86 142 78 144 70 140Z"/>
+        <path class="dl-ink" d="M58 128C54 128 52 124 56 122" stroke="#f6e2b0" stroke-width="0"/>
+      </g>
+    </svg>
+    <p class="kicker reveal">SlideFly</p>
+    <h1 class="title reveal">Slide chuyển cảnh kiểu Morph trên trình duyệt</h1>
+    <p class="subtitle reveal">Một file HTML, mở bằng Chrome là trình chiếu được</p>
+    <p class="meta reveal">Bộ mẫu 9 kiểu slide</p>
+  </section>
+
+  <!-- 2. agenda -->
+  <section class="slide" data-layout="agenda">
+    <h2 class="title reveal">Nội dung</h2>
+    <ol class="agenda-list">
+      <li><span class="num reveal">01</span><div><h3 class="reveal" data-morph-id="s1">Cơ chế diễn viên</h3><p class="reveal">Hình cố định, chỉ đổi tư thế</p></div></li>
+      <li><span class="num reveal">02</span><div><h3 class="reveal">Chín kiểu slide</h3><p class="reveal">Từ trang bìa đến lời cảm ơn</p></div></li>
+      <li><span class="num reveal">03</span><div><h3 class="reveal">Tự co giãn</h3><p class="reveal">Ít chữ thì chữ to hơn</p></div></li>
+      <li><span class="num reveal">04</span><div><h3 class="reveal">Đo độ lấp đầy</h3><p class="reveal">Máy tự soát slide bị trống</p></div></li>
+    </ol>
+  </section>
+
+  <!-- 3. section -->
+  <section class="slide" data-layout="section">
+    <p class="num reveal">01</p>
+    <h2 class="title reveal" data-morph-id="s1">Cơ chế diễn viên</h2>
+    <p class="subtitle reveal">Morph là cùng một vật đổi vị trí giữa hai slide</p>
+  </section>
+
+  <!-- 4. content -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Hình cố định, chỉ đổi tư thế</h2>
+    <svg class="art" style="left:1260px; top:280px" width="540" height="700" viewBox="0 0 540 700" aria-hidden="true">
+      <defs><radialGradient id="dlH2"><stop offset="0" stop-color="#ffb84d" stop-opacity=".55"/><stop offset=".55" stop-color="#ff9a3a" stop-opacity=".2"/><stop offset="1" stop-color="#ff9a3a" stop-opacity="0"/></radialGradient></defs>
+      <g class="reveal"><text class="dl-lb" x="0" y="26">MỘT ĐÈN, HAI TƯ THẾ</text><path class="dl-line" style="stroke-width:1.6" d="M0 40H300"/></g>
+      <path class="dl-cord" d="M0 74H540"/>
+      <g class="reveal">
+        <path class="dl-ghost" d="M130 74V104"/>
+        <ellipse class="dl-ghost" cx="130" cy="152" rx="44" ry="48"/><path class="dl-ghost" d="M130 104V200M104 112Q96 152 104 192M156 112Q164 152 156 192"/>
+        <path class="dl-ghost" d="M130 202V218"/>
+        <path class="dl-ghost" d="M180 154C240 118 320 130 356 196"/><path class="dl-ar" d="M368 214L346 202L360 192Z"/>
+        <circle class="dl-bead" cx="130" cy="90" r="17"/><text class="dl-num" x="130" y="98" text-anchor="middle">A</text>
+      </g>
+      <path class="dl-cord draw" pathLength="1" style="--d:.2" d="M410 74V164"/>
+      <circle class="reveal" cx="410" cy="218" r="90" fill="url(#dlH2)"/>
+      <g class="reveal">
+        <rect x="396" y="160" width="28" height="12" rx="4" fill="#3a1410"/>
+        <ellipse class="dl-lamp" cx="410" cy="216" rx="50" ry="54"/>
+        <path d="M410 172V260M380 178Q364 216 380 254M440 178Q456 216 440 254" fill="none" stroke="#7a1d10" stroke-opacity=".42" stroke-width="2"/>
+        <path class="dl-cut" d="M410 190l9 14l-9 14l-9 -14z"/><path class="dl-cut" d="M410 214l9 14l-9 14l-9 -14z"/><circle class="dl-cut" cx="384" cy="216" r="5"/><circle class="dl-cut" cx="436" cy="216" r="5"/>
+        <rect x="396" y="266" width="28" height="12" rx="4" fill="#3a1410"/><path class="dl-cord" d="M410 278V288" stroke-width="2.6"/>
+        <path d="M402 292Q398 302 396 312M410 292V314M418 292Q422 302 424 312" fill="none" stroke="#d6401f" stroke-width="3" stroke-linecap="round"/>
+        <circle class="dl-bead" cx="410" cy="116" r="17"/><text class="dl-num" x="410" y="124" text-anchor="middle">B</text>
+      </g>
+      <g class="reveal">
+        <path class="dl-cord" d="M0 412H540"/>
+        <g transform="translate(24 0)">
+          <path class="dl-cord" d="M60 412V446"/><path class="dl-tag" d="M20 462H100V640H20Z"/><circle cx="60" cy="480" r="8" fill="#0b1232"/>
+          <path class="dl-ink" d="M60 520L74 546L60 572L46 546Z"/><circle cx="60" cy="546" r="4" fill="#d6401f"/><path class="dl-ink" d="M60 580V604"/>
+          <circle class="dl-bead" cx="60" cy="440" r="14"/><text class="dl-num" x="60" y="447" text-anchor="middle" style="font-size:19px">1</text>
+          <text class="dl-lb" x="60" y="672" text-anchor="middle" style="font-size:17px;letter-spacing:.06em">DIỄN VIÊN</text>
+        </g>
+        <g transform="translate(200 0)">
+          <path class="dl-cord" d="M60 412V446"/><path class="dl-tag" d="M20 462H100V640H20Z"/><circle cx="60" cy="480" r="8" fill="#0b1232"/>
+          <path class="dl-ink" d="M60 508V600M48 522L60 508L72 522M48 586L60 600L72 586"/><circle cx="60" cy="554" r="5" fill="#d6401f"/>
+          <circle class="dl-bead" cx="60" cy="440" r="14"/><text class="dl-num" x="60" y="447" text-anchor="middle" style="font-size:19px">2</text>
+          <text class="dl-lb" x="60" y="672" text-anchor="middle" style="font-size:17px;letter-spacing:.06em">TƯ THẾ</text>
+        </g>
+        <g transform="translate(376 0)">
+          <path class="dl-cord" d="M60 412V446"/><path class="dl-tag" d="M20 462H100V640H20Z"/><circle cx="60" cy="480" r="8" fill="#0b1232"/>
+          <path class="dl-ink" d="M34 590C34 540 66 520 86 520M72 508L88 520L74 534"/><path class="dl-ink" d="M34 590V588" stroke-width="7"/>
+          <circle class="dl-bead" cx="60" cy="440" r="14"/><text class="dl-num" x="60" y="447" text-anchor="middle" style="font-size:19px">3</text>
+          <text class="dl-lb" x="60" y="672" text-anchor="middle" style="font-size:17px;letter-spacing:.06em">TRƯỢT</text>
+        </g>
+      </g>
+    </svg>
+    <ul class="bullets">
+      <li class="reveal">Mỗi style có một nhóm hình cố định, gọi là <b>diễn viên</b>.</li>
+      <li class="reveal">Mỗi kiểu slide quy định một <b>tư thế</b>: vị trí, kích thước, màu.</li>
+      <li class="reveal">Khi chuyển slide, trình duyệt cho hình <b>trượt dần</b> sang tư thế mới.</li>
+      <li class="reveal">Chữ của slide mới hiện sau, khi hình đã bắt đầu chuyển động.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-text">Cùng tên là cùng một vật</p>
+    </aside>
+  </section>
+
+  <!-- 5. content -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Một khung cho mọi màn hình</h2>
+    <ul class="bullets">
+      <li class="reveal">Slide được thiết kế ở một kích thước cố định 1920×1080.</li>
+      <li class="reveal">Màn hình to hay nhỏ, cả khung được phóng to, thu nhỏ theo.</li>
+      <li class="reveal">Không vỡ bố cục trên máy chiếu, laptop hay điện thoại.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-big">16:9</p>
+      <p class="hl-text">Tỷ lệ khung chuẩn</p>
+    </aside>
+  </section>
+
+  <!-- 6. two-col -->
+  <section class="slide" data-layout="two-col">
+    <h2 class="title reveal">PowerPoint Morph và SlideFly</h2>
+    <div class="cols">
+      <div class="col reveal-left">
+        <h3>PowerPoint</h3>
+        <ul>
+          <li>Chạy trong PowerPoint</li>
+          <li>Sửa trực tiếp bằng chuột</li>
+          <li>Khớp hình theo tên</li>
+        </ul>
+      </div>
+      <div class="col reveal-right">
+        <h3>SlideFly</h3>
+        <ul>
+          <li>Chạy trên trình duyệt</li>
+          <li>Sửa bằng nội dung chữ</li>
+          <li>Khớp hình theo data-actor</li>
+        </ul>
+      </div>
+    </div>
+    <p class="takeaway reveal">Cùng một ý tưởng: vật trùng tên thì trượt sang vị trí mới.</p>
+  </section>
+
+  <!-- 7. stats -->
+  <section class="slide" data-layout="stats">
+    <h2 class="title reveal">Ba bậc cỡ chữ tự chọn</h2>
+    <div class="stats">
+      <div class="stat reveal"><span class="stat-num">≤3</span><span class="stat-label">ý trên một slide: chữ lớn nhất, dễ đọc từ xa</span></div>
+      <div class="stat reveal"><span class="stat-num">4-5</span><span class="stat-label">ý trên một slide: chữ vừa, vẫn thoáng</span></div>
+      <div class="stat reveal"><span class="stat-num">6+</span><span class="stat-label">ý trên một slide: chữ nhỏ, nên tách slide</span></div>
+    </div>
+    <svg class="art" style="left:120px; top:836px" width="1680" height="150" viewBox="0 0 1680 150" aria-hidden="true">
+      <g class="reveal">
+        <path class="dl-cord" d="M264 0V12"/><rect x="250" y="10" width="28" height="9" rx="3" fill="#3a1410"/>
+        <ellipse class="dl-lamp" cx="264" cy="64" rx="66" ry="46"/>
+        <path d="M264 18V110M230 24Q208 64 230 104M298 24Q320 64 298 104" fill="none" stroke="#7a1d10" stroke-opacity=".4" stroke-width="2"/>
+        <path class="dl-cut" d="M208.0 64L223.0 39L238.0 64L223.0 89Z"/>
+        <path class="dl-cut" d="M249.0 64L264.0 39L279.0 64L264.0 89Z"/>
+        <path class="dl-cut" d="M290.0 64L305.0 39L320.0 64L305.0 89Z"/>
+        <rect x="250" y="104" width="28" height="9" rx="3" fill="#3a1410"/><path d="M258 114L256 132M264 114V136M270 114L272 132" fill="none" stroke="#d6401f" stroke-width="3" stroke-linecap="round"/>
+        <path class="dl-cord" d="M840 0V12"/><rect x="826" y="10" width="28" height="9" rx="3" fill="#3a1410"/>
+        <ellipse class="dl-lamp" cx="840" cy="64" rx="66" ry="46"/>
+        <path d="M840 18V110M806 24Q784 64 806 104M874 24Q896 64 874 104" fill="none" stroke="#7a1d10" stroke-opacity=".4" stroke-width="2"/>
+        <path class="dl-cut" d="M784.0 64L793.0 48L802.0 64L793.0 80Z"/>
+        <path class="dl-cut" d="M807.5 64L816.5 48L825.5 64L816.5 80Z"/>
+        <path class="dl-cut" d="M831.0 64L840.0 48L849.0 64L840.0 80Z"/>
+        <path class="dl-cut" d="M854.5 64L863.5 48L872.5 64L863.5 80Z"/>
+        <path class="dl-cut" d="M878.0 64L887.0 48L896.0 64L887.0 80Z"/>
+        <rect x="826" y="104" width="28" height="9" rx="3" fill="#3a1410"/><path d="M834 114L832 132M840 114V136M846 114L848 132" fill="none" stroke="#d6401f" stroke-width="3" stroke-linecap="round"/>
+        <path class="dl-cord" d="M1416 0V12"/><rect x="1402" y="10" width="28" height="9" rx="3" fill="#3a1410"/>
+        <ellipse class="dl-lamp" cx="1416" cy="64" rx="66" ry="46"/>
+        <path d="M1416 18V110M1382 24Q1360 64 1382 104M1450 24Q1472 64 1450 104" fill="none" stroke="#7a1d10" stroke-opacity=".4" stroke-width="2"/>
+        <path class="dl-cut" d="M1360.0 64L1366.0 53L1372.0 64L1366.0 75Z"/>
+        <path class="dl-cut" d="M1376.7 64L1382.7 53L1388.7 64L1382.7 75Z"/>
+        <path class="dl-cut" d="M1393.3 64L1399.3 53L1405.3 64L1399.3 75Z"/>
+        <path class="dl-cut" d="M1410.0 64L1416.0 53L1422.0 64L1416.0 75Z"/>
+        <path class="dl-cut" d="M1426.7 64L1432.7 53L1438.7 64L1432.7 75Z"/>
+        <path class="dl-cut" d="M1443.3 64L1449.3 53L1455.3 64L1449.3 75Z"/>
+        <path class="dl-cut" d="M1460.0 64L1466.0 53L1472.0 64L1466.0 75Z"/>
+        <rect x="1402" y="104" width="28" height="9" rx="3" fill="#3a1410"/><path d="M1410 114L1408 132M1416 114V136M1422 114L1424 132" fill="none" stroke="#d6401f" stroke-width="3" stroke-linecap="round"/>
+      </g>
+      <g class="reveal"><path class="dl-ghost" d="M1416 4V118"/><path class="dl-line" d="M1320 64H1332M1512 64H1500"/><path class="dl-ar" d="M1308 64l16 -7v14zM1524 64l-16 -7v14z"/></g>
+    </svg>
+  </section>
+
+  <!-- 8. timeline -->
+  <section class="slide s-tl" data-layout="timeline">
+    <h2 class="title reveal">Quy trình dựng một deck</h2>
+    <svg class="art" style="left:120px; top:560px" width="1680" height="140" viewBox="0 0 1680 140" aria-hidden="true">
+      <defs><radialGradient id="dlH4"><stop offset="0" stop-color="#ffb84d" stop-opacity=".55"/><stop offset=".55" stop-color="#ff9a3a" stop-opacity=".2"/><stop offset="1" stop-color="#ff9a3a" stop-opacity="0"/></radialGradient></defs>
+      <circle cx="11.0" cy="70" r="30.0" fill="url(#dlH4)" fill-opacity="0.50"/>
+      <circle cx="353.4" cy="70" r="38.2" fill="url(#dlH4)" fill-opacity="0.75"/>
+      <circle cx="695.8" cy="70" r="46.5" fill="url(#dlH4)" fill-opacity="1.00"/>
+      <circle cx="1038.2" cy="70" r="54.8" fill="url(#dlH4)" fill-opacity="1.00"/>
+      <circle cx="1380.6" cy="70" r="63.0" fill="url(#dlH4)" fill-opacity="1.00"/>
+      <g class="reveal">
+        <path class="dl-line" style="stroke-width:2;stroke-opacity:0.90" d="M328.4 70A25 25 0 0 1 378.4 70"/>
+        <path class="dl-line" style="stroke-width:2;stroke-opacity:0.90" d="M670.8 70A25 25 0 0 1 720.8 70"/>
+        <path class="dl-line" style="stroke-width:2;stroke-opacity:0.72" d="M661.8 70A34 34 0 0 1 729.8 70"/>
+        <path class="dl-line" style="stroke-width:2;stroke-opacity:0.90" d="M1013.2 70A25 25 0 0 1 1063.2 70"/>
+        <path class="dl-line" style="stroke-width:2;stroke-opacity:0.72" d="M1004.2 70A34 34 0 0 1 1072.2 70"/>
+        <path class="dl-line" style="stroke-width:2;stroke-opacity:0.54" d="M995.2 70A43 43 0 0 1 1081.2 70"/>
+        <path class="dl-line" style="stroke-width:2;stroke-opacity:0.90" d="M1355.6 70A25 25 0 0 1 1405.6 70"/>
+        <path class="dl-line" style="stroke-width:2;stroke-opacity:0.72" d="M1346.6 70A34 34 0 0 1 1414.6 70"/>
+        <path class="dl-line" style="stroke-width:2;stroke-opacity:0.54" d="M1337.6 70A43 43 0 0 1 1423.6 70"/>
+        <path class="dl-line" style="stroke-width:2;stroke-opacity:0.36" d="M1328.6 70A52 52 0 0 1 1432.6 70"/>
+      </g>
+      <path class="dl-line draw" pathLength="1" style="--d:0.15" d="M35.0 62Q182.2 22 321.4 62"/>
+      <path class="dl-ar" d="M329.4 64l-19 3l6 -13z"/>
+      <path class="dl-line draw" pathLength="1" style="--d:0.35" d="M377.4 62Q524.6 22 663.8 62"/>
+      <path class="dl-ar" d="M671.8 64l-19 3l6 -13z"/>
+      <path class="dl-line draw" pathLength="1" style="--d:0.55" d="M719.8 62Q867.0 22 1006.2 62"/>
+      <path class="dl-ar" d="M1014.2 64l-19 3l6 -13z"/>
+      <path class="dl-line draw" pathLength="1" style="--d:0.75" d="M1062.2 62Q1209.4 22 1348.6 62"/>
+      <path class="dl-ar" d="M1356.6 64l-19 3l6 -13z"/>
+    </svg>
+    <div class="timeline">
+      <div class="step reveal"><div class="when">01</div><h3>Nội dung</h3><p>Gom dàn ý, số liệu có nguồn</p></div>
+      <div class="step reveal"><div class="when">02</div><h3>Chọn style</h3><p>Xem 3 bản thử rồi chọn</p></div>
+      <div class="step reveal"><div class="when">03</div><h3>Dựng</h3><p>Viết HTML theo khung mẫu</p></div>
+      <div class="step reveal"><div class="when">04</div><h3>Đo</h3><p>Chạy deck.audit() từng slide</p></div>
+      <div class="step reveal"><div class="when">05</div><h3>Bàn giao</h3><p>Gộp thành một file HTML</p></div>
+    </div>
+  </section>
+
+  <!-- 9. quote -->
+  <section class="slide" data-layout="quote">
+    <blockquote class="quote reveal-blur">Hình trang trí đứng yên chỉ là nền. Khi nó di chuyển, nó kể chuyện.</blockquote>
+    <p class="cite reveal">Nguyên tắc của bộ mẫu</p>
+  </section>
+
+  <!-- 10. closing -->
+  <section class="slide" data-layout="closing">
+    <p class="kicker reveal">Hết phần mẫu</p>
+    <h2 class="title reveal">Cảm ơn</h2>
+    <p class="subtitle reveal">Đổi style chỉ cần thay một dòng link CSS.</p>
+  </section>
+
+</div>
+</div>
+<script src="../skill/slidefly/assets/morph-viz-diagrams.js"></script>
+<script src="../skill/slidefly/assets/morph-viz.js"></script>
+<script src="../skill/slidefly/assets/morph-engine.js"></script>
+<script src="../skill/slidefly/assets/morph-nav.js"></script>
+<script src="../skill/slidefly/assets/morph-audit.js"></script>
+<script src="../skill/slidefly/assets/morph-steps.js"></script>
+<script src="../skill/slidefly/assets/morph-icons.js"></script>
+</body>
+</html>

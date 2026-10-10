@@ -70,7 +70,7 @@ Dùng cùng `blueprint.css`. Mỗi slide đáng nhớ có một hình SVG inline
 - `deck.audit()` không báo lỗi; xuất thử `export-pptx.py` để chắc SVG sang được PowerPoint.
 - Rà màu: trong SVG chỉ có `var(--line)`, `var(--line-soft)`, `var(--hair)`, `var(--fill)`, `var(--deep)` hoặc mã trắng xanh tương đương.
 - **PPTX:** `<svg>` là con trực tiếp của slide, có `style="left:..px; top:..px"` và thuộc tính `width`, `height` thì xuất thành một hình vector, hiện bằng hiệu ứng quét nếu bên trong có `draw`. Lớp CSS chỉ được đọc khi selector cuối là tên lớp (`.bp-o`), nên đặt tên lớp riêng có tiền tố.
-- SVG trên slide `cover`, `section`, `quote`, `closing` chỉ hiện ở bản HTML (script không xuất hình ở các kiểu này). Cần hình bìa trong PPTX thì dựng bìa bằng `data-layout="free"` với `data-stage="cover"`.
+- SVG inline xuất sang PPTX trên mọi layout, kể cả `cover`, `section`, `quote`, `closing`.
 - Chữ trong SVG thành một phần của hình, không sửa được trong PowerPoint: chỉ để nhãn kỹ thuật ngắn trong SVG, câu chữ cần sửa để ngoài SVG.
 
 ## 6. Cấm

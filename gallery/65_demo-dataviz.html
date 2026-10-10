@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mẫu SlideFly · Kể chuyện số liệu</title>
+<!-- Đổi style: thay đúng 1 dòng link styles/*.css bên dưới. Minh họa SVG vẽ theo styles/dataviz.art.md -->
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-base.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-layouts.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/styles/dataviz.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-motion.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-viz.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-icons.css">
+<style>
+/* newsroom marks (dataviz.art.md): colour = value only (ramp r0..r6), ink for axes, blue pencil for notes */
+.art { position: absolute; overflow: visible; pointer-events: none; }
+.dv-d { stroke: var(--ink); stroke-width: 2.2; }
+.dv-r0 { fill: var(--r0); } .dv-r1 { fill: var(--r1); } .dv-r2 { fill: var(--r2); } .dv-r3 { fill: var(--r3); }
+.dv-r4 { fill: var(--r4); } .dv-r5 { fill: var(--r5); } .dv-r6 { fill: var(--r6); }
+.dv-line { fill: none; stroke: var(--ink); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+.dv-ax { fill: none; stroke: var(--ink); stroke-width: 2.4; stroke-linecap: round; }
+.dv-hair { fill: none; stroke: var(--ink); stroke-opacity: .5; stroke-width: 2; stroke-linecap: round; }
+.dv-mean { fill: none; stroke: var(--ink); stroke-opacity: .6; stroke-width: 2.2; stroke-dasharray: 9 8; }
+.dv-lead { fill: none; stroke: var(--blue); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.dv-fr { fill: var(--sheet); stroke: var(--ink); stroke-width: 2.2; }
+.dv-slotd { fill: none; stroke: var(--ink); stroke-opacity: .6; stroke-width: 2.2; stroke-dasharray: 6 5; }
+.dv-mono { fill: var(--muted); font-family: var(--font-mono); font-size: 20px; font-weight: 500; letter-spacing: 0.06em; }
+.dv-sm { font-size: 18px; }
+.dv-hand { fill: var(--blue-t); font-family: var(--font-hand); font-size: 36px; }
+/* the timeline figure draws its own dots on the axis */
+.s-tl .step::before { display: none; }
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<div class="deck-stage">
+  <!-- Diễn viên (hình trang trí) do engine tự tạo từ --actors của style. -->
+
+  <!-- 1. cover + HÌNH 1: biểu đồ đường của một vật qua các slide, ghi chú ghim vào điểm cuối (minh họa, không có số liệu) -->
+  <section class="slide" data-layout="cover">
+    <svg class="art" style="left:1100px; top:250px" width="700" height="480" viewBox="0 0 700 480" aria-hidden="true">
+  <path class="dv-mean" d="M45.5 240H675"/>
+  <g class="reveal"><text class="dv-mono dv-sm" x="62" y="230">chuẩn</text></g>
+  <path class="dv-line draw" pathLength="1" style="--d:0" d="M108.5 334C125.3 325.3 175.5 286.2 209.1 281.5C242.7 276.9 284.9 310.4 310.1 306.1C335.2 301.8 343.2 272.2 360 255.5C376.9 238.9 385.8 208.7 411 206.1C436.3 203.6 486.7 243 511.6 240.2C536.5 237.5 543.9 205.9 560.6 189.4C577.3 173 603.3 149.3 611.8 141.3"/>
+  <g class="reveal"><circle class="dv-d dv-r2" cx="108.5" cy="334" r="12"/><circle class="dv-d dv-r3" cx="209.3" cy="282" r="12"/><circle class="dv-d dv-r3" cx="310.1" cy="306" r="12"/><circle class="dv-d dv-r5" cx="410.9" cy="206" r="12"/><circle class="dv-d dv-r4" cx="511.7" cy="240" r="12"/><circle class="dv-d dv-r6" cx="612.5" cy="142" r="12"/></g>
+  <g class="reveal"><text class="dv-hand" x="64" y="56">một vật, nhiều tư thế</text>
+  <path class="dv-lead" d="M344 58C358.3 60.7 400.7 66.9 430 73.9C459.3 81 495.9 91.6 519.9 100.3C543.9 109 564.9 122 573.9 126.3"/><path class="dv-lead" d="M635.7 128.8C636.1 129.9 637.6 133 638.1 135.1C638.7 137.3 639.1 139.5 639.2 141.8C639.3 144 639.1 146.3 638.7 148.5C638.3 150.7 637.6 153 636.6 155.1C635.6 157.2 634.3 159.3 632.8 161.1C631.2 162.9 629.3 164.6 627.3 165.9C625.2 167.2 622.9 168.3 620.5 168.9C618.1 169.6 615.6 170 613.1 170C610.6 170 608.1 169.7 605.7 169.1C603.4 168.5 601.1 167.6 598.9 166.4C596.8 165.3 594.8 163.9 593 162.3C591.3 160.8 589.6 158.9 588.3 157C587 155 585.9 152.9 585.1 150.7C584.4 148.5 583.9 146.1 583.7 143.8C583.5 141.5 583.6 139.1 584.1 136.8C584.5 134.5 585.2 132.2 586.2 130.1C587.2 128 588.6 125.9 590.1 124C591.6 122.2 593.4 120.4 595.3 119C597.3 117.5 599.5 116.2 601.8 115.2C604.1 114.3 606.6 113.6 609.2 113.3C611.7 113 614.3 113 616.8 113.4C619.3 113.8 622.9 115.3 624.2 115.7"/></g>
+  <g class="reveal"><text class="dv-mono dv-sm" x="62" y="424">minh họa, chưa có số liệu</text></g>
+</svg>
+    <p class="kicker reveal">SlideFly</p>
+    <h1 class="title reveal">Slide chuyển cảnh kiểu Morph trên trình duyệt</h1>
+    <p class="subtitle reveal">Một file HTML, mở bằng Chrome là trình chiếu được</p>
+    <p class="meta reveal">Bộ mẫu 9 kiểu slide</p>
+  </section>
+
+  <!-- 2. agenda -->
+  <section class="slide" data-layout="agenda">
+    <h2 class="title reveal">Nội dung</h2>
+    <ol class="agenda-list">
+      <li><span class="num reveal">01</span><div><h3 class="reveal" data-morph-id="s1">Cơ chế diễn viên</h3><p class="reveal">Hình cố định, chỉ đổi tư thế</p></div></li>
+      <li><span class="num reveal">02</span><div><h3 class="reveal">Chín kiểu slide</h3><p class="reveal">Từ trang bìa đến lời cảm ơn</p></div></li>
+      <li><span class="num reveal">03</span><div><h3 class="reveal">Tự co giãn</h3><p class="reveal">Ít chữ thì chữ to hơn</p></div></li>
+      <li><span class="num reveal">04</span><div><h3 class="reveal">Đo độ lấp đầy</h3><p class="reveal">Máy tự soát slide bị trống</p></div></li>
+    </ol>
+  </section>
+
+  <!-- 3. section -->
+  <section class="slide" data-layout="section">
+    <p class="num reveal">01</p>
+    <h2 class="title reveal" data-morph-id="s1">Cơ chế diễn viên</h2>
+    <p class="subtitle reveal">Morph là cùng một vật đổi vị trí giữa hai slide</p>
+  </section>
+
+  <!-- 4. content + HÌNH 2: biểu đồ độ dốc giữa tư thế A và B, ba khung cùng một chấm -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Hình cố định, chỉ đổi tư thế</h2>
+    <svg class="art" style="left:1240px; top:267px" width="570" height="730" viewBox="0 0 570 730" aria-hidden="true">
+  <g class="reveal"><path class="dv-ax" d="M150 84V252M430 84V252"/>
+  <text class="dv-mono dv-sm" x="150" y="68" text-anchor="middle">tư thế A</text><text class="dv-mono dv-sm" x="430" y="68" text-anchor="middle">tư thế B</text></g>
+  <path class="dv-line draw" pathLength="1" style="--d:0.2" d="M150 112L430 196"/><path class="dv-line draw" pathLength="1" style="--d:0.32" d="M150 148L430 124"/><path class="dv-line draw" pathLength="1" style="--d:0.44" d="M150 190L430 232"/><path class="dv-line draw" pathLength="1" style="--d:0.56" d="M150 228L430 160"/>
+  <g class="reveal"><circle class="dv-d dv-r0" cx="150" cy="112" r="11"/><circle class="dv-d dv-r0" cx="430" cy="196" r="11"/><circle class="dv-d dv-r2" cx="150" cy="148" r="11"/><circle class="dv-d dv-r2" cx="430" cy="124" r="11"/><circle class="dv-d dv-r5" cx="150" cy="190" r="11"/><circle class="dv-d dv-r5" cx="430" cy="232" r="11"/><circle class="dv-d dv-r6" cx="150" cy="228" r="11"/><circle class="dv-d dv-r6" cx="430" cy="160" r="11"/><text class="dv-mono dv-sm" x="126" y="118" text-anchor="end">1</text><text class="dv-mono dv-sm" x="126" y="154" text-anchor="end">2</text><text class="dv-mono dv-sm" x="126" y="196" text-anchor="end">3</text><text class="dv-mono dv-sm" x="126" y="234" text-anchor="end">4</text></g>
+  <g class="reveal"><rect class="dv-fr" x="70" y="500" width="120" height="86"/><circle class="dv-d dv-r1" cx="100" cy="528" r="12"/><rect class="dv-fr" x="230" y="500" width="120" height="86"/><circle class="dv-d dv-r2" cx="292" cy="544" r="12"/><rect class="dv-fr" x="390" y="500" width="120" height="86"/><circle class="dv-d dv-r6" cx="484" cy="558" r="12"/><path class="dv-lead" d="M196 543L222 543M210 536L222 543L210 550M356 543L382 543M370 536L382 543L370 550"/><text class="dv-mono dv-sm" x="130" y="618" text-anchor="middle">1</text><text class="dv-mono dv-sm" x="290" y="618" text-anchor="middle">2</text><text class="dv-mono dv-sm" x="450" y="618" text-anchor="middle">3</text></g>
+</svg>
+    <ul class="bullets">
+      <li class="reveal">Mỗi style có một nhóm hình cố định, gọi là <b>diễn viên</b>.</li>
+      <li class="reveal">Mỗi kiểu slide quy định một <b>tư thế</b>: vị trí, kích thước, màu.</li>
+      <li class="reveal">Khi chuyển slide, trình duyệt cho hình <b>trượt dần</b> sang tư thế mới.</li>
+      <li class="reveal">Chữ của slide mới hiện sau, khi hình đã bắt đầu chuyển động.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-text">Cùng tên là cùng một vật</p>
+    </aside>
+  </section>
+
+  <!-- 5. content (second in a row: parity changes the pose) -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Một khung cho mọi màn hình</h2>
+    <ul class="bullets">
+      <li class="reveal">Slide được thiết kế ở một kích thước cố định 1920×1080.</li>
+      <li class="reveal">Màn hình to hay nhỏ, cả khung được phóng to, thu nhỏ theo.</li>
+      <li class="reveal">Không vỡ bố cục trên máy chiếu, laptop hay điện thoại.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-big">16:9</p>
+      <p class="hl-text">Tỷ lệ khung chuẩn</p>
+    </aside>
+  </section>
+
+  <!-- 6. two-col + takeaway -->
+  <section class="slide" data-layout="two-col">
+    <h2 class="title reveal">PowerPoint Morph và SlideFly</h2>
+    <div class="cols">
+      <div class="col reveal-left">
+        <h3>PowerPoint</h3>
+        <ul>
+          <li>Chạy trong PowerPoint</li>
+          <li>Sửa trực tiếp bằng chuột</li>
+          <li>Khớp hình theo tên</li>
+        </ul>
+      </div>
+      <div class="col reveal-right">
+        <h3>SlideFly</h3>
+        <ul>
+          <li>Chạy trên trình duyệt</li>
+          <li>Sửa bằng nội dung chữ</li>
+          <li>Khớp hình theo data-actor</li>
+        </ul>
+      </div>
+    </div>
+    <p class="takeaway reveal">Cùng một ý tưởng: vật trùng tên thì trượt sang vị trí mới.</p>
+  </section>
+
+  <!-- 7. stats + HÌNH 4: biểu đồ đơn vị 3, 5, 7 chấm, chấm càng nhỏ thì chữ càng nhỏ; ô trống nét đứt -->
+  <section class="slide" data-layout="stats">
+    <h2 class="title reveal">Ba bậc cỡ chữ tự chọn</h2>
+    <div class="stats">
+      <div class="stat reveal"><span class="stat-num">≤3</span><span class="stat-label">ý trên một slide: chữ lớn nhất, dễ đọc từ xa</span></div>
+      <div class="stat reveal"><span class="stat-num">4-5</span><span class="stat-label">ý trên một slide: chữ vừa, vẫn thoáng</span></div>
+      <div class="stat reveal"><span class="stat-num">6+</span><span class="stat-label">ý trên một slide: chữ nhỏ, nên tách slide</span></div>
+    </div>
+    <svg class="art" style="left:120px; top:836px" width="1680" height="150" viewBox="0 0 1680 150" aria-hidden="true">
+  <g class="reveal"><circle class="dv-d dv-r2" cx="208" cy="58" r="21"/><circle class="dv-d dv-r2" cx="264" cy="58" r="21"/><circle class="dv-d dv-r2" cx="320" cy="58" r="21"/><path class="dv-ax" d="M154 104H374"/><text class="dv-mono dv-sm" x="264" y="136" text-anchor="middle">cỡ chữ lớn</text><circle class="dv-d dv-r4" cx="760" cy="58" r="15"/><circle class="dv-d dv-r4" cx="800" cy="58" r="15"/><circle class="dv-d dv-r4" cx="840" cy="58" r="15"/><circle class="dv-d dv-r4" cx="880" cy="58" r="15"/><circle class="dv-d dv-r4" cx="920" cy="58" r="15"/><path class="dv-ax" d="M730 104H950"/><text class="dv-mono dv-sm" x="840" y="136" text-anchor="middle">cỡ chữ vừa</text><circle class="dv-d dv-r6" cx="1326" cy="58" r="11"/><circle class="dv-d dv-r6" cx="1356" cy="58" r="11"/><circle class="dv-d dv-r6" cx="1386" cy="58" r="11"/><circle class="dv-d dv-r6" cx="1416" cy="58" r="11"/><circle class="dv-d dv-r6" cx="1446" cy="58" r="11"/><circle class="dv-slotd" cx="1476" cy="58" r="11"/><circle class="dv-slotd" cx="1506" cy="58" r="11"/><path class="dv-ax" d="M1306 104H1526"/><text class="dv-mono dv-sm" x="1416" y="136" text-anchor="middle">cỡ chữ nhỏ</text></g>
+</svg>
+  </section>
+
+  <!-- 8. timeline + HÌNH 3: các chấm giá trị trên trục, ô kế tiếp bỏ trống -->
+  <section class="slide s-tl" data-layout="timeline">
+    <h2 class="title reveal">Quy trình dựng một deck</h2>
+    <svg class="art" style="left:120px; top:560px" width="1680" height="140" viewBox="0 0 1680 140" aria-hidden="true">
+  <g class="reveal"><path class="dv-hair" d="M16 94V114"/><path class="dv-hair" d="M358.4 94V114"/><path class="dv-hair" d="M700.8 94V114"/><path class="dv-hair" d="M1043.2 94V114"/><path class="dv-hair" d="M1385.6 94V114"/><circle class="dv-d dv-r0" cx="16" cy="70" r="15"/><circle class="dv-d dv-r1" cx="358.4" cy="70" r="15"/><circle class="dv-d dv-r3" cx="700.8" cy="70" r="15"/><circle class="dv-d dv-r5" cx="1043.2" cy="70" r="15"/><circle class="dv-d dv-r6" cx="1385.6" cy="70" r="15"/><path class="dv-lead" d="M1406.9 52.8C1407.5 53.8 1409.9 56.5 1410.9 58.5C1411.9 60.6 1412.6 62.9 1412.9 65.1C1413.3 67.3 1413.2 69.7 1412.9 71.9C1412.6 74.1 1411.9 76.4 1411 78.4C1410.1 80.4 1408.9 82.4 1407.6 84.1C1406.3 85.9 1404.8 87.5 1403.1 88.9C1401.4 90.4 1399.6 91.7 1397.6 92.8C1395.7 93.9 1393.5 94.8 1391.3 95.5C1389.1 96.1 1386.7 96.5 1384.4 96.6C1382 96.7 1379.6 96.4 1377.3 95.9C1375 95.3 1372.6 94.3 1370.6 93.2C1368.5 92 1366.6 90.4 1365 88.7C1363.3 87 1361.9 85 1360.9 83C1359.8 80.9 1359 78.7 1358.5 76.4C1358 74.2 1357.8 71.8 1357.8 69.6C1357.9 67.3 1358.3 65 1359 62.8C1359.6 60.6 1360.6 58.5 1361.8 56.6C1363 54.6 1364.5 52.8 1366.1 51.2C1367.8 49.6 1369.7 48.2 1371.7 47C1373.8 45.9 1376 45 1378.2 44.4C1380.5 43.7 1382.9 43.4 1385.2 43.3C1387.6 43.2 1391.2 43.7 1392.4 43.8"/></g>
+  <g class="reveal"><circle class="dv-slotd" cx="1728" cy="70" r="17"/></g>
+</svg>
+    <div class="timeline">
+      <div class="step reveal"><div class="when">01</div><h3>Nội dung</h3><p>Gom dàn ý, số liệu có nguồn</p></div>
+      <div class="step reveal"><div class="when">02</div><h3>Chọn style</h3><p>Xem 3 bản thử rồi chọn</p></div>
+      <div class="step reveal"><div class="when">03</div><h3>Dựng</h3><p>Viết HTML theo khung mẫu</p></div>
+      <div class="step reveal"><div class="when">04</div><h3>Đo</h3><p>Chạy deck.audit() từng slide</p></div>
+      <div class="step reveal"><div class="when">05</div><h3>Bàn giao</h3><p>Gộp thành một file HTML</p></div>
+    </div>
+  </section>
+
+  <!-- 9. quote -->
+  <section class="slide" data-layout="quote">
+    <blockquote class="quote reveal-blur">Hình trang trí đứng yên chỉ là nền. Khi nó di chuyển, nó kể chuyện.</blockquote>
+    <p class="cite reveal">Nguyên tắc của bộ mẫu</p>
+  </section>
+
+  <!-- 10. closing -->
+  <section class="slide" data-layout="closing">
+    <p class="kicker reveal">Hết phần mẫu</p>
+    <h2 class="title reveal">Cảm ơn</h2>
+    <p class="subtitle reveal">Đổi style chỉ cần thay một dòng link CSS.</p>
+  </section>
+
+</div>
+</div>
+<script src="../skill/slidefly/assets/morph-viz-diagrams.js"></script>
+<script src="../skill/slidefly/assets/morph-viz.js"></script>
+<script src="../skill/slidefly/assets/morph-engine.js"></script>
+<script src="../skill/slidefly/assets/morph-nav.js"></script>
+<script src="../skill/slidefly/assets/morph-audit.js"></script>
+<script src="../skill/slidefly/assets/morph-steps.js"></script>
+<script src="../skill/slidefly/assets/morph-icons.js"></script>
+</body>
+</html>

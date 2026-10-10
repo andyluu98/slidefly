@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mẫu SlideFly · Bảng trắng</title>
+<!-- Đổi style: thay đúng 1 dòng link styles/*.css bên dưới. Minh họa SVG vẽ theo styles/whiteboard.art.md -->
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-base.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-layouts.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/styles/whiteboard.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-motion.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-viz.css">
+<link rel="stylesheet" href="../skill/slidefly/assets/morph-icons.css">
+<style>
+/* hand-drawn marker figures (whiteboard.art.md): black = things, blue = signals, orange = the answer */
+.art { position: absolute; overflow: visible; pointer-events: none; }
+.wb-k { fill: none; stroke: var(--ink); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+.wb-b { fill: none; stroke: var(--blue); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+.wb-o { fill: none; stroke: var(--orange); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+.wb-t { fill: none; stroke: var(--blue); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+.wb-stn { fill: #F7F7F2; stroke: var(--blue); stroke-width: 7; stroke-linecap: round; }
+.wb-ghost { fill: none; stroke: var(--ink); stroke-opacity: .38; stroke-width: 5; stroke-dasharray: 9 12; stroke-linecap: round; }
+.wb-dot { fill: none; stroke: var(--blue); stroke-width: 9; stroke-linecap: round; stroke-dasharray: 1 20; }
+.wb-g { opacity: .4; }
+.wb-hand { fill: var(--orange-d); font-family: var(--font-hand); font-size: 62px; }
+.wb-sm { fill: var(--ink); font-size: 32px; }
+.wb-od { fill: var(--orange-d); }
+/* the timeline figure draws its own stations on the axis */
+.s-tl .step::before { display: none; }
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<div class="deck-stage">
+  <!-- Diễn viên (hình trang trí) do engine tự tạo từ --actors của style. -->
+
+  <!-- 1. cover + HÌNH 1: máy bay giấy bay theo vệt chấm, vòng cam là câu trả lời -->
+  <section class="slide" data-layout="cover">
+    <svg class="art" style="left:1110px; top:290px" width="720" height="380" viewBox="0 0 720 380" aria-hidden="true">
+  <g class="reveal wb-g"><path class="wb-k" d="M122.4 300L30 263.6L46.8 300L30 336.4L122.4 300"/><path class="wb-t" d="M46.8 300L122.4 300M46.8 300L72 279.3"/></g>
+  <path class="wb-dot" d="M138 306C210 340 290 310 316 236"/>
+  <g class="reveal"><path class="wb-o" d="M200 126L282 136M184 190L272 192M200 254L280 240"/><path class="wb-o" d="M654 120L670 94M670 164L704 158M654 208L672 232"/></g>
+  <path class="wb-k draw" pathLength="1" style="--d:0" d="M630 190L300 60L360 190L300 320L630 190"/>
+  <path class="wb-t draw" pathLength="1" style="--d:.5" d="M360 190L630 190M360 190L450 116"/>
+  <g class="reveal"><text class="wb-hand" x="46" y="176" transform="rotate(-7 46 176)">bay!</text></g>
+</svg>
+    <p class="kicker reveal">SlideFly</p>
+    <h1 class="title reveal">Slide chuyển cảnh kiểu Morph trên trình duyệt</h1>
+    <p class="subtitle reveal">Một file HTML, mở bằng Chrome là trình chiếu được</p>
+    <p class="meta reveal">Bộ mẫu 9 kiểu slide</p>
+  </section>
+
+  <!-- 2. agenda -->
+  <section class="slide" data-layout="agenda">
+    <h2 class="title reveal">Nội dung</h2>
+    <ol class="agenda-list">
+      <li><span class="num reveal">01</span><div><h3 class="reveal" data-morph-id="s1">Cơ chế diễn viên</h3><p class="reveal">Hình cố định, chỉ đổi tư thế</p></div></li>
+      <li><span class="num reveal">02</span><div><h3 class="reveal">Chín kiểu slide</h3><p class="reveal">Từ trang bìa đến lời cảm ơn</p></div></li>
+      <li><span class="num reveal">03</span><div><h3 class="reveal">Tự co giãn</h3><p class="reveal">Ít chữ thì chữ to hơn</p></div></li>
+      <li><span class="num reveal">04</span><div><h3 class="reveal">Đo độ lấp đầy</h3><p class="reveal">Máy tự soát slide bị trống</p></div></li>
+    </ol>
+  </section>
+
+  <!-- 3. section -->
+  <section class="slide" data-layout="section">
+    <p class="num reveal">01</p>
+    <h2 class="title reveal" data-morph-id="s1">Cơ chế diễn viên</h2>
+    <p class="subtitle reveal">Morph là cùng một vật đổi vị trí giữa hai slide</p>
+  </section>
+
+  <!-- 4. content + HÌNH 2: một vật, hai tư thế (A, B), ba tư thế liền nhau; vòng cam ôm câu chốt -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Hình cố định, chỉ đổi tư thế</h2>
+    <svg class="art" style="left:1260px; top:280px" width="540" height="700" viewBox="0 0 540 700" aria-hidden="true">
+  <g class="reveal"><path class="wb-ghost" d="M26.5 100.8L205.5 99.9M198.9 93.9L201.2 205M204.9 198.9L27.2 199.5M30.3 203.1L31.2 96.2"/><text class="wb-hand wb-sm" x="115" y="248" text-anchor="middle">tư thế A</text></g>
+  <path class="wb-t" d="M214 140Q256.8 82.8 322 112M302 113.4L322 112M309.7 96.2L322 112"/>
+  <g transform="translate(415 130) rotate(-12)"><path class="wb-k draw" pathLength="1" style="--d:.25" d="M-95.4 -51L96.1 -50.2M91 -58.7L88.1 56.8M96.8 52.6L-96.6 50.5M-90.1 55.8L-89.8 -57.2"/><circle class="wb-o" cx="0" cy="0" r="9"/></g>
+  <g class="reveal"><text class="wb-hand wb-sm" x="415" y="248" text-anchor="middle">tư thế B</text>
+  <path class="wb-t" d="M40 20C52.8 19.9 91.1 19.4 116.7 19.5C142.2 19.7 167.8 20.6 193.3 20.8C218.9 21 244.4 20.5 270 20.6C295.6 20.8 321.1 21.4 346.7 21.6C372.2 21.9 397.8 22.1 423.3 22C448.9 22 487.2 21.6 500 21.5" stroke-dasharray="2 14"/></g>
+  <g class="reveal">
+    <path class="wb-k" d="M37.3 561.5L122.4 560.7M118.7 557.3L121.6 612.6M123.9 609.9L36.6 610M39 614.5L38.7 557.3"/>
+    <path class="wb-k" d="M215.9 544.5L332.9 546.3M328.2 540.8L331.4 617.7M334.4 615.4L217.5 614.6M220.7 619L220.8 542" transform="rotate(-6 275 580)"/>
+    <path class="wb-o draw" pathLength="1" style="--d:.6" d="M385.5 529.7L534.5 528.9M531.1 524.6L530.6 623M534.3 619.4L386.7 621.6M391.8 622.6L391.3 525.4" transform="rotate(-12 460 575)"/>
+    <path class="wb-t" d="M130 585Q168.2 601 204 580M194.6 595.3L204 580M186 580.8L204 580"/><path class="wb-t" d="M340 580Q360 585.1 378 575M368.3 590.1L378 575M360 575.4L378 575"/>
+    <path class="wb-t" d="M40 664C55.7 664 102.7 663.8 134 663.9C165.3 664 196.7 664.5 228 664.6C259.3 664.8 290.7 665 322 664.7C353.3 664.3 384.7 662.8 416 662.6C447.3 662.3 494.3 663.1 510 663.2" stroke-dasharray="2 14"/>
+  </g>
+</svg>
+    <ul class="bullets">
+      <li class="reveal">Mỗi style có một nhóm hình cố định, gọi là <b>diễn viên</b>.</li>
+      <li class="reveal">Mỗi kiểu slide quy định một <b>tư thế</b>: vị trí, kích thước, màu.</li>
+      <li class="reveal">Khi chuyển slide, trình duyệt cho hình <b>trượt dần</b> sang tư thế mới.</li>
+      <li class="reveal">Chữ của slide mới hiện sau, khi hình đã bắt đầu chuyển động.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-text">Cùng tên là cùng một vật</p>
+    </aside>
+  </section>
+
+  <!-- 5. content (second in a row: parity changes the pose) -->
+  <section class="slide" data-layout="content">
+    <h2 class="title reveal">Một khung cho mọi màn hình</h2>
+    <ul class="bullets">
+      <li class="reveal">Slide được thiết kế ở một kích thước cố định 1920×1080.</li>
+      <li class="reveal">Màn hình to hay nhỏ, cả khung được phóng to, thu nhỏ theo.</li>
+      <li class="reveal">Không vỡ bố cục trên máy chiếu, laptop hay điện thoại.</li>
+    </ul>
+    <aside class="highlight reveal-scale">
+      <p class="hl-big">16:9</p>
+      <p class="hl-text">Tỷ lệ khung chuẩn</p>
+    </aside>
+  </section>
+
+  <!-- 6. two-col + takeaway -->
+  <section class="slide" data-layout="two-col">
+    <h2 class="title reveal">PowerPoint Morph và SlideFly</h2>
+    <div class="cols">
+      <div class="col reveal-left">
+        <h3>PowerPoint</h3>
+        <ul>
+          <li>Chạy trong PowerPoint</li>
+          <li>Sửa trực tiếp bằng chuột</li>
+          <li>Khớp hình theo tên</li>
+        </ul>
+      </div>
+      <div class="col reveal-right">
+        <h3>SlideFly</h3>
+        <ul>
+          <li>Chạy trên trình duyệt</li>
+          <li>Sửa bằng nội dung chữ</li>
+          <li>Khớp hình theo data-actor</li>
+        </ul>
+      </div>
+    </div>
+    <p class="takeaway reveal">Cùng một ý tưởng: vật trùng tên thì trượt sang vị trí mới.</p>
+  </section>
+
+  <!-- 7. stats + HÌNH 4: ba slide nháp với 3, 5, 7 dòng; nét cắt cam ở cột "nên tách slide" -->
+  <section class="slide" data-layout="stats">
+    <h2 class="title reveal">Ba bậc cỡ chữ tự chọn</h2>
+    <div class="stats">
+      <div class="stat reveal"><span class="stat-num">≤3</span><span class="stat-label">ý trên một slide: chữ lớn nhất, dễ đọc từ xa</span></div>
+      <div class="stat reveal"><span class="stat-num">4-5</span><span class="stat-label">ý trên một slide: chữ vừa, vẫn thoáng</span></div>
+      <div class="stat reveal"><span class="stat-num">6+</span><span class="stat-label">ý trên một slide: chữ nhỏ, nên tách slide</span></div>
+    </div>
+    <svg class="art" style="left:120px; top:836px" width="1680" height="150" viewBox="0 0 1680 150" aria-hidden="true">
+  <g class="reveal"><path class="wb-k" d="M160.1 14.6L367.6 14.1M363.4 9.3L364.9 138.8M368.6 134.4L161.7 134.8M164.4 137.3L165.5 9.1"/><path class="wb-k" style="stroke-width:5.6" d="M194 32C218.3 32 315.7 32.1 340 32.1"/><path class="wb-k" style="stroke-width:5.6" d="M194 75C215.3 75 300.7 75.2 322 75.2"/><path class="wb-k" style="stroke-width:5.6" d="M194 118C212.3 118.1 285.7 118.3 304 118.4"/><path class="wb-k" d="M737.4 13.7L943.7 13.9M939.5 9.9L941.6 137.5M943.1 135L735.7 132.3M738.5 136.5L739.8 9.7"/><path class="wb-k" style="stroke-width:3.7" d="M770 32C794.3 32 891.7 31.8 916 31.8"/><path class="wb-k" style="stroke-width:3.7" d="M770 53.5C791.3 53.5 876.7 53.6 898 53.6"/><path class="wb-k" style="stroke-width:3.7" d="M770 75C788.3 75.1 861.7 75.3 880 75.3"/><path class="wb-k" style="stroke-width:3.7" d="M770 96.5C794.3 96.5 891.7 96.6 916 96.6"/><path class="wb-k" style="stroke-width:3.7" d="M770 118C791.3 118 876.7 118.1 898 118.1"/><path class="wb-k" d="M1313.7 14.8L1519.3 15.5M1516.4 10.9L1516.3 136.2M1520.3 132.4L1311 133.7M1317.7 137.9L1314.6 11.5"/><path class="wb-k" style="stroke-width:2.5" d="M1346 32C1370.3 31.9 1467.7 31.7 1492 31.7"/><path class="wb-k" style="stroke-width:2.5" d="M1346 46.3C1367.3 46.3 1452.7 46.2 1474 46.2"/><path class="wb-k" style="stroke-width:2.5" d="M1346 60.7C1364.3 60.7 1437.7 60.9 1456 60.9"/><path class="wb-k" style="stroke-width:2.5" d="M1346 75C1370.3 75 1467.7 75 1492 75.1"/><path class="wb-k" style="stroke-width:2.5" d="M1346 89.3C1367.3 89.4 1452.7 89.6 1474 89.7"/><path class="wb-k" style="stroke-width:2.5" d="M1346 103.7C1364.3 103.6 1437.7 103.4 1456 103.3"/><path class="wb-k" style="stroke-width:2.5" d="M1346 118C1370.3 118 1467.7 117.8 1492 117.8"/></g>
+  <g class="reveal"><path class="wb-o" stroke-dasharray="3 15" style="stroke-width:7" d="M1416 -4V150"/><text class="wb-hand wb-sm wb-od" x="1536" y="86">tách</text></g>
+</svg>
+  </section>
+
+  <!-- 8. timeline + HÌNH 3: trạm và cung nối trên trục bút lông -->
+  <section class="slide s-tl" data-layout="timeline">
+    <h2 class="title reveal">Quy trình dựng một deck</h2>
+    <svg class="art" style="left:120px; top:560px" width="1680" height="140" viewBox="0 0 1680 140" aria-hidden="true">
+  <path class="wb-b draw" pathLength="1" style="--d:0.15" d="M46 56Q187.2 14 324.4 52"/><path class="wb-b draw" pathLength="1" style="--d:0.35" d="M388.4 56Q529.6 14 666.8 52"/><path class="wb-b draw" pathLength="1" style="--d:0.55" d="M730.8 56Q872 14 1009.2 52"/><path class="wb-b draw" pathLength="1" style="--d:0.7500000000000001" d="M1073.2 56Q1214.4 14 1351.6 52"/>
+  <g class="reveal"><path class="wb-b" d="M324.4 52L306.4 44M324.4 52L308.4 66"/><path class="wb-b" d="M666.8 52L648.8 44M666.8 52L650.8 66"/><path class="wb-b" d="M1009.2 52L991.2 44M1009.2 52L993.2 66"/><path class="wb-b" d="M1351.6 52L1333.6 44M1351.6 52L1335.6 66"/><path class="wb-stn" d="M12.4 49.7C13.3 49.5 16 48.8 17.8 48.8C19.6 48.8 21.5 49 23.3 49.5C25.1 50 26.9 50.8 28.4 51.9C29.9 52.9 31.4 54.2 32.6 55.7C33.7 57.1 34.7 58.8 35.4 60.5C36.2 62.2 36.7 64 37 65.8C37.2 67.6 37.3 69.5 37.1 71.3C36.9 73.1 36.6 74.9 36 76.6C35.4 78.3 34.5 79.9 33.5 81.4C32.6 82.9 31.3 84.3 30 85.5C28.7 86.6 27.1 87.7 25.6 88.5C24 89.3 22.3 89.9 20.5 90.3C18.8 90.7 17 90.9 15.2 91C13.4 91 11.5 90.8 9.7 90.5C8 90.1 6.1 89.5 4.5 88.6C2.8 87.8 1.1 86.7 -0.3 85.4C-1.7 84.1 -3 82.5 -3.9 80.9C-4.8 79.2 -5.5 77.3 -5.9 75.4C-6.3 73.5 -6.3 71.5 -6.1 69.6C-5.9 67.8 -5.3 65.9 -4.6 64.2C-3.9 62.5 -3 60.9 -1.9 59.4C-0.9 58 0.3 56.6 1.6 55.4C2.8 54.2 4.2 53.1 5.7 52.1C7.2 51.1 8.8 50.2 10.5 49.5C12.2 48.9 14 48.3 15.9 48.1C17.7 47.9 19.7 47.9 21.6 48.2C23.5 48.6 25.4 49.2 27.1 50.1C28.8 51 31.1 53 31.8 53.6"/><path class="wb-stn" d="M368.8 51.9C369.6 52.4 372 53.7 373.4 54.8C374.8 56 376.2 57.4 377.2 58.9C378.3 60.5 379.2 62.2 379.7 64C380.2 65.8 380.5 67.8 380.5 69.7C380.4 71.5 380.1 73.5 379.4 75.2C378.8 77 377.9 78.6 376.9 80.1C375.8 81.6 374.5 82.9 373.2 84.1C371.9 85.2 370.5 86.2 369 87.1C367.5 88 365.9 88.7 364.3 89.3C362.6 89.9 360.9 90.4 359.2 90.6C357.4 90.9 355.6 91 353.7 90.8C351.9 90.6 350 90.2 348.3 89.5C346.6 88.8 344.8 87.7 343.4 86.5C342 85.3 340.6 83.8 339.6 82.2C338.6 80.6 337.8 78.7 337.3 76.9C336.8 75.1 336.6 73.2 336.6 71.3C336.6 69.4 336.8 67.5 337.3 65.8C337.7 64 338.4 62.2 339.2 60.6C340.1 59 341.1 57.4 342.3 56.1C343.5 54.7 344.9 53.5 346.4 52.5C347.9 51.5 349.6 50.6 351.3 50C353 49.4 354.9 49 356.7 48.9C358.5 48.7 360.3 48.8 362.1 49C363.9 49.3 365.7 49.8 367.5 50.4C369.2 51.1 370.9 52 372.4 53C374 54.1 375.5 55.4 376.7 56.9C378 58.4 379.1 60.1 379.8 61.9C380.6 63.7 381 66.6 381.3 67.6"/><path class="wb-stn" d="M720.1 63C720.3 63.8 721 66.4 721.2 68.1C721.3 69.9 721.3 71.7 721 73.4C720.8 75.1 720.3 76.9 719.6 78.5C718.9 80.1 718 81.7 716.9 83.1C715.8 84.5 714.5 85.8 713.1 86.9C711.7 88 710.1 88.9 708.5 89.7C706.8 90.4 705 90.9 703.2 91.3C701.4 91.6 699.5 91.7 697.7 91.5C695.8 91.4 693.9 91 692.1 90.3C690.4 89.6 688.6 88.7 687.2 87.5C685.7 86.4 684.3 84.9 683.2 83.4C682.2 81.9 681.4 80.1 680.8 78.3C680.3 76.5 680 74.7 679.9 72.9C679.9 71 680.1 69.2 680.4 67.5C680.8 65.8 681.3 64.1 682 62.5C682.6 60.9 683.4 59.3 684.3 57.8C685.3 56.3 686.4 54.8 687.6 53.5C688.9 52.3 690.4 51 692 50.1C693.6 49.1 695.4 48.3 697.3 47.8C699.1 47.4 701.2 47.2 703.1 47.3C705 47.5 707 48 708.8 48.7C710.5 49.5 712.2 50.6 713.7 51.8C715.2 53 716.5 54.5 717.6 56C718.7 57.5 719.5 59.2 720.2 60.9C720.9 62.6 721.4 64.4 721.7 66.2C722 68 722.1 69.8 722 71.6C721.9 73.5 721.5 75.3 721 77C720.4 78.8 719 81.2 718.6 82"/><path class="wb-stn" d="M1063.3 77.3C1063 78.2 1062.1 80.9 1061.1 82.5C1060.2 84 1058.9 85.6 1057.5 86.8C1056.1 88 1054.4 89.1 1052.7 89.8C1051 90.5 1049.1 91 1047.3 91.2C1045.4 91.3 1043.5 91.2 1041.8 90.9C1040 90.5 1038.3 89.9 1036.7 89.2C1035.1 88.6 1033.6 87.7 1032.1 86.7C1030.7 85.7 1029.4 84.6 1028.1 83.4C1026.9 82.2 1025.7 80.9 1024.8 79.4C1023.8 77.9 1022.9 76.2 1022.3 74.5C1021.7 72.8 1021.3 70.9 1021.2 69C1021.1 67.1 1021.4 65.1 1021.9 63.3C1022.4 61.5 1023.2 59.7 1024.3 58.1C1025.3 56.5 1026.7 55 1028.1 53.8C1029.6 52.6 1031.2 51.6 1032.9 50.9C1034.6 50.1 1036.4 49.5 1038.2 49.2C1040 48.8 1041.9 48.7 1043.7 48.8C1045.5 48.9 1047.4 49.2 1049.1 49.7C1050.8 50.2 1052.5 50.9 1054.1 51.9C1055.6 52.8 1057.1 53.9 1058.4 55.2C1059.6 56.5 1060.7 58 1061.7 59.6C1062.6 61.1 1063.3 62.8 1063.8 64.6C1064.4 66.3 1064.7 68.2 1064.8 70C1064.9 71.9 1064.9 73.8 1064.5 75.7C1064.2 77.5 1063.6 79.4 1062.8 81.2C1062 82.9 1060.9 84.6 1059.5 86C1058.2 87.4 1056.6 88.7 1054.9 89.7C1053.2 90.6 1050.3 91.4 1049.4 91.7"/><path class="wb-stn" d="M1395.7 87.5C1394.9 87.9 1392.7 89.3 1391 89.9C1389.3 90.4 1387.5 90.8 1385.8 90.9C1384 91.1 1382.1 90.9 1380.3 90.6C1378.6 90.2 1376.8 89.5 1375.2 88.7C1373.6 87.9 1372 86.8 1370.6 85.5C1369.3 84.3 1368.1 82.8 1367.1 81.3C1366.1 79.7 1365.2 78 1364.7 76.2C1364.1 74.4 1363.8 72.5 1363.8 70.7C1363.7 68.8 1364 66.9 1364.5 65.1C1364.9 63.3 1365.7 61.6 1366.7 60C1367.7 58.5 1368.9 57 1370.2 55.8C1371.5 54.6 1373 53.6 1374.6 52.7C1376.1 51.8 1377.7 51.2 1379.4 50.6C1381 50.1 1382.8 49.7 1384.5 49.5C1386.3 49.2 1388.1 49.2 1389.9 49.3C1391.7 49.5 1393.6 49.8 1395.4 50.4C1397.1 51.1 1398.9 52 1400.5 53.1C1402 54.2 1403.5 55.7 1404.6 57.3C1405.7 58.9 1406.5 60.7 1407.1 62.6C1407.6 64.4 1407.8 66.4 1407.8 68.3C1407.7 70.2 1407.4 72.2 1406.9 73.9C1406.3 75.7 1405.6 77.4 1404.7 79C1403.8 80.6 1402.7 82.1 1401.6 83.4C1400.4 84.8 1399.1 86.1 1397.7 87.1C1396.2 88.2 1394.7 89.2 1393 89.9C1391.3 90.7 1389.5 91.2 1387.7 91.5C1385.9 91.8 1383.9 91.9 1382.1 91.7C1380.2 91.5 1377.5 90.5 1376.6 90.3"/><path class="wb-o" d="M1401 44.2C1402 45 1405.4 47.2 1407.2 49C1409 50.9 1410.7 52.9 1412 55.1C1413.3 57.3 1414.4 59.8 1415.1 62.2C1415.8 64.6 1416.1 67.2 1416.2 69.8C1416.2 72.3 1415.9 74.9 1415.3 77.4C1414.7 79.9 1413.7 82.4 1412.5 84.6C1411.3 86.9 1409.7 89.1 1407.9 91.1C1406.2 93 1404.1 94.9 1401.9 96.4C1399.6 97.9 1397.1 99.2 1394.5 100.1C1391.9 100.9 1389 101.5 1386.2 101.6C1383.4 101.7 1380.4 101.4 1377.8 100.7C1375.1 100 1372.4 98.8 1370.1 97.4C1367.8 95.9 1365.6 94 1363.8 92.1C1362.1 90.1 1360.6 87.8 1359.4 85.5C1358.2 83.2 1357.3 80.8 1356.6 78.3C1355.9 75.9 1355.5 73.4 1355.3 70.8C1355.1 68.3 1355.2 65.7 1355.6 63.2C1355.9 60.6 1356.6 58 1357.6 55.5C1358.7 53.1 1360 50.6 1361.8 48.5C1363.5 46.4 1365.7 44.4 1368 42.8C1370.3 41.3 1373.1 40 1375.8 39.3C1378.5 38.5 1381.5 38.1 1384.3 38.1C1387.1 38.1 1390 38.6 1392.7 39.3C1395.4 40.1 1398 41.2 1400.4 42.5C1402.8 43.8 1405.1 45.5 1407 47.3C1409 49.1 1410.8 51.2 1412.3 53.4C1413.7 55.7 1414.9 58.1 1415.8 60.6C1416.6 63.1 1417.1 65.8 1417.3 68.4C1417.4 71.1 1416.8 75.1 1416.7 76.4"/><path class="wb-o" d="M1375.6 70L1383.6 79L1396.6 60"/></g>
+</svg>
+    <div class="timeline">
+      <div class="step reveal"><div class="when">01</div><h3>Nội dung</h3><p>Gom dàn ý, số liệu có nguồn</p></div>
+      <div class="step reveal"><div class="when">02</div><h3>Chọn style</h3><p>Xem 3 bản thử rồi chọn</p></div>
+      <div class="step reveal"><div class="when">03</div><h3>Dựng</h3><p>Viết HTML theo khung mẫu</p></div>
+      <div class="step reveal"><div class="when">04</div><h3>Đo</h3><p>Chạy deck.audit() từng slide</p></div>
+      <div class="step reveal"><div class="when">05</div><h3>Bàn giao</h3><p>Gộp thành một file HTML</p></div>
+    </div>
+  </section>
+
+  <!-- 9. quote -->
+  <section class="slide" data-layout="quote">
+    <blockquote class="quote reveal-blur">Hình trang trí đứng yên chỉ là nền. Khi nó di chuyển, nó kể chuyện.</blockquote>
+    <p class="cite reveal">Nguyên tắc của bộ mẫu</p>
+  </section>
+
+  <!-- 10. closing -->
+  <section class="slide" data-layout="closing">
+    <p class="kicker reveal">Hết phần mẫu</p>
+    <h2 class="title reveal">Cảm ơn</h2>
+    <p class="subtitle reveal">Đổi style chỉ cần thay một dòng link CSS.</p>
+  </section>
+
+</div>
+</div>
+<script src="../skill/slidefly/assets/morph-viz-diagrams.js"></script>
+<script src="../skill/slidefly/assets/morph-viz.js"></script>
+<script src="../skill/slidefly/assets/morph-engine.js"></script>
+<script src="../skill/slidefly/assets/morph-nav.js"></script>
+<script src="../skill/slidefly/assets/morph-audit.js"></script>
+<script src="../skill/slidefly/assets/morph-steps.js"></script>
+<script src="../skill/slidefly/assets/morph-icons.js"></script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 ---
 name: slidefly
-description: Tạo slide HTML có hiệu ứng chuyển cảnh kiểu PowerPoint Morph (hình trang trí trượt, phóng to, đổi màu liền mạch giữa các slide), 63 style (6 style hai lớp có minh họa vẽ riêng từng slide), 21 kiểu slide, 12 khung bố cục, sơ đồ tự vẽ, và xuất ra file PowerPoint .pptx sửa được vẫn giữ Morph. Dùng khi người dùng nói "slide morph", "slide animation đẹp", "slide HTML có hiệu ứng chuyển cảnh", "làm deck chuyển động", "xuất pptx có morph", "/slidefly", "SlideFly", hoặc muốn chuyển một mẫu PowerPoint Morph sang web. Không dùng khi chỉ cần một file Word/Excel, hay slide HTML hiệu ứng xuất hiện đơn giản (frontend-slides).
+description: Tạo slide HTML có hiệu ứng chuyển cảnh kiểu PowerPoint Morph (hình trang trí trượt, phóng to, đổi màu liền mạch giữa các slide), 85 style (34 style hai lớp có minh họa vẽ riêng từng slide), 21 kiểu slide, 12 khung bố cục, sơ đồ tự vẽ, và xuất ra file PowerPoint .pptx sửa được vẫn giữ Morph. Dùng khi người dùng nói "slide morph", "slide animation đẹp", "slide HTML có hiệu ứng chuyển cảnh", "làm deck chuyển động", "xuất pptx có morph", "/slidefly", "SlideFly", hoặc muốn chuyển một mẫu PowerPoint Morph sang web. Không dùng khi chỉ cần một file Word/Excel, hay slide HTML hiệu ứng xuất hiện đơn giản (frontend-slides).
 ---
 
 # SlideFly: slide biết bay
@@ -36,7 +36,7 @@ assets/morph-frames.css/.js     12 khung phá lưới: data-frame="split-left|sp
 assets/morph-engine.js, morph-nav.js, morph-audit.js   engine, điều hướng (nút hai rìa, phím, vuốt), deck.audit()
 assets/morph-motion.css, morph-viz*.{css,js}, morph-steps.js   hiệu ứng theo động từ, 8 dạng sơ đồ tự vẽ, bấm từng bước
 assets/morph-brand.css, morph-mock.css/.js, morph-photo.css, morph-icons.css/.js   logo xuyên suốt, khung giao diện giả, ảnh nền, icon Tabler
-assets/styles/*.css (63) + index.json   style; đổi style = đổi một dòng link; style hai lớp có thêm <slug>.art.md
+assets/styles/*.css (85) + index.json   style; đổi style = đổi một dòng link; style hai lớp có thêm <slug>.art.md
 templates/deck-mau, deck-bo-cuc, deck-khung, deck-giao-dien, deck-so-do .html   deck mẫu để xem cách viết markup
 scripts/inline-assets.py   gộp thành 1 file      scripts/export-pptx.py   xuất PowerPoint có Morph (install-fonts.py: cài font style)
 scripts/pick-styles.py     gợi ý style + cách kể (--parts N cho deck dài)      scripts/icons.py   tìm, gợi ý icon
